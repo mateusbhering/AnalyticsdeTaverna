@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 const floatingIcons = [
   { icon: "⚔️", x: "10%", y: "20%", delay: "0s", size: "text-3xl" },
@@ -103,6 +104,17 @@ export default function Hero() {
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-900/50 border border-purple-700/50 text-purple-300 text-sm mb-8 backdrop-blur-sm">
           <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
           Projeto Experimental · Gamificação + IA
+        </div>
+
+        <div className="flex justify-center mb-6">
+          <Image
+            src="/logo.png"
+            alt="Analytics de Taverna"
+            width={220}
+            height={220}
+            className="drop-shadow-[0_0_40px_rgba(124,58,237,0.6)] animate-float"
+            priority
+          />
         </div>
 
         <h1 className="text-6xl md:text-8xl font-black mb-6 leading-none tracking-tight">
