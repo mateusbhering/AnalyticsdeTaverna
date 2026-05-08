@@ -55,6 +55,12 @@ export default function Navbar() {
           >
             Iniciar Jornada
           </a>
+          <a
+            href="/admin"
+            className="px-5 py-2 rounded-xl bg-gradient-to-r from-red-700 to-red-600 text-white text-sm font-semibold hover:from-red-600 hover:to-red-500 transition-all duration-200 border border-red-500/40"
+          >
+            🔒 Admin
+          </a>
         </div>
 
         <button
@@ -88,6 +94,13 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}
           >
             Iniciar Jornada
+          </a>
+          <a
+            href="/admin"
+            className="mt-2 block text-center px-5 py-3 rounded-xl bg-gradient-to-r from-red-700 to-red-600 text-white font-semibold border border-red-500/40"
+            onClick={() => setMenuOpen(false)}
+          >
+            🔒 Admin
           </a>
         </div>
       )}
