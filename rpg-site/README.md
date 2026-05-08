@@ -1,36 +1,168 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⚔️ RPG Data Experience
 
-## Getting Started
+Site institucional do projeto **RPG Data Experience** — uma experiência interativa que transforma dados comportamentais em personagens de RPG únicos, com gamificação, IA generativa e muito estilo.
 
-First, run the development server:
+🌐 **Deploy:** [site-ic-orcin.vercel.app](https://site-ic-orcin.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 📋 Sobre o Projeto
+
+O RPG Data Experience é um projeto experimental que combina **psicologia comportamental**, **IA generativa (Google Gemini)** e **gamificação real** para criar uma experiência única:
+
+1. O usuário tira uma foto e responde um quiz de 5–8 perguntas
+2. As respostas são convertidas em atributos de RPG (Força, Inteligência, Agilidade, Carisma, Resistência)
+3. A IA gera um avatar personalizado baseado na foto
+4. O sistema classifica o usuário em uma classe (Guerreiro, Mago, Ladino, Paladino, Arqueiro...)
+5. Uma batalha automática é simulada contra outro jogador ou a IA
+6. Um card digital exclusivo é gerado com QR Code para compartilhamento
+
+---
+
+## 🛠️ Stack
+
+| Tecnologia | Versão | Uso |
+|---|---|---|
+| Next.js | 16.2.6 | Framework principal (App Router) |
+| React | 19.2.4 | UI |
+| Tailwind CSS | v4 | Estilização |
+| NextAuth.js | v5 beta | Autenticação GitHub OAuth |
+| TypeScript | — | Tipagem estática |
+| Vercel | — | Deploy e hospedagem |
+
+---
+
+## 📁 Estrutura de Arquivos
+
+```
+rpg-site/
+└── src/
+    ├── app/
+    │   ├── page.tsx               # Página principal (landing page)
+    │   ├── layout.tsx             # Layout global
+    │   ├── globals.css            # Estilos globais + animações custom
+    │   ├── admin/
+    │   │   ├── page.tsx           # Dashboard admin (protegido)
+    │   │   └── login/
+    │   │       └── page.tsx       # Página de login admin
+    │   └── api/
+    │       └── auth/
+    │           └── [...nextauth]/
+    │               └── route.ts   # Handler do NextAuth
+    ├── components/
+    │   ├── Navbar.tsx             # Navbar fixa com scroll detection
+    │   ├── Hero.tsx               # Seção hero com canvas de estrelas
+    │   ├── ConceptSection.tsx     # Conceito central do projeto
+    │   ├── FlowSection.tsx        # Fluxo em 5 etapas
+    │   ├── AttributesSection.tsx  # Atributos e classes de RPG
+    │   ├── WhyDifferent.tsx       # Diferenciais do projeto
+    │   ├── TechSection.tsx        # Estrutura técnica
+    │   ├── DashboardSection.tsx   # Dashboard ao vivo (simulado)
+    │   ├── CTASection.tsx         # Call to action final
+    │   └── Footer.tsx             # Rodapé
+    ├── auth.ts                    # Configuração NextAuth + admins
+    └── proxy.ts                   # Middleware de proteção de rotas
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎨 Seções do Site
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Seção | Descrição |
+|---|---|
+| **Hero** | Tela de entrada com partículas animadas, ícones flutuantes e canvas de estrelas |
+| **Conceito Central** | Os 4 pilares: Foto, Quiz, Batalha e Card Digital |
+| **Fluxo da Experiência** | 5 etapas: Atração → Entrada → Captura → Processamento → Apresentação |
+| **Atributos & Classes** | Barras de atributos + 5 classes de RPG com descrições |
+| **Diferenciais** | Psicologia Aplicada, IA Generativa, Viral por Design, Gamificação Real |
+| **Estrutura Técnica** | Frontend, Backend, IA, Lógica Própria e Banco de Dados |
+| **Dashboard ao Vivo** | Contador animado de participantes, distribuição de classes e insights |
+| **CTA Final** | Botões "Jogar Sozinho" e "Desafiar Alguém" |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔒 Área Admin
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+O site possui uma área administrativa protegida por autenticação via **GitHub OAuth**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Acesso
 
-## Deploy on Vercel
+- URL: `/admin/login`
+- Apenas os usuários GitHub autorizados conseguem entrar
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Admins autorizados
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| GitHub | 
+|---|
+| [@mateusbhering](https://github.com/mateusbhering) |
+| [@juliacrws](https://github.com/juliacrws) |
+
+### Como funciona
+
+1. Usuário acessa `/admin/login` e clica em "Entrar com GitHub"
+2. GitHub autentica e retorna o perfil
+3. NextAuth verifica se o `login` está na lista de admins
+4. Se autorizado → acesso ao dashboard em `/admin`
+5. Se não autorizado → tela de "Acesso negado"
+6. Qualquer rota `/admin/*` sem sessão ativa → redirecionado para `/admin/login`
+
+### Variáveis de ambiente necessárias
+
+```env
+AUTH_SECRET=                  # Gerado com: openssl rand -hex 32
+GITHUB_CLIENT_ID=             # GitHub OAuth App
+GITHUB_CLIENT_SECRET=         # GitHub OAuth App
+ADMIN_GITHUB_USERNAME=        # (legado, substituído pela lista em auth.ts)
+AUTH_URL=                     # URL base do site em produção
+```
+
+### Configurar GitHub OAuth App
+
+1. Acesse [github.com/settings/developers](https://github.com/settings/developers) → **OAuth Apps** → **New OAuth App**
+2. Preencha:
+   - **Homepage URL:** `https://site-ic-orcin.vercel.app`
+   - **Authorization callback URL:** `https://site-ic-orcin.vercel.app/api/auth/callback/github`
+3. Copie o `Client ID` e `Client Secret` para o `.env.local`
+
+---
+
+## 🚀 Rodando Localmente
+
+**Pré-requisitos:** Node.js 18+
+
+```bash
+# Instalar dependências
+npm install
+
+# Criar arquivo de variáveis de ambiente
+cp .env.local.example .env.local
+# (preencher as variáveis no .env.local)
+
+# Iniciar servidor de desenvolvimento
+npm run dev
+```
+
+Acesse [http://localhost:3000](http://localhost:3000).
+
+> Para o login admin funcionar localmente, adicione `http://localhost:3000/api/auth/callback/github` como callback URL no seu GitHub OAuth App.
+
+---
+
+## 📦 Deploy
+
+O projeto está conectado ao GitHub e faz deploy automático na **Vercel** a cada push na branch `main`.
+
+Para fazer deploy manual via CLI:
+
+```bash
+vercel --prod
+```
+
+---
+
+## 🎨 Design
+
+- **Tema:** Dark gaming (`#050010`)
+- **Cores principais:** Roxo (`#7c3aed`), Dourado (`#f59e0b`), Ciano (`#06b6d4`)
+- **Animações:** Partículas flutuantes, canvas de estrelas, shimmer nos títulos, glow pulsante
+- **Responsivo:** Mobile e desktop
