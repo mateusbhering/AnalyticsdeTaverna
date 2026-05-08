@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RPG Data Experience",
+  title: "Analytics de Taverna",
   description: "Uma experiência interativa que transforma dados comportamentais em personagens de RPG únicos — com gamificação, IA e muito estilo.",
 };
 

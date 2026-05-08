@@ -20,7 +20,7 @@ export default function LoginPage({
               🔒
             </div>
             <h1 className="text-2xl font-black text-white mb-1">Área Admin</h1>
-            <p className="text-purple-400/70 text-sm">RPG Data Experience</p>
+            <p className="text-purple-400/70 text-sm">Analytics de Taverna</p>
           </div>
 
           {/* Error message */}

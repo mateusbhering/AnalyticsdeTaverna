@@ -1,6 +1,6 @@
-# ⚔️ RPG Data Experience
+# ⚔️ Analytics de Taverna
 
-Site institucional do projeto **RPG Data Experience** — uma experiência interativa que transforma dados comportamentais em personagens de RPG únicos, com gamificação, IA generativa e muito estilo.
+Site institucional do projeto **Analytics de Taverna** — uma experiência interativa que transforma dados comportamentais em personagens de RPG únicos, com gamificação, IA generativa e muito estilo.
 
 🌐 **Deploy:** [site-ic-orcin.vercel.app](https://site-ic-orcin.vercel.app)
 
@@ -8,7 +8,7 @@ Site institucional do projeto **RPG Data Experience** — uma experiência inter
 
 ## 📋 Sobre o Projeto
 
-O RPG Data Experience é um projeto experimental que combina **psicologia comportamental**, **IA generativa (Google Gemini)** e **gamificação real** para criar uma experiência única:
+O Analytics de Taverna é um projeto experimental que combina **psicologia comportamental**, **IA generativa (Google Gemini)** e **gamificação real** para criar uma experiência única:
 
 1. O usuário tira uma foto e responde um quiz de 5–8 perguntas
 2. As respostas são convertidas em atributos de RPG (Força, Inteligência, Agilidade, Carisma, Resistência)

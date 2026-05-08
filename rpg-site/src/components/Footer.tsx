@@ -6,7 +6,7 @@ export default function Footer() {
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-700 flex items-center justify-center text-sm font-bold">
             ⚔
           </div>
-          <span className="text-purple-300 font-semibold">RPG Data Experience</span>
+          <span className="text-purple-300 font-semibold">Analytics de Taverna</span>
         </div>
         <p className="text-purple-500/60 text-sm text-center">
           Projeto Experimental · Gamificação + IA Generativa

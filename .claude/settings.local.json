@@ -5,7 +5,10 @@
       "Bash(npm run *)",
       "Bash(curl -s http://localhost:3000)",
       "Bash(npx create-next-app *)",
-      "Bash(npx create-next-app@latest rpg-site --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack --disable-git)"
+      "Bash(npx create-next-app@latest rpg-site --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack --disable-git)",
+      "Bash(npm install *)",
+      "Bash(npm ls *)",
+      "Bash(node /Users/mateusbhering/Desktop/IC-SITE/rpg-site/node_modules/next/dist/bin/next build)"
     ]
   }
 }

@@ -106,8 +106,8 @@ export default function Hero() {
         </div>
 
         <h1 className="text-6xl md:text-8xl font-black mb-6 leading-none tracking-tight">
-          <span className="animate-shimmer block">RPG Data</span>
-          <span className="text-white block mt-2">Experience</span>
+          <span className="animate-shimmer block">Analytics de</span>
+          <span className="text-white block mt-2">Taverna</span>
         </h1>
 
         <p className="text-xl md:text-2xl text-purple-200/80 max-w-3xl mx-auto mb-4 leading-relaxed">
