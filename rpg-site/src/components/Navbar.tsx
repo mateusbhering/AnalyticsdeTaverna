@@ -8,6 +8,7 @@ const links = [
   { label: "Atributos", href: "#atributos" },
   { label: "Diferenciais", href: "#diferenciais" },
   { label: "Tecnologia", href: "#tecnologia" },
+  { label: "Guilda", href: "#guilda" },
 ];
 
 export default function Navbar() {

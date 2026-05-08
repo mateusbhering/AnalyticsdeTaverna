@@ -6,6 +6,7 @@ import AttributesSection from "@/components/AttributesSection";
 import WhyDifferent from "@/components/WhyDifferent";
 import TechSection from "@/components/TechSection";
 import DashboardSection from "@/components/DashboardSection";
+import GuildSection from "@/components/GuildSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
@@ -21,6 +22,7 @@ export default function Home() {
         <WhyDifferent />
         <TechSection />
         <DashboardSection />
+        <GuildSection />
         <CTASection />
       </main>
       <Footer />
