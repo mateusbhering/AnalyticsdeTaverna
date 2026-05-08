@@ -36,7 +36,7 @@ export default async function AdminPage() {
             <div>
               <h1 className="text-2xl font-black text-white">Painel Admin 🔒</h1>
               <p className="text-purple-400/70 text-sm">
-                Bem-vindo, <span className="text-red-400 font-semibold">@mateusbhering</span>
+                Bem-vindo, <span className="text-red-400 font-semibold">@{(session.user as { login?: string })?.login ?? session.user?.name}</span>
               </p>
             </div>
           </div>

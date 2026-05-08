@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 
-const ADMIN_USERNAME = process.env.ADMIN_GITHUB_USERNAME ?? "mateusbhering";
+const ADMIN_USERNAMES = ["mateusbhering", "juliacrws"];
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -12,8 +12,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     async signIn({ profile }) {
-      // Bloqueia qualquer login que não seja o admin
-      return (profile as { login?: string })?.login === ADMIN_USERNAME;
+      const login = (profile as { login?: string })?.login ?? "";
+      return ADMIN_USERNAMES.includes(login);
     },
     async session({ session, token }) {
       return {
