@@ -12,10 +12,10 @@ type Event = { time: string; title: string };
 type EventMap = Record<string, Event[]>;
 
 const EVENTS: EventMap = {
-  "2025-05-11": [
+  "2026-05-11": [
     { time: "11:30", title: "REUNIÃO COM NEMEC (2TSCPF)" },
   ],
-  "2025-06-26": [
+  "2026-06-26": [
     { time: "", title: "DEADLINE" },
   ],
 };
