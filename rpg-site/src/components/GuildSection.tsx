@@ -1,5 +1,12 @@
 import Image from "next/image";
 
+const advisor = {
+  name: "Fernando Nemec",
+  role: "Orientador",
+  icon: "👑",
+  photo: "/guild/fernando-nemec.png",
+};
+
 const members = [
   { name: "Julia de Moraes Barbosa", icon: "🧙‍♀️", photo: "/guild/julia-moraes.png" },
   { name: "Mariana Ayumi Dantas Kuramitsu", icon: "⚔️", photo: "/guild/mariana-ayumi.png" },
@@ -26,6 +33,25 @@ export default function GuildSection() {
           <p className="text-purple-300/70 text-lg max-w-xl mx-auto">
             Os heróis por trás da experiência. Unidos por dados, batalhas e muita criatividade.
           </p>
+        </div>
+
+        {/* Advisor */}
+        <div className="mb-8">
+          <div className="card-hover group rounded-2xl bg-gradient-to-r from-amber-900/30 to-amber-800/10 border border-amber-500/40 p-6 backdrop-blur-sm flex items-center gap-5 max-w-sm mx-auto">
+            <div className="flex-shrink-0 w-16 h-16 rounded-full overflow-hidden border-2 border-amber-500/60 group-hover:border-amber-400 transition-all duration-200">
+              <Image
+                src={advisor.photo}
+                alt={advisor.name}
+                width={64}
+                height={64}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <span className="text-amber-400 text-xs font-semibold uppercase tracking-widest">{advisor.role}</span>
+              <p className="text-white font-bold text-base leading-snug mt-0.5">{advisor.name}</p>
+            </div>
+          </div>
         </div>
 
         {/* Members grid */}
