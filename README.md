@@ -57,6 +57,7 @@ rpg-site/
     │   ├── AttributesSection.tsx  # Atributos e classes de RPG
     │   ├── WhyDifferent.tsx       # Diferenciais do projeto
     │   ├── TechSection.tsx        # Estrutura técnica
+    │   ├── GuildSection.tsx       # Seção Guilda com membros da equipe
     │   ├── DashboardSection.tsx   # Dashboard ao vivo (simulado)
     │   ├── CTASection.tsx         # Call to action final
     │   └── Footer.tsx             # Rodapé
@@ -77,7 +78,24 @@ rpg-site/
 | **Diferenciais** | Psicologia Aplicada, IA Generativa, Viral por Design, Gamificação Real |
 | **Estrutura Técnica** | Frontend, Backend, IA, Lógica Própria e Banco de Dados |
 | **Dashboard ao Vivo** | Contador animado de participantes, distribuição de classes e insights |
+| **Guilda** | Cards com foto e nome de cada membro da equipe |
 | **CTA Final** | Botões "Jogar Sozinho" e "Desafiar Alguém" |
+
+---
+
+## ⚜️ Guilda — Membros da Equipe
+
+| Membro | Foto |
+|---|---|
+| Julia de Moraes Barbosa | ✅ |
+| Mariana Ayumi Dantas Kuramitsu | ✅ |
+| Yasmin Yumi Tsunokawa | ✅ |
+| Lucas Luna Pimentel | ✅ |
+| Lucas Amaral da Silva Barros | — (sem foto) |
+| Mateus Bhering Beltrão Santos | ✅ |
+| Guilherme Ladeira Correa Santos | ✅ |
+
+As fotos ficam em `rpg-site/public/guild/` e são exibidas em formato circular. Membros sem foto recebem um ícone de RPG como placeholder.
 
 ---
 
