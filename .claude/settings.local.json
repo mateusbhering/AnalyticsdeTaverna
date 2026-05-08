@@ -3,7 +3,9 @@
     "allow": [
       "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")",
       "Bash(npm run *)",
-      "Bash(curl -s http://localhost:3000)"
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(npx create-next-app *)",
+      "Bash(npx create-next-app@latest rpg-site --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack --disable-git)"
     ]
   }
 }
