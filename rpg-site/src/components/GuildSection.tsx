@@ -1,11 +1,13 @@
+import Image from "next/image";
+
 const members = [
-  { name: "Julia de Moraes Barbosa", icon: "🧙‍♀️" },
-  { name: "Mariana Ayumi Dantas Kuramitsu", icon: "⚔️" },
-  { name: "Yasmin Yumi Tsunokawa", icon: "🏹" },
-  { name: "Lucas Luna Pimentel", icon: "🛡️" },
-  { name: "Lucas Amaral da Silva Barros", icon: "🗡️" },
-  { name: "Mateus Bhering Beltrão Santos", icon: "🔮" },
-  { name: "Guilherme Ladeira Correa Santos", icon: "⚡" },
+  { name: "Julia de Moraes Barbosa", icon: "🧙‍♀️", photo: "/guild/julia-moraes.png" },
+  { name: "Mariana Ayumi Dantas Kuramitsu", icon: "⚔️", photo: "/guild/mariana-ayumi.png" },
+  { name: "Yasmin Yumi Tsunokawa", icon: "🏹", photo: "/guild/yasmin-yumi.png" },
+  { name: "Lucas Luna Pimentel", icon: "🛡️", photo: "/guild/lucas-luna.png" },
+  { name: "Lucas Amaral da Silva Barros", icon: "🗡️", photo: null },
+  { name: "Mateus Bhering Beltrão Santos", icon: "🔮", photo: "/guild/mateus-bhering.png" },
+  { name: "Guilherme Ladeira Correa Santos", icon: "⚡", photo: "/guild/guilherme-ladeira.png" },
 ];
 
 export default function GuildSection() {
@@ -28,15 +30,26 @@ export default function GuildSection() {
 
         {/* Members grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {members.map((member, i) => (
+          {members.map((member) => (
             <div
               key={member.name}
               className="card-hover group rounded-2xl bg-white/3 border border-amber-700/20 hover:border-amber-600/50 p-6 backdrop-blur-sm flex items-center gap-4"
-              style={{ animationDelay: `${i * 0.08}s` }}
             >
-              {/* Icon badge */}
-              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-amber-700/40 to-amber-900/40 border border-amber-600/30 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-200">
-                {member.icon}
+              {/* Avatar */}
+              <div className="flex-shrink-0 w-14 h-14 rounded-full overflow-hidden border-2 border-amber-600/30 group-hover:border-amber-500/60 transition-all duration-200">
+                {member.photo ? (
+                  <Image
+                    src={member.photo}
+                    alt={member.name}
+                    width={56}
+                    height={56}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-amber-700/40 to-amber-900/40 flex items-center justify-center text-2xl">
+                    {member.icon}
+                  </div>
+                )}
               </div>
 
               {/* Name */}
