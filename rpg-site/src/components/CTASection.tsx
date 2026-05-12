@@ -25,9 +25,12 @@ export default function CTASection() {
         </p>
 
         <div className="flex flex-wrap gap-4 justify-center mb-16">
-          <button className="px-10 py-5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xl hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 animate-pulse-glow transform hover:scale-105 cursor-pointer">
+          <a
+            href="/jogar"
+            className="px-10 py-5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xl hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 animate-pulse-glow transform hover:scale-105"
+          >
             ⚔️ Jogar Sozinho
-          </button>
+          </a>
           <button className="px-10 py-5 rounded-2xl bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold text-xl hover:from-amber-500 hover:to-orange-500 transition-all duration-300 glow-gold transform hover:scale-105 cursor-pointer">
             ⚡ Desafiar Alguém
           </button>
