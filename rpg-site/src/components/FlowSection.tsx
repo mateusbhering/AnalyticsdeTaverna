@@ -26,8 +26,8 @@ const steps = [
     color: "from-cyan-600 to-cyan-800",
     border: "border-cyan-600/50",
     description:
-      "Webcam de alta resolução captura sua foto. Quiz de 5–8 perguntas estratégicas revela seus traços comportamentais.",
-    tags: ["Foto + Avatar", "Quiz 5–8 Q's"],
+      "Webcam captura sua foto. Quiz de 5 perguntas aleatórias (sorteadas de um banco de 120) pontua 10 dimensões psicológicas que revelam sua personalidade.",
+    tags: ["Foto + Avatar", "Quiz 5 Q's", "Banco de 120"],
   },
   {
     num: "04",
@@ -36,8 +36,8 @@ const steps = [
     color: "from-amber-600 to-amber-800",
     border: "border-amber-600/50",
     description:
-      "O sistema converte respostas em atributos numéricos, classifica a classe de RPG e a IA gera seu avatar personalizado.",
-    tags: ["Atributos", "Classificação", "IA Gemini"],
+      "Dimensões viram 7 atributos RPG (Força, Inteligência, Caos…). Tags secretas de comportamento definem sua classe entre 16 possíveis.",
+    tags: ["7 Atributos", "16 Classes", "Tags Secretas"],
   },
   {
     num: "05",

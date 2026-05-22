@@ -148,9 +148,9 @@ export default function Hero() {
 
         <div className="mt-20 grid grid-cols-3 gap-8 max-w-lg mx-auto">
           {[
-            { val: "5+", label: "Classes" },
-            { val: "5", label: "Atributos" },
-            { val: "IA", label: "Generativa" },
+            { val: "16", label: "Classes" },
+            { val: "7", label: "Atributos" },
+            { val: "5", label: "Perguntas" },
           ].map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-3xl font-black text-gradient-gold">{s.val}</div>

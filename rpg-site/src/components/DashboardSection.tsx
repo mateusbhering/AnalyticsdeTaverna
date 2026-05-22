@@ -3,17 +3,19 @@
 import { useState, useEffect } from "react";
 
 const classDistribution = [
-  { name: "Guerreiro", pct: 32, color: "bg-red-500", icon: "⚔️" },
-  { name: "Mago", pct: 28, color: "bg-blue-500", icon: "🔮" },
-  { name: "Paladino", pct: 20, color: "bg-amber-500", icon: "🏰" },
-  { name: "Ladino", pct: 12, color: "bg-gray-400", icon: "🗡️" },
-  { name: "Arqueiro", pct: 8, color: "bg-green-500", icon: "🏹" },
+  { name: "Artífice da Gambiarra", pct: 19, color: "bg-orange-500", icon: "🔧" },
+  { name: "Mago do ChatGPT",       pct: 17, color: "bg-blue-500",   icon: "🔮" },
+  { name: "Ladino do Home Office", pct: 15, color: "bg-slate-400",  icon: "🏠" },
+  { name: "Necromante de Planilha",pct: 13, color: "bg-emerald-500",icon: "📊" },
+  { name: "Invocador de iFood",    pct: 11, color: "bg-red-500",    icon: "🍕" },
+  { name: "Vidente da Ansiedade",  pct: 10, color: "bg-indigo-500", icon: "🔭" },
+  { name: "Outras 10 classes",     pct: 15, color: "bg-purple-500", icon: "✨" },
 ];
 
 const insights = [
-  "A maioria das pessoas apresentou perfil mais impulsivo do que estratégico.",
-  "Perfis com alto Carisma tendem a escolher o modo multiplayer.",
-  "Guerreiros têm 23% mais vitórias em batalha contra IA.",
+  "A maioria apresenta perfil Adaptável — improvisação é a habilidade mais frequente entre os participantes.",
+  "Pessoas com alta Percepção tendem a demorar mais nas perguntas e acumulam mais a tag OVERTHINKING.",
+  "A combinação Criatividade + Impulsividade é a mais comum, gerando o perfil 'Artífice da Gambiarra'.",
 ];
 
 export default function DashboardSection() {
@@ -64,7 +66,7 @@ export default function DashboardSection() {
 
             <div className="rounded-2xl bg-white/3 border border-cyan-800/30 p-6 backdrop-blur-sm">
               <div className="text-xs text-cyan-400 font-semibold uppercase tracking-widest mb-2">Mais Popular</div>
-              <div className="text-3xl font-black text-white mb-1">⚔️ Guerreiro</div>
+              <div className="text-2xl font-black text-white mb-1">🔧 Artífice da Gambiarra</div>
               <div className="text-purple-400 text-sm">Classe mais comum</div>
             </div>
           </div>
@@ -72,15 +74,15 @@ export default function DashboardSection() {
           {/* Class distribution */}
           <div className="lg:col-span-1 rounded-2xl bg-white/3 border border-purple-800/30 p-8 backdrop-blur-sm">
             <h3 className="text-white font-bold text-lg mb-6">Distribuição de Classes</h3>
-            <div className="space-y-5">
+            <div className="space-y-4">
               {classDistribution.map((cls) => (
                 <div key={cls.name}>
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2 text-sm text-purple-200">
                       <span>{cls.icon}</span>
-                      <span>{cls.name}</span>
+                      <span className="truncate max-w-[140px]">{cls.name}</span>
                     </div>
-                    <span className="text-amber-400 font-bold text-sm">{cls.pct}%</span>
+                    <span className="text-amber-400 font-bold text-sm flex-shrink-0">{cls.pct}%</span>
                   </div>
                   <div className="h-2 rounded-full bg-white/10 overflow-hidden">
                     <div className={`h-full rounded-full ${cls.color}`} style={{ width: `${cls.pct}%` }} />

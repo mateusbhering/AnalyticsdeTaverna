@@ -11,7 +11,7 @@ const pillars = [
     title: "Quiz Comportamental",
     border: "border-purple-500/40",
     iconBg: "bg-purple-500/20",
-    desc: "5 a 8 perguntas estratégicas revelam seu perfil: 'Você prefere agir rápido ou pensar antes?' e 'Você é mais lógico ou intuitivo?'",
+    desc: "5 perguntas comportamentais sorteadas do banco de 120 pontuam 10 dimensões psicológicas — de Adaptabilidade a Liderança — que moldam seus 7 atributos de RPG.",
   },
   {
     icon: "⚔️",

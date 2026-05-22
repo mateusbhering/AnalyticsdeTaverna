@@ -32,8 +32,8 @@ const techStack = [
     tag: "Algoritmo",
     color: "from-green-600 to-green-800",
     border: "border-green-600/40",
-    desc: "Sistema robusto de atributos, classificação de classes e simulação de batalha. Modelo determinístico para transparência.",
-    items: ["Atributos RPG", "Classificador", "Simulador"],
+    desc: "5 perguntas aleatórias (banco de 120) pontuam 10 dimensões psicológicas. Fórmulas convertem dimensões em 7 atributos RPG. Tags secretas definem 1 entre 16 classes. 100% determinístico.",
+    items: ["10 Dimensões", "7 Atributos RPG", "16 Classes"],
   },
   {
     icon: "🗄️",

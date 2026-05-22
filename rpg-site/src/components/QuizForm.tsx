@@ -3,33 +3,52 @@
 import { useState } from "react";
 import WebcamCapture from "./WebcamCapture";
 import CharacterResult from "./CharacterResult";
+import { ALL_QUESTIONS } from "./questions-data";
+import type { Option } from "./questions-data";
 
-// As perguntas serão adicionadas aqui quando o CSV chegar
-const questions: { id: number; text: string; options: { text: string; attrs: Partial<Attributes> }[] }[] = [];
-
-interface Attributes {
-  forca: number;
-  inteligencia: number;
-  agilidade: number;
-  carisma: number;
-  resistencia: number;
+export interface Dimensions {
+  lideranca: number;
+  estrategia: number;
+  disciplina: number;
+  persistencia: number;
+  sociabilidade: number;
+  empatia: number;
+  adaptabilidade: number;
+  criatividade: number;
+  impulsividade: number;
+  percepcao: number;
 }
 
-const BASE_ATTRS: Attributes = { forca: 50, inteligencia: 50, agilidade: 50, carisma: 50, resistencia: 50 };
+const BASE_DIMS: Dimensions = {
+  lideranca: 0, estrategia: 0, disciplina: 0, persistencia: 0,
+  sociabilidade: 0, empatia: 0, adaptabilidade: 0, criatividade: 0,
+  impulsividade: 0, percepcao: 0,
+};
+
+const QUIZ_SIZE = 5;
+
+function pickRandom() {
+  const shuffled = [...ALL_QUESTIONS].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, QUIZ_SIZE);
+}
 
 type Step = "photo" | "quiz" | "result";
 
 export default function QuizForm() {
   const [step, setStep] = useState<Step>("photo");
-  const [photo, setPhoto] = useState<string>("");
+  const [photo, setPhoto] = useState("");
+  const [questions, setQuestions] = useState(pickRandom);
   const [current, setCurrent] = useState(0);
-  const [attrs, setAttrs] = useState<Attributes>({ ...BASE_ATTRS });
+  const [dims, setDims] = useState<Dimensions>({ ...BASE_DIMS });
+  const [tags, setTags] = useState<string[]>([]);
 
   const restart = () => {
     setStep("photo");
     setPhoto("");
+    setQuestions(pickRandom());
     setCurrent(0);
-    setAttrs({ ...BASE_ATTRS });
+    setDims({ ...BASE_DIMS });
+    setTags([]);
   };
 
   // ── STEP 1: Photo ──────────────────────────────────────────────
@@ -45,7 +64,7 @@ export default function QuizForm() {
 
         {photo && (
           <button
-            onClick={() => setStep(questions.length > 0 ? "quiz" : "result")}
+            onClick={() => setStep("quiz")}
             className="mt-6 w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-lg hover:from-purple-500 hover:to-indigo-500 transition-all animate-pulse-glow"
           >
             Continuar →
@@ -57,32 +76,20 @@ export default function QuizForm() {
 
   // ── STEP 2: Quiz ───────────────────────────────────────────────
   if (step === "quiz") {
-    if (questions.length === 0) {
-      return (
-        <div className="rounded-2xl bg-white/3 border border-purple-800/30 p-10 backdrop-blur-sm text-center">
-          <div className="text-5xl mb-4">⚙️</div>
-          <p className="text-purple-300/70 text-lg font-semibold">Quiz em preparação</p>
-          <p className="text-purple-400/50 text-sm mt-2">As perguntas serão adicionadas em breve.</p>
-        </div>
-      );
-    }
-
     const question = questions[current];
     const total = questions.length;
     const progress = Math.round((current / total) * 100);
 
-    const handleAnswer = (partialAttrs: Partial<Attributes>) => {
-      const updated = { ...attrs };
-      for (const [k, v] of Object.entries(partialAttrs) as [keyof Attributes, number][]) {
-        updated[k] = Math.min(100, updated[k] + v);
-      }
-      setAttrs(updated);
-
-      if (current < total - 1) {
-        setCurrent((c) => c + 1);
-      } else {
-        setStep("result");
-      }
+    const handleAnswer = (opt: Option) => {
+      setDims((prev) => {
+        const next = { ...prev };
+        if (opt.dimMain) next[opt.dimMain] += 2;
+        if (opt.dimSec) next[opt.dimSec] = Math.max(0, next[opt.dimSec] + opt.pesoSec);
+        return next;
+      });
+      if (opt.tag) setTags((prev) => [...prev, opt.tag]);
+      if (current < total - 1) setCurrent((c) => c + 1);
+      else setStep("result");
     };
 
     return (
@@ -108,7 +115,7 @@ export default function QuizForm() {
           {question.options.map((opt, i) => (
             <button
               key={i}
-              onClick={() => handleAnswer(opt.attrs)}
+              onClick={() => handleAnswer(opt)}
               className="w-full text-left px-5 py-4 rounded-xl bg-white/3 border border-purple-800/30 text-purple-200 hover:bg-purple-900/30 hover:border-purple-600/60 hover:text-white transition-all duration-200 font-medium"
             >
               {opt.text}
@@ -120,5 +127,5 @@ export default function QuizForm() {
   }
 
   // ── STEP 3: Result ─────────────────────────────────────────────
-  return <CharacterResult photo={photo} attributes={attrs} onRestart={restart} />;
+  return <CharacterResult photo={photo} dims={dims} tags={tags} onRestart={restart} />;
 }
