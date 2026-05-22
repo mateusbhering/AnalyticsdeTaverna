@@ -1,6 +1,6 @@
 # ⚔️ Analytics de Taverna
 
-Site institucional do projeto **Analytics de Taverna** — uma experiência interativa que transforma dados comportamentais em personagens de RPG únicos, com gamificação, IA generativa e muito estilo.
+Site institucional do projeto **Analytics de Taverna** — uma experiência interativa que transforma dados comportamentais em personagens de RPG únicos, com gamificação e muito estilo.
 
 🌐 **Deploy:** [site-ic-orcin.vercel.app](https://site-ic-orcin.vercel.app)
 
@@ -8,14 +8,74 @@ Site institucional do projeto **Analytics de Taverna** — uma experiência inte
 
 ## 📋 Sobre o Projeto
 
-O Analytics de Taverna é um projeto experimental que combina **psicologia comportamental**, **IA generativa (Google Gemini)** e **gamificação real** para criar uma experiência única:
+O Analytics de Taverna combina **psicologia comportamental** e **gamificação real** numa experiência de evento presencial:
 
-1. O usuário tira uma foto e responde um quiz de 5–8 perguntas
-2. As respostas são convertidas em atributos de RPG (Força, Inteligência, Agilidade, Carisma, Resistência)
-3. A IA gera um avatar personalizado baseado na foto
-4. O sistema classifica o usuário em uma classe (Guerreiro, Mago, Ladino, Paladino, Arqueiro...)
-5. Uma batalha automática é simulada contra outro jogador ou a IA
-6. Um card digital exclusivo é gerado com QR Code para compartilhamento
+1. O usuário tira uma foto pela webcam
+2. Responde **5 perguntas aleatórias** sorteadas de um banco de 120
+3. Cada resposta pontua uma das **10 dimensões psicológicas** (Adaptabilidade, Estratégia, Disciplina…)
+4. As dimensões são convertidas em **7 atributos de RPG** por fórmulas determinísticas
+5. **Tags secretas** de comportamento (PERFECCIONISTA, FURTIVO, ZEN…) definem qual das **16 classes** o usuário recebe
+6. Um **card digital** com QR Code é gerado e leva a uma página própria compartilhável
+
+---
+
+## 🧠 Sistema de Classes
+
+### Pipeline completo
+
+```
+Respostas (5 perguntas) → 10 Dimensões → 7 Atributos RPG → 16 Classes
+```
+
+### 10 Dimensões psicológicas
+
+| Dimensão | Contribui para |
+|---|---|
+| Liderança | Força, Carisma |
+| Estratégia | Inteligência |
+| Disciplina | Resistência |
+| Persistência | Força, Resistência |
+| Sociabilidade | Carisma |
+| Empatia | Sabedoria |
+| Adaptabilidade | Agilidade |
+| Criatividade | Caos |
+| Impulsividade | Força, Agilidade, Caos |
+| Percepção | Inteligência, Sabedoria |
+
+### 7 Atributos e suas fórmulas
+
+| Atributo | Fórmula |
+|---|---|
+| 💪 Força | Persistência + Liderança + Impulsividade × 0.5 |
+| 🧠 Inteligência | Estratégia + Percepção |
+| ⚡ Agilidade | Adaptabilidade + Impulsividade × 0.5 |
+| 🛡️ Resistência | Disciplina + Persistência |
+| ✨ Carisma | Sociabilidade + Liderança |
+| 👁️ Sabedoria | Empatia + Percepção |
+| 🌪️ Caos | Criatividade + Impulsividade |
+
+### 16 Classes (determinísticas)
+
+| Classe | Regra principal |
+|---|---|
+| 🔮 Mago do ChatGPT | Estratégia ≥ 15 + tags TECNOLÓGICO + NERD |
+| 👁️ Ninja do Visto por Último | Adaptabilidade ≥ 12 + tags FURTIVO + PROCRASTINADOR |
+| 💪 Berserker do Crossfit | Impulsividade ≥ 14 + tags ATLETA + DOPAMINA |
+| 📊 Necromante de Planilha | Disciplina ≥ 15 + tags PERFECCIONISTA + NERD |
+| 🏠 Ladino do Home Office | Adaptabilidade ≥ 13 + tags FURTIVO + PROCRASTINADOR + Sociabilidade < 10 |
+| 💸 Warlock do Boleto | Persistência ≥ 14 + tags ANSIOSO + RESOLUTIVO |
+| 🎭 Ilusionista de Call | Sociabilidade ≥ 14 + tags EXTROVERTIDO + MALANDRO |
+| 🔧 Artífice da Gambiarra | Criatividade ≥ 15 + tags GAMBIARRA + RESOLUTIVO |
+| 🍕 Invocador de iFood | Impulsividade ≥ 12 + tags DOPAMINA + PROCRASTINADOR |
+| 🌿 Druida de Varanda | Empatia ≥ 14 + tags ZEN + INTROVERTIDO |
+| 🧹 Ranger da Faxina | Disciplina ≥ 14 + tags ZEN + RESOLUTIVO |
+| 🎤 Bardo do Karaokê | Sociabilidade ≥ 15 + tags EXTROVERTIDO + DOPAMINA |
+| 📈 Xamã das Criptomoedas | Estratégia ≥ 12 + tags CAÓTICO + MALANDRO |
+| 🔭 Vidente da Ansiedade | Percepção ≥ 15 + tags ANSIOSO + OVERTHINKING |
+| 🏰 Paladino do Grupo | Liderança ≥ 15 + tags LÍDER + JUSTICEIRO |
+| 🐾 Domador de Pet | Empatia ≥ 13 + tags CURADOR + ZEN |
+
+Se nenhuma regra for satisfeita, a **dimensão dominante** do jogador define a classe via fallback.
 
 ---
 
@@ -27,7 +87,8 @@ O Analytics de Taverna é um projeto experimental que combina **psicologia compo
 | React | 19.2.4 | UI |
 | Tailwind CSS | v4 | Estilização |
 | NextAuth.js | v5 beta | Autenticação GitHub OAuth |
-| TypeScript | — | Tipagem estática |
+| qrcode.react | 4.2.0 | Geração de QR Code |
+| TypeScript | ^5 | Tipagem estática |
 | Vercel | — | Deploy e hospedagem |
 
 ---
@@ -38,46 +99,68 @@ O Analytics de Taverna é um projeto experimental que combina **psicologia compo
 rpg-site/
 └── src/
     ├── app/
-    │   ├── page.tsx               # Página principal (landing page)
-    │   ├── layout.tsx             # Layout global
-    │   ├── globals.css            # Estilos globais + animações custom
+    │   ├── page.tsx                    # Landing page
+    │   ├── layout.tsx                  # Layout global
+    │   ├── globals.css                 # Estilos globais + animações
+    │   ├── jogar/
+    │   │   └── page.tsx                # Página do quiz (/jogar)
+    │   ├── personagem/
+    │   │   ├── page.tsx                # Card compartilhável por QR Code (/personagem)
+    │   │   └── PersonagemCard.tsx      # Componente do card (lê URL params)
     │   ├── admin/
-    │   │   ├── page.tsx           # Dashboard admin (protegido)
+    │   │   ├── page.tsx                # Dashboard admin (protegido)
     │   │   └── login/
-    │   │       └── page.tsx       # Página de login admin
+    │   │       └── page.tsx            # Login admin
     │   └── api/
-    │       └── auth/
-    │           └── [...nextauth]/
-    │               └── route.ts   # Handler do NextAuth
+    │       └── auth/[...nextauth]/
+    │           └── route.ts            # Handler NextAuth
     ├── components/
-    │   ├── Navbar.tsx             # Navbar fixa com scroll detection
-    │   ├── Hero.tsx               # Seção hero com canvas de estrelas
-    │   ├── ConceptSection.tsx     # Conceito central do projeto
-    │   ├── FlowSection.tsx        # Fluxo em 5 etapas
-    │   ├── AttributesSection.tsx  # Atributos e classes de RPG
-    │   ├── WhyDifferent.tsx       # Diferenciais do projeto
-    │   ├── TechSection.tsx        # Estrutura técnica
-    │   ├── GuildSection.tsx       # Seção Guilda com membros da equipe
-    │   ├── DashboardSection.tsx   # Dashboard ao vivo (simulado)
-    │   ├── CTASection.tsx         # Call to action final
-    │   └── Footer.tsx             # Rodapé
-    ├── auth.ts                    # Configuração NextAuth + admins
-    └── proxy.ts                   # Middleware de proteção de rotas
+    │   ├── QuizForm.tsx                # Fluxo completo: foto → quiz → resultado
+    │   ├── CharacterResult.tsx         # Tela de resultado com classe, atributos e QR
+    │   ├── WebcamCapture.tsx           # Captura de foto via webcam
+    │   ├── questions-data.ts           # Banco de 120 perguntas com dimensões e tags
+    │   ├── Navbar.tsx
+    │   ├── Hero.tsx
+    │   ├── ConceptSection.tsx
+    │   ├── FlowSection.tsx
+    │   ├── AttributesSection.tsx
+    │   ├── WhyDifferent.tsx
+    │   ├── TechSection.tsx
+    │   ├── DashboardSection.tsx
+    │   ├── GuildSection.tsx
+    │   ├── CTASection.tsx
+    │   └── Footer.tsx
+    ├── auth.ts                         # NextAuth config + lista de admins
+    └── proxy.ts                        # Middleware de proteção de rotas
 ```
 
 ---
 
-## 🎨 Seções do Site
+## 🃏 QR Code e Página de Compartilhamento
+
+Ao terminar o quiz, um QR Code é gerado apontando para `/personagem` com todos os dados do personagem codificados na URL:
+
+```
+/personagem?classe=Artífice+da+Gambiarra&for=12&int=8&agi=10&res=9&car=6&sab=7&cao=14
+```
+
+A página `/personagem` lê esses parâmetros e exibe o card completo — sem banco de dados. Qualquer pessoa que escanear o QR vê o mesmo resultado.
+
+> A foto da webcam não é incluída no QR (muito grande para uma URL). Apenas classe e atributos são compartilhados.
+
+---
+
+## 🎨 Seções da Landing Page
 
 | Seção | Descrição |
 |---|---|
-| **Hero** | Tela de entrada com partículas animadas, ícones flutuantes e canvas de estrelas |
-| **Conceito Central** | Os 4 pilares: Foto, Quiz, Batalha e Card Digital |
+| **Hero** | Partículas animadas, canvas de estrelas, stats: 16 classes / 7 atributos / 5 perguntas |
+| **Conceito Central** | Os 4 pilares: Foto, Quiz Comportamental, Card Digital e Batalha |
 | **Fluxo da Experiência** | 5 etapas: Atração → Entrada → Captura → Processamento → Apresentação |
-| **Atributos & Classes** | Barras de atributos + 5 classes de RPG com descrições |
+| **Atributos & Classes** | 7 atributos com fórmulas reais + 8 das 16 classes exibidas |
 | **Diferenciais** | Psicologia Aplicada, IA Generativa, Viral por Design, Gamificação Real |
-| **Estrutura Técnica** | Frontend, Backend, IA, Lógica Própria e Banco de Dados |
-| **Dashboard ao Vivo** | Contador animado de participantes, distribuição de classes e insights |
+| **Estrutura Técnica** | Frontend, Backend, IA, Lógica Própria (10 dimensões / 7 atributos / 16 classes) |
+| **Dashboard ao Vivo** | Contador animado, distribuição das 16 classes, insights comportamentais |
 | **Guilda** | Cards com foto e nome de cada membro da equipe |
 | **CTA Final** | Botões "Jogar Sozinho" e "Desafiar Alguém" |
 
@@ -91,56 +174,37 @@ rpg-site/
 | Mariana Ayumi Dantas Kuramitsu | ✅ |
 | Yasmin Yumi Tsunokawa | ✅ |
 | Lucas Luna Pimentel | ✅ |
-| Lucas Amaral da Silva Barros | — (sem foto) |
+| Lucas Amaral da Silva Barros | — |
 | Mateus Bhering Beltrão Santos | ✅ |
 | Guilherme Ladeira Correa Santos | ✅ |
 
-As fotos ficam em `rpg-site/public/guild/` e são exibidas em formato circular. Membros sem foto recebem um ícone de RPG como placeholder.
+Fotos em `rpg-site/public/guild/`. Membros sem foto recebem ícone placeholder.
+
+**Orientador:** Fernando Nemec
 
 ---
 
 ## 🔒 Área Admin
 
-O site possui uma área administrativa protegida por autenticação via **GitHub OAuth**.
-
-### Acesso
+Área protegida por **GitHub OAuth** via NextAuth.
 
 - URL: `/admin/login`
-- Apenas os usuários GitHub autorizados conseguem entrar
+- Apenas GitHub usernames autorizados em `src/auth.ts` conseguem entrar
 
-### Admins autorizados
-
-| GitHub | 
-|---|
-| [@mateusbhering](https://github.com/mateusbhering) |
-| [@juliacrws](https://github.com/juliacrws) |
-
-### Como funciona
-
-1. Usuário acessa `/admin/login` e clica em "Entrar com GitHub"
-2. GitHub autentica e retorna o perfil
-3. NextAuth verifica se o `login` está na lista de admins
-4. Se autorizado → acesso ao dashboard em `/admin`
-5. Se não autorizado → tela de "Acesso negado"
-6. Qualquer rota `/admin/*` sem sessão ativa → redirecionado para `/admin/login`
-
-### Variáveis de ambiente necessárias
+### Variáveis de ambiente
 
 ```env
-AUTH_SECRET=                  # Gerado com: openssl rand -hex 32
-GITHUB_CLIENT_ID=             # GitHub OAuth App
-GITHUB_CLIENT_SECRET=         # GitHub OAuth App
-ADMIN_GITHUB_USERNAME=        # (legado, substituído pela lista em auth.ts)
-AUTH_URL=                     # URL base do site em produção
+AUTH_SECRET=          # openssl rand -hex 32
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+AUTH_URL=             # URL base em produção
 ```
 
 ### Configurar GitHub OAuth App
 
-1. Acesse [github.com/settings/developers](https://github.com/settings/developers) → **OAuth Apps** → **New OAuth App**
-2. Preencha:
-   - **Homepage URL:** `https://site-ic-orcin.vercel.app`
-   - **Authorization callback URL:** `https://site-ic-orcin.vercel.app/api/auth/callback/github`
-3. Copie o `Client ID` e `Client Secret` para o `.env.local`
+1. [github.com/settings/developers](https://github.com/settings/developers) → **OAuth Apps** → **New OAuth App**
+2. **Homepage URL:** `https://site-ic-orcin.vercel.app`
+3. **Callback URL:** `https://site-ic-orcin.vercel.app/api/auth/callback/github`
 
 ---
 
@@ -149,31 +213,24 @@ AUTH_URL=                     # URL base do site em produção
 **Pré-requisitos:** Node.js 18+
 
 ```bash
-# Instalar dependências
+cd rpg-site
 npm install
-
-# Criar arquivo de variáveis de ambiente
-cp .env.local.example .env.local
-# (preencher as variáveis no .env.local)
-
-# Iniciar servidor de desenvolvimento
+cp .env.local.example .env.local   # preencher variáveis
 npm run dev
 ```
 
 Acesse [http://localhost:3000](http://localhost:3000).
 
-> Para o login admin funcionar localmente, adicione `http://localhost:3000/api/auth/callback/github` como callback URL no seu GitHub OAuth App.
+> Para o admin funcionar localmente, adicione `http://localhost:3000/api/auth/callback/github` como callback URL no GitHub OAuth App.
 
 ---
 
 ## 📦 Deploy
 
-O projeto está conectado ao GitHub e faz deploy automático na **Vercel** a cada push na branch `main`.
-
-Para fazer deploy manual via CLI:
+Deploy automático na **Vercel** a cada push em `main`.
 
 ```bash
-vercel --prod
+vercel --prod   # deploy manual
 ```
 
 ---
@@ -181,6 +238,6 @@ vercel --prod
 ## 🎨 Design
 
 - **Tema:** Dark gaming (`#050010`)
-- **Cores principais:** Roxo (`#7c3aed`), Dourado (`#f59e0b`), Ciano (`#06b6d4`)
-- **Animações:** Partículas flutuantes, canvas de estrelas, shimmer nos títulos, glow pulsante
+- **Cores:** Roxo `#7c3aed` · Dourado `#f59e0b` · Ciano `#06b6d4`
+- **Animações:** Partículas flutuantes, canvas de estrelas, shimmer, glow pulsante
 - **Responsivo:** Mobile e desktop
