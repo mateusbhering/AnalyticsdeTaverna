@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 
-const ADMIN_USERNAMES = ["mateusbhering", "juliacrws", "Tsunokaway", "oipimenta", "marianakuramitsu"];
+const ADMIN_USERNAMES = ["mateusbhering", "juliacrws", "Tsunokaway", "oipimenta", "marianakuramitsu", "Ladeira26"];
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
