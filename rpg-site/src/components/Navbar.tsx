@@ -26,23 +26,22 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#050010]/90 backdrop-blur-xl border-b border-purple-800/40 shadow-lg shadow-purple-900/20"
+          ? "bg-[#0e0e0e]/93 backdrop-blur-xl border-b border-[rgba(184,134,11,0.2)] shadow-[0_4px_40px_rgba(0,0,0,0.5)]"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2 group">
-          <Image
-            src="/logo.png"
-            alt="Analytics de Taverna"
-            width={48}
-            height={48}
-            className="transition-all group-hover:scale-110 drop-shadow-[0_0_8px_rgba(124,58,237,0.8)]"
-          />
-          <span className="text-lg font-bold tracking-tight leading-tight hidden sm:block">
-            <span className="text-gradient-purple">Analytics de</span>
+        <a href="#" className="flex items-center gap-3 group">
+          <div className="w-9 h-9 bg-gradient-to-br from-[var(--wine)] to-[var(--wood)] border border-[rgba(184,134,11,0.4)] flex items-center justify-center text-lg transition-all group-hover:border-[var(--gold)]">
+            ⚔
+          </div>
+          <span
+            className="text-sm tracking-[.08em] leading-tight hidden sm:block"
+            style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
+          >
+            <span className="gold-grad">Analytics de</span>
             <br />
-            <span className="text-white">Taverna</span>
+            <span className="text-[var(--parchment)] opacity-80">Taverna</span>
           </span>
         </a>
 
@@ -51,60 +50,66 @@ export default function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm text-purple-300 hover:text-white transition-colors duration-200"
+              className="text-[.65rem] text-[rgba(244,228,188,0.55)] hover:text-[var(--gold)] transition-colors duration-200 tracking-[.2em] uppercase"
+              style={{ fontFamily: "var(--font-cinzel), serif" }}
             >
               {l.label}
             </a>
           ))}
           <a
             href="#jornada"
-            className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm font-semibold hover:from-purple-500 hover:to-indigo-500 transition-all duration-200 glow-purple"
+            className="px-5 py-2 bg-[var(--wine)] border border-[rgba(184,134,11,0.5)] text-[var(--parchment)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold)] hover:bg-[rgba(74,14,14,0.7)] transition-all duration-200"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             Iniciar Jornada
           </a>
           <a
             href="/admin"
-            className="px-5 py-2 rounded-xl bg-gradient-to-r from-red-700 to-red-600 text-white text-sm font-semibold hover:from-red-600 hover:to-red-500 transition-all duration-200 border border-red-500/40"
+            className="px-5 py-2 bg-[rgba(74,14,14,0.6)] border border-[rgba(184,134,11,0.35)] text-[rgba(244,228,188,0.7)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold)] transition-all duration-200"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             🔒 Admin
           </a>
         </div>
 
         <button
-          className="md:hidden text-purple-300 hover:text-white"
+          className="md:hidden text-[rgba(244,228,188,0.6)] hover:text-[var(--gold)]"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
           <div className="w-6 space-y-1.5">
-            <span className={`block h-0.5 bg-current transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-            <span className={`block h-0.5 bg-current transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`block h-0.5 bg-current transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+            <span className={`block h-px bg-current transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`block h-px bg-current transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block h-px bg-current transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
           </div>
         </button>
       </div>
 
       {menuOpen && (
-        <div className="md:hidden bg-[#0a0020]/95 backdrop-blur-xl border-b border-purple-800/40 px-6 pb-6">
+        <div className="md:hidden bg-[#0e0e0e]/97 backdrop-blur-xl border-b border-[rgba(184,134,11,0.2)] px-6 pb-6">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setMenuOpen(false)}
-              className="block py-3 text-purple-300 hover:text-white border-b border-purple-900/30 transition-colors"
+              className="block py-3 text-[rgba(244,228,188,0.55)] hover:text-[var(--gold)] border-b border-[rgba(184,134,11,0.1)] transition-colors text-[.65rem] tracking-[.2em] uppercase"
+              style={{ fontFamily: "var(--font-cinzel), serif" }}
             >
               {l.label}
             </a>
           ))}
           <a
             href="#jornada"
-            className="mt-4 block text-center px-5 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold"
+            className="mt-4 block text-center px-5 py-3 bg-[var(--wine)] border border-[rgba(184,134,11,0.5)] text-[var(--parchment)] text-[.65rem] tracking-[.15em] uppercase"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
             onClick={() => setMenuOpen(false)}
           >
             Iniciar Jornada
           </a>
           <a
             href="/admin"
-            className="mt-2 block text-center px-5 py-3 rounded-xl bg-gradient-to-r from-red-700 to-red-600 text-white font-semibold border border-red-500/40"
+            className="mt-2 block text-center px-5 py-3 bg-[rgba(74,14,14,0.4)] border border-[rgba(184,134,11,0.3)] text-[rgba(244,228,188,0.7)] text-[.65rem] tracking-[.15em] uppercase"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
             onClick={() => setMenuOpen(false)}
           >
             🔒 Admin

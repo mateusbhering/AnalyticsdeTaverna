@@ -3,97 +3,93 @@ const steps = [
     num: "01",
     icon: "🎯",
     title: "Atração",
-    color: "from-purple-600 to-purple-800",
-    border: "border-purple-600/50",
-    description:
-      "Telas vibrantes com batalhas épicas e ranking ao vivo capturam o olhar. A frase 'Descubra sua classe de RPG' é o convite irresistível.",
+    description: "Telas vibrantes com batalhas épicas e ranking ao vivo capturam o olhar.",
     tags: ["Visual Impactante", "Ranking Live"],
   },
   {
     num: "02",
     icon: "🚪",
     title: "Entrada",
-    color: "from-indigo-600 to-indigo-800",
-    border: "border-indigo-600/50",
-    description:
-      "O usuário escolhe seu destino: jogar sozinho contra a IA ou desafiar um amigo para uma batalha lado a lado.",
+    description: "O usuário escolhe seu destino: jogar sozinho contra a IA ou desafiar um amigo.",
     tags: ["Solo vs IA", "Multiplayer"],
   },
   {
     num: "03",
     icon: "📸",
     title: "Captura",
-    color: "from-cyan-600 to-cyan-800",
-    border: "border-cyan-600/50",
-    description:
-      "Webcam captura sua foto. Quiz de 5 perguntas aleatórias (sorteadas de um banco de 120) pontua 10 dimensões psicológicas que revelam sua personalidade.",
-    tags: ["Foto + Avatar", "Quiz 5 Q's", "Banco de 120"],
+    description: "Webcam captura sua foto. Quiz de 5 perguntas revela sua personalidade.",
+    tags: ["Foto + Avatar", "Quiz 5 Q's"],
   },
   {
     num: "04",
     icon: "⚗️",
     title: "Processamento",
-    color: "from-amber-600 to-amber-800",
-    border: "border-amber-600/50",
-    description:
-      "Dimensões viram 7 atributos RPG (Força, Inteligência, Caos…). Tags secretas de comportamento definem sua classe entre 16 possíveis.",
-    tags: ["7 Atributos", "16 Classes", "Tags Secretas"],
+    description: "Dimensões viram 7 atributos RPG. Tags secretas definem sua classe entre 16.",
+    tags: ["7 Atributos", "16 Classes"],
   },
   {
     num: "05",
     icon: "🏆",
     title: "Apresentação",
-    color: "from-rose-600 to-rose-800",
-    border: "border-rose-600/50",
-    description:
-      "O momento 'uau'! Avatar, classe e atributos revelados. Batalha simulada. Card digital gerado com QR Code exclusivo.",
+    description: "O momento «uau»! Avatar, classe, batalha simulada e card digital com QR Code.",
     tags: ["Batalha", "Card Digital", "QR Code"],
   },
 ];
 
 export default function FlowSection() {
   return (
-    <section id="fluxo" className="py-32 px-6 relative">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_rgba(124,58,237,0.15)_0%,_transparent_70%)]" />
-      <div className="max-w-7xl mx-auto relative">
-        <div className="text-center mb-20">
-          <span className="text-amber-400 text-sm font-semibold uppercase tracking-widest">Jornada Completa</span>
-          <h2 className="text-5xl font-black text-white mt-3 mb-4">
-            Fluxo da <span className="text-gradient-purple">Experiência</span>
+    <div className="bg-black-linen">
+      <section id="fluxo" className="py-28 px-6 relative max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="section-eyebrow">Jornada Completa</span>
+          <h2 className="text-5xl text-[var(--parchment)] mb-4">
+            Fluxo da <span className="gold-grad">Experiência</span>
           </h2>
-          <p className="text-purple-300/70 text-lg max-w-2xl mx-auto">
-            Cada etapa foi cuidadosamente desenhada para engajar e surpreender — do primeiro olhar ao compartilhamento viral.
+          <p className="text-[rgba(244,228,188,0.55)] text-lg max-w-2xl mx-auto italic">
+            Cada etapa cuidadosamente desenhada para engajar e surpreender — do primeiro olhar ao compartilhamento viral.
           </p>
         </div>
 
         <div className="relative">
-          <div className="hidden lg:block absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-800/0 via-purple-600/50 to-purple-800/0 mx-16" />
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {steps.map((step, i) => (
+          {/* Connector line */}
+          <div className="hidden lg:block absolute top-[60px] left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-[rgba(184,134,11,0.3)] to-transparent pointer-events-none" />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
+            {steps.map((step) => (
               <div
-                key={i}
-                className={`relative card-hover rounded-2xl bg-white/3 backdrop-blur-sm border ${step.border} p-6 shadow-xl`}
+                key={step.num}
+                className="card-hover arcane-corners relative bg-[rgba(20,12,6,0.85)] border border-[rgba(184,134,11,0.15)] p-7 text-center"
               >
-                <div className={`inline-flex w-12 h-12 rounded-xl bg-gradient-to-br ${step.color} items-center justify-center text-2xl mb-4 shadow-lg`}>
+                <span className="ac-bl" /><span className="ac-br" />
+                {/* Ghost number */}
+                <span
+                  className="absolute top-2.5 right-3 text-[2.5rem] font-black text-[rgba(184,134,11,0.08)] pointer-events-none leading-none"
+                  style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
+                >
+                  {step.num}
+                </span>
+                <div className="w-14 h-14 bg-gradient-to-br from-[var(--wine)] to-[rgba(74,14,14,0.4)] border border-[rgba(184,134,11,0.3)] flex items-center justify-center text-2xl mx-auto mb-4">
                   {step.icon}
                 </div>
-                <div className={`absolute top-4 right-4 text-5xl font-black bg-gradient-to-br ${step.color} bg-clip-text text-transparent opacity-20`}>
-                  {step.num}
-                </div>
-                <h3 className="text-white font-bold text-lg mb-2">{step.title}</h3>
-                <p className="text-purple-300/70 text-sm leading-relaxed mb-4">{step.description}</p>
-                <div className="flex flex-wrap gap-1">
+                <h3
+                  className="text-[var(--gold)] text-[.85rem] mb-2"
+                  style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
+                >
+                  {step.title}
+                </h3>
+                <p className="text-[rgba(244,228,188,0.55)] text-[.85rem] leading-relaxed mb-3">
+                  {step.description}
+                </p>
+                <div className="flex flex-wrap gap-1 justify-center">
                   {step.tags.map((tag) => (
-                    <span key={tag} className="px-2 py-0.5 rounded-full text-xs bg-white/5 border border-white/10 text-purple-300">
-                      {tag}
-                    </span>
+                    <span key={tag} className="tag-pill">{tag}</span>
                   ))}
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
