@@ -9,25 +9,26 @@ interface ClassInfo {
   color: string;
   border: string;
   desc: string;
+  photo: string;
 }
 
 const CLASS_LIST: ClassInfo[] = [
-  { name: "Mago do ChatGPT",          icon: "🔮", color: "from-blue-700 to-violet-900",    border: "border-blue-500/50",    desc: "Você não resolve problemas, você prompta soluções. Sua magia é a IA." },
-  { name: "Ninja do Visto por Último", icon: "👁️", color: "from-gray-700 to-gray-900",     border: "border-gray-500/50",    desc: "Visto. Não respondido. Estratégia ou procrastinação? Só você sabe." },
-  { name: "Berserker do Crossfit",     icon: "💪", color: "from-red-700 to-orange-900",    border: "border-red-500/50",     desc: "Você não falha missões. Você falha repetições. E tenta de novo." },
-  { name: "Necromante de Planilha",    icon: "📊", color: "from-emerald-800 to-teal-900",  border: "border-emerald-500/50", desc: "Você ressuscita dados mortos e dá vida a abas que ninguém abre." },
-  { name: "Ladino do Home Office",     icon: "🏠", color: "from-slate-700 to-slate-900",   border: "border-slate-500/50",   desc: "Câmera desligada. Microfone no mudo. Em algum lugar sendo produtivo." },
-  { name: "Warlock do Boleto",         icon: "💸", color: "from-amber-700 to-yellow-900",  border: "border-amber-500/50",   desc: "Você fez um pacto sombrio com o sistema financeiro e sobreviveu." },
-  { name: "Ilusionista de Call",       icon: "🎭", color: "from-pink-700 to-rose-900",     border: "border-pink-500/50",    desc: "Você parece presente em toda reunião. Ninguém sabe o que você faz." },
-  { name: "Artífice da Gambiarra",     icon: "🔧", color: "from-orange-700 to-amber-900",  border: "border-orange-500/50",  desc: "Não é a solução certa. Mas funciona. E isso é o suficiente." },
-  { name: "Invocador de iFood",        icon: "🍕", color: "from-red-600 to-red-900",       border: "border-red-400/50",     desc: "Você transforma tédio em pedido. Seu familiar é o entregador." },
-  { name: "Druida de Varanda",         icon: "🌿", color: "from-green-700 to-emerald-900", border: "border-green-500/50",   desc: "Você nutre plantas, gatos e amigos à distância com energia serena." },
-  { name: "Ranger da Faxina",          icon: "🧹", color: "from-cyan-700 to-teal-900",     border: "border-cyan-500/50",    desc: "Você limpa o ambiente e a mente ao mesmo tempo. Método sagrado." },
-  { name: "Bardo do Karaokê",          icon: "🎤", color: "from-fuchsia-700 to-pink-900",  border: "border-fuchsia-500/50", desc: "Você não canta bem. Você canta alto. E todo mundo ama." },
-  { name: "Xamã das Criptomoedas",     icon: "📈", color: "from-yellow-700 to-orange-900", border: "border-yellow-500/50",  desc: "Você lê gráficos como runas. Seu portfólio é uma profecia." },
-  { name: "Vidente da Ansiedade",      icon: "🔭", color: "from-indigo-700 to-purple-900", border: "border-indigo-500/50",  desc: "Você previu todos os problemas. Inclusive os que não aconteceram." },
-  { name: "Paladino do Grupo",         icon: "🏰", color: "from-amber-600 to-yellow-800",  border: "border-amber-400/50",   desc: "Você não deixa ninguém pra trás. Nem no grupo de zap, nem na vida." },
-  { name: "Domador de Pet",            icon: "🐾", color: "from-lime-700 to-green-900",    border: "border-lime-500/50",    desc: "Você entende seu animal antes de entender as pessoas. Faz sentido." },
+  { name: "Mago do ChatGPT",           icon: "🔮", color: "from-blue-700 to-violet-900",    border: "border-blue-500/50",    desc: "Você não resolve problemas, você prompta soluções. Sua magia é a IA.",            photo: "/fotos_cartas/mago_do_chat_gpt.jpeg" },
+  { name: "Ninja do Visto por Último", icon: "👁️", color: "from-gray-700 to-gray-900",     border: "border-gray-500/50",    desc: "Visto. Não respondido. Estratégia ou procrastinação? Só você sabe.",              photo: "/fotos_cartas/ninja_do_visto_por_ultimo.jpeg" },
+  { name: "Berserker do Crossfit",     icon: "💪", color: "from-red-700 to-orange-900",    border: "border-red-500/50",     desc: "Você não falha missões. Você falha repetições. E tenta de novo.",                  photo: "/fotos_cartas/beserk_do_crossfit.jpeg" },
+  { name: "Necromante de Planilha",    icon: "📊", color: "from-emerald-800 to-teal-900",  border: "border-emerald-500/50", desc: "Você ressuscita dados mortos e dá vida a abas que ninguém abre.",                  photo: "/fotos_cartas/necromante_de_planilha.png" },
+  { name: "Ladino do Home Office",     icon: "🏠", color: "from-slate-700 to-slate-900",   border: "border-slate-500/50",   desc: "Câmera desligada. Microfone no mudo. Em algum lugar sendo produtivo.",             photo: "/fotos_cartas/ladino_do_home_office.png" },
+  { name: "Warlock do Boleto",         icon: "💸", color: "from-amber-700 to-yellow-900",  border: "border-amber-500/50",   desc: "Você fez um pacto sombrio com o sistema financeiro e sobreviveu.",                 photo: "/fotos_cartas/warlock_do_boleto.jpeg" },
+  { name: "Ilusionista de Call",       icon: "🎭", color: "from-pink-700 to-rose-900",     border: "border-pink-500/50",    desc: "Você parece presente em toda reunião. Ninguém sabe o que você faz.",               photo: "/fotos_cartas/ilusionista_de_call.png" },
+  { name: "Artífice da Gambiarra",     icon: "🔧", color: "from-orange-700 to-amber-900",  border: "border-orange-500/50",  desc: "Não é a solução certa. Mas funciona. E isso é o suficiente.",                      photo: "/fotos_cartas/artifice_da_gambiarra.png" },
+  { name: "Invocador de iFood",        icon: "🍕", color: "from-red-600 to-red-900",       border: "border-red-400/50",     desc: "Você transforma tédio em pedido. Seu familiar é o entregador.",                    photo: "/fotos_cartas/invocador_de_ifood.png" },
+  { name: "Druida de Varanda",         icon: "🌿", color: "from-green-700 to-emerald-900", border: "border-green-500/50",   desc: "Você nutre plantas, gatos e amigos à distância com energia serena.",               photo: "/fotos_cartas/druida_de_varanda.png" },
+  { name: "Ranger da Faxina",          icon: "🧹", color: "from-cyan-700 to-teal-900",     border: "border-cyan-500/50",    desc: "Você limpa o ambiente e a mente ao mesmo tempo. Método sagrado.",                  photo: "/fotos_cartas/ranger_da_faxina.jpeg" },
+  { name: "Bardo do Karaokê",          icon: "🎤", color: "from-fuchsia-700 to-pink-900",  border: "border-fuchsia-500/50", desc: "Você não canta bem. Você canta alto. E todo mundo ama.",                           photo: "/fotos_cartas/bardo_do_karaoke.jpeg" },
+  { name: "Xamã das Criptomoedas",     icon: "📈", color: "from-yellow-700 to-orange-900", border: "border-yellow-500/50",  desc: "Você lê gráficos como runas. Seu portfólio é uma profecia.",                       photo: "/fotos_cartas/xama_das_criptomodeas.jpeg" },
+  { name: "Vidente da Ansiedade",      icon: "🔭", color: "from-indigo-700 to-purple-900", border: "border-indigo-500/50",  desc: "Você previu todos os problemas. Inclusive os que não aconteceram.",                photo: "/fotos_cartas/vidente_da_ansiedade.jpeg" },
+  { name: "Paladino do Grupo",         icon: "🏰", color: "from-amber-600 to-yellow-800",  border: "border-amber-400/50",   desc: "Você não deixa ninguém pra trás. Nem no grupo de zap, nem na vida.",               photo: "/fotos_cartas/paladino_do_grupo.jpeg" },
+  { name: "Domador de Pet",            icon: "🐾", color: "from-lime-700 to-green-900",    border: "border-lime-500/50",    desc: "Você entende seu animal antes de entender as pessoas. Faz sentido.",               photo: "/fotos_cartas/domador_de_pet.png" },
 ];
 
 const ATTR_LABELS: [string, string, string][] = [
@@ -63,6 +64,11 @@ export default function PersonagemCard() {
         </div>
         <h1 className="text-2xl font-black text-white leading-snug">{rpgClass.name}</h1>
         <p className="text-purple-300/70 text-sm mt-1 max-w-xs mx-auto">{rpgClass.desc}</p>
+        <img
+          src={rpgClass.photo}
+          alt={rpgClass.name}
+          className="w-48 h-48 object-cover mx-auto mt-4 border-2 border-purple-500/40"
+        />
       </div>
 
       {/* Attributes */}
