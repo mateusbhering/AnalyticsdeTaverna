@@ -1,5 +1,5 @@
 "use client";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseClient } from "@/lib/supabase";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
@@ -72,25 +72,31 @@ export default function PersonagemCard() {
 
       hasSaved.current = true; // Marca como enviado
 
-      const { data, error } = await supabase.from("jogadores").insert([
-        {
-          classe: rpgClass.name,
-          forca: attrs.for || 0,
-          inteligencia: attrs.int || 0,
-          agilidade: attrs.agi || 0,
-          resistencia: attrs.res || 0,
-          carisma: attrs.car || 0,
-          sabedoria: attrs.sab || 0,
-          caos: attrs.cao || 0,
-          foto_url: portraitSrc, 
-        },
-      ]).select();
+      try {
+        const supabase = getSupabaseClient();
+        const { data, error } = await supabase.from("jogadores").insert([
+          {
+            classe: rpgClass.name,
+            forca: attrs.for || 0,
+            inteligencia: attrs.int || 0,
+            agilidade: attrs.agi || 0,
+            resistencia: attrs.res || 0,
+            carisma: attrs.car || 0,
+            sabedoria: attrs.sab || 0,
+            caos: attrs.cao || 0,
+            foto_url: portraitSrc,
+          },
+        ]).select();
 
-      if (error) {
-        console.error("Erro ao salvar no Supabase:", error);
-      } else {
-        setJogadorId(data[0].id);
-        console.log("Jogador registrado na taverna com sucesso!", data[0].id);
+        if (error) {
+          console.error("Erro ao salvar no Supabase:", error);
+        } else {
+          setJogadorId(data[0].id);
+          console.log("Jogador registrado na taverna com sucesso!", data[0].id);
+        }
+      } catch (e) {
+        // Supabase não configurado (env vars ausentes): o card segue funcionando.
+        console.error("Supabase indisponível:", e);
       }
     }
 
