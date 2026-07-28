@@ -11,7 +11,7 @@ import base64
 import json
 from uuid import uuid4
 
-from fastapi import APIRouter, File, HTTPException, Request, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import Response
 
 from ..config import result_key, settings
@@ -20,8 +20,16 @@ router = APIRouter(prefix="/avatar", tags=["avatar"])
 
 
 @router.post("/generate")
-async def generate_avatar(request: Request, file: UploadFile = File(...)):
-    """Valida a imagem, enfileira o job de geração e retorna o job_id."""
+async def generate_avatar(
+    request: Request,
+    file: UploadFile = File(...),
+    classe: str = Form(""),
+):
+    """Valida a imagem, enfileira o job de geração e retorna o job_id.
+
+    `classe` (opcional) é o nome da classe de RPG do jogador, usado para gerar
+    um avatar com o estilo visual daquela classe.
+    """
     # 1. Valida content-type.
     if file.content_type not in settings.allowed_content_types:
         raise HTTPException(
@@ -49,7 +57,9 @@ async def generate_avatar(request: Request, file: UploadFile = File(...)):
     # chave durável, log ou disco. NÃO adicione um `redis.set(..., image_b64)`
     # aqui nem em qualquer outro lugar.
     redis = request.app.state.arq_redis
-    await redis.enqueue_job("generate_avatar_task", job_id, image_b64, _job_id=job_id)
+    await redis.enqueue_job(
+        "generate_avatar_task", job_id, image_b64, classe, _job_id=job_id
+    )
 
     # Descarta as referências em memória assim que o job foi enfileirado.
     del data, image_b64

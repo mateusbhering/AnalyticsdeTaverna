@@ -28,16 +28,45 @@ from ..config import result_key, settings
 logger = logging.getLogger("avatar.worker")
 
 # Prompt de estilização. Preserva traços reconhecíveis do rosto e aplica o
-# tema de RPG fantasia medieval.
-AVATAR_PROMPT = (
+# tema de RPG fantasia medieval, com um estilo específico por classe.
+_BASE_PROMPT = (
     "Transform the person in this photo into a stylized fantasy RPG character "
     "avatar. Use painterly digital art (NOT photorealistic). It is essential to "
     "preserve the person's recognizable facial features, expression, hair and "
-    "skin tone so they are clearly identifiable. Add medieval fantasy RPG "
-    "elements: light leather-and-metal armor on the shoulders, dramatic "
-    "cinematic lighting, and a softly blurred tavern / dungeon background. "
-    "Head-and-shoulders portrait composition, warm torch-lit color palette."
+    "skin tone so they are clearly identifiable. Depict them "
 )
+_COMPOSITION = (
+    ". Head-and-shoulders portrait composition, dramatic cinematic torch-lit "
+    "lighting, softly blurred tavern / dungeon background, warm color palette."
+)
+
+# Estilo visual por classe (nomes idênticos aos do frontend em CLASS_LIST).
+CLASS_STYLES: dict[str, str] = {
+    "Mago do ChatGPT": "as an arcane wizard in glowing runic robes, holding a staff crackling with holographic digital sigils",
+    "Ninja do Visto por Último": "as a hooded shadow ninja-rogue half-hidden in darkness, with faint glowing message-seal runes floating nearby",
+    "Berserker do Crossfit": "as a muscular barbarian berserker in a battle harness, wielding a heavy weapon in a fierce energetic pose",
+    "Necromante de Planilha": "as a dark necromancer in tattered robes, surrounded by floating spectral grids and glowing green ledger runes",
+    "Ladino do Home Office": "as a cunning rogue in a hooded cloak with a relaxed hidden posture and subtle arcane trinkets",
+    "Warlock do Boleto": "as a brooding warlock bound by glowing eldritch debt-chains, wreathed in ominous purple contract sigils",
+    "Ilusionista de Call": "as a mysterious illusionist in flowing robes, with translucent mirror-image duplicates and mask motifs around them",
+    "Artífice da Gambiarra": "as an inventive artificer covered in improvised gadgets, gears and wires, wearing goggles amid workshop sparks",
+    "Invocador de iFood": "as a summoner conjuring a small glowing food-spirit familiar from a magic circle",
+    "Druida de Varanda": "as a serene druid crowned with leaves and vines, glowing with soft nature magic and surrounded by plants",
+    "Ranger da Faxina": "as a disciplined ranger in a cloak with tidy utility gear, in a clean composed stance with a faint sweeping-wind motif",
+    "Bardo do Karaokê": "as a flamboyant bard holding a lute-microphone, lit by colorful performance lights with a joyful expression",
+    "Xamã das Criptomoedas": "as a mystical shaman adorned with glowing coin-talismans and candlestick-chart runes, in a trance-like aura",
+    "Vidente da Ansiedade": "as an anxious oracle with a glowing third-eye motif, surrounded by swirling ominous visions and threads of fate",
+    "Paladino do Grupo": "as a noble paladin in gleaming plate armor with a radiant shield, in a protective heroic stance bathed in holy light",
+    "Domador de Pet": "as a gentle beast-tamer in nature-warrior gear, with a small loyal animal companion at their side",
+}
+
+_DEFAULT_STYLE = "as a fantasy RPG adventurer in light leather-and-metal armor"
+
+
+def build_prompt(class_name: str) -> str:
+    """Monta o prompt combinando a base + o estilo da classe + a composição."""
+    style = CLASS_STYLES.get(class_name, _DEFAULT_STYLE)
+    return _BASE_PROMPT + style + _COMPOSITION
 
 
 def _extract_image(response) -> tuple[str, str]:
@@ -63,7 +92,7 @@ def _extract_image(response) -> tuple[str, str]:
     raise ValueError("Nenhuma imagem (inline_data) na resposta do Gemini")
 
 
-async def _run_gemini(image_bytes: bytes) -> tuple[str, str]:
+async def _run_gemini(image_bytes: bytes, prompt: str) -> tuple[str, str]:
     """Chama o Gemini para gerar o avatar. Isolado para facilitar o mock em testes.
 
     Import do SDK é feito aqui (lazy) para não exigir a dependência em ambientes
@@ -76,14 +105,14 @@ async def _run_gemini(image_bytes: bytes) -> tuple[str, str]:
     response = await client.aio.models.generate_content(
         model=settings.gemini_image_model,
         contents=[
-            AVATAR_PROMPT,
+            prompt,
             types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg"),
         ],
     )
     return _extract_image(response)
 
 
-async def generate_avatar_task(ctx, job_id: str, image_b64: str) -> None:
+async def generate_avatar_task(ctx, job_id: str, image_b64: str, class_name: str = "") -> None:
     """Job arq: gera o avatar e salva o resultado em `avatar_result:{job_id}`.
 
     Em caso de sucesso salva {"status": "done", "image": <b64>, "mime": ...}.
@@ -97,7 +126,7 @@ async def generate_avatar_task(ctx, job_id: str, image_b64: str) -> None:
 
     try:
         image_bytes = base64.b64decode(image_b64)
-        image_out_b64, mime = await _run_gemini(image_bytes)
+        image_out_b64, mime = await _run_gemini(image_bytes, build_prompt(class_name))
         payload = {"status": "done", "image": image_out_b64, "mime": mime}
     except Exception:
         # NUNCA logamos a foto original nem os bytes — apenas o job_id e o traço.

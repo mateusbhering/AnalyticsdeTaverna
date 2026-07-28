@@ -19,8 +19,9 @@ export interface AvatarGeneration {
   avatarUrl: string | null;
   /** id do job — usado no QR code para buscar o avatar em /personagem. */
   jobId: string | null;
-  /** Dispara a geração a partir da foto (data URL). Idempotente até `reset()`. */
-  start: (photoDataUrl: string) => void;
+  /** Dispara a geração a partir da foto (data URL) e da classe de RPG.
+   *  Idempotente até `reset()`. */
+  start: (photoDataUrl: string, className?: string) => void;
   /** Limpa o estado e permite uma nova geração (usado ao reiniciar o quiz). */
   reset: () => void;
 }
@@ -68,7 +69,7 @@ export function useAvatarGeneration(): AvatarGeneration {
   }, [stopPolling]);
 
   const start = useCallback(
-    (photoDataUrl: string) => {
+    (photoDataUrl: string, className = "") => {
       if (startedRef.current) return; // dispara uma única vez até reset()
       startedRef.current = true;
       setStatus("processing");
@@ -78,6 +79,7 @@ export function useAvatarGeneration(): AvatarGeneration {
           const blob = dataUrlToBlob(photoDataUrl);
           const form = new FormData();
           form.append("file", blob, `face.${extFor(blob.type)}`);
+          form.append("classe", className);
 
           const res = await fetch(`${AVATAR_API_BASE}/avatar/generate`, {
             method: "POST",

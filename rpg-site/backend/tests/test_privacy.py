@@ -37,7 +37,7 @@ def test_keep_result_is_zero():
 
 
 async def test_original_photo_never_persisted_in_redis(redis, monkeypatch):
-    async def fake_run_gemini(image_bytes):
+    async def fake_run_gemini(image_bytes, prompt):
         return base64.b64encode(GENERATED_PNG).decode(), "image/png"
 
     monkeypatch.setattr(avatar_worker, "_run_gemini", fake_run_gemini)
@@ -64,7 +64,7 @@ async def test_original_photo_never_persisted_in_redis(redis, monkeypatch):
 async def test_worker_never_calls_set_with_original_photo(redis, monkeypatch):
     """Intercepta todos os set() e garante que nenhum grava a foto original."""
 
-    async def fake_run_gemini(image_bytes):
+    async def fake_run_gemini(image_bytes, prompt):
         return base64.b64encode(GENERATED_PNG).decode(), "image/png"
 
     monkeypatch.setattr(avatar_worker, "_run_gemini", fake_run_gemini)

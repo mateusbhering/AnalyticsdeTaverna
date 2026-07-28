@@ -1,9 +1,9 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import type { Dimensions } from "./QuizForm";
-import type { AvatarStatus } from "@/lib/useAvatarGeneration";
+import { useAvatarGeneration } from "@/lib/useAvatarGeneration";
 
 interface ClassInfo {
   name: string;
@@ -103,27 +103,20 @@ interface Props {
   dims: Dimensions;
   tags: string[];
   onRestart: () => void;
-  /** Avatar de RPG gerado pela IA (data URL), quando pronto. */
-  avatarUrl?: string | null;
-  /** Estado da geração do avatar, para exibir loading/fallback. */
-  avatarStatus?: AvatarStatus;
-  /** id do avatar — embutido no QR para /personagem buscar a imagem. */
-  jobId?: string | null;
 }
 
-export default function CharacterResult({
-  photo,
-  dims,
-  tags,
-  onRestart,
-  avatarUrl = null,
-  avatarStatus = "idle",
-  jobId = null,
-}: Props) {
+export default function CharacterResult({ photo, dims, tags, onRestart }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const attrs = useMemo(() => calcAttributes(dims), [dims]);
   const rpgClass = useMemo(() => determineClass(dims, tags), [dims, tags]);
+
+  // A geração do avatar acontece AQUI (não durante o quiz), porque só agora a
+  // classe é conhecida — assim o avatar é gerado no estilo da classe do jogador.
+  const { status: avatarStatus, avatarUrl, jobId, start } = useAvatarGeneration();
+  useEffect(() => {
+    if (photo) start(photo, rpgClass.name);
+  }, [start, photo, rpgClass.name]);
 
   const maxAttr = Math.max(...Object.values(attrs), 1);
   const barPct = (v: number) => Math.round((v / maxAttr) * 100);

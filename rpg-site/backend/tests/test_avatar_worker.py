@@ -63,7 +63,7 @@ def test_extract_image_raises_without_image():
 
 # ── Sucesso ────────────────────────────────────────────────────────────
 async def test_worker_success(redis, monkeypatch):
-    async def fake_run_gemini(image_bytes):
+    async def fake_run_gemini(image_bytes, prompt):
         # Recebe exatamente os bytes decodificados da foto original.
         assert image_bytes == ORIGINAL_PHOTO
         return base64.b64encode(GENERATED_PNG).decode(), "image/png"
@@ -80,9 +80,33 @@ async def test_worker_success(redis, monkeypatch):
     assert 0 < await redis.ttl(result_key("job-ok")) <= 86400
 
 
+# ── Prompt por classe ──────────────────────────────────────────────────
+def test_build_prompt_uses_class_style():
+    p = avatar_worker.build_prompt("Mago do ChatGPT")
+    assert "arcane wizard" in p
+    assert "preserve the person's recognizable facial features" in p
+
+
+def test_build_prompt_falls_back_when_unknown():
+    p = avatar_worker.build_prompt("Classe Inexistente")
+    assert "fantasy RPG adventurer" in p
+
+
+async def test_worker_passes_class_style_to_gemini(redis, monkeypatch):
+    seen = {}
+
+    async def fake_run_gemini(image_bytes, prompt):
+        seen["prompt"] = prompt
+        return base64.b64encode(GENERATED_PNG).decode(), "image/png"
+
+    monkeypatch.setattr(avatar_worker, "_run_gemini", fake_run_gemini)
+    await avatar_worker.generate_avatar_task(_ctx(redis), "job-c", ORIGINAL_B64, "Paladino do Grupo")
+    assert "paladin" in seen["prompt"]
+
+
 # ── Falha ──────────────────────────────────────────────────────────────
 async def test_worker_failure_stores_error_marker(redis, monkeypatch):
-    async def boom(image_bytes):
+    async def boom(image_bytes, prompt):
         raise RuntimeError("gemini indisponível")
 
     monkeypatch.setattr(avatar_worker, "_run_gemini", boom)
