@@ -1,5 +1,6 @@
 "use client";
-
+import { supabase } from "@/lib/supabase";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
 import { AVATAR_API_BASE } from "@/lib/useAvatarGeneration";
@@ -42,6 +43,8 @@ const ATTR_LABELS: [string, string, string][] = [
 
 export default function PersonagemCard() {
   const params = useSearchParams();
+  const hasSaved = useRef(false);
+  const [jogadorId, setJogadorId] = useState<string | number | null>(null);
 
   const className = params.get("classe") ?? "";
   const rpgClass = CLASS_LIST.find((c) => c.name === className) ?? CLASS_LIST[0];
@@ -60,6 +63,46 @@ export default function PersonagemCard() {
   const barPct = (v: number) => Math.round((v / maxAttr) * 100);
 
   const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  //ADICIONADO! ----> SALVAR DADOS NO SUPABASE
+  useEffect(() => {
+    async function salvarPersonagemNoSupabase() {
+      // Se não tiver classe definida na URL ou se já salvou nessa sessão, ignora
+      if (!className || hasSaved.current) return;
+
+      hasSaved.current = true; // Marca como enviado
+
+      const { data, error } = await supabase.from("jogadores").insert([
+        {
+          classe: rpgClass.name,
+          forca: attrs.for || 0,
+          inteligencia: attrs.int || 0,
+          agilidade: attrs.agi || 0,
+          resistencia: attrs.res || 0,
+          carisma: attrs.car || 0,
+          sabedoria: attrs.sab || 0,
+          caos: attrs.cao || 0,
+          foto_url: portraitSrc, 
+        },
+      ]).select();
+
+      if (error) {
+        console.error("Erro ao salvar no Supabase:", error);
+      } else {
+        setJogadorId(data[0].id);
+        console.log("Jogador registrado na taverna com sucesso!", data[0].id);
+      }
+    }
+
+    salvarPersonagemNoSupabase();
+  }, [className, rpgClass.name, attrs]);
+
+  // Adicionadas Variáveis para o QR Code, onde encontra o jogadorId, 
+  // que é o ID do jogador salvo no Supabase, para gerar o QR Code correto.
+  const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+  const qrUrl = jogadorId 
+    ? `${baseUrl}/batalha?oponenteId=${jogadorId}` 
+    : baseUrl;
 
   return (
     <div
@@ -158,7 +201,9 @@ export default function PersonagemCard() {
           Seu Card Digital
         </span>
         <div className="bg-white p-2.5">
-          <QRCodeSVG value={pageUrl || "https://analytics-de-taverna.vercel.app"} size={120} bgColor="#ffffff" fgColor="#1a0033" />
+          <QRCodeSVG value={ qrUrl} size={120} bgColor="#ffffff" fgColor="#1a0033" />
+          {/* Código anterior */}
+          {/* {<QRCodeSVG value={pageUrl || "https://analytics-de-taverna.vercel.app"} size={120} bgColor="#ffffff" fgColor="#1a0033" /> */}
         </div>
         <p className="text-[rgba(244,228,188,0.4)] text-[.78rem] italic text-center">
           Escaneie para compartilhar seu personagem

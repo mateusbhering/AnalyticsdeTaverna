@@ -12,6 +12,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 from .routers import avatar
 
+"""Importando variáveis de ambiente do arquivo .env local."""
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Carrega as variáveis do arquivo .env local
+
+supabase_url = os.getenv("SUPABASE_URL")
+supabase_key = os.getenv("SUPABASE_KEY")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
