@@ -41,6 +41,8 @@ class Settings(BaseSettings):
     cors_origins: tuple[str, ...] = (
         "http://localhost:3000",
         "https://site-ic-orcin.vercel.app",
+        "https://www.analyticsdetaverna.com.br",
+        "https://analyticsdetaverna.com.br",
     )
 
 
