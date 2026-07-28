@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 // URL do backend Python (FastAPI). Em produção, defina NEXT_PUBLIC_AVATAR_API_URL
 // para o host do serviço de avatar. Padrão: dev local em :8000.
-const API_BASE =
+export const AVATAR_API_BASE =
   process.env.NEXT_PUBLIC_AVATAR_API_URL ?? "http://localhost:8000";
 
 // Polling: intervalo e teto de tentativas (2.5s × 72 ≈ 3min antes de desistir).
@@ -17,6 +17,8 @@ export interface AvatarGeneration {
   status: AvatarStatus;
   /** data URL do avatar gerado (image/...;base64), ou null enquanto indisponível. */
   avatarUrl: string | null;
+  /** id do job — usado no QR code para buscar o avatar em /personagem. */
+  jobId: string | null;
   /** Dispara a geração a partir da foto (data URL). Idempotente até `reset()`. */
   start: (photoDataUrl: string) => void;
   /** Limpa o estado e permite uma nova geração (usado ao reiniciar o quiz). */
@@ -42,6 +44,7 @@ function extFor(mime: string): string {
 export function useAvatarGeneration(): AvatarGeneration {
   const [status, setStatus] = useState<AvatarStatus>("idle");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [jobId, setJobId] = useState<string | null>(null);
 
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startedRef = useRef(false);
@@ -61,6 +64,7 @@ export function useAvatarGeneration(): AvatarGeneration {
     startedRef.current = false;
     setStatus("idle");
     setAvatarUrl(null);
+    setJobId(null);
   }, [stopPolling]);
 
   const start = useCallback(
@@ -75,12 +79,13 @@ export function useAvatarGeneration(): AvatarGeneration {
           const form = new FormData();
           form.append("file", blob, `face.${extFor(blob.type)}`);
 
-          const res = await fetch(`${API_BASE}/avatar/generate`, {
+          const res = await fetch(`${AVATAR_API_BASE}/avatar/generate`, {
             method: "POST",
             body: form,
           });
           if (!res.ok) throw new Error(`generate: ${res.status}`);
-          const { job_id: jobId } = (await res.json()) as { job_id: string };
+          const { job_id: id } = (await res.json()) as { job_id: string };
+          setJobId(id);
 
           let polls = 0;
           pollRef.current = setInterval(async () => {
@@ -91,7 +96,7 @@ export function useAvatarGeneration(): AvatarGeneration {
               return;
             }
             try {
-              const s = await fetch(`${API_BASE}/avatar/status/${jobId}`);
+              const s = await fetch(`${AVATAR_API_BASE}/avatar/status/${id}`);
               if (!s.ok) return; // transiente — continua tentando
               const data = (await s.json()) as {
                 status: AvatarStatus;
@@ -102,10 +107,8 @@ export function useAvatarGeneration(): AvatarGeneration {
                 stopPolling();
                 setAvatarUrl(`data:${data.mime ?? "image/png"};base64,${data.image}`);
                 setStatus("done");
-                // Limpeza antecipada: já exibimos, então liberamos a chave no Redis.
-                fetch(`${API_BASE}/avatar/result/${jobId}`, { method: "DELETE" }).catch(
-                  () => {},
-                );
+                // NÃO apagamos o resultado aqui: o avatar precisa sobreviver o
+                // TTL de 24h para ser buscado pelo QR code em /personagem.
               } else if (data.status === "error") {
                 stopPolling();
                 setStatus("error");
@@ -122,5 +125,5 @@ export function useAvatarGeneration(): AvatarGeneration {
     [stopPolling],
   );
 
-  return { status, avatarUrl, start, reset };
+  return { status, avatarUrl, jobId, start, reset };
 }

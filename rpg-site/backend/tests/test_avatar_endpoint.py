@@ -89,6 +89,28 @@ async def test_status_error_marker(client, fake_redis):
     assert resp.json()["status"] == "error"
 
 
+# ── Imagem crua (para o QR / página de compartilhamento) ───────────────
+async def test_image_returns_raw_bytes(client, fake_redis):
+    img_b64 = base64.b64encode(PNG_BYTES).decode()
+    await fake_redis.set(result_key("job-img"), json.dumps({"status": "done", "image": img_b64, "mime": "image/jpeg"}))
+
+    resp = await client.get("/avatar/image/job-img")
+    assert resp.status_code == 200
+    assert resp.headers["content-type"] == "image/jpeg"
+    assert resp.content == PNG_BYTES
+
+
+async def test_image_404_when_missing(client):
+    resp = await client.get("/avatar/image/nope")
+    assert resp.status_code == 404
+
+
+async def test_image_404_when_not_done(client, fake_redis):
+    await fake_redis.set(result_key("job-e"), json.dumps({"status": "error", "error": "generation_failed"}))
+    resp = await client.get("/avatar/image/job-e")
+    assert resp.status_code == 404
+
+
 # ── Limpeza antecipada ─────────────────────────────────────────────────
 async def test_delete_result(client, fake_redis):
     await fake_redis.set(result_key("job-2"), json.dumps({"status": "done", "image": "x"}))

@@ -12,6 +12,7 @@ import json
 from uuid import uuid4
 
 from fastapi import APIRouter, File, HTTPException, Request, UploadFile
+from fastapi.responses import Response
 
 from ..config import result_key, settings
 
@@ -66,6 +67,30 @@ async def avatar_status(request: Request, job_id: str):
 
     payload = json.loads(raw)
     return {"job_id": job_id, **payload}
+
+
+@router.get("/image/{job_id}")
+async def avatar_image(request: Request, job_id: str):
+    """Retorna a imagem do avatar como bytes crus, para uso direto em `<img src>`.
+
+    Usada pela página de compartilhamento /personagem (via QR code). Disponível
+    enquanto durar o TTL de 24h; depois disso retorna 404 e o frontend cai no
+    fallback da ilustração da classe.
+    """
+    redis = request.app.state.arq_redis
+    raw = await redis.get(result_key(job_id))
+    if raw is None:
+        raise HTTPException(status_code=404, detail="Avatar não encontrado ou expirado")
+    payload = json.loads(raw)
+    if payload.get("status") != "done" or not payload.get("image"):
+        raise HTTPException(status_code=404, detail="Avatar indisponível")
+
+    data = base64.b64decode(payload["image"])
+    return Response(
+        content=data,
+        media_type=payload.get("mime", "image/png"),
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 @router.delete("/result/{job_id}")

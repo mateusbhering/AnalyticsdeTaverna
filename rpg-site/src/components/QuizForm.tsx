@@ -205,6 +205,7 @@ export default function QuizForm() {
       onRestart={restart}
       avatarUrl={avatar.avatarUrl}
       avatarStatus={avatar.status}
+      jobId={avatar.jobId}
     />
   );
 }

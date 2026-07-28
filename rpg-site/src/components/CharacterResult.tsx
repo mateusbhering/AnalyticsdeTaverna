@@ -107,6 +107,8 @@ interface Props {
   avatarUrl?: string | null;
   /** Estado da geração do avatar, para exibir loading/fallback. */
   avatarStatus?: AvatarStatus;
+  /** id do avatar — embutido no QR para /personagem buscar a imagem. */
+  jobId?: string | null;
 }
 
 export default function CharacterResult({
@@ -116,6 +118,7 @@ export default function CharacterResult({
   onRestart,
   avatarUrl = null,
   avatarStatus = "idle",
+  jobId = null,
 }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -127,7 +130,10 @@ export default function CharacterResult({
 
   const uniqueTags = [...new Set(tags)].slice(0, 5);
 
-  const qrData = `${typeof window !== "undefined" ? window.location.origin : ""}/personagem?classe=${encodeURIComponent(rpgClass.name)}&for=${attrs.forca}&int=${attrs.inteligencia}&agi=${attrs.agilidade}&res=${attrs.resistencia}&car=${attrs.carisma}&sab=${attrs.sabedoria}&cao=${attrs.caos}`;
+  // Inclui o id do avatar no QR só quando ele já está pronto, garantindo que
+  // /personagem consiga buscar a imagem no backend.
+  const avatarParam = avatarStatus === "done" && jobId ? `&avatar=${jobId}` : "";
+  const qrData = `${typeof window !== "undefined" ? window.location.origin : ""}/personagem?classe=${encodeURIComponent(rpgClass.name)}&for=${attrs.forca}&int=${attrs.inteligencia}&agi=${attrs.agilidade}&res=${attrs.resistencia}&car=${attrs.carisma}&sab=${attrs.sabedoria}&cao=${attrs.caos}${avatarParam}`;
 
   return (
     <div className="space-y-5">
