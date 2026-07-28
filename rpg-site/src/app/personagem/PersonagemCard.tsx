@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
+import { AVATAR_API_BASE } from "@/lib/useAvatarGeneration";
 
 interface ClassInfo {
   name: string;
@@ -45,6 +46,13 @@ export default function PersonagemCard() {
   const className = params.get("classe") ?? "";
   const rpgClass = CLASS_LIST.find((c) => c.name === className) ?? CLASS_LIST[0];
 
+  // Avatar gerado pela IA: se o QR trouxe um id, busca a imagem no backend.
+  // Se tiver expirado (404), o onError cai na ilustração da classe.
+  const avatarId = params.get("avatar");
+  const portraitSrc = avatarId
+    ? `${AVATAR_API_BASE}/avatar/image/${avatarId}`
+    : rpgClass.photo;
+
   const attrs = Object.fromEntries(
     ATTR_LABELS.map(([key]) => [key, Number(params.get(key) ?? 0)])
   );
@@ -58,7 +66,7 @@ export default function PersonagemCard() {
       className="arcane-corners border-2 border-[rgba(184,134,11,0.35)] p-8"
       style={{
         background:
-          "url('https://www.transparenttextures.com/patterns/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)",
+          "url('/textures/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)",
       }}
     >
       <span className="ac-bl" /><span className="ac-br" />
@@ -86,10 +94,19 @@ export default function PersonagemCard() {
           {rpgClass.desc}
         </p>
 
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={rpgClass.photo}
+          src={portraitSrc}
           alt={rpgClass.name}
           className="w-48 h-48 object-cover mx-auto border-2 border-[rgba(184,134,11,0.4)]"
+          onError={(e) => {
+            // Avatar expirado/indisponível → volta pra ilustração da classe.
+            const img = e.currentTarget;
+            if (!img.dataset.fallback) {
+              img.dataset.fallback = "1";
+              img.src = rpgClass.photo;
+            }
+          }}
         />
       </div>
 

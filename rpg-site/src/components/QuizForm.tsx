@@ -140,7 +140,7 @@ export default function QuizForm() {
         <div
           className="arcane-corners p-7 mb-5"
           style={{
-            background: "url('https://www.transparenttextures.com/patterns/parchment.png'), linear-gradient(135deg, #f4e4bc 0%, #e8d5a0 100%)",
+            background: "linear-gradient(135deg, #f4e4bc 0%, #e8d5a0 100%)",
             border: "1px solid rgba(184,134,11,.4)",
           }}
         >

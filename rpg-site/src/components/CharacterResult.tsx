@@ -1,8 +1,9 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import type { Dimensions } from "./QuizForm";
+import { useAvatarGeneration } from "@/lib/useAvatarGeneration";
 
 interface ClassInfo {
   name: string;
@@ -110,12 +111,22 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   const attrs = useMemo(() => calcAttributes(dims), [dims]);
   const rpgClass = useMemo(() => determineClass(dims, tags), [dims, tags]);
 
+  // A geração do avatar acontece AQUI (não durante o quiz), porque só agora a
+  // classe é conhecida — assim o avatar é gerado no estilo da classe do jogador.
+  const { status: avatarStatus, avatarUrl, jobId, start } = useAvatarGeneration();
+  useEffect(() => {
+    if (photo) start(photo, rpgClass.name);
+  }, [start, photo, rpgClass.name]);
+
   const maxAttr = Math.max(...Object.values(attrs), 1);
   const barPct = (v: number) => Math.round((v / maxAttr) * 100);
 
   const uniqueTags = [...new Set(tags)].slice(0, 5);
 
-  const qrData = `${typeof window !== "undefined" ? window.location.origin : ""}/personagem?classe=${encodeURIComponent(rpgClass.name)}&for=${attrs.forca}&int=${attrs.inteligencia}&agi=${attrs.agilidade}&res=${attrs.resistencia}&car=${attrs.carisma}&sab=${attrs.sabedoria}&cao=${attrs.caos}`;
+  // Inclui o id do avatar no QR só quando ele já está pronto, garantindo que
+  // /personagem consiga buscar a imagem no backend.
+  const avatarParam = avatarStatus === "done" && jobId ? `&avatar=${jobId}` : "";
+  const qrData = `${typeof window !== "undefined" ? window.location.origin : ""}/personagem?classe=${encodeURIComponent(rpgClass.name)}&for=${attrs.forca}&int=${attrs.inteligencia}&agi=${attrs.agilidade}&res=${attrs.resistencia}&car=${attrs.carisma}&sab=${attrs.sabedoria}&cao=${attrs.caos}${avatarParam}`;
 
   return (
     <div className="space-y-5">
@@ -125,7 +136,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
         className="arcane-corners border-2 border-[rgba(184,134,11,0.35)] p-9"
         style={{
           background:
-            "url('https://www.transparenttextures.com/patterns/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)",
+            "url('/textures/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)",
         }}
       >
         <span className="ac-bl" /><span className="ac-br" />
@@ -157,14 +168,48 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
             {rpgClass.desc}
           </p>
 
-          {/* Class mock photo */}
-          <div className="flex justify-center mb-4">
-            <img
-              src={rpgClass.photo}
-              alt={rpgClass.name}
-              className="w-48 h-48 object-cover border-2 border-[rgba(184,134,11,0.4)]"
-              style={{ imageRendering: "auto" }}
-            />
+          {/* Retrato: só o avatar gerado pela IA. Enquanto gera, mostra o loading;
+              em caso de erro, uma mensagem — sem foto de placeholder da classe. */}
+          <div className="flex flex-col items-center gap-2 mb-4">
+            <div className="relative w-48 h-48 border-2 border-[rgba(184,134,11,0.4)] overflow-hidden bg-[rgba(10,6,3,0.6)]">
+              {avatarStatus === "done" && avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatarUrl}
+                  alt={rpgClass.name}
+                  className="w-full h-full object-cover"
+                  style={{ imageRendering: "auto" }}
+                />
+              ) : avatarStatus === "error" ? (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3 text-center">
+                  <span className="text-2xl opacity-50">🎭</span>
+                  <span
+                    className="text-[rgba(244,228,188,0.6)] text-[.55rem] tracking-[.12em] uppercase leading-relaxed"
+                    style={{ fontFamily: "var(--font-cinzel), serif" }}
+                  >
+                    Não foi possível conjurar seu avatar
+                  </span>
+                </div>
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                  <div className="w-8 h-8 border-2 border-[rgba(184,134,11,0.3)] border-t-[var(--gold)] rounded-full animate-spin" />
+                  <span
+                    className="text-[rgba(244,228,188,0.85)] text-[.55rem] tracking-[.2em] uppercase text-center px-2"
+                    style={{ fontFamily: "var(--font-cinzel), serif" }}
+                  >
+                    Conjurando seu avatar…
+                  </span>
+                </div>
+              )}
+            </div>
+            {avatarStatus === "done" && avatarUrl && (
+              <span
+                className="text-[var(--gold)] text-[.55rem] tracking-[.25em] uppercase opacity-80"
+                style={{ fontFamily: "var(--font-cinzel), serif" }}
+              >
+                ✦ Avatar Arcano
+              </span>
+            )}
           </div>
 
           {/* Tags */}

@@ -1,15 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import {
+  Wrench,
+  WandSparkles,
+  House,
+  BarChart3,
+  Pizza,
+  Telescope,
+  Sparkles,
+  Lightbulb,
+  Smartphone,
+  type LucideIcon,
+} from "lucide-react";
+import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
+import CountUp from "@/components/ui/count-up";
+import AnimatedBar from "@/components/ui/animated-bar";
 
-const classDistribution = [
-  { name: "Artífice da Gambiarra", pct: 19, icon: "🔧" },
-  { name: "Mago do ChatGPT",       pct: 17, icon: "🔮" },
-  { name: "Ladino do Home Office", pct: 15, icon: "🏠" },
-  { name: "Necromante de Planilha",pct: 13, icon: "📊" },
-  { name: "Invocador de iFood",    pct: 11, icon: "🍕" },
-  { name: "Vidente da Ansiedade",  pct: 10, icon: "🔭" },
-  { name: "Outras 10 classes",     pct: 15, icon: "✨" },
+const classDistribution: { name: string; pct: number; Icon: LucideIcon }[] = [
+  { name: "Artífice da Gambiarra", pct: 19, Icon: Wrench },
+  { name: "Mago do ChatGPT",       pct: 17, Icon: WandSparkles },
+  { name: "Ladino do Home Office", pct: 15, Icon: House },
+  { name: "Necromante de Planilha",pct: 13, Icon: BarChart3 },
+  { name: "Invocador de iFood",    pct: 11, Icon: Pizza },
+  { name: "Vidente da Ansiedade",  pct: 10, Icon: Telescope },
+  { name: "Outras 10 classes",     pct: 15, Icon: Sparkles },
 ];
 
 const insights = [
@@ -35,19 +50,21 @@ export default function DashboardSection() {
       <section className="py-28 px-6 relative max-w-7xl mx-auto overflow-hidden">
         <div className="section-line-top" />
 
-        <div className="text-center mb-16">
-          <span className="section-eyebrow">Pós-Experiência</span>
-          <h2 className="text-5xl text-[var(--parchment)] mb-4">
-            Dashboard <span className="gold-grad">ao Vivo</span>
-          </h2>
-          <p className="text-[rgba(244,228,188,0.55)] text-lg max-w-2xl mx-auto italic">
-            Um painel dinâmico que transforma o projeto em análise de comportamento coletivo em tempo real.
-          </p>
-        </div>
+        <Reveal>
+          <div className="text-center mb-16">
+            <span className="section-eyebrow">Pós-Experiência</span>
+            <h2 className="text-5xl text-[var(--parchment)] mb-4">
+              Dashboard <span className="gold-grad">ao Vivo</span>
+            </h2>
+            <p className="text-[rgba(244,228,188,0.55)] text-lg max-w-2xl mx-auto italic">
+              Um painel dinâmico que transforma o projeto em análise de comportamento coletivo em tempo real.
+            </p>
+          </div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <Stagger className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Live stats column */}
-          <div className="space-y-4">
+          <StaggerItem className="space-y-4">
             <div className="arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.15)] p-6">
               <span className="ac-bl" /><span className="ac-br" />
               <div className="flex items-center gap-2 mb-2">
@@ -63,7 +80,7 @@ export default function DashboardSection() {
                 className="text-[2.8rem] text-[var(--parchment)] leading-none mb-1"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
               >
-                {participants.toLocaleString("pt-BR")}
+                <CountUp value={participants} />
               </div>
               <div
                 className="text-[.65rem] text-[rgba(244,228,188,0.45)] tracking-[.1em]"
@@ -85,7 +102,7 @@ export default function DashboardSection() {
                 className="text-[2.8rem] text-[var(--gold)] leading-none mb-1"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
               >
-                {avgAttr.toFixed(1)}
+                <CountUp value={avgAttr} decimals={1} />
               </div>
               <div
                 className="text-[.65rem] text-[rgba(244,228,188,0.45)] tracking-[.1em]"
@@ -104,10 +121,11 @@ export default function DashboardSection() {
                 Mais Popular
               </div>
               <div
-                className="text-base text-[var(--parchment)] leading-snug"
+                className="text-base text-[var(--parchment)] leading-snug flex items-start gap-2"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
               >
-                🔧 Artífice<br />da Gambiarra
+                <Wrench size={18} strokeWidth={1.6} className="text-[var(--gold-light)] mt-0.5 flex-shrink-0" />
+                <span>Artífice<br />da Gambiarra</span>
               </div>
               <div
                 className="text-[.65rem] text-[rgba(244,228,188,0.45)] tracking-[.1em] mt-1"
@@ -116,55 +134,55 @@ export default function DashboardSection() {
                 Classe mais comum
               </div>
             </div>
-          </div>
+          </StaggerItem>
 
           {/* Distribution */}
-          <div className="arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.15)] p-8">
-            <span className="ac-bl" /><span className="ac-br" />
-            <h3
-              className="text-[.8rem] text-[var(--gold)] tracking-[.15em] uppercase mb-5 opacity-80"
-              style={{ fontFamily: "var(--font-cinzel), serif" }}
-            >
-              Distribuição de Classes
-            </h3>
-            <div className="space-y-4">
-              {classDistribution.map((cls) => (
-                <div key={cls.name}>
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-2 text-[.82rem] text-[rgba(244,228,188,0.7)]">
-                      <span>{cls.icon}</span>
-                      <span className="truncate max-w-[150px]">{cls.name}</span>
+          <StaggerItem>
+            <div className="arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.15)] p-8 h-full">
+              <span className="ac-bl" /><span className="ac-br" />
+              <h3
+                className="text-[.8rem] text-[var(--gold)] tracking-[.15em] uppercase mb-5 opacity-80"
+                style={{ fontFamily: "var(--font-cinzel), serif" }}
+              >
+                Distribuição de Classes
+              </h3>
+              <div className="space-y-4">
+                {classDistribution.map((cls, i) => (
+                  <div key={cls.name}>
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2 text-[.82rem] text-[rgba(244,228,188,0.7)]">
+                        <cls.Icon size={15} strokeWidth={1.6} className="text-[var(--gold-light)] flex-shrink-0" />
+                        <span className="truncate max-w-[150px]">{cls.name}</span>
+                      </div>
+                      <span
+                        className="text-[var(--gold)] text-[.7rem] flex-shrink-0"
+                        style={{ fontFamily: "var(--font-cinzel), serif" }}
+                      >
+                        {cls.pct}%
+                      </span>
                     </div>
-                    <span
-                      className="text-[var(--gold)] text-[.7rem] flex-shrink-0"
-                      style={{ fontFamily: "var(--font-cinzel), serif" }}
-                    >
-                      {cls.pct}%
-                    </span>
+                    <div className="h-1.5 bg-[rgba(184,134,11,0.08)] border border-[rgba(184,134,11,0.1)] overflow-hidden">
+                      <AnimatedBar
+                        pct={cls.pct}
+                        delay={i * 0.08}
+                        className="opacity-80 bg-gradient-to-r from-[var(--wine)] to-[var(--gold)]"
+                      />
+                    </div>
                   </div>
-                  <div className="h-1.5 bg-[rgba(184,134,11,0.08)] border border-[rgba(184,134,11,0.1)] overflow-hidden">
-                    <div
-                      className="h-full opacity-80"
-                      style={{
-                        width: `${cls.pct}%`,
-                        background: "linear-gradient(90deg, var(--wine), var(--gold))",
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          </StaggerItem>
 
           {/* Insights + QR */}
-          <div className="space-y-4">
+          <StaggerItem className="space-y-4">
             <div className="arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.15)] p-8">
               <span className="ac-bl" /><span className="ac-br" />
               <h3
-                className="text-[.75rem] text-[var(--gold)] tracking-[.15em] opacity-80 mb-4"
+                className="text-[.75rem] text-[var(--gold)] tracking-[.15em] opacity-80 mb-4 flex items-center gap-2"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
-                💡 Insights Comportamentais
+                <Lightbulb size={15} strokeWidth={1.6} /> Insights Comportamentais
               </h3>
               <div className="space-y-4">
                 {insights.map((insight, i) => (
@@ -178,7 +196,7 @@ export default function DashboardSection() {
 
             <div className="arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.25)] p-8 text-center">
               <span className="ac-bl" /><span className="ac-br" />
-              <div className="text-3xl mb-3">📱</div>
+              <Smartphone size={30} strokeWidth={1.4} className="text-[var(--gold-light)] mx-auto mb-3" />
               <h3
                 className="text-[.85rem] text-[var(--parchment)] mb-2"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
@@ -194,8 +212,8 @@ export default function DashboardSection() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
+          </StaggerItem>
+        </Stagger>
       </section>
     </div>
   );
