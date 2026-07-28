@@ -9,10 +9,13 @@ import DashboardSection from "@/components/DashboardSection";
 import GuildSection from "@/components/GuildSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import ScrollProgress from "@/components/ScrollProgress";
+import MotionProvider from "@/components/MotionProvider";
 
 export default function Home() {
   return (
-    <>
+    <MotionProvider>
+      <ScrollProgress />
       <Navbar />
       <main>
         <Hero />
@@ -26,6 +29,6 @@ export default function Home() {
         <CTASection />
       </main>
       <Footer />
-    </>
+    </MotionProvider>
   );
 }
