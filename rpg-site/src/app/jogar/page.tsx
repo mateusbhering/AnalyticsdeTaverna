@@ -7,7 +7,7 @@ export default function JogarPage() {
       className="min-h-screen relative overflow-hidden"
       style={{
         background:
-          "url('https://www.transparenttextures.com/patterns/dark-wood.png'), radial-gradient(ellipse at top, rgba(74,14,14,.2) 0%, transparent 70%), #0e0e0e",
+          "url('/textures/dark-wood.png'), radial-gradient(ellipse at top, rgba(74,14,14,.2) 0%, transparent 70%), #0e0e0e",
       }}
     >
       {/* Subtle radial glow */}

@@ -21,7 +21,7 @@ const members = [
 export default function GuildSection() {
   return (
     <div
-      style={{ background: "url('https://www.transparenttextures.com/patterns/dark-wood.png'), var(--charcoal)" }}
+      style={{ background: "url('/textures/dark-wood.png'), var(--charcoal)" }}
     >
       <section id="guilda" className="py-28 px-6 relative max-w-5xl mx-auto overflow-hidden">
         <div className="section-line-top" />

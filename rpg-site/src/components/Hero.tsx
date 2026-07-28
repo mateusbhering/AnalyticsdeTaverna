@@ -93,6 +93,9 @@ export default function Hero() {
   const my = useSpring(rawY, { stiffness: 60, damping: 20 });
 
   useEffect(() => {
+    // Mobile: pula o canvas de estrelas (rAF contínuo pesa na CPU/bateria e
+    // rouba frames das animações de entrada).
+    if (window.matchMedia("(max-width: 767px)").matches) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -133,7 +136,7 @@ export default function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid"
       style={{
         background:
-          "url('https://www.transparenttextures.com/patterns/dark-wood.png'), radial-gradient(ellipse at 50% 40%, rgba(74,14,14,.35) 0%, transparent 70%), #0e0e0e",
+          "url('/textures/dark-wood.png'), radial-gradient(ellipse at 50% 40%, rgba(74,14,14,.35) 0%, transparent 70%), #0e0e0e",
       }}
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
@@ -152,11 +155,11 @@ export default function Hero() {
 
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60" />
 
-      {/* Rising gold particles */}
+      {/* Rising gold particles (no mobile, só metade — menos carga de GPU) */}
       {particles.map((p) => (
         <div
           key={p.id}
-          className="absolute pointer-events-none rounded-full bg-[var(--gold)]"
+          className={`absolute pointer-events-none rounded-full bg-[var(--gold)] ${p.id % 2 === 1 ? "max-md:hidden" : ""}`}
           style={{
             left:            p.left,
             bottom:          "0",
@@ -206,7 +209,7 @@ export default function Hero() {
             </SpecialText>
           </span>
           <span className="block mt-2">
-            <SpecialText className="text-[var(--parchment)] whitespace-nowrap" speed={28} delay={0.5}>
+            <SpecialText className="text-[var(--parchment)] whitespace-nowrap" speed={28} delay={0.25}>
               Taverna
             </SpecialText>
           </span>
@@ -215,7 +218,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="text-xl md:text-2xl text-[rgba(244,228,188,0.6)] max-w-3xl mx-auto mb-4 leading-relaxed font-[var(--font-crimson-pro)] italic">
             Uma experiência interativa que transforma

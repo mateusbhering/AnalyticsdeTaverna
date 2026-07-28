@@ -141,12 +141,12 @@ h1,h2,h3,h4 {
 /* Section backgrounds */
 .bg-dark-wood {
   background:
-    url("https://www.transparenttextures.com/patterns/dark-wood.png"),
+    url("/textures/dark-wood.png"),
     var(--charcoal2);
 }
 .bg-black-linen {
   background:
-    url("https://www.transparenttextures.com/patterns/black-linen.png"),
+    url("/textures/black-linen.png"),
     var(--charcoal2);
 }
 
@@ -218,6 +218,11 @@ h1,h2,h3,h4 {
   filter: blur(90px);
   pointer-events: none;
   animation: arcane-drift 20s ease-in-out infinite;
+}
+/* Mobile: blur gigante animado é caríssimo pra GPU do celular e faz todas as
+   outras animações engasgarem — desliga os blobs por completo. */
+@media (max-width: 767px) {
+  .arcane-blob { display: none; }
 }
 
 /* Avatar da guilda: lift + glow dourado no hover */

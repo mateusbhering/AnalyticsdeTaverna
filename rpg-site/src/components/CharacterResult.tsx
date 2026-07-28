@@ -136,7 +136,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
         className="arcane-corners border-2 border-[rgba(184,134,11,0.35)] p-9"
         style={{
           background:
-            "url('https://www.transparenttextures.com/patterns/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)",
+            "url('/textures/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)",
         }}
       >
         <span className="ac-bl" /><span className="ac-br" />
