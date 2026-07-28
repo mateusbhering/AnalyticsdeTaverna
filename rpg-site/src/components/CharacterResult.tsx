@@ -169,22 +169,30 @@ export default function CharacterResult({
             {rpgClass.desc}
           </p>
 
-          {/* Retrato: avatar da IA quando pronto; ilustração da classe como fallback
-              (também exibida, esmaecida, enquanto a IA gera, e em caso de erro). */}
+          {/* Retrato: só o avatar gerado pela IA. Enquanto gera, mostra o loading;
+              em caso de erro, uma mensagem — sem foto de placeholder da classe. */}
           <div className="flex flex-col items-center gap-2 mb-4">
-            <div className="relative w-48 h-48 border-2 border-[rgba(184,134,11,0.4)] overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={avatarStatus === "done" && avatarUrl ? avatarUrl : rpgClass.photo}
-                alt={rpgClass.name}
-                className="w-full h-full object-cover transition-opacity duration-500"
-                style={{
-                  imageRendering: "auto",
-                  opacity: avatarStatus === "processing" ? 0.35 : 1,
-                }}
-              />
-              {avatarStatus === "processing" && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[rgba(10,6,3,0.4)]">
+            <div className="relative w-48 h-48 border-2 border-[rgba(184,134,11,0.4)] overflow-hidden bg-[rgba(10,6,3,0.6)]">
+              {avatarStatus === "done" && avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatarUrl}
+                  alt={rpgClass.name}
+                  className="w-full h-full object-cover"
+                  style={{ imageRendering: "auto" }}
+                />
+              ) : avatarStatus === "error" ? (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3 text-center">
+                  <span className="text-2xl opacity-50">🎭</span>
+                  <span
+                    className="text-[rgba(244,228,188,0.6)] text-[.55rem] tracking-[.12em] uppercase leading-relaxed"
+                    style={{ fontFamily: "var(--font-cinzel), serif" }}
+                  >
+                    Não foi possível conjurar seu avatar
+                  </span>
+                </div>
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
                   <div className="w-8 h-8 border-2 border-[rgba(184,134,11,0.3)] border-t-[var(--gold)] rounded-full animate-spin" />
                   <span
                     className="text-[rgba(244,228,188,0.85)] text-[.55rem] tracking-[.2em] uppercase text-center px-2"
