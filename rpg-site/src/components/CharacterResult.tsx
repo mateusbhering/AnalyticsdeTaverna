@@ -3,6 +3,7 @@
 import { QRCodeSVG } from "qrcode.react";
 import { useRef, useMemo } from "react";
 import type { Dimensions } from "./QuizForm";
+import type { AvatarStatus } from "@/lib/useAvatarGeneration";
 
 interface ClassInfo {
   name: string;
@@ -102,9 +103,20 @@ interface Props {
   dims: Dimensions;
   tags: string[];
   onRestart: () => void;
+  /** Avatar de RPG gerado pela IA (data URL), quando pronto. */
+  avatarUrl?: string | null;
+  /** Estado da geração do avatar, para exibir loading/fallback. */
+  avatarStatus?: AvatarStatus;
 }
 
-export default function CharacterResult({ photo, dims, tags, onRestart }: Props) {
+export default function CharacterResult({
+  photo,
+  dims,
+  tags,
+  onRestart,
+  avatarUrl = null,
+  avatarStatus = "idle",
+}: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const attrs = useMemo(() => calcAttributes(dims), [dims]);
@@ -157,14 +169,40 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
             {rpgClass.desc}
           </p>
 
-          {/* Class mock photo */}
-          <div className="flex justify-center mb-4">
-            <img
-              src={rpgClass.photo}
-              alt={rpgClass.name}
-              className="w-48 h-48 object-cover border-2 border-[rgba(184,134,11,0.4)]"
-              style={{ imageRendering: "auto" }}
-            />
+          {/* Retrato: avatar da IA quando pronto; ilustração da classe como fallback
+              (também exibida, esmaecida, enquanto a IA gera, e em caso de erro). */}
+          <div className="flex flex-col items-center gap-2 mb-4">
+            <div className="relative w-48 h-48 border-2 border-[rgba(184,134,11,0.4)] overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={avatarStatus === "done" && avatarUrl ? avatarUrl : rpgClass.photo}
+                alt={rpgClass.name}
+                className="w-full h-full object-cover transition-opacity duration-500"
+                style={{
+                  imageRendering: "auto",
+                  opacity: avatarStatus === "processing" ? 0.35 : 1,
+                }}
+              />
+              {avatarStatus === "processing" && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[rgba(10,6,3,0.4)]">
+                  <div className="w-8 h-8 border-2 border-[rgba(184,134,11,0.3)] border-t-[var(--gold)] rounded-full animate-spin" />
+                  <span
+                    className="text-[rgba(244,228,188,0.85)] text-[.55rem] tracking-[.2em] uppercase text-center px-2"
+                    style={{ fontFamily: "var(--font-cinzel), serif" }}
+                  >
+                    Conjurando seu avatar…
+                  </span>
+                </div>
+              )}
+            </div>
+            {avatarStatus === "done" && avatarUrl && (
+              <span
+                className="text-[var(--gold)] text-[.55rem] tracking-[.25em] uppercase opacity-80"
+                style={{ fontFamily: "var(--font-cinzel), serif" }}
+              >
+                ✦ Avatar Arcano
+              </span>
+            )}
           </div>
 
           {/* Tags */}

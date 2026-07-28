@@ -27,6 +27,14 @@ Site institucional e experiência interativa de gamificação comportamental. Us
 IC-SITE/
 ├── README.md
 └── rpg-site/                          # Raiz do projeto Next.js
+    ├── backend/                       # Serviço Python (FastAPI+arq) — geração de avatar IA
+    │   ├── app/
+    │   │   ├── config.py              # Settings via env (Redis, Gemini, limites, TTL)
+    │   │   ├── main.py                # App FastAPI + lifespan (pool arq) + CORS
+    │   │   ├── routers/avatar.py      # /avatar/generate, /status, /result (delete)
+    │   │   └── workers/avatar_worker.py  # generate_avatar_task + WorkerSettings
+    │   ├── tests/                     # pytest (fakeredis + mock do Gemini)
+    │   └── requirements.txt
     ├── next.config.ts
     ├── tsconfig.json
     ├── package.json
@@ -264,6 +272,64 @@ O resultado do quiz é serializado como query string e codificado no QR Code. **
 **Renderização:** `PersonagemCard` é um Client Component que usa `useSearchParams()`. A foto da webcam **não é incluída** (data URL em base64 seria inviável em query string). O QR Code na página `/personagem` aponta para a própria URL da página.
 
 **Suspense boundary:** `page.tsx` envolve `<PersonagemCard>` em `<Suspense>` para compatibilidade com o comportamento de `useSearchParams` no App Router.
+
+---
+
+## Backend — Geração de Avatar com IA (`backend/`)
+
+Serviço Python **separado** do Next.js que transforma a foto da webcam num avatar de RPG via **Google Gemini**. Arquitetura assíncrona: **FastAPI** + **arq** (fila sobre Redis) + **Redis**. O frontend consome a API via HTTP (CORS liberado para `localhost:3000` e o domínio de produção).
+
+**Stack:** FastAPI · arq · Redis · `google-genai` (modelo `gemini-3.1-flash-image` / Nano Banana 2, configurável).
+
+### Fluxo assíncrono
+
+```
+POST /avatar/generate ──► valida (content-type ∈ {jpeg,png,webp}, ≤8MB)
+   │                       enfileira base64(foto) como arg do job (arq→Redis)
+   ▼                       responde { job_id, status: "processing" }
+Worker arq ──► decodifica em memória → Gemini → extrai inline_data
+   │           SET avatar_result:{job_id} = { status, image, mime }  (TTL 24h)
+   ▼
+GET /avatar/status/{job_id} (polling) ──► processing | done+image | error
+DELETE /avatar/result/{job_id} ──► limpeza antecipada (opcional)
+```
+
+### Política de retenção de dados
+
+| Dado | Retenção |
+|---|---|
+| **Foto original** | **Nunca persistida.** Existe só em memória durante o job; trafega pelo Redis apenas como payload da fila arq e é consumida pelo worker. `WorkerSettings.keep_result = 0` impede o arq de reter os argumentos/resultado após a execução. Sem chave durável, sem log, sem disco. |
+| **Avatar gerado** | Chave `avatar_result:{job_id}` no Redis, **TTL de 24h** — ou removido antes via `DELETE /avatar/result/{job_id}`. |
+
+Detalhes de execução, variáveis de ambiente e testes: [`backend/README.md`](backend/README.md).
+
+### Integração com o frontend
+
+O hook [`src/lib/useAvatarGeneration.ts`](rpg-site/src/lib/useAvatarGeneration.ts) orquestra a chamada:
+
+```
+QuizForm: foto capturada → clique "Continuar para o Quiz"
+   │  avatar.start(photo)  → POST /avatar/generate (a geração roda em 2º plano
+   │                          durante o quiz, escondendo a latência da IA)
+   ▼
+polling GET /avatar/status/{job_id} a cada 2.5s (teto ~3min)
+   ▼
+CharacterResult: exibe o avatar da IA quando pronto; enquanto processa mostra a
+   ilustração da classe esmaecida + "Conjurando seu avatar…"; em erro/timeout
+   mantém a ilustração da classe como fallback silencioso.
+   Ao exibir, dispara DELETE /avatar/result/{job_id} (limpeza antecipada).
+```
+
+O `restart()` do quiz chama `avatar.reset()` para permitir uma nova geração.
+
+**Variável de ambiente do frontend** (`.env.local`):
+
+```env
+NEXT_PUBLIC_AVATAR_API_URL=http://localhost:8000   # host do backend Python
+```
+
+Sem essa variável, o hook usa `http://localhost:8000` por padrão. O CORS do
+backend precisa liberar a origem do frontend (veja `cors_origins` em `backend/app/config.py`).
 
 ---
 

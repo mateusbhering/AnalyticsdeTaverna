@@ -3,6 +3,7 @@
 import { useState } from "react";
 import WebcamCapture from "./WebcamCapture";
 import CharacterResult from "./CharacterResult";
+import { useAvatarGeneration } from "@/lib/useAvatarGeneration";
 import { ALL_QUESTIONS } from "./questions-data";
 import type { Option } from "./questions-data";
 
@@ -41,6 +42,14 @@ export default function QuizForm() {
   const [current, setCurrent] = useState(0);
   const [dims, setDims] = useState<Dimensions>({ ...BASE_DIMS });
   const [tags, setTags] = useState<string[]>([]);
+  const avatar = useAvatarGeneration();
+
+  // Inicia a geração do avatar ao sair da captura — processa em segundo plano
+  // durante o quiz, escondendo a latência da IA.
+  const goToQuiz = () => {
+    avatar.start(photo);
+    setStep("quiz");
+  };
 
   const restart = () => {
     setStep("photo");
@@ -49,6 +58,7 @@ export default function QuizForm() {
     setCurrent(0);
     setDims({ ...BASE_DIMS });
     setTags([]);
+    avatar.reset();
   };
 
   // ── STEP 1: Photo ──────────────────────────────────────────────
@@ -78,7 +88,7 @@ export default function QuizForm() {
 
         {photo && (
           <button
-            onClick={() => setStep("quiz")}
+            onClick={goToQuiz}
             className="mt-6 w-full py-4 bg-[var(--wine)] border-2 border-[rgba(184,134,11,0.6)] text-[var(--parchment)] tracking-[.12em] uppercase flex items-center justify-center gap-2 hover:border-[var(--gold)] hover:bg-[rgba(74,14,14,0.7)] transition-all animate-pulse-wine text-[.8rem]"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
           >
@@ -187,5 +197,14 @@ export default function QuizForm() {
   }
 
   // ── STEP 3: Result ─────────────────────────────────────────────
-  return <CharacterResult photo={photo} dims={dims} tags={tags} onRestart={restart} />;
+  return (
+    <CharacterResult
+      photo={photo}
+      dims={dims}
+      tags={tags}
+      onRestart={restart}
+      avatarUrl={avatar.avatarUrl}
+      avatarStatus={avatar.status}
+    />
+  );
 }
