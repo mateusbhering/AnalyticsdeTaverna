@@ -30,6 +30,19 @@ def _ctx(redis):
     return {"redis": redis}
 
 
+@pytest.fixture(autouse=True)
+def _mock_upload(monkeypatch):
+    """Evita conectar no Supabase real; registra o que seria enviado."""
+    calls = []
+
+    async def fake_upload(job_id, avatar_bytes, mime):
+        calls.append({"job_id": job_id, "bytes": avatar_bytes, "mime": mime})
+        return f"https://fake.supabase/avatars/{job_id}"
+
+    monkeypatch.setattr(avatar_worker, "_upload_avatar", fake_upload)
+    return calls
+
+
 # ── _extract_image ─────────────────────────────────────────────────────
 def test_extract_image_from_inline_data():
     response = SimpleNamespace(
@@ -62,7 +75,7 @@ def test_extract_image_raises_without_image():
 
 
 # ── Sucesso ────────────────────────────────────────────────────────────
-async def test_worker_success(redis, monkeypatch):
+async def test_worker_success(redis, monkeypatch, _mock_upload):
     async def fake_run_gemini(image_bytes, prompt):
         # Recebe exatamente os bytes decodificados da foto original.
         assert image_bytes == ORIGINAL_PHOTO
@@ -76,8 +89,24 @@ async def test_worker_success(redis, monkeypatch):
     assert stored["status"] == "done"
     assert base64.b64decode(stored["image"]) == GENERATED_PNG
     assert stored["mime"] == "image/png"
+    assert stored["public_url"] == "https://fake.supabase/avatars/job-ok"
     # TTL de 24h aplicado.
     assert 0 < await redis.ttl(result_key("job-ok")) <= 86400
+
+
+async def test_worker_uploads_generated_avatar_not_original(redis, monkeypatch, _mock_upload):
+    """O que sobe pro Supabase é o avatar GERADO — nunca a foto original."""
+
+    async def fake_run_gemini(image_bytes, prompt):
+        return base64.b64encode(GENERATED_PNG).decode(), "image/png"
+
+    monkeypatch.setattr(avatar_worker, "_run_gemini", fake_run_gemini)
+    await avatar_worker.generate_avatar_task(_ctx(redis), "job-up", ORIGINAL_B64)
+
+    assert len(_mock_upload) == 1
+    uploaded = _mock_upload[0]["bytes"]
+    assert uploaded == GENERATED_PNG
+    assert ORIGINAL_PHOTO not in uploaded
 
 
 # ── Prompt por classe ──────────────────────────────────────────────────

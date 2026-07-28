@@ -36,6 +36,12 @@ class Settings(BaseSettings):
     # Avatar gerado vive por 24h no Redis. A foto ORIGINAL nunca é persistida.
     result_ttl_seconds: int = 24 * 60 * 60  # 86400
 
+    # ── Supabase (armazenamento permanente do avatar gerado) ────────
+    # Nunca hardcoded — via env SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY.
+    # A service_role_key é secreta (só no backend); nunca exponha no frontend.
+    supabase_url: str = ""
+    supabase_service_role_key: str = ""
+
     # ── CORS ────────────────────────────────────────────────────────
     # Origens permitidas para o frontend Next.js chamar a API.
     cors_origins: tuple[str, ...] = (

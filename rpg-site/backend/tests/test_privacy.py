@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import base64
 
+import pytest
 import pytest_asyncio
 from fakeredis import aioredis as fake_aioredis
 
@@ -29,6 +30,17 @@ async def redis():
     await r.flushall()
     yield r
     await r.aclose()
+
+
+@pytest.fixture(autouse=True)
+def _mock_upload(monkeypatch):
+    """Mocka o upload ao Supabase e garante que a foto ORIGINAL nunca é enviada."""
+
+    async def fake_upload(job_id, avatar_bytes, mime):
+        assert ORIGINAL_PHOTO not in avatar_bytes  # nunca a foto original
+        return f"https://fake.supabase/avatars/{job_id}"
+
+    monkeypatch.setattr(avatar_worker, "_upload_avatar", fake_upload)
 
 
 def test_keep_result_is_zero():

@@ -10,14 +10,14 @@
 ║   • `WorkerSettings.keep_result = 0` garante que o arq NÃO retém os        ║
 ║     argumentos/resultado do job após a execução.                          ║
 ║   • NÃO faça `redis.set(...)`, log, nem grave em disco a `image_b64` ou    ║
-║     os `image_bytes`. A única coisa que persistimos é o avatar GERADO,     ║
-║     na chave `avatar_result:{job_id}`, com TTL de 24h.                     ║
+║     os `image_bytes`. Persistimos apenas o avatar GERADO: em Redis         ║
+║     (`avatar_result:{job_id}`, TTL 24h) e no Supabase Storage (permanente).║
 ╚══════════════════════════════════════════════════════════════════════════╝
 """
-from supabase import create_client
 
 from __future__ import annotations
 
+import asyncio
 import base64
 import json
 import logging
@@ -113,6 +113,32 @@ async def _run_gemini(image_bytes: bytes, prompt: str) -> tuple[str, str]:
     return _extract_image(response)
 
 
+async def _upload_avatar(job_id: str, avatar_bytes: bytes, mime: str) -> str:
+    """Sobe o avatar GERADO ao Supabase Storage e retorna a URL pública permanente.
+
+    Só o avatar gerado é enviado — NUNCA a foto original. O cliente supabase é
+    síncrono, então roda em thread para não bloquear o event loop do worker.
+    Isolado para facilitar o mock em testes.
+    """
+    from supabase import create_client  # noqa: PLC0415 (import lazy proposital)
+
+    ext = "jpg" if "jpeg" in mime else "png"
+    filename = f"{job_id}.{ext}"
+
+    def _sync() -> str:
+        supabase = create_client(
+            settings.supabase_url, settings.supabase_service_role_key
+        )
+        supabase.storage.from_("avatars").upload(
+            path=filename,
+            file=avatar_bytes,
+            file_options={"content-type": mime, "upsert": "true"},
+        )
+        return supabase.storage.from_("avatars").get_public_url(filename)
+
+    return await asyncio.to_thread(_sync)
+
+
 async def generate_avatar_task(ctx, job_id: str, image_b64: str, class_name: str = "") -> None:
     """Job arq: gera o avatar e salva o resultado em `avatar_result:{job_id}`.
 
@@ -128,21 +154,15 @@ async def generate_avatar_task(ctx, job_id: str, image_b64: str, class_name: str
     try:
         image_bytes = base64.b64decode(image_b64)
         image_out_b64, mime = await _run_gemini(image_bytes, build_prompt(class_name))
-        #Converter avatar gerado para bytes
+        # Sobe o avatar gerado ao Supabase Storage e pega a URL pública permanente.
         avatar_bytes = base64.b64decode(image_out_b64)
-        #Conectar no Supabase via Python
-        supabase = create_client(settings.supabase_url, settings.supabase_service_role_key)
-        
-        #Fazer upload para o bucket 'avatars'
-        filename = f"{job_id}.png"
-        supabase.storage.from_("avatars").upload(
-            path=filename,
-            file=avatar_bytes,
-            file_options={"content-type": mime, "upsert": "true"}
-        )
-        #Pegar a URL pública permanente
-        public_url = supabase.storage.from_("avatars").get_public_url(filename)
-        payload = {"status": "done", "image": image_out_b64, "mime": mime, 'public_url': public_url}
+        public_url = await _upload_avatar(job_id, avatar_bytes, mime)
+        payload = {
+            "status": "done",
+            "image": image_out_b64,
+            "mime": mime,
+            "public_url": public_url,
+        }
     except Exception:
         # NUNCA logamos a foto original nem os bytes — apenas o job_id e o traço.
         logger.exception("Falha ao gerar avatar para job %s", job_id)
