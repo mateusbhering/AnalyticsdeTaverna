@@ -71,14 +71,24 @@ export default function PersonagemCard() {
 
   const pageUrl = typeof window !== "undefined" ? window.location.href : "";
 
-  //ADICIONADO! ----> SALVAR DADOS NO SUPABASE
+  // Assinatura única deste personagem (string estável por valor a cada render) —
+  // serve de dep do efeito e de chave de dedup.
+  const characterSig = `${className}|${attrs.for}|${attrs.int}|${attrs.agi}|${attrs.res}|${attrs.car}|${attrs.sab}|${attrs.cao}|${avatarId ?? ""}`;
+
+  // Salva o jogador no Supabase — UMA vez por personagem/sessão.
   useEffect(() => {
-    async function salvarPersonagemNoSupabase() {
-      // Se não tiver classe definida na URL ou se já salvou nessa sessão, ignora
-      if (!className || hasSaved.current) return;
+    if (!className || hasSaved.current) return;
 
-      hasSaved.current = true; // Marca como enviado
+    // Dedup resistente a remontagens/reloads: o useRef sozinho reseta quando o
+    // componente remonta (criando linhas duplicadas). O sessionStorage persiste
+    // pela sessão da aba.
+    const dedupKey = `taverna:saved:${characterSig}`;
+    if (typeof window !== "undefined" && sessionStorage.getItem(dedupKey)) return;
 
+    hasSaved.current = true;
+    if (typeof window !== "undefined") sessionStorage.setItem(dedupKey, "1");
+
+    (async () => {
       try {
         const supabase = getSupabaseClient();
         const { data, error } = await supabase.from("jogadores").insert([
@@ -91,26 +101,26 @@ export default function PersonagemCard() {
             carisma: attrs.car || 0,
             sabedoria: attrs.sab || 0,
             caos: attrs.cao || 0,
-            // Salva só a URL PERMANENTE do avatar (Supabase) — nunca o mockup
-            // da classe nem a URL efêmera da API. Sem avatar → null.
+            // Só a URL PERMANENTE do avatar (Supabase) — nunca o mockup da classe
+            // nem a URL efêmera da API. Sem avatar → null.
             foto_url: supabaseAvatar,
           },
         ]).select();
 
         if (error) {
           console.error("Erro ao salvar no Supabase:", error);
+          // libera para tentar de novo numa próxima carga
+          if (typeof window !== "undefined") sessionStorage.removeItem(dedupKey);
         } else {
           setJogadorId(data[0].id);
-          console.log("Jogador registrado na taverna com sucesso!", data[0].id);
         }
       } catch (e) {
-        // Supabase não configurado (env vars ausentes): o card segue funcionando.
         console.error("Supabase indisponível:", e);
+        if (typeof window !== "undefined") sessionStorage.removeItem(dedupKey);
       }
-    }
-
-    salvarPersonagemNoSupabase();
-  }, [className, rpgClass.name, attrs]);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [characterSig]);
 
   // Adicionadas Variáveis para o QR Code, onde encontra o jogadorId, 
   // que é o ID do jogador salvo no Supabase, para gerar o QR Code correto.
