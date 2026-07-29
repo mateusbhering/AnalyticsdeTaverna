@@ -1,9 +1,10 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import type { Dimensions } from "./QuizForm";
 import { useAvatarGeneration } from "@/lib/useAvatarGeneration";
+import { getSupabaseClient } from "@/lib/supabase";
 
 interface ClassInfo {
   name: string;
@@ -123,10 +124,89 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
 
   const uniqueTags = [...new Set(tags)].slice(0, 5);
 
-  // Inclui o id do avatar no QR só quando ele já está pronto, garantindo que
-  // /personagem consiga buscar a imagem no backend.
-  const avatarParam = avatarStatus === "done" && jobId ? `&avatar=${jobId}` : "";
-  const qrData = `${typeof window !== "undefined" ? window.location.origin : ""}/personagem?classe=${encodeURIComponent(rpgClass.name)}&for=${attrs.forca}&int=${attrs.inteligencia}&agi=${attrs.agilidade}&res=${attrs.resistencia}&car=${attrs.carisma}&sab=${attrs.sabedoria}&cao=${attrs.caos}${avatarParam}`;
+  // ── Salva o jogador e gera um LINK ÚNICO compartilhável (/personagem?id=) ──
+  // Roda uma vez quando o avatar chega a um estado terminal (done ou error).
+  const savedRef = useRef(false);
+  const [personagemId, setPersonagemId] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (avatarStatus !== "done" && avatarStatus !== "error") return;
+    if (savedRef.current || !jobId) return;
+
+    // Dedup por sessão (resiste a remontagens): evita salvar 2x o mesmo jogador.
+    const dedupKey = `taverna:player:${jobId}`;
+    const cached = typeof window !== "undefined" ? sessionStorage.getItem(dedupKey) : null;
+    if (cached) {
+      setPersonagemId(Number(cached));
+      savedRef.current = true;
+      return;
+    }
+    savedRef.current = true;
+
+    const supabaseBase = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+    const fotoUrl =
+      avatarStatus === "done" && supabaseBase
+        ? `${supabaseBase}/storage/v1/object/public/avatars/${jobId}.jpg`
+        : null;
+
+    (async () => {
+      try {
+        const supabase = getSupabaseClient();
+        const { data, error } = await supabase
+          .from("jogadores")
+          .insert([
+            {
+              classe: rpgClass.name,
+              forca: attrs.forca,
+              inteligencia: attrs.inteligencia,
+              agilidade: attrs.agilidade,
+              resistencia: attrs.resistencia,
+              carisma: attrs.carisma,
+              sabedoria: attrs.sabedoria,
+              caos: attrs.caos,
+              foto_url: fotoUrl,
+            },
+          ])
+          .select();
+        if (error) {
+          console.error("Erro ao salvar personagem:", error);
+          savedRef.current = false; // permite fallback pro link por params
+          return;
+        }
+        const id = data[0].id as number;
+        setPersonagemId(id);
+        if (typeof window !== "undefined") sessionStorage.setItem(dedupKey, String(id));
+      } catch (e) {
+        console.error("Supabase indisponível:", e);
+        savedRef.current = false;
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [avatarStatus, jobId]);
+
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  // Link por id quando salvo; senão (ou se o save falhar) cai no link por params,
+  // que também funciona e carrega o avatar do Supabase.
+  const paramLink =
+    `${origin}/personagem?classe=${encodeURIComponent(rpgClass.name)}` +
+    `&for=${attrs.forca}&int=${attrs.inteligencia}&agi=${attrs.agilidade}` +
+    `&res=${attrs.resistencia}&car=${attrs.carisma}&sab=${attrs.sabedoria}&cao=${attrs.caos}` +
+    (avatarStatus === "done" && jobId ? `&avatar=${jobId}` : "");
+  const terminal = avatarStatus === "done" || avatarStatus === "error";
+  const shareUrl =
+    personagemId != null ? `${origin}/personagem?id=${personagemId}` : terminal ? paramLink : null;
+
+  const copyLink = async () => {
+    if (!shareUrl) return;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* clipboard indisponível */
+    }
+  };
 
   return (
     <div className="space-y-5">
@@ -261,7 +341,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
           </div>
         </div>
 
-        {/* QR Code */}
+        {/* Link único compartilhável */}
         <div className="pt-5 border-t border-[rgba(184,134,11,0.15)] flex flex-col items-center gap-3">
           <span
             className="text-[.55rem] tracking-[.3em] uppercase text-[rgba(184,134,11,0.5)]"
@@ -269,12 +349,32 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
           >
             Seu Card Digital
           </span>
-          <div className="bg-white p-2.5">
-            <QRCodeSVG value={qrData} size={120} bgColor="#ffffff" fgColor="#1a0033" />
-          </div>
-          <p className="text-[rgba(244,228,188,0.4)] text-[.78rem] italic text-center">
-            Escaneie para compartilhar seu personagem
-          </p>
+          {shareUrl ? (
+            <>
+              <div className="bg-white p-2.5">
+                <QRCodeSVG value={shareUrl} size={120} bgColor="#ffffff" fgColor="#1a0033" />
+              </div>
+              <button
+                onClick={copyLink}
+                className="press px-5 py-2 bg-[rgba(45,27,13,0.8)] border border-[rgba(184,134,11,0.4)] text-[var(--gold)] text-[.6rem] tracking-[.15em] uppercase hover:border-[var(--gold)] transition-all"
+                style={{ fontFamily: "var(--font-cinzel), serif" }}
+              >
+                {copied ? "✓ Link copiado" : "🔗 Copiar link"}
+              </button>
+              <p className="text-[rgba(244,228,188,0.4)] text-[.78rem] italic text-center">
+                Escaneie ou compartilhe o link do seu personagem
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="w-[120px] h-[120px] flex items-center justify-center bg-[rgba(10,6,3,0.6)] border border-[rgba(184,134,11,0.2)]">
+                <div className="w-7 h-7 border-2 border-[rgba(184,134,11,0.3)] border-t-[var(--gold)] rounded-full animate-spin" />
+              </div>
+              <p className="text-[rgba(244,228,188,0.4)] text-[.78rem] italic text-center">
+                Preparando seu link…
+              </p>
+            </>
+          )}
         </div>
       </div>
 

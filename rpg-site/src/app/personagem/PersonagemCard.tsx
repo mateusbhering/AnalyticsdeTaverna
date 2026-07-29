@@ -1,6 +1,6 @@
 "use client";
 import { getSupabaseClient } from "@/lib/supabase";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
 import { AVATAR_API_BASE } from "@/lib/useAvatarGeneration";
@@ -41,93 +41,118 @@ const ATTR_LABELS: [string, string, string][] = [
   ["cao", "Caos",         "🌪️"],
 ];
 
+interface JogadorRow {
+  id: number | string;
+  classe: string;
+  forca: number;
+  inteligencia: number;
+  agilidade: number;
+  resistencia: number;
+  carisma: number;
+  sabedoria: number;
+  caos: number;
+  foto_url: string | null;
+}
+
 export default function PersonagemCard() {
   const params = useSearchParams();
-  const hasSaved = useRef(false);
-  const [jogadorId, setJogadorId] = useState<string | number | null>(null);
-
-  const className = params.get("classe") ?? "";
-  const rpgClass = CLASS_LIST.find((c) => c.name === className) ?? CLASS_LIST[0];
-
-  // Avatar gerado pela IA (via QR). Carrega do Supabase Storage, que é
-  // PERMANENTE e servido por CDN — ao contrário do endpoint /avatar/image da
-  // API (Redis, expira em 24h + cold-start no free tier da Render). O onError
-  // tenta .png e, por fim, cai na ilustração da classe.
-  const avatarId = params.get("avatar");
+  const idParam = params.get("id");
   const supabaseBase = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  const supabaseAvatar =
-    avatarId && supabaseBase
-      ? `${supabaseBase}/storage/v1/object/public/avatars/${avatarId}.jpg`
-      : null;
-  const portraitSrc =
-    supabaseAvatar ??
-    (avatarId ? `${AVATAR_API_BASE}/avatar/image/${avatarId}` : rpgClass.photo);
 
-  const attrs = Object.fromEntries(
-    ATTR_LABELS.map(([key]) => [key, Number(params.get(key) ?? 0)])
-  );
-  const maxAttr = Math.max(...Object.values(attrs), 1);
-  const barPct = (v: number) => Math.round((v / maxAttr) * 100);
+  // Link único (/personagem?id=): lê o personagem salvo no banco.
+  const [row, setRow] = useState<JogadorRow | null>(null);
+  const [loading, setLoading] = useState<boolean>(!!idParam);
+  const [notFound, setNotFound] = useState(false);
 
-  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
-
-  // Assinatura única deste personagem (string estável por valor a cada render) —
-  // serve de dep do efeito e de chave de dedup.
-  const characterSig = `${className}|${attrs.for}|${attrs.int}|${attrs.agi}|${attrs.res}|${attrs.car}|${attrs.sab}|${attrs.cao}|${avatarId ?? ""}`;
-
-  // Salva o jogador no Supabase — UMA vez por personagem/sessão.
   useEffect(() => {
-    if (!className || hasSaved.current) return;
-
-    // Dedup resistente a remontagens/reloads: o useRef sozinho reseta quando o
-    // componente remonta (criando linhas duplicadas). O sessionStorage persiste
-    // pela sessão da aba.
-    const dedupKey = `taverna:saved:${characterSig}`;
-    if (typeof window !== "undefined" && sessionStorage.getItem(dedupKey)) return;
-
-    hasSaved.current = true;
-    if (typeof window !== "undefined") sessionStorage.setItem(dedupKey, "1");
-
+    if (!idParam) return;
+    let cancelled = false;
     (async () => {
       try {
         const supabase = getSupabaseClient();
-        const { data, error } = await supabase.from("jogadores").insert([
-          {
-            classe: rpgClass.name,
-            forca: attrs.for || 0,
-            inteligencia: attrs.int || 0,
-            agilidade: attrs.agi || 0,
-            resistencia: attrs.res || 0,
-            carisma: attrs.car || 0,
-            sabedoria: attrs.sab || 0,
-            caos: attrs.cao || 0,
-            // Só a URL PERMANENTE do avatar (Supabase) — nunca o mockup da classe
-            // nem a URL efêmera da API. Sem avatar → null.
-            foto_url: supabaseAvatar,
-          },
-        ]).select();
-
-        if (error) {
-          console.error("Erro ao salvar no Supabase:", error);
-          // libera para tentar de novo numa próxima carga
-          if (typeof window !== "undefined") sessionStorage.removeItem(dedupKey);
-        } else {
-          setJogadorId(data[0].id);
-        }
-      } catch (e) {
-        console.error("Supabase indisponível:", e);
-        if (typeof window !== "undefined") sessionStorage.removeItem(dedupKey);
+        const { data, error } = await supabase
+          .from("jogadores")
+          .select("*")
+          .eq("id", idParam)
+          .single();
+        if (cancelled) return;
+        if (error || !data) setNotFound(true);
+        else setRow(data as JogadorRow);
+      } catch {
+        if (!cancelled) setNotFound(true);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [characterSig]);
+    return () => {
+      cancelled = true;
+    };
+  }, [idParam]);
 
-  // Adicionadas Variáveis para o QR Code, onde encontra o jogadorId, 
-  // que é o ID do jogador salvo no Supabase, para gerar o QR Code correto.
+  // ── Resolve os dados: do banco (via ?id=) OU dos query params (links antigos) ──
+  const avatarId = params.get("avatar");
+  const paramAvatar =
+    avatarId && supabaseBase
+      ? `${supabaseBase}/storage/v1/object/public/avatars/${avatarId}.jpg`
+      : null;
+
+  const className = row ? row.classe : params.get("classe") ?? "";
+  const rpgClass = CLASS_LIST.find((c) => c.name === className) ?? CLASS_LIST[0];
+
+  const attrs: Record<string, number> = row
+    ? {
+        for: row.forca, int: row.inteligencia, agi: row.agilidade,
+        res: row.resistencia, car: row.carisma, sab: row.sabedoria, cao: row.caos,
+      }
+    : Object.fromEntries(
+        ATTR_LABELS.map(([key]) => [key, Number(params.get(key) ?? 0)])
+      );
+
+  const fotoUrl = row ? row.foto_url : paramAvatar;
+  const portraitSrc =
+    fotoUrl ?? (avatarId ? `${AVATAR_API_BASE}/avatar/image/${avatarId}` : rpgClass.photo);
+
+  const maxAttr = Math.max(...Object.values(attrs), 1);
+  const barPct = (v: number) => Math.round((v / maxAttr) * 100);
+
+  // QR de batalha usa o id do jogador (do link ?id= ou do banco).
+  const jogadorId = row ? row.id : idParam;
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
-  const qrUrl = jogadorId 
-    ? `${baseUrl}/batalha?oponenteId=${jogadorId}` 
-    : baseUrl;
+  const qrUrl = jogadorId ? `${baseUrl}/batalha?oponenteId=${jogadorId}` : baseUrl;
+
+  // ── Estados de carregamento / não encontrado (só no fluxo por ?id=) ──
+  if (loading) {
+    return (
+      <div className="arcane-corners border-2 border-[rgba(184,134,11,0.35)] p-12 flex flex-col items-center gap-4"
+        style={{ background: "url('/textures/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)" }}>
+        <span className="ac-bl" /><span className="ac-br" />
+        <div className="w-10 h-10 border-2 border-[rgba(184,134,11,0.3)] border-t-[var(--gold)] rounded-full animate-spin" />
+        <span className="text-[rgba(244,228,188,0.6)] text-[.6rem] tracking-[.25em] uppercase" style={{ fontFamily: "var(--font-cinzel), serif" }}>
+          Invocando personagem…
+        </span>
+      </div>
+    );
+  }
+
+  if (notFound) {
+    return (
+      <div className="arcane-corners border-2 border-[rgba(184,134,11,0.35)] p-12 text-center"
+        style={{ background: "url('/textures/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)" }}>
+        <span className="ac-bl" /><span className="ac-br" />
+        <div className="text-4xl mb-4 opacity-60">🕯️</div>
+        <p className="text-[var(--parchment)] text-lg mb-1" style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}>
+          Personagem não encontrado
+        </p>
+        <p className="text-[rgba(244,228,188,0.5)] text-sm italic mb-6">
+          Este link não existe mais ou expirou.
+        </p>
+        <a href="/jogar" className="press inline-block px-6 py-3 bg-[var(--wine)] border border-[rgba(184,134,11,0.5)] text-[var(--parchment)] text-[.7rem] tracking-[.12em] uppercase hover:border-[var(--gold)] transition-all"
+          style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}>
+          ⚔ Criar o meu
+        </a>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -168,13 +193,12 @@ export default function PersonagemCard() {
           alt={rpgClass.name}
           className="w-48 h-48 object-cover mx-auto border-2 border-[rgba(184,134,11,0.4)]"
           onError={(e) => {
-            // .jpg falhou → tenta .png (Gemini às vezes retorna png);
-            // depois disso, cai na ilustração da classe.
+            // .jpg falhou → tenta .png; depois disso, cai na ilustração da classe.
             const img = e.currentTarget;
             const step = img.dataset.fbstep ?? "0";
-            if (step === "0" && supabaseAvatar) {
+            if (step === "0" && fotoUrl && fotoUrl.endsWith(".jpg")) {
               img.dataset.fbstep = "png";
-              img.src = supabaseAvatar.slice(0, -4) + ".png";
+              img.src = fotoUrl.slice(0, -4) + ".png";
             } else if (step !== "final") {
               img.dataset.fbstep = "final";
               img.src = rpgClass.photo;
@@ -222,21 +246,19 @@ export default function PersonagemCard() {
         </div>
       </div>
 
-      {/* QR Code */}
+      {/* QR Code (batalha) */}
       <div className="pt-5 border-t border-[rgba(184,134,11,0.15)] flex flex-col items-center gap-3">
         <span
           className="text-[.55rem] tracking-[.3em] uppercase text-[rgba(184,134,11,0.5)]"
           style={{ fontFamily: "var(--font-cinzel), serif" }}
         >
-          Seu Card Digital
+          Desafie este herói
         </span>
         <div className="bg-white p-2.5">
-          <QRCodeSVG value={ qrUrl} size={120} bgColor="#ffffff" fgColor="#1a0033" />
-          {/* Código anterior */}
-          {/* {<QRCodeSVG value={pageUrl || "https://analytics-de-taverna.vercel.app"} size={120} bgColor="#ffffff" fgColor="#1a0033" /> */}
+          <QRCodeSVG value={qrUrl} size={120} bgColor="#ffffff" fgColor="#1a0033" />
         </div>
         <p className="text-[rgba(244,228,188,0.4)] text-[.78rem] italic text-center">
-          Escaneie para compartilhar seu personagem
+          Escaneie para entrar em batalha
         </p>
       </div>
     </div>
