@@ -93,24 +93,49 @@ def _extract_image(response) -> tuple[str, str]:
     raise ValueError("Nenhuma imagem (inline_data) na resposta do Gemini")
 
 
-async def _run_gemini(image_bytes: bytes, prompt: str) -> tuple[str, str]:
-    """Chama o Gemini para gerar o avatar. Isolado para facilitar o mock em testes.
+# Erros transitórios do Gemini que valem retry (rate limit / instabilidade).
+_TRANSIENT_TOKENS = (
+    "429", "RESOURCE_EXHAUSTED", "500", "INTERNAL",
+    "503", "UNAVAILABLE", "deadline", "timeout",
+)
+_GEMINI_MAX_ATTEMPTS = 4
 
-    Import do SDK é feito aqui (lazy) para não exigir a dependência em ambientes
-    que só rodam os testes com mock.
+
+async def _run_gemini(image_bytes: bytes, prompt: str) -> tuple[str, str]:
+    """Chama o Gemini para gerar o avatar, com retry em erros transitórios.
+
+    O modelo de imagem tem limite de taxa baixo: sob uso em rajada, algumas
+    chamadas voltam 429 RESOURCE_EXHAUSTED (transitório). Reintentamos com
+    backoff exponencial (3s, 6s, 12s). Isolado para facilitar o mock em testes;
+    import do SDK é lazy.
     """
     from google import genai  # noqa: PLC0415  (import lazy proposital)
     from google.genai import types
 
     client = genai.Client(api_key=settings.gemini_api_key)
-    response = await client.aio.models.generate_content(
-        model=settings.gemini_image_model,
-        contents=[
-            prompt,
-            types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg"),
-        ],
-    )
-    return _extract_image(response)
+    contents = [
+        prompt,
+        types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg"),
+    ]
+
+    delay = 3.0
+    for attempt in range(1, _GEMINI_MAX_ATTEMPTS + 1):
+        try:
+            response = await client.aio.models.generate_content(
+                model=settings.gemini_image_model, contents=contents
+            )
+            return _extract_image(response)
+        except Exception as exc:
+            is_transient = any(t in str(exc) for t in _TRANSIENT_TOKENS)
+            if attempt < _GEMINI_MAX_ATTEMPTS and is_transient:
+                logger.warning(
+                    "Gemini transitório (tent. %s/%s): %s — retry em %.0fs",
+                    attempt, _GEMINI_MAX_ATTEMPTS, type(exc).__name__, delay,
+                )
+                await asyncio.sleep(delay)
+                delay *= 2
+                continue
+            raise
 
 
 async def _upload_avatar(job_id: str, avatar_bytes: bytes, mime: str) -> str:

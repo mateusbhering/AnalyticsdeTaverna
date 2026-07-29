@@ -133,6 +133,65 @@ async def test_worker_passes_class_style_to_gemini(redis, monkeypatch):
     assert "paladin" in seen["prompt"]
 
 
+# ── Retry em erro transitório (rate limit 429) ─────────────────────────
+async def test_run_gemini_retries_on_rate_limit(monkeypatch):
+    import google.genai as genai_mod
+    from google.genai import types as gtypes
+
+    calls = {"n": 0}
+
+    class FakeModels:
+        async def generate_content(self, model, contents):
+            calls["n"] += 1
+            if calls["n"] < 3:
+                raise RuntimeError("429 RESOURCE_EXHAUSTED: quota")
+            return SimpleNamespace(
+                candidates=[SimpleNamespace(content=SimpleNamespace(
+                    parts=[SimpleNamespace(inline_data=SimpleNamespace(data=b"ok", mime_type="image/png"))]
+                ))]
+            )
+
+    class FakeClient:
+        aio = SimpleNamespace(models=FakeModels())
+        def __init__(self, api_key=None):
+            pass
+
+    monkeypatch.setattr(genai_mod, "Client", FakeClient)
+    monkeypatch.setattr(gtypes.Part, "from_bytes", staticmethod(lambda data, mime_type: None))
+
+    async def _no_sleep(_):
+        return
+    monkeypatch.setattr(avatar_worker.asyncio, "sleep", _no_sleep)
+
+    b64, mime = await avatar_worker._run_gemini(b"x", "prompt")
+    assert calls["n"] == 3  # 2 falhas transitórias + 1 sucesso
+    assert mime == "image/png"
+
+
+async def test_run_gemini_does_not_retry_permanent_error(monkeypatch):
+    import google.genai as genai_mod
+    from google.genai import types as gtypes
+    calls = {"n": 0}
+
+    class FakeModels:
+        async def generate_content(self, model, contents):
+            calls["n"] += 1
+            raise ValueError("400 INVALID_ARGUMENT")
+
+    class FakeClient:
+        aio = SimpleNamespace(models=FakeModels())
+        def __init__(self, api_key=None):
+            pass
+
+    monkeypatch.setattr(genai_mod, "Client", FakeClient)
+    monkeypatch.setattr(gtypes.Part, "from_bytes", staticmethod(lambda data, mime_type: None))
+
+    import pytest as _pytest
+    with _pytest.raises(ValueError):
+        await avatar_worker._run_gemini(b"x", "prompt")
+    assert calls["n"] == 1  # erro permanente → sem retry
+
+
 # ── Falha ──────────────────────────────────────────────────────────────
 async def test_worker_failure_stores_error_marker(redis, monkeypatch):
     async def boom(image_bytes, prompt):
