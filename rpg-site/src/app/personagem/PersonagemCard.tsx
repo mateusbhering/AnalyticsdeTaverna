@@ -49,12 +49,19 @@ export default function PersonagemCard() {
   const className = params.get("classe") ?? "";
   const rpgClass = CLASS_LIST.find((c) => c.name === className) ?? CLASS_LIST[0];
 
-  // Avatar gerado pela IA: se o QR trouxe um id, busca a imagem no backend.
-  // Se tiver expirado (404), o onError cai na ilustração da classe.
+  // Avatar gerado pela IA (via QR). Carrega do Supabase Storage, que é
+  // PERMANENTE e servido por CDN — ao contrário do endpoint /avatar/image da
+  // API (Redis, expira em 24h + cold-start no free tier da Render). O onError
+  // tenta .png e, por fim, cai na ilustração da classe.
   const avatarId = params.get("avatar");
-  const portraitSrc = avatarId
-    ? `${AVATAR_API_BASE}/avatar/image/${avatarId}`
-    : rpgClass.photo;
+  const supabaseBase = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const supabaseAvatar =
+    avatarId && supabaseBase
+      ? `${supabaseBase}/storage/v1/object/public/avatars/${avatarId}.jpg`
+      : null;
+  const portraitSrc =
+    supabaseAvatar ??
+    (avatarId ? `${AVATAR_API_BASE}/avatar/image/${avatarId}` : rpgClass.photo);
 
   const attrs = Object.fromEntries(
     ATTR_LABELS.map(([key]) => [key, Number(params.get(key) ?? 0)])
@@ -149,10 +156,15 @@ export default function PersonagemCard() {
           alt={rpgClass.name}
           className="w-48 h-48 object-cover mx-auto border-2 border-[rgba(184,134,11,0.4)]"
           onError={(e) => {
-            // Avatar expirado/indisponível → volta pra ilustração da classe.
+            // .jpg falhou → tenta .png (Gemini às vezes retorna png);
+            // depois disso, cai na ilustração da classe.
             const img = e.currentTarget;
-            if (!img.dataset.fallback) {
-              img.dataset.fallback = "1";
+            const step = img.dataset.fbstep ?? "0";
+            if (step === "0" && supabaseAvatar) {
+              img.dataset.fbstep = "png";
+              img.src = supabaseAvatar.slice(0, -4) + ".png";
+            } else if (step !== "final") {
+              img.dataset.fbstep = "final";
               img.src = rpgClass.photo;
             }
           }}
