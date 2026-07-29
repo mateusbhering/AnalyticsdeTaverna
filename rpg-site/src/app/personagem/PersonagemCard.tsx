@@ -91,7 +91,9 @@ export default function PersonagemCard() {
             carisma: attrs.car || 0,
             sabedoria: attrs.sab || 0,
             caos: attrs.cao || 0,
-            foto_url: portraitSrc,
+            // Salva só a URL PERMANENTE do avatar (Supabase) — nunca o mockup
+            // da classe nem a URL efêmera da API. Sem avatar → null.
+            foto_url: supabaseAvatar,
           },
         ]).select();
 
