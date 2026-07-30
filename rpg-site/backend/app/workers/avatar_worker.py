@@ -1,22 +1,21 @@
 """Worker arq — geração do avatar de RPG via Google Gemini.
 
 ╔══════════════════════════════════════════════════════════════════════════╗
-║  PRIVACIDADE — LEIA ANTES DE ALTERAR ESTE ARQUIVO                         ║
+║  PRIVACIDADE — LEIA ANTES DE ALTERAR ESTE ARQUIVO                        ║
 ║                                                                          ║
-║  A foto ORIGINAL da pessoa (`image_b64`) NUNCA pode ser persistida.       ║
+║  A foto ORIGINAL da pessoa (`image_b64`) NUNCA pode ser persistida.      ║
 ║                                                                          ║
-║   • Ela chega como argumento do job (trafega pelo Redis como payload da   ║
-║     fila — isso é inerente ao arq) e é consumida aqui, em memória.        ║
-║   • `WorkerSettings.keep_result = 0` garante que o arq NÃO retém os        ║
-║     argumentos/resultado do job após a execução.                          ║
-║   • NÃO faça `redis.set(...)`, log, nem grave em disco a `image_b64` ou    ║
-║     os `image_bytes`. A única coisa que persistimos é o avatar GERADO,     ║
-║     na chave `avatar_result:{job_id}`, com TTL de 24h.                     ║
+║  • Ela chega como argumento do job (trafega pelo Redis como payload da   ║
+║    fila — isso é inerente ao arq) e é consumida aqui, em memória.        ║
+║  • `WorkerSettings.keep_result = 0` garante que o arq NÃO retém os       ║
+║    argumentos/resultado do job após a execução.                          ║
+║  • NÃO faça `redis.set(...)`, log, nem grave em disco a `image_b64` ou   ║
+║    os `image_bytes`. A única coisa que persistimos é o avatar GERADO,    ║
+║    na chave `avatar_result:{job_id}`, com TTL de 24h.                    ║
 ╚══════════════════════════════════════════════════════════════════════════╝
 """
-from supabase import create_client
-
 from __future__ import annotations
+from supabase import create_client
 
 import base64
 import json
@@ -128,21 +127,27 @@ async def generate_avatar_task(ctx, job_id: str, image_b64: str, class_name: str
     try:
         image_bytes = base64.b64decode(image_b64)
         image_out_b64, mime = await _run_gemini(image_bytes, build_prompt(class_name))
-        #Converter avatar gerado para bytes
-        avatar_bytes = base64.b64decode(image_out_b64)
-        #Conectar no Supabase via Python
-        supabase = create_client(settings.supabase_url, settings.supabase_service_role_key)
         
-        #Fazer upload para o bucket 'avatars'
-        filename = f"{job_id}.png"
-        supabase.storage.from_("avatars").upload(
-            path=filename,
-            file=avatar_bytes,
-            file_options={"content-type": mime, "upsert": "true"}
-        )
-        #Pegar a URL pública permanente
-        public_url = supabase.storage.from_("avatars").get_public_url(filename)
-        payload = {"status": "done", "image": image_out_b64, "mime": mime, 'public_url': public_url}
+        # Converter avatar gerado para bytes
+        avatar_bytes = base64.b64decode(image_out_b64)
+        public_url = ""
+        
+        # Só conecta no Supabase e faz upload se as credenciais existirem
+        if settings.supabase_url and settings.supabase_service_role_key:
+            supabase = create_client(settings.supabase_url, settings.supabase_service_role_key)
+            
+            # Fazer upload para o bucket 'avatars'
+            filename = f"{job_id}.png"
+            supabase.storage.from_("avatars").upload(
+                path=filename,
+                file=avatar_bytes,
+                file_options={"content-type": mime, "upsert": "true"}
+            )
+            # Pegar a URL pública permanente
+            public_url = supabase.storage.from_("avatars").get_public_url(filename)
+            
+        payload = {"status": "done", "image": image_out_b64, "mime": mime, "public_url": public_url}
+        
     except Exception:
         # NUNCA logamos a foto original nem os bytes — apenas o job_id e o traço.
         logger.exception("Falha ao gerar avatar para job %s", job_id)
