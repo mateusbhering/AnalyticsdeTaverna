@@ -18,7 +18,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
-# AQUI ESTAVA O ERRO: Faltava puxar todo mundo de volta!
 from .routers import analytics, avatar, batalha, jogadores, personagem, ranking
 
 log = logging.getLogger(__name__)
