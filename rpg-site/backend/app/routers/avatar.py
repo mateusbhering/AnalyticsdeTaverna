@@ -19,6 +19,22 @@ from ..config import result_key, settings
 router = APIRouter(prefix="/avatar", tags=["avatar"])
 
 
+def _redis(request: Request):
+    """Pega o pool do Redis, ou devolve 503 se ele não subiu.
+
+    Necessário porque a API agora sobe mesmo sem Redis (para permitir
+    desenvolver as rotas de cadastro/batalha/ranking sem instalar Redis).
+    Sem isto, uma chamada de avatar nessa situação viraria erro 500 feio.
+    """
+    redis = getattr(request.app.state, "arq_redis", None)
+    if redis is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Serviço de avatar indisponível: Redis não conectado.",
+        )
+    return redis
+
+
 @router.post("/generate")
 async def generate_avatar(
     request: Request,
@@ -56,7 +72,7 @@ async def generate_avatar(
     # fila arq). Ela é consumida pelo worker e nunca é gravada por nós em uma
     # chave durável, log ou disco. NÃO adicione um `redis.set(..., image_b64)`
     # aqui nem em qualquer outro lugar.
-    redis = request.app.state.arq_redis
+    redis = _redis(request)
     await redis.enqueue_job(
         "generate_avatar_task", job_id, image_b64, classe, _job_id=job_id
     )
@@ -70,7 +86,7 @@ async def generate_avatar(
 @router.get("/status/{job_id}")
 async def avatar_status(request: Request, job_id: str):
     """Polling: 'processing' enquanto não há resultado; 'done'/'error' quando pronto."""
-    redis = request.app.state.arq_redis
+    redis = _redis(request)
     raw = await redis.get(result_key(job_id))
     if raw is None:
         return {"job_id": job_id, "status": "processing"}
@@ -87,7 +103,7 @@ async def avatar_image(request: Request, job_id: str):
     enquanto durar o TTL de 24h; depois disso retorna 404 e o frontend cai no
     fallback da ilustração da classe.
     """
-    redis = request.app.state.arq_redis
+    redis = _redis(request)
     raw = await redis.get(result_key(job_id))
     if raw is None:
         raise HTTPException(status_code=404, detail="Avatar não encontrado ou expirado")
@@ -109,6 +125,6 @@ async def delete_avatar_result(request: Request, job_id: str):
 
     O frontend chama isto após baixar/exibir a imagem.
     """
-    redis = request.app.state.arq_redis
+    redis = _redis(request)
     deleted = await redis.delete(result_key(job_id))
     return {"job_id": job_id, "deleted": bool(deleted)}

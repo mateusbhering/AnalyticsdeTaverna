@@ -45,3 +45,28 @@ async def client(fake_redis):
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as c:
         yield c
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Fixtures das rotas novas (cadastro, personagem, batalha, ranking, analytics)
+#
+# Aqui trocamos o banco real por um repositório em memória usando o mecanismo
+# de dependency override do FastAPI. Nenhuma linha de código de produção muda.
+# ─────────────────────────────────────────────────────────────────────────────
+
+from app.repo import get_repo  # noqa: E402
+from tests.repo_memoria import RepoMemoria  # noqa: E402
+
+
+@pytest.fixture
+def repo():
+    return RepoMemoria()
+
+
+@pytest_asyncio.fixture
+async def api(repo):
+    app.dependency_overrides[get_repo] = lambda: repo
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as c:
+        yield c
+    app.dependency_overrides.clear()
