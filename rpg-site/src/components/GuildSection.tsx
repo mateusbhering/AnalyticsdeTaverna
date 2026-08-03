@@ -49,13 +49,13 @@ export default function GuildSection() {
                 />
               </div>
               <span
-                className="mt-2.5 block text-[var(--seal)] text-[.55rem] tracking-[.28em] uppercase"
+                className="mt-2.5 block text-[var(--seal)] text-[.55rem] tracking-[.28em] uppercase font-bold"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
                 {advisor.role}
               </span>
               <p
-                className="text-[var(--ink)] text-[.8rem] tracking-[.05em] mt-0.5 leading-snug"
+                className="text-[var(--ink)] text-[.8rem] tracking-[.05em] mt-0.5 leading-snug font-bold"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
                 {advisor.name}
@@ -89,12 +89,12 @@ export default function GuildSection() {
                   )}
                 </div>
                 <p
-                  className="text-[var(--ink)] text-[.72rem] tracking-[.04em] leading-snug mt-2.5"
+                  className="text-[var(--ink)] text-[.72rem] tracking-[.04em] leading-snug mt-2.5 font-bold"
                   style={{ fontFamily: "var(--font-cinzel), serif" }}
                 >
                   {member.name}
                 </p>
-                <p className="text-[var(--ink-50)] text-[.62rem] italic mt-0.5">Membro da Guilda</p>
+                <p className="text-[var(--ink-70)] text-[.62rem] italic mt-0.5 font-semibold">Membro da Guilda</p>
               </div>
             </StaggerItem>
           ))}
