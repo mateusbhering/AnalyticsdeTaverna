@@ -457,7 +457,6 @@ Para o OAuth funcionar localmente, adicionar `http://localhost:3000/api/auth/cal
 | Julia de Moraes Barbosa | [@juliacrws](https://github.com/juliacrws) |
 | Mariana Ayumi Dantas Kuramitsu | [@marianakuramitsu](https://github.com/marianakuramitsu) |
 | Yasmin Yumi Tsunokawa | [@Tsunokaway](https://github.com/Tsunokaway) |
-| Lucas Luna Pimentel | [@oipimenta](https://github.com/oipimenta) |
 | Lucas Amaral da Silva Barros | — |
 | Mateus Bhering Beltrão Santos | [@mateusbhering](https://github.com/mateusbhering) |
 | Guilherme Ladeira Correa Santos | — |
