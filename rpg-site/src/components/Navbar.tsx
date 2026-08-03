@@ -37,8 +37,8 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="Analytics de Taverna"
-            width={1024}
-            height={558}
+            width={512}
+            height={512}
             className="h-9 w-auto object-contain sm:hidden drop-shadow-[0_0_10px_rgba(184,134,11,0.35)]"
             priority
           />
