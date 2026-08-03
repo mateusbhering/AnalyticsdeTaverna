@@ -78,6 +78,7 @@ Cobrem: validação de content-type/tamanho no endpoint, fluxo do worker
 | `GEMINI_API_KEY` | sim (prod) | — | Chave do Google Gemini. Nunca hardcoded. |
 | `REDIS_URL` | não | `redis://localhost:6379` | Fila arq + cache de resultado. |
 | `GEMINI_IMAGE_MODEL` | não | `gemini-3.1-flash-image` | Modelo de imagem (Nano Banana 2, jul/2026). `gemini-2.5-flash-image` é legado. |
+| `GEMINI_MAX_RPM` | não | `8` | Teto de chamadas/min ao Gemini (evita 429 sob rajada). Ajuste à sua cota. Veja [Rate limit](#rate-limit--capacidade-do-gemini). |
 | `SUPABASE_URL` | sim (prod) | — | URL do projeto Supabase (armazenamento do avatar). |
 | `SUPABASE_SERVICE_ROLE_KEY` | sim (prod) | — | Chave **secreta** (`sb_secret_…`). Só backend — nunca no frontend. |
 
@@ -127,6 +128,31 @@ O blueprint [`../../render.yaml`](../../render.yaml) (na raiz do repo git) já d
   o TTL de 24h como rede de segurança. Sob tráfego alto, considere um plano maior de
   Key Value ou mover a imagem para object storage guardando só a URL no Redis.
 - **Python.** Fixado em `3.12.7` via `.python-version`.
+
+## Rate limit / capacidade do Gemini
+
+O modelo de imagem do Gemini tem um limite de **requisições por minuto (RPM)**. Sob
+rajada (muita gente gerando ao mesmo tempo), chamadas voltam `429 RESOURCE_EXHAUSTED`.
+
+Duas camadas de defesa, e você precisa das duas:
+
+1. **Pacing (no código).** O worker tem um rate limiter global
+   (`_RateLimiter` em `avatar_worker.py`) que espaça os inícios de chamada — inclusive
+   os retries — para não passar de `GEMINI_MAX_RPM` por minuto. O excedente **espera a
+   vez na fila** em vez de tomar erro. Isso NÃO aumenta a cota; só evita a "bola de
+   neve" de 429 → retry → mais 429. O `_run_gemini` também reintenta erros transitórios
+   (429/5xx) com backoff.
+2. **A cota (o teto real).** Ajuste `GEMINI_MAX_RPM` **um pouco abaixo** da cota real do
+   seu projeto:
+   - **Ver a cota:** Cloud Console → APIs & Services → [Quotas](https://console.cloud.google.com/apis/api/generativelanguage.googleapis.com/quotas)
+     → "generate content requests per minute" do modelo em uso.
+   - **Aumentar:** botão *Edit quotas / Request increase* (a cota também escala com o
+     uso/tier de faturamento).
+
+Se o pico do evento exigir mais avatares/min do que a cota permite, o pacing só troca
+erro por **espera mais longa** (limitada pelo timeout de polling do frontend, ~3min).
+Nesse caso: peça aumento de cota, suba `GEMINI_MAX_RPM`, ou aceite o fallback para a
+ilustração da classe.
 
 ## Supabase — o que o projeto espera
 
