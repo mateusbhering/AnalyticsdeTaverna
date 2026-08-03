@@ -17,7 +17,12 @@ Site institucional e experiência interativa de gamificação comportamental. Us
 | Tailwind CSS | v4 | Estilização (PostCSS plugin) |
 | NextAuth.js | 5.0.0-beta.31 | Autenticação GitHub OAuth (área admin) |
 | qrcode.react | 4.2.0 | Geração de QR Code SVG client-side |
-| Vercel | — | Deploy, CDN, CI/CD |
+| Vercel | — | Deploy do frontend, CDN, CI/CD |
+| Python / FastAPI | 3.12 | Backend/API (avatar, batalha, ranking, analytics) |
+| arq + Redis | — | Fila assíncrona da geração de avatar |
+| Supabase | — | Postgres (jogadores/batalhas) + Storage (avatares) |
+| Google Gemini | `gemini-3.1-flash-image` | Geração do avatar de IA |
+| Render | — | Deploy do backend (API + worker + Redis) |
 
 ---
 
@@ -27,13 +32,18 @@ Site institucional e experiência interativa de gamificação comportamental. Us
 IC-SITE/
 ├── README.md
 └── rpg-site/                          # Raiz do projeto Next.js
-    ├── backend/                       # Serviço Python (FastAPI+arq) — geração de avatar IA
+    ├── backend/                       # API Python (FastAPI): avatar + jogadores + batalha + ranking + analytics
     │   ├── app/
-    │   │   ├── config.py              # Settings via env (Redis, Gemini, limites, TTL)
-    │   │   ├── main.py                # App FastAPI + lifespan (pool arq) + CORS
-    │   │   ├── routers/avatar.py      # /avatar/generate, /status, /result (delete)
-    │   │   └── workers/avatar_worker.py  # generate_avatar_task + WorkerSettings
-    │   ├── tests/                     # pytest (fakeredis + mock do Gemini)
+    │   │   ├── config.py              # Settings via env (Redis, Gemini, Supabase, rate limit, TTL)
+    │   │   ├── main.py                # App FastAPI + lifespan (pool arq) + CORS + registra routers
+    │   │   ├── schemas.py             # Modelos Pydantic (contrato do /docs)
+    │   │   ├── repo.py                # Acesso ao banco (Supabase; testes usam repo em memória)
+    │   │   ├── domain/                # Regras puras: personagem.py, batalha.py
+    │   │   ├── routers/               # avatar, personagem, jogadores, batalha, ranking, analytics
+    │   │   └── workers/avatar_worker.py  # generate_avatar_task + rate limiter + WorkerSettings
+    │   ├── sql/schema.sql             # Schema do banco (jogadores, batalhas, RLS, RPC de placar)
+    │   ├── tests/                     # pytest (repo em memória + mocks; sem Redis/Gemini/Supabase reais)
+    │   ├── render.yaml                # Blueprint da Render (raiz do repo git também tem um)
     │   └── requirements.txt
     ├── next.config.ts
     ├── tsconfig.json
@@ -249,87 +259,92 @@ Extraído da planilha `questionário_deterministico_final2.0.xlsx` (aba `Banco_1
 
 ## Página de Compartilhamento (`/personagem`)
 
-O resultado do quiz é serializado como query string e codificado no QR Code. **Sem banco de dados.**
+Cada jogador ganha um **link único, curto e permanente** ao terminar o quiz:
 
-**Formato da URL:**
 ```
-/personagem?classe=Artífice+da+Gambiarra&for=12&int=8&agi=10&res=9&car=6&sab=7&cao=14
+/personagem?id=42
 ```
 
-**Parâmetros:**
+Ao concluir o quiz (em `CharacterResult`), o jogador é salvo na tabela `jogadores` do Supabase e o `id` retornado vira o link (mostrado como QR + botão "Copiar link"). Abrir `/personagem?id={id}` faz o `PersonagemCard` **ler o jogador do banco** (classe, atributos, `foto_url`) e renderizar o card com o **avatar de IA** — carregado direto do **Supabase Storage** (permanente, via CDN). Estados de "invocando…" e "não encontrado".
 
-| Param | Tipo | Descrição |
-|---|---|---|
-| `classe` | string | Nome exato da classe (usado para lookup na `CLASS_LIST`) |
-| `for` | number | Força |
-| `int` | number | Inteligência |
-| `agi` | number | Agilidade |
-| `res` | number | Resistência |
-| `car` | number | Carisma |
-| `sab` | number | Sabedoria |
-| `cao` | number | Caos |
+**Compatibilidade:** links antigos por query string (`?classe=…&for=…&avatar={jobId}`) continuam funcionando — se não houver `id`, o card renderiza a partir dos params.
 
-**Renderização:** `PersonagemCard` é um Client Component que usa `useSearchParams()`. A foto da webcam **não é incluída** (data URL em base64 seria inviável em query string). O QR Code na página `/personagem` aponta para a própria URL da página.
-
-**Suspense boundary:** `page.tsx` envolve `<PersonagemCard>` em `<Suspense>` para compatibilidade com o comportamento de `useSearchParams` no App Router.
+**Renderização:** `PersonagemCard` é um Client Component; `page.tsx` o envolve em `<Suspense>` (exigência do `useSearchParams` no App Router). A foto original da webcam nunca aparece aqui — só o avatar gerado.
 
 ---
 
-## Backend — Geração de Avatar com IA (`backend/`)
+## Backend / API (`backend/`)
 
-Serviço Python **separado** do Next.js que transforma a foto da webcam num avatar de RPG via **Google Gemini**. Arquitetura assíncrona: **FastAPI** + **arq** (fila sobre Redis) + **Redis**. O frontend consome a API via HTTP (CORS liberado para `localhost:3000` e o domínio de produção).
+Serviço Python **separado** do Next.js. Começou como a geração de avatar e cresceu para a **API completa** do projeto: cadastro de jogadores, geração de personagem, sistema de batalha, ranking e dashboard analytics.
 
-**Stack:** FastAPI · arq · Redis · `google-genai` (modelo `gemini-3.1-flash-image` / Nano Banana 2, configurável).
+**Stack:** FastAPI · **arq** (fila sobre Redis, só para o avatar) · Redis · Supabase (Postgres + Storage) · `google-genai` (`gemini-3.1-flash-image`, configurável).
 
-### Fluxo assíncrono
+**Camadas** (os routers nunca falam com Gemini/Supabase direto):
+- `app/routers/` — HTTP (validação + I/O). `app/domain/` — regras puras (personagem, batalha). `app/repo.py` — todo acesso ao banco (Supabase via PostgREST, em threadpool; os testes injetam um repo em memória e rodam sem banco). `app/schemas.py` — modelos Pydantic (contrato do `/docs`).
+- Documentação automática (OpenAPI): **`/docs`**. Health: **`/health`**.
+
+### Endpoints
+
+| Área | Método & rota | O que faz |
+|---|---|---|
+| **Avatar** | `POST /avatar/generate` | Valida a foto (jpeg/png/webp, ≤8MB) e enfileira o job; devolve `job_id`. |
+| | `GET /avatar/status/{id}` | Polling: `processing` \| `done`+imagem \| `error`. |
+| | `GET /avatar/image/{id}` | Imagem crua (bytes) — enquanto durar o TTL de 24h no Redis. |
+| | `DELETE /avatar/result/{id}` | Limpeza antecipada do resultado no Redis. |
+| **Personagem** | `POST /personagem/gerar` | Dimensões do quiz → atributos + classe (determinístico, não grava). |
+| | `GET /personagem/classes` | Catálogo de classes/dimensões/atributos. |
+| **Jogadores** | `POST /jogadores` | Cadastra o jogador (placar zera no servidor) e devolve o `id`. |
+| | `GET /jogadores/{id}` · `GET /jogadores` | Consulta um / lista paginada. |
+| **Batalha** | `POST /batalha/parear` | Matchmaking por XP próximo. |
+| | `POST /batalha` | Resolve o confronto, registra e atualiza o placar dos dois. |
+| | `GET /batalha/atributos` · `GET /batalha/{id}` · `GET /batalha/historico/{id}` | Atributos disputáveis / detalhe / histórico. |
+| **Ranking** | `GET /ranking` · `GET /ranking/{id}` | Top N por XP / posição de um jogador. |
+| **Analytics** | `GET /analytics/{resumo,classes,atributos,batalhas,taxa-vitoria,insight}` | Números do dashboard, agregados em Python. |
+
+### Avatar — fluxo assíncrono e retenção
 
 ```
-POST /avatar/generate ──► valida (content-type ∈ {jpeg,png,webp}, ≤8MB)
-   │                       enfileira base64(foto) como arg do job (arq→Redis)
-   ▼                       responde { job_id, status: "processing" }
-Worker arq ──► decodifica em memória → Gemini → extrai inline_data
-   │           SET avatar_result:{job_id} = { status, image, mime }  (TTL 24h)
-   ▼
-GET /avatar/status/{job_id} (polling) ──► processing | done+image | error
-DELETE /avatar/result/{job_id} ──► limpeza antecipada (opcional)
+POST /avatar/generate ─► valida ─► enfileira base64(foto) no arq→Redis ─► { job_id, "processing" }
+Worker arq ─► Gemini (pacing p/ não estourar o rate limit) ─► upload no Supabase Storage
+           ─► SET avatar_result:{job_id} = { status, image, mime, public_url }  (TTL 24h)
 ```
-
-### Política de retenção de dados
 
 | Dado | Retenção |
 |---|---|
-| **Foto original** | **Nunca persistida.** Existe só em memória durante o job; trafega pelo Redis apenas como payload da fila arq e é consumida pelo worker. `WorkerSettings.keep_result = 0` impede o arq de reter os argumentos/resultado após a execução. Sem chave durável, sem log, sem disco. |
-| **Avatar gerado** | Chave `avatar_result:{job_id}` no Redis, **TTL de 24h** — ou removido antes via `DELETE /avatar/result/{job_id}`. |
+| **Foto original** | **Nunca persistida.** Só em memória durante o job; trafega no Redis apenas como payload da fila e é consumida pelo worker. `keep_result = 0`. Sem chave durável, log ou disco. |
+| **Avatar gerado** | Redis `avatar_result:{id}` (TTL 24h) **+ Supabase Storage** (bucket `avatars`, **permanente**, servido por CDN — é o que o `/personagem` usa). |
 
-Detalhes de execução, variáveis de ambiente e testes: [`backend/README.md`](backend/README.md).
+**Rate limit:** o modelo de imagem tem RPM baixo; o worker tem um rate limiter (`GEMINI_MAX_RPM`) que espaça as chamadas para não estourar a cota. Detalhes em [`backend/README.md`](backend/README.md).
+
+### Banco (Supabase / Postgres)
+
+Schema idempotente em [`backend/sql/schema.sql`](backend/sql/schema.sql):
+- **`jogadores`** — classe, 7 atributos, 10 dimensões, `foto_url`, placar (`xp/vitorias/derrotas/empates`).
+- **`batalhas`** — uma linha por confronto (atributo, valores, resultado, XP).
+- **RLS:** frontend (chave anon) pode **inserir e ler** jogadores; **escrita do placar e das batalhas é só do backend** (chave service_role) — impede alguém dar XP a si mesmo pelo console. Função `aplicar_resultado_batalha` soma XP atomicamente (evita lost update).
+
+Execução, variáveis de ambiente, deploy e o que o Supabase espera (bucket + tabela + RLS + chaves): [`backend/README.md`](backend/README.md).
 
 ### Integração com o frontend
 
-O hook [`src/lib/useAvatarGeneration.ts`](rpg-site/src/lib/useAvatarGeneration.ts) orquestra a chamada:
-
 ```
-QuizForm: foto capturada → clique "Continuar para o Quiz"
-   │  avatar.start(photo)  → POST /avatar/generate (a geração roda em 2º plano
-   │                          durante o quiz, escondendo a latência da IA)
-   ▼
-polling GET /avatar/status/{job_id} a cada 2.5s (teto ~3min)
-   ▼
-CharacterResult: exibe o avatar da IA quando pronto; enquanto processa mostra a
-   ilustração da classe esmaecida + "Conjurando seu avatar…"; em erro/timeout
-   mantém a ilustração da classe como fallback silencioso.
-   Ao exibir, dispara DELETE /avatar/result/{job_id} (limpeza antecipada).
+/jogar → foto (webcam) → quiz → CharacterResult:
+   dispara avatar.start(photo, classe)  ─► POST /avatar/generate  ─► polling status (~2.5s, teto ~3min)
+   ao terminar: salva o jogador na tabela `jogadores` e gera um LINK ÚNICO
+   /personagem?id={id}  (QR + "Copiar link"). Avatar do Supabase (permanente).
+
+/personagem?id={id} → lê o jogador do banco → renderiza card + avatar.
 ```
 
-O `restart()` do quiz chama `avatar.reset()` para permitir uma nova geração.
+Hook: [`src/lib/useAvatarGeneration.ts`](src/lib/useAvatarGeneration.ts). Enquanto gera, o card mostra "Conjurando seu avatar…"; em erro, uma mensagem (sem placeholder de classe).
 
-**Variável de ambiente do frontend** (`.env.local`):
+**Env vars do frontend** (`.env.local` / Vercel):
 
 ```env
-NEXT_PUBLIC_AVATAR_API_URL=http://localhost:8000   # host do backend Python
+NEXT_PUBLIC_AVATAR_API_URL=http://localhost:8000            # host do backend Python
+NEXT_PUBLIC_SUPABASE_URL=https://<projeto>.supabase.co      # avatar permanente + tabela jogadores
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...            # chave pública (RLS protege)
 ```
-
-Sem essa variável, o hook usa `http://localhost:8000` por padrão. O CORS do
-backend precisa liberar a origem do frontend (veja `cors_origins` em `backend/app/config.py`).
 
 ---
 
