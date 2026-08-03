@@ -19,9 +19,7 @@ const members = [
 
 export default function GuildSection() {
   return (
-    <div
-      style={{ background: "url('/textures/dark-wood.png'), var(--charcoal)" }}
-    >
+    <div className="bg-dark-wood">
       <section id="guilda" className="py-28 px-6 relative max-w-5xl mx-auto overflow-hidden">
         <div className="section-line-top" />
 
@@ -31,84 +29,82 @@ export default function GuildSection() {
             <h2 className="text-5xl text-[var(--parchment)] mb-4">
               Nossa <span className="gold-grad">Guilda</span>
             </h2>
-            <p className="text-[rgba(244,228,188,0.55)] text-lg max-w-xl mx-auto italic">
+            <p className="text-[rgba(240,226,189,0.6)] text-lg max-w-xl mx-auto italic">
               Os heróis por trás da experiência. Unidos por dados, batalhas e muita criatividade.
             </p>
           </div>
         </Reveal>
 
-        {/* Advisor */}
+        {/* Orientador — polaroid de destaque colada no diário */}
         <Reveal delay={0.05}>
-          <div className="mb-8 flex justify-center">
-            <div className="card-hover arcane-corners group bg-[rgba(184,134,11,0.06)] border border-[rgba(184,134,11,0.3)] p-5 px-7 flex items-center gap-4 max-w-[380px] w-full">
-              <span className="ac-bl" /><span className="ac-br" />
-              <div className="avatar-lift flex-shrink-0 rounded-full overflow-hidden border-2 border-[rgba(184,134,11,0.4)] w-[60px] h-[60px]">
+          <div className="mb-12 flex justify-center">
+            <div className="card-hover polaroid group w-[200px] -rotate-2 text-center">
+              <div className="avatar-lift overflow-hidden border border-[rgba(96,66,26,0.35)] aspect-square">
                 <Image
                   src={advisor.photo}
                   alt={advisor.name}
-                  width={60}
-                  height={60}
+                  width={200}
+                  height={200}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div>
-                <span
-                  className="text-[var(--gold)] text-[.55rem] tracking-[.25em] uppercase"
-                  style={{ fontFamily: "var(--font-cinzel), serif" }}
-                >
-                  {advisor.role}
-                </span>
-                <p
-                  className="text-[var(--parchment)] text-[.9rem] tracking-[.06em] mt-0.5"
-                  style={{ fontFamily: "var(--font-cinzel), serif" }}
-                >
-                  {advisor.name}
-                </p>
-              </div>
+              <span
+                className="mt-2.5 block text-[var(--seal)] text-[.55rem] tracking-[.28em] uppercase"
+                style={{ fontFamily: "var(--font-cinzel), serif" }}
+              >
+                {advisor.role}
+              </span>
+              <p
+                className="text-[var(--ink)] text-[.8rem] tracking-[.05em] mt-0.5 leading-snug"
+                style={{ fontFamily: "var(--font-cinzel), serif" }}
+              >
+                {advisor.name}
+              </p>
             </div>
           </div>
         </Reveal>
 
-        {/* Members grid — cartas de baralho sendo distribuídas */}
-        <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Membros — fotos reveladas sendo distribuídas sobre a mesa */}
+        <Stagger className="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-8 max-w-3xl mx-auto">
           {members.map((member, i) => (
-            <StaggerItem key={member.name} rotate={i % 2 === 0 ? -4 : 4} className="h-full">
-              <div className="card-hover arcane-corners group bg-[rgba(15,9,5,0.8)] border border-[rgba(184,134,11,0.1)] p-5 flex items-center gap-4 h-full">
-                <span className="ac-bl" /><span className="ac-br" />
-                <div className="avatar-lift flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border border-[rgba(184,134,11,0.25)]">
+            <StaggerItem key={member.name} rotate={i % 2 === 0 ? -5 : 5} className="h-full">
+              <div
+                className={`card-hover polaroid group h-full text-center ${
+                  i % 3 === 0 ? "-rotate-1" : i % 3 === 1 ? "rotate-[1.5deg]" : "-rotate-[1.5deg]"
+                }`}
+              >
+                <div className="avatar-lift overflow-hidden border border-[rgba(96,66,26,0.35)] aspect-square">
                   {member.photo ? (
                     <Image
                       src={member.photo}
                       alt={member.name}
-                      width={48}
-                      height={48}
+                      width={220}
+                      height={220}
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-[rgba(74,14,14,0.3)] flex items-center justify-center text-[var(--gold-light)]">
-                      <UserRound size={22} strokeWidth={1.5} />
+                    <div className="w-full h-full bg-[rgba(96,66,26,0.14)] flex items-center justify-center text-[var(--foil)]">
+                      <UserRound size={44} strokeWidth={1.3} />
                     </div>
                   )}
                 </div>
-                <div>
-                  <p
-                    className="text-[var(--parchment)] text-[.78rem] tracking-[.05em] leading-snug"
-                    style={{ fontFamily: "var(--font-cinzel), serif" }}
-                  >
-                    {member.name}
-                  </p>
-                  <p className="text-[rgba(184,134,11,0.5)] text-xs mt-0.5">Membro da Guilda</p>
-                </div>
+                <p
+                  className="text-[var(--ink)] text-[.72rem] tracking-[.04em] leading-snug mt-2.5"
+                  style={{ fontFamily: "var(--font-cinzel), serif" }}
+                >
+                  {member.name}
+                </p>
+                <p className="text-[var(--ink-50)] text-[.62rem] italic mt-0.5">Membro da Guilda</p>
               </div>
             </StaggerItem>
           ))}
         </Stagger>
 
         {/* Fleur decoration */}
-        <div className="mt-14 flex items-center gap-4">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[rgba(184,134,11,0.3)]" />
-          <span className="text-[rgba(184,134,11,0.4)] text-2xl">⚜</span>
-          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[rgba(184,134,11,0.3)]" />
+        <div className="mt-16 flex items-center gap-4">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[rgba(201,151,63,0.35)]" />
+          <span className="text-[rgba(230,188,106,0.5)] text-2xl">⚜</span>
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[rgba(201,151,63,0.35)]" />
         </div>
       </section>
     </div>

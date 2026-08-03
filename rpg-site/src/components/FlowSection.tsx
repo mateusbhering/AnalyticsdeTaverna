@@ -63,25 +63,24 @@ export default function FlowSection() {
             <h2 className="text-5xl text-[var(--parchment)] mb-4">
               Fluxo da <span className="gold-grad">Experiência</span>
             </h2>
-            <p className="text-[rgba(244,228,188,0.55)] text-lg max-w-2xl mx-auto italic">
+            <p className="text-[rgba(240,226,189,0.6)] text-lg max-w-2xl mx-auto italic">
               Cada etapa cuidadosamente desenhada para engajar e surpreender — do primeiro olhar ao compartilhamento viral.
             </p>
           </div>
         </Reveal>
 
         <div className="relative">
-          {/* Connector line */}
-          <div className="hidden lg:block absolute top-[60px] left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-[rgba(184,134,11,0.3)] to-transparent pointer-events-none" />
+          {/* Linha que conecta as páginas, como costura do caderno */}
+          <div className="hidden lg:block absolute top-[60px] left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-[rgba(201,151,63,0.35)] to-transparent pointer-events-none" />
 
           <Stagger className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
             {steps.map((step) => (
               <StaggerItem key={step.num} className="h-full">
                 <TiltCard className="h-full">
-                  <div className="card-hover arcane-corners relative bg-[rgba(20,12,6,0.85)] border border-[rgba(184,134,11,0.15)] p-7 text-center h-full">
-                    <span className="ac-bl" /><span className="ac-br" />
-                    {/* Ghost number */}
+                  <div className="card-hover paper-card paper-frame relative p-7 text-center h-full">
+                    {/* Número fantasma em folha de ouro desbotada */}
                     <span
-                      className="absolute top-2.5 right-3 text-[2.5rem] font-black text-[rgba(184,134,11,0.08)] pointer-events-none leading-none"
+                      className="absolute top-3 right-4 text-[2.5rem] font-black text-[rgba(138,100,40,0.16)] pointer-events-none leading-none"
                       style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
                     >
                       {step.num}
@@ -90,12 +89,12 @@ export default function FlowSection() {
                       <step.Icon size={26} strokeWidth={1.5} />
                     </div>
                     <h3
-                      className="text-[var(--gold)] text-[.85rem] mb-2"
+                      className="text-[var(--seal)] text-[.85rem] mb-2"
                       style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
                     >
                       {step.title}
                     </h3>
-                    <p className="text-[rgba(244,228,188,0.55)] text-[.85rem] leading-relaxed mb-3">
+                    <p className="text-[.85rem] leading-relaxed mb-3">
                       {step.description}
                     </p>
                     <div className="flex flex-wrap gap-1 justify-center">

@@ -123,11 +123,10 @@ export default function PersonagemCard() {
   // ── Estados de carregamento / não encontrado (só no fluxo por ?id=) ──
   if (loading) {
     return (
-      <div className="arcane-corners border-2 border-[rgba(184,134,11,0.35)] p-12 flex flex-col items-center gap-4"
-        style={{ background: "url('/textures/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)" }}>
+      <div className="paper-card paper-frame arcane-corners p-12 flex flex-col items-center gap-4">
         <span className="ac-bl" /><span className="ac-br" />
-        <div className="w-10 h-10 border-2 border-[rgba(184,134,11,0.3)] border-t-[var(--gold)] rounded-full animate-spin" />
-        <span className="text-[rgba(244,228,188,0.6)] text-[.6rem] tracking-[.25em] uppercase" style={{ fontFamily: "var(--font-cinzel), serif" }}>
+        <div className="w-10 h-10 border-2 border-[rgba(138,100,40,0.35)] border-t-[var(--foil)] rounded-full animate-spin" />
+        <span className="text-[var(--ink-70)] text-[.6rem] tracking-[.25em] uppercase" style={{ fontFamily: "var(--font-cinzel), serif" }}>
           Invocando personagem…
         </span>
       </div>
@@ -136,17 +135,16 @@ export default function PersonagemCard() {
 
   if (notFound) {
     return (
-      <div className="arcane-corners border-2 border-[rgba(184,134,11,0.35)] p-12 text-center"
-        style={{ background: "url('/textures/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)" }}>
+      <div className="paper-card paper-frame arcane-corners p-12 text-center">
         <span className="ac-bl" /><span className="ac-br" />
         <div className="text-4xl mb-4 opacity-60">🕯️</div>
-        <p className="text-[var(--parchment)] text-lg mb-1" style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}>
+        <p className="text-[var(--ink)] text-lg mb-1" style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}>
           Personagem não encontrado
         </p>
-        <p className="text-[rgba(244,228,188,0.5)] text-sm italic mb-6">
+        <p className="text-sm italic mb-6">
           Este link não existe mais ou expirou.
         </p>
-        <a href="/jogar" className="press inline-block px-6 py-3 bg-[var(--wine)] border border-[rgba(184,134,11,0.5)] text-[var(--parchment)] text-[.7rem] tracking-[.12em] uppercase hover:border-[var(--gold)] transition-all"
+        <a href="/jogar" className="press btn-seal inline-block px-6 py-3 text-[.7rem] tracking-[.12em] uppercase"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}>
           ⚔ Criar o meu
         </a>
@@ -155,35 +153,29 @@ export default function PersonagemCard() {
   }
 
   return (
-    <div
-      className="arcane-corners border-2 border-[rgba(184,134,11,0.35)] p-8"
-      style={{
-        background:
-          "url('/textures/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)",
-      }}
-    >
+    <div className="paper-card paper-frame arcane-corners p-8">
       <span className="ac-bl" /><span className="ac-br" />
 
       {/* Class header */}
       <div className="text-center mb-6">
-        <span className="section-eyebrow" style={{ fontSize: ".6rem", letterSpacing: ".35em", marginBottom: "16px" }}>
+        <span
+          className="section-eyebrow"
+          style={{ fontSize: ".6rem", letterSpacing: ".35em", marginBottom: "16px", color: "var(--seal)", opacity: 0.9 }}
+        >
           Manifestação do Ser
         </span>
 
-        <div className="inline-flex w-20 h-20 bg-gradient-to-br from-[var(--wine)] to-[rgba(74,14,14,0.6)] border-2 border-[rgba(184,134,11,0.5)] items-center justify-center text-5xl mb-4">
+        <div className="wax-seal !w-20 !h-20 mx-auto text-4xl mb-4">
           {rpgClass.icon}
         </div>
 
         <h1
-          className="text-[1.6rem] text-[var(--gold)] mb-1"
-          style={{
-            fontFamily: "var(--font-cinzel-decorative), serif",
-            textShadow: "0 0 20px rgba(184,134,11,0.4)",
-          }}
+          className="text-[1.6rem] text-[var(--seal)] mb-1"
+          style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
         >
           {rpgClass.name}
         </h1>
-        <p className="text-[rgba(244,228,188,0.55)] text-[.9rem] italic max-w-xs mx-auto leading-relaxed mb-4">
+        <p className="text-[.9rem] italic max-w-xs mx-auto leading-relaxed mb-4">
           {rpgClass.desc}
         </p>
 
@@ -191,7 +183,7 @@ export default function PersonagemCard() {
         <img
           src={portraitSrc}
           alt={rpgClass.name}
-          className="w-48 h-48 object-cover mx-auto border-2 border-[rgba(184,134,11,0.4)]"
+          className="w-48 h-48 object-cover mx-auto border border-[rgba(96,66,26,0.45)] shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
           onError={(e) => {
             // .jpg falhou → tenta .png; depois disso, cai na ilustração da classe.
             const img = e.currentTarget;
@@ -213,7 +205,7 @@ export default function PersonagemCard() {
       {/* Attributes */}
       <div className="mb-5">
         <div
-          className="text-[.7rem] tracking-[.2em] uppercase text-[var(--gold)] opacity-70 mb-4 text-center"
+          className="text-[.7rem] tracking-[.2em] uppercase text-[var(--foil)] mb-4 text-center"
           style={{ fontFamily: "var(--font-cinzel), serif" }}
         >
           Atributos Arcanos
@@ -225,20 +217,20 @@ export default function PersonagemCard() {
                 <div className="flex items-center gap-2">
                   <span>{icon}</span>
                   <span
-                    className="text-[rgba(184,134,11,0.9)] text-[.7rem] uppercase tracking-[.15em]"
+                    className="text-[var(--foil)] text-[.7rem] uppercase tracking-[.15em]"
                     style={{ fontFamily: "var(--font-cinzel), serif" }}
                   >
                     {label}
                   </span>
                 </div>
                 <span
-                  className="text-[var(--parchment)] text-[.85rem]"
+                  className="text-[var(--ink)] text-[.85rem]"
                   style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
                 >
                   {attrs[key]}
                 </span>
               </div>
-              <div className="h-1.5 bg-[rgba(184,134,11,0.1)] border border-[rgba(184,134,11,0.15)] overflow-hidden">
+              <div className="h-1.5 bg-[rgba(96,66,26,0.15)] border border-[rgba(96,66,26,0.25)] overflow-hidden">
                 <div className="stat-bar-fill" style={{ width: `${barPct(attrs[key])}%` }} />
               </div>
             </div>
@@ -247,17 +239,17 @@ export default function PersonagemCard() {
       </div>
 
       {/* QR Code (batalha) */}
-      <div className="pt-5 border-t border-[rgba(184,134,11,0.15)] flex flex-col items-center gap-3">
+      <div className="pt-5 border-t border-[rgba(96,66,26,0.25)] flex flex-col items-center gap-3">
         <span
-          className="text-[.55rem] tracking-[.3em] uppercase text-[rgba(184,134,11,0.5)]"
+          className="text-[.55rem] tracking-[.3em] uppercase text-[var(--foil)]"
           style={{ fontFamily: "var(--font-cinzel), serif" }}
         >
           Desafie este herói
         </span>
-        <div className="bg-white p-2.5">
-          <QRCodeSVG value={qrUrl} size={120} bgColor="#ffffff" fgColor="#1a0033" />
+        <div className="bg-[#f8f0da] border border-[rgba(96,66,26,0.35)] p-2.5">
+          <QRCodeSVG value={qrUrl} size={120} bgColor="#f8f0da" fgColor="#3c2a18" />
         </div>
-        <p className="text-[rgba(244,228,188,0.4)] text-[.78rem] italic text-center">
+        <p className="text-[.78rem] italic text-center">
           Escaneie para entrar em batalha
         </p>
       </div>

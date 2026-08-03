@@ -1,4 +1,4 @@
-import { Camera, Brain, Swords, WalletCards, type LucideIcon } from "lucide-react";
+import { Camera, Brain, Swords, WalletCards, Feather, type LucideIcon } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
 import TiltCard from "@/components/ui/tilt-card";
 
@@ -37,42 +37,46 @@ export default function ConceptSection() {
             <h2 className="text-5xl text-[var(--parchment)] mb-4">
               Conceito <span className="gold-grad">Central</span>
             </h2>
-            <p className="text-[rgba(244,228,188,0.55)] text-lg max-w-2xl mx-auto italic">
+            <p className="text-[rgba(240,226,189,0.6)] text-lg max-w-2xl mx-auto italic">
               A fusão perfeita entre tradução de comportamento em dados e gamificação imersiva.
             </p>
           </div>
         </Reveal>
 
-        {/* Quote block */}
+        {/* Página do diário: citação manuscrita com lacre de cera */}
         <Reveal delay={0.1}>
-          <div className="arcane-corners border border-[rgba(184,134,11,0.2)] bg-[radial-gradient(ellipse_at_center,_rgba(74,14,14,0.2)_0%,_transparent_70%)] p-12 text-center mb-12">
+          <div className="paper-card paper-frame arcane-corners p-12 pb-14 text-center mb-12">
             <span className="ac-bl" /><span className="ac-br" />
-            <p className="text-2xl md:text-3xl italic text-[var(--parchment)] leading-relaxed">
+            <p className="text-2xl md:text-3xl italic leading-relaxed" style={{ color: "var(--ink)" }}>
               &quot;A maioria das experiências com dados é fria e técnica. Aqui,{" "}
-              <strong className="text-[var(--gold)] not-italic">o dado vira identidade</strong> —
+              <strong className="text-[var(--seal)] not-italic">o dado vira identidade</strong> —
               e identidade gera{" "}
-              <strong className="text-[var(--copper)] not-italic">engajamento</strong>.&quot;
+              <strong className="text-[var(--foil)] not-italic">engajamento</strong>.&quot;
             </p>
+            <div className="mt-7 flex justify-center">
+              <div className="wax-seal">
+                <Feather size={22} strokeWidth={1.6} />
+              </div>
+            </div>
           </div>
         </Reveal>
 
-        {/* Pillars */}
+        {/* Pillars — folhas de pergaminho */}
         <Stagger className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
           {pillars.map((p) => (
             <StaggerItem key={p.title}>
               <TiltCard className="h-full">
-                <div className="card-hover arcane-corners bg-[rgba(20,12,6,0.8)] border border-[rgba(184,134,11,0.18)] p-8 h-full">
-                  <span className="ac-bl" /><span className="ac-br" />
+                <div className="card-hover paper-card paper-frame p-8 h-full">
                   <div className="icon-frame w-[52px] h-[52px] mb-5">
                     <p.Icon size={24} strokeWidth={1.5} />
                   </div>
                   <h3
-                    className="text-[var(--gold)] text-base mb-3"
+                    className="text-[var(--seal)] text-base mb-3"
                     style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
                   >
                     {p.title}
                   </h3>
-                  <p className="text-[rgba(244,228,188,0.6)] text-sm leading-relaxed">{p.desc}</p>
+                  <p className="text-sm leading-relaxed">{p.desc}</p>
                 </div>
               </TiltCard>
             </StaggerItem>

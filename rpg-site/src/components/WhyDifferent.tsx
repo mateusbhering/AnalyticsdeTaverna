@@ -27,9 +27,7 @@ const differentials: { Icon: LucideIcon; title: string; desc: string }[] = [
 
 export default function WhyDifferent() {
   return (
-    <div
-      style={{ background: "url('/textures/dark-wood.png'), var(--charcoal)" }}
-    >
+    <div className="bg-dark-wood">
       <section id="diferenciais" className="py-28 px-6 relative max-w-7xl mx-auto overflow-hidden">
         <div className="section-line-top" />
 
@@ -39,7 +37,7 @@ export default function WhyDifferent() {
             <h2 className="text-5xl text-[var(--parchment)] mb-4">
               Nossa <span className="gold-grad">Vantagem</span>
             </h2>
-            <p className="text-[rgba(244,228,188,0.55)] text-lg max-w-2xl mx-auto italic">
+            <p className="text-[rgba(240,226,189,0.6)] text-lg max-w-2xl mx-auto italic">
               Não somos mais um quiz de personalidade. Somos uma análise de comportamento coletivo em tempo real.
             </p>
           </div>
@@ -49,21 +47,21 @@ export default function WhyDifferent() {
           {differentials.map((d) => (
             <StaggerItem key={d.title} className="h-full">
               <TiltCard className="h-full">
-                <div className="card-hover arcane-corners relative bg-[rgba(15,8,4,0.85)] border border-[rgba(184,134,11,0.15)] p-10 overflow-hidden h-full">
-                  <span className="ac-bl" /><span className="ac-br" />
-                  <div className="absolute bottom-[-20px] right-[-10px] opacity-[.05] pointer-events-none transform -rotate-[10deg] text-[var(--gold-light)]">
+                <div className="card-hover paper-card paper-frame relative p-10 overflow-hidden h-full">
+                  {/* Marca-d'água em folha de ouro desbotada */}
+                  <div className="absolute bottom-[-20px] right-[-10px] opacity-[.08] pointer-events-none transform -rotate-[10deg] text-[var(--foil)]">
                     <d.Icon size={150} strokeWidth={1} />
                   </div>
                   <div className="icon-frame w-16 h-16 mb-5">
                     <d.Icon size={30} strokeWidth={1.4} />
                   </div>
                   <h3
-                    className="text-[var(--parchment)] text-xl mb-3"
+                    className="text-[var(--ink)] text-xl mb-3"
                     style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
                   >
                     {d.title}
                   </h3>
-                  <p className="text-[rgba(244,228,188,0.6)] leading-relaxed text-base">{d.desc}</p>
+                  <p className="leading-relaxed text-base">{d.desc}</p>
                 </div>
               </TiltCard>
             </StaggerItem>
@@ -71,12 +69,12 @@ export default function WhyDifferent() {
         </Stagger>
 
         <Reveal delay={0.1}>
-          <div className="arcane-corners border border-[rgba(184,134,11,0.2)] bg-[radial-gradient(ellipse_at_center,_rgba(74,14,14,0.15)_0%,_transparent_70%)] text-center p-8">
+          <div className="paper-card paper-frame arcane-corners text-center p-8">
             <span className="ac-bl" /><span className="ac-br" />
-            <p className="text-lg italic text-[var(--parchment)]">
+            <p className="text-lg italic" style={{ color: "var(--ink)" }}>
               &quot;Não é apenas um jogo. Ele transforma{" "}
-              <strong className="text-[var(--gold)] not-italic">decisões comportamentais</strong> em{" "}
-              <strong className="text-[var(--copper)] not-italic">dados quantificáveis</strong>.&quot;
+              <strong className="text-[var(--seal)] not-italic">decisões comportamentais</strong> em{" "}
+              <strong className="text-[var(--foil)] not-italic">dados quantificáveis</strong>.&quot;
             </p>
           </div>
         </Reveal>

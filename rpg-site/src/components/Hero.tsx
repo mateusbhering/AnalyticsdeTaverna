@@ -73,8 +73,8 @@ function FloatIcon({
           x: tx,
           y: ty,
           color: "var(--gold-light)",
-          opacity: 0.75,
-          filter: "drop-shadow(0 0 12px rgba(184,134,11,0.55))",
+          opacity: 0.7,
+          filter: "drop-shadow(0 0 12px rgba(230,188,106,0.55))",
         }}
       >
         <Icon size={size} strokeWidth={1.4} />
@@ -93,7 +93,7 @@ export default function Hero() {
   const my = useSpring(rawY, { stiffness: 60, damping: 20 });
 
   useEffect(() => {
-    // Mobile: pula o canvas de estrelas (rAF contínuo pesa na CPU/bateria e
+    // Mobile: pula o canvas de fagulhas (rAF contínuo pesa na CPU/bateria e
     // rouba frames das animações de entrada).
     if (window.matchMedia("(max-width: 767px)").matches) return;
     const canvas = canvasRef.current;
@@ -121,7 +121,7 @@ export default function Hero() {
       stars.forEach((s) => {
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(184, 134, 11, ${0.15 + Math.sin(s.a) * 0.2})`;
+        ctx.fillStyle = `rgba(230, 188, 106, ${0.15 + Math.sin(s.a) * 0.2})`;
         ctx.fill();
         s.a += s.speed * 0.02;
       });
@@ -133,10 +133,10 @@ export default function Hero() {
 
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{
         background:
-          "url('/textures/dark-wood.png'), radial-gradient(ellipse at 50% 40%, rgba(74,14,14,.35) 0%, transparent 70%), #0e0e0e",
+          "radial-gradient(55% 40% at 50% 30%, rgba(255,176,80,.16) 0%, transparent 70%), url('/textures/dark-wood.png'), linear-gradient(180deg, #2b1a0d 0%, #170d06 90%)",
       }}
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
@@ -144,22 +144,23 @@ export default function Hero() {
         rawY.set((e.clientY - r.top) / r.height - 0.5);
       }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(74,14,14,0.35)_0%,_rgba(14,14,14,0)_70%)]" />
+      {/* Penumbra nas bordas — vinheta de quarto à luz de vela */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_35%,_rgba(12,6,2,0.55)_100%)]" />
 
-      {/* Blobs de gradiente animado (dourado + roxo arcano) */}
-      <div className="arcane-blob top-1/4 left-1/4 w-96 h-96 bg-[rgba(184,134,11,0.09)]" />
+      {/* Poças de luz âmbar animadas (vela + brasa) */}
+      <div className="arcane-blob top-1/4 left-1/4 w-96 h-96 bg-[rgba(255,176,80,0.10)]" />
       <div
-        className="arcane-blob bottom-1/4 right-1/4 w-80 h-80 bg-[rgba(124,58,237,0.08)]"
+        className="arcane-blob bottom-1/4 right-1/4 w-80 h-80 bg-[rgba(140,35,24,0.12)]"
         style={{ animationDelay: "-10s" }}
       />
 
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60" />
 
-      {/* Rising gold particles (no mobile, só metade — menos carga de GPU) */}
+      {/* Fagulhas douradas subindo (no mobile, só metade — menos carga de GPU) */}
       {particles.map((p) => (
         <div
           key={p.id}
-          className={`absolute pointer-events-none rounded-full bg-[var(--gold)] ${p.id % 2 === 1 ? "max-md:hidden" : ""}`}
+          className={`absolute pointer-events-none rounded-full bg-[var(--gold-light)] ${p.id % 2 === 1 ? "max-md:hidden" : ""}`}
           style={{
             left:            p.left,
             bottom:          "0",
@@ -193,7 +194,7 @@ export default function Hero() {
             alt="Analytics de Taverna"
             width={220}
             height={220}
-            className="drop-shadow-[0_0_40px_rgba(184,134,11,0.5)] animate-float"
+            className="drop-shadow-[0_0_40px_rgba(255,176,80,0.5)] animate-float"
             priority
           />
         </motion.div>
@@ -201,7 +202,7 @@ export default function Hero() {
         {/* Title */}
         <h1
           className="text-4xl sm:text-6xl md:text-8xl font-black mb-6 leading-none tracking-tight"
-          style={{ textShadow: "0 0 60px rgba(184,134,11,0.2)" }}
+          style={{ textShadow: "0 0 60px rgba(255,176,80,0.25)" }}
         >
           <span className="block">
             <SpecialText className="animate-shimmer whitespace-nowrap" speed={28}>
@@ -220,12 +221,12 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-xl md:text-2xl text-[rgba(244,228,188,0.6)] max-w-3xl mx-auto mb-4 leading-relaxed font-[var(--font-crimson-pro)] italic">
+          <p className="text-xl md:text-2xl text-[rgba(240,226,189,0.66)] max-w-3xl mx-auto mb-4 leading-relaxed font-[var(--font-crimson-pro)] italic">
             Uma experiência interativa que transforma
-            <strong className="text-[var(--gold)] not-italic"> dados comportamentais</strong> em
+            <strong className="text-[var(--gold-light)] not-italic"> dados comportamentais</strong> em
             <strong className="text-[var(--copper)] not-italic"> personagens de RPG únicos</strong>
           </p>
-          <p className="text-lg text-[rgba(244,228,188,0.35)] mb-12 italic">
+          <p className="text-lg text-[rgba(240,226,189,0.4)] mb-12 italic">
             &quot;Descubra qual é sua classe de RPG com base no seu perfil&quot;
           </p>
 
@@ -234,7 +235,7 @@ export default function Hero() {
             <Magnetic>
               <a
                 href="#jornada"
-                className="press btn-glow px-8 py-4 bg-[var(--wine)] border-2 border-[rgba(184,134,11,0.6)] text-[var(--parchment)] text-[.8rem] tracking-[.12em] uppercase flex items-center gap-2 hover:border-[var(--gold)] hover:bg-[rgba(74,14,14,0.7)] transition-all duration-300 animate-pulse-wine shadow-[0_0_20px_rgba(184,134,11,0.12)]"
+                className="press btn-glow btn-seal px-8 py-4 text-[.8rem] tracking-[.12em] uppercase flex items-center gap-2 animate-pulse-wine"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
               >
                 <Swords size={16} strokeWidth={1.8} /> Iniciar Aventura
@@ -243,7 +244,7 @@ export default function Hero() {
             <Magnetic>
               <a
                 href="#conceito"
-                className="press btn-glow px-8 py-4 bg-[rgba(45,27,13,0.8)] border-2 border-[rgba(184,134,11,0.3)] text-[var(--gold)] text-[.8rem] tracking-[.12em] uppercase flex items-center gap-2 hover:border-[var(--gold)] transition-all duration-300"
+                className="press btn-glow btn-parchment px-8 py-4 text-[.8rem] tracking-[.12em] uppercase flex items-center gap-2"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
               >
                 <WandSparkles size={16} strokeWidth={1.8} /> Como Funciona
@@ -267,7 +268,7 @@ export default function Hero() {
                   <CountUp value={s.val} />
                 </div>
                 <div
-                  className="text-[.6rem] text-[rgba(244,228,188,0.4)] uppercase tracking-[.25em] mt-1"
+                  className="text-[.6rem] text-[rgba(240,226,189,0.45)] uppercase tracking-[.25em] mt-1"
                   style={{ fontFamily: "var(--font-cinzel), serif" }}
                 >
                   {s.label}
@@ -280,7 +281,7 @@ export default function Hero() {
 
       {/* Scroll hint */}
       <div
-        className="absolute bottom-9 left-1/2 flex flex-col items-center gap-1.5 text-[rgba(244,228,188,0.3)] text-[.55rem] tracking-[.3em] uppercase animate-bounce-down"
+        className="absolute bottom-9 left-1/2 flex flex-col items-center gap-1.5 text-[rgba(240,226,189,0.35)] text-[.55rem] tracking-[.3em] uppercase animate-bounce-down"
         style={{ fontFamily: "var(--font-cinzel), serif" }}
       >
         Role para baixo

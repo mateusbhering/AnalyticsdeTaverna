@@ -54,22 +54,22 @@ export default function QuizForm() {
   // ── STEP 1: Photo ──────────────────────────────────────────────
   if (step === "photo") {
     return (
-      <div className="arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.2)] p-8 backdrop-blur-sm">
+      <div className="paper-card paper-frame arcane-corners p-8">
         <span className="ac-bl" /><span className="ac-br" />
         <div className="text-center mb-6">
           <span
             className="section-eyebrow"
-            style={{ fontSize: ".6rem", letterSpacing: ".25em" }}
+            style={{ fontSize: ".6rem", letterSpacing: ".25em", color: "var(--seal)", opacity: 0.9 }}
           >
             Passo 1 de 2 — Captura
           </span>
           <h2
-            className="text-[1.5rem] text-[var(--parchment)] mb-1"
+            className="text-[1.5rem] text-[var(--ink)] mb-1"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
           >
             A Essência do Seu Herói
           </h2>
-          <p className="text-[rgba(244,228,188,0.5)] text-sm italic">
+          <p className="text-sm italic">
             Tire uma foto para gerar seu avatar de RPG único
           </p>
         </div>
@@ -79,7 +79,7 @@ export default function QuizForm() {
         {photo && (
           <button
             onClick={() => setStep("quiz")}
-            className="mt-6 w-full py-4 bg-[var(--wine)] border-2 border-[rgba(184,134,11,0.6)] text-[var(--parchment)] tracking-[.12em] uppercase flex items-center justify-center gap-2 hover:border-[var(--gold)] hover:bg-[rgba(74,14,14,0.7)] transition-all animate-pulse-wine text-[.8rem]"
+            className="btn-seal mt-6 w-full py-4 tracking-[.12em] uppercase flex items-center justify-center gap-2 animate-pulse-wine text-[.8rem] cursor-pointer"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
           >
             ⚔ Continuar para o Quiz →
@@ -108,14 +108,17 @@ export default function QuizForm() {
     };
 
     return (
-      <div className="arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.2)] p-8 backdrop-blur-sm">
+      <div className="paper-card paper-frame arcane-corners p-8">
         <span className="ac-bl" /><span className="ac-br" />
         <div className="text-center mb-5">
-          <span className="section-eyebrow" style={{ fontSize: ".6rem", letterSpacing: ".25em" }}>
+          <span
+            className="section-eyebrow"
+            style={{ fontSize: ".6rem", letterSpacing: ".25em", color: "var(--seal)", opacity: 0.9 }}
+          >
             Passo 2 de 2 — Ritual
           </span>
           <h2
-            className="text-[1.3rem] text-[var(--parchment)]"
+            className="text-[1.3rem] text-[var(--ink)]"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
           >
             Quiz Comportamental
@@ -125,7 +128,7 @@ export default function QuizForm() {
         {/* Progress bar */}
         <div className="mb-6">
           <div
-            className="flex items-center justify-between mb-1.5 text-[.6rem] text-[rgba(184,134,11,0.6)] tracking-[.2em] uppercase"
+            className="flex items-center justify-between mb-1.5 text-[.6rem] text-[var(--foil)] tracking-[.2em] uppercase"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             <span>Páginas do Grimório</span>
@@ -136,17 +139,10 @@ export default function QuizForm() {
           </div>
         </div>
 
-        {/* Question card — parchment style */}
-        <div
-          className="arcane-corners p-7 mb-5"
-          style={{
-            background: "linear-gradient(135deg, #f4e4bc 0%, #e8d5a0 100%)",
-            border: "1px solid rgba(184,134,11,.4)",
-          }}
-        >
-          <span className="ac-bl" /><span className="ac-br" />
+        {/* Pergunta — escrita direto na página do diário */}
+        <div className="border-t border-[rgba(96,66,26,0.25)] pt-6 mb-5">
           <h2
-            className="text-[var(--wood)] text-base leading-relaxed mb-5 tracking-[.04em]"
+            className="text-[var(--ink)] text-base leading-relaxed mb-5 tracking-[.04em]"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             {question.text}
@@ -156,28 +152,28 @@ export default function QuizForm() {
               <button
                 key={i}
                 onClick={() => handleAnswer(opt)}
-                className="w-full text-left px-5 py-3.5 border text-[var(--wood)] transition-all duration-200 flex items-center justify-between group text-sm"
+                className="w-full text-left px-5 py-3.5 border text-[var(--ink)] transition-all duration-200 flex items-center justify-between group text-sm cursor-pointer"
                 style={{
-                  background: "rgba(45,27,13,.06)",
-                  borderColor: "rgba(45,27,13,.15)",
+                  background: "rgba(60,42,24,.05)",
+                  borderColor: "rgba(96,66,26,.22)",
                   fontFamily: "var(--font-crimson-pro), Georgia, serif",
                   fontSize: "1rem",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(74,14,14,.12)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(74,14,14,.4)";
+                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(140,35,24,.10)";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(140,35,24,.45)";
                   (e.currentTarget as HTMLButtonElement).style.paddingLeft = "28px";
-                  (e.currentTarget as HTMLButtonElement).style.color = "#4a0e0e";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#8c2318";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(45,27,13,.06)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(45,27,13,.15)";
+                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(60,42,24,.05)";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(96,66,26,.22)";
                   (e.currentTarget as HTMLButtonElement).style.paddingLeft = "20px";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--wood)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "var(--ink)";
                 }}
               >
                 <span>{opt.text}</span>
-                <span className="text-[rgba(45,27,13,.3)] group-hover:text-[rgba(74,14,14,.8)] transition-all text-lg">›</span>
+                <span className="text-[rgba(96,66,26,.4)] group-hover:text-[rgba(140,35,24,.85)] transition-all text-lg">›</span>
               </button>
             ))}
           </div>

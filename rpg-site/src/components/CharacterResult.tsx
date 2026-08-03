@@ -211,80 +211,78 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   return (
     <div className="space-y-5">
       {/* Result card */}
-      <div
-        ref={cardRef}
-        className="arcane-corners border-2 border-[rgba(184,134,11,0.35)] p-9"
-        style={{
-          background:
-            "url('/textures/dark-wood.png'), linear-gradient(160deg, rgba(30,10,4,.98) 0%, rgba(15,6,3,.98) 100%)",
-        }}
-      >
+      <div ref={cardRef} className="paper-card paper-frame arcane-corners p-9">
         <span className="ac-bl" /><span className="ac-br" />
 
         {/* Class reveal */}
         <div className="text-center mb-6">
           <span
             className="section-eyebrow"
-            style={{ fontSize: ".6rem", letterSpacing: ".35em", marginBottom: "16px" }}
+            style={{
+              fontSize: ".6rem",
+              letterSpacing: ".35em",
+              marginBottom: "16px",
+              color: "var(--seal)",
+              opacity: 0.9,
+            }}
           >
             Manifestação do Ser
           </span>
 
-          {/* Class icon */}
-          <div className="inline-flex w-20 h-20 bg-gradient-to-br from-[var(--wine)] to-[rgba(74,14,14,0.6)] border-2 border-[rgba(184,134,11,0.5)] items-center justify-center text-5xl mb-4">
+          {/* Brasão da classe — lacre de cera */}
+          <div className="wax-seal !w-20 !h-20 mx-auto text-4xl mb-4">
             {rpgClass.icon}
           </div>
 
           <h2
-            className="text-[1.7rem] text-[var(--gold)] mb-1"
-            style={{
-              fontFamily: "var(--font-cinzel-decorative), serif",
-              textShadow: "0 0 20px rgba(184,134,11,0.4)",
-            }}
+            className="text-[1.7rem] text-[var(--seal)] mb-1"
+            style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
           >
             {rpgClass.name}
           </h2>
-          <p className="text-[rgba(244,228,188,0.55)] text-[.95rem] italic max-w-xs mx-auto leading-relaxed mb-4">
+          <p className="text-[.95rem] italic max-w-xs mx-auto leading-relaxed mb-4">
             {rpgClass.desc}
           </p>
 
           {/* Retrato: só o avatar gerado pela IA. Enquanto gera, mostra o loading;
               em caso de erro, uma mensagem — sem foto de placeholder da classe. */}
           <div className="flex flex-col items-center gap-2 mb-4">
-            <div className="relative w-48 h-48 border-2 border-[rgba(184,134,11,0.4)] overflow-hidden bg-[rgba(10,6,3,0.6)]">
-              {avatarStatus === "done" && avatarUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={avatarUrl}
-                  alt={rpgClass.name}
-                  className="w-full h-full object-cover"
-                  style={{ imageRendering: "auto" }}
-                />
-              ) : avatarStatus === "error" ? (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3 text-center">
-                  <span className="text-2xl opacity-50">🎭</span>
-                  <span
-                    className="text-[rgba(244,228,188,0.6)] text-[.55rem] tracking-[.12em] uppercase leading-relaxed"
-                    style={{ fontFamily: "var(--font-cinzel), serif" }}
-                  >
-                    Não foi possível conjurar seu avatar
-                  </span>
-                </div>
-              ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                  <div className="w-8 h-8 border-2 border-[rgba(184,134,11,0.3)] border-t-[var(--gold)] rounded-full animate-spin" />
-                  <span
-                    className="text-[rgba(244,228,188,0.85)] text-[.55rem] tracking-[.2em] uppercase text-center px-2"
-                    style={{ fontFamily: "var(--font-cinzel), serif" }}
-                  >
-                    Conjurando seu avatar…
-                  </span>
-                </div>
-              )}
+            <div className="polaroid !p-2">
+              <div className="relative w-48 h-48 border border-[rgba(96,66,26,0.4)] overflow-hidden bg-[rgba(23,13,6,0.9)]">
+                {avatarStatus === "done" && avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={avatarUrl}
+                    alt={rpgClass.name}
+                    className="w-full h-full object-cover"
+                    style={{ imageRendering: "auto" }}
+                  />
+                ) : avatarStatus === "error" ? (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3 text-center">
+                    <span className="text-2xl opacity-50">🎭</span>
+                    <span
+                      className="text-[rgba(240,226,189,0.65)] text-[.55rem] tracking-[.12em] uppercase leading-relaxed"
+                      style={{ fontFamily: "var(--font-cinzel), serif" }}
+                    >
+                      Não foi possível conjurar seu avatar
+                    </span>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                    <div className="w-8 h-8 border-2 border-[rgba(230,188,106,0.3)] border-t-[var(--gold-light)] rounded-full animate-spin" />
+                    <span
+                      className="text-[rgba(240,226,189,0.85)] text-[.55rem] tracking-[.2em] uppercase text-center px-2"
+                      style={{ fontFamily: "var(--font-cinzel), serif" }}
+                    >
+                      Conjurando seu avatar…
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
             {avatarStatus === "done" && avatarUrl && (
               <span
-                className="text-[var(--gold)] text-[.55rem] tracking-[.25em] uppercase opacity-80"
+                className="text-[var(--foil)] text-[.55rem] tracking-[.25em] uppercase"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
                 ✦ Avatar Arcano
@@ -308,7 +306,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
         {/* Attributes */}
         <div className="mb-5">
           <div
-            className="text-[.7rem] tracking-[.2em] uppercase text-[var(--gold)] opacity-70 mb-4 text-center"
+            className="text-[.7rem] tracking-[.2em] uppercase text-[var(--foil)] mb-4 text-center"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             Atributos Arcanos
@@ -320,20 +318,20 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                   <div className="flex items-center gap-2">
                     <span>{icon}</span>
                     <span
-                      className="text-[rgba(184,134,11,0.9)] text-[.7rem] uppercase tracking-[.15em]"
+                      className="text-[var(--foil)] text-[.7rem] uppercase tracking-[.15em]"
                       style={{ fontFamily: "var(--font-cinzel), serif" }}
                     >
                       {label}
                     </span>
                   </div>
                   <span
-                    className="text-[var(--parchment)] text-[.85rem]"
+                    className="text-[var(--ink)] text-[.85rem]"
                     style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
                   >
                     {attrs[key]}
                   </span>
                 </div>
-                <div className="h-1.5 bg-[rgba(184,134,11,0.1)] border border-[rgba(184,134,11,0.15)] overflow-hidden">
+                <div className="h-1.5 bg-[rgba(96,66,26,0.15)] border border-[rgba(96,66,26,0.25)] overflow-hidden">
                   <div className="stat-bar-fill" style={{ width: `${barPct(attrs[key])}%` }} />
                 </div>
               </div>
@@ -342,35 +340,35 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
         </div>
 
         {/* Link único compartilhável */}
-        <div className="pt-5 border-t border-[rgba(184,134,11,0.15)] flex flex-col items-center gap-3">
+        <div className="pt-5 border-t border-[rgba(96,66,26,0.25)] flex flex-col items-center gap-3">
           <span
-            className="text-[.55rem] tracking-[.3em] uppercase text-[rgba(184,134,11,0.5)]"
+            className="text-[.55rem] tracking-[.3em] uppercase text-[var(--foil)]"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             Seu Card Digital
           </span>
           {shareUrl ? (
             <>
-              <div className="bg-white p-2.5">
-                <QRCodeSVG value={shareUrl} size={120} bgColor="#ffffff" fgColor="#1a0033" />
+              <div className="bg-[#f8f0da] border border-[rgba(96,66,26,0.35)] p-2.5">
+                <QRCodeSVG value={shareUrl} size={120} bgColor="#f8f0da" fgColor="#3c2a18" />
               </div>
               <button
                 onClick={copyLink}
-                className="press px-5 py-2 bg-[rgba(45,27,13,0.8)] border border-[rgba(184,134,11,0.4)] text-[var(--gold)] text-[.6rem] tracking-[.15em] uppercase hover:border-[var(--gold)] transition-all"
+                className="press px-5 py-2 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.5)] text-[var(--ink)] text-[.6rem] tracking-[.15em] uppercase hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all cursor-pointer"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
                 {copied ? "✓ Link copiado" : "🔗 Copiar link"}
               </button>
-              <p className="text-[rgba(244,228,188,0.4)] text-[.78rem] italic text-center">
+              <p className="text-[.78rem] italic text-center">
                 Escaneie ou compartilhe o link do seu personagem
               </p>
             </>
           ) : (
             <>
-              <div className="w-[120px] h-[120px] flex items-center justify-center bg-[rgba(10,6,3,0.6)] border border-[rgba(184,134,11,0.2)]">
-                <div className="w-7 h-7 border-2 border-[rgba(184,134,11,0.3)] border-t-[var(--gold)] rounded-full animate-spin" />
+              <div className="w-[120px] h-[120px] flex items-center justify-center bg-[rgba(60,42,24,0.08)] border border-[rgba(96,66,26,0.3)]">
+                <div className="w-7 h-7 border-2 border-[rgba(138,100,40,0.35)] border-t-[var(--foil)] rounded-full animate-spin" />
               </div>
-              <p className="text-[rgba(244,228,188,0.4)] text-[.78rem] italic text-center">
+              <p className="text-[.78rem] italic text-center">
                 Preparando seu link…
               </p>
             </>
@@ -382,14 +380,14 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
       <div className="flex gap-3 flex-wrap">
         <button
           onClick={onRestart}
-          className="flex-1 min-w-[140px] py-4 bg-[rgba(45,27,13,0.8)] border border-[rgba(184,134,11,0.3)] text-[var(--gold)] text-[.75rem] tracking-[.12em] uppercase hover:border-[var(--gold)] transition-all text-center"
+          className="btn-parchment flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center cursor-pointer"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
         >
           🔄 Jogar Novamente
         </button>
         <a
           href="/"
-          className="flex-1 min-w-[140px] py-4 bg-[var(--wine)] border border-[rgba(184,134,11,0.5)] text-[var(--parchment)] text-[.75rem] tracking-[.12em] uppercase hover:border-[var(--gold)] transition-all text-center"
+          className="btn-seal flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
         >
           ✦ Voltar ao Início

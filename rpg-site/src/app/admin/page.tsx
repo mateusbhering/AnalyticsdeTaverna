@@ -7,8 +7,6 @@ const links = [
     title: "Google Drive do Projeto",
     description: "Arquivos, documentos e recursos do projeto",
     icon: "📁",
-    color: "border-amber-600/40",
-    bg: "bg-amber-500/10",
     href: "https://drive.google.com/drive/folders/1hVIqEiTIHc-hS5ySMF-wN5AlDW-ew7Ht",
   },
 ];
@@ -18,10 +16,13 @@ export default async function AdminPage() {
   if (!session) redirect("/admin/login");
 
   return (
-    <div className="min-h-screen bg-[#050010] px-6 py-12 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(124,58,237,0.15)_0%,_transparent_70%)]" />
-      <div className="absolute inset-0 bg-grid" />
-
+    <div
+      className="min-h-screen px-6 py-12 relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(60% 40% at 50% 0%, rgba(255,176,80,.12) 0%, transparent 70%), url('/textures/dark-wood.png'), linear-gradient(180deg, #241408 0%, #170d06 90%)",
+      }}
+    >
       <div className="relative max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-12">
@@ -31,13 +32,18 @@ export default async function AdminPage() {
               <img
                 src={session.user.image}
                 alt="avatar"
-                className="w-12 h-12 rounded-full border-2 border-red-600/60"
+                className="w-12 h-12 rounded-full border-2 border-[rgba(201,151,63,0.6)]"
               />
             )}
             <div>
-              <h1 className="text-2xl font-black text-white">Painel Admin 🔒</h1>
-              <p className="text-purple-400/70 text-sm">
-                Bem-vindo, <span className="text-red-400 font-semibold">@{(session.user as { login?: string })?.login ?? session.user?.name}</span>
+              <h1
+                className="text-2xl text-[var(--parchment)]"
+                style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
+              >
+                Painel Admin 🔒
+              </h1>
+              <p className="text-[rgba(240,226,189,0.6)] text-sm italic">
+                Bem-vindo, <span className="text-[var(--gold-light)] font-semibold not-italic">@{(session.user as { login?: string })?.login ?? session.user?.name}</span>
               </p>
             </div>
           </div>
@@ -50,7 +56,8 @@ export default async function AdminPage() {
           >
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl bg-red-900/40 border border-red-700/50 text-red-300 text-sm font-semibold hover:bg-red-800/50 transition-all"
+              className="press btn-seal px-5 py-2 text-[.7rem] tracking-[.15em] uppercase cursor-pointer"
+              style={{ fontFamily: "var(--font-cinzel), serif", borderWidth: "1px" }}
             >
               Sair
             </button>
@@ -61,22 +68,27 @@ export default async function AdminPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Links */}
           <div className="space-y-4">
-            <h2 className="text-purple-400/60 text-xs font-semibold uppercase tracking-widest mb-4">Links do Projeto</h2>
+            <h2 className="section-eyebrow">Links do Projeto</h2>
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center gap-5 rounded-2xl ${link.bg} border ${link.color} p-6 backdrop-blur-sm hover:brightness-125 transition-all duration-200 group`}
+                className="paper-card paper-frame card-hover flex items-center gap-5 p-6 transition-all duration-200 group"
               >
                 <div className="text-4xl">{link.icon}</div>
                 <div className="flex-1">
-                  <div className="text-white font-bold text-lg">{link.title}</div>
-                  <div className="text-purple-400/70 text-sm">{link.description}</div>
+                  <div
+                    className="text-[var(--ink)] font-bold text-lg"
+                    style={{ fontFamily: "var(--font-cinzel), serif" }}
+                  >
+                    {link.title}
+                  </div>
+                  <div className="text-sm">{link.description}</div>
                 </div>
                 <svg
-                  className="w-5 h-5 text-purple-400/50 group-hover:text-white transition-colors"
+                  className="w-5 h-5 text-[var(--foil)] group-hover:text-[var(--seal)] transition-colors"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -89,7 +101,7 @@ export default async function AdminPage() {
 
           {/* Calendar */}
           <div>
-            <h2 className="text-purple-400/60 text-xs font-semibold uppercase tracking-widest mb-4">Calendário</h2>
+            <h2 className="section-eyebrow">Calendário</h2>
             <AdminCalendar />
           </div>
         </div>

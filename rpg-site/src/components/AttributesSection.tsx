@@ -53,61 +53,61 @@ export default function AttributesSection() {
             <h2 className="text-5xl text-[var(--parchment)] mb-4">
               Atributos &amp; <span className="gold-grad">Classes</span>
             </h2>
-            <p className="text-[rgba(244,228,188,0.55)] text-lg max-w-2xl mx-auto italic">
+            <p className="text-[rgba(240,226,189,0.6)] text-lg max-w-2xl mx-auto italic">
               5 perguntas de um banco de 120 pontuam 10 dimensões que se transformam em 7 atributos e 1 entre 16 classes únicas.
             </p>
           </div>
         </Reveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Attributes panel */}
+          {/* Ficha de personagem — página do diário */}
           <Reveal>
-            <div className="arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.15)] p-8">
+            <div className="paper-card paper-frame arcane-corners p-8">
               <span className="ac-bl" /><span className="ac-br" />
               <h3
-                className="text-[var(--parchment)] text-xl mb-7 flex items-center gap-3"
+                className="text-[var(--ink)] text-xl mb-7 flex items-center gap-3"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
               >
-                <BarChart3 size={20} strokeWidth={1.6} className="text-[var(--gold-light)]" /> 7 Atributos RPG
+                <BarChart3 size={20} strokeWidth={1.6} className="text-[var(--foil)]" /> 7 Atributos RPG
               </h3>
               <div className="space-y-4">
                 {attributes.map((attr, i) => (
                   <div key={attr.name}>
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-2">
-                        <attr.Icon size={18} strokeWidth={1.6} className="text-[var(--gold-light)]" />
+                        <attr.Icon size={18} strokeWidth={1.6} className="text-[var(--seal)]" />
                         <div>
                           <div
-                            className="text-[rgba(184,134,11,0.9)] text-[.7rem] uppercase tracking-[.15em]"
+                            className="text-[var(--foil)] text-[.7rem] uppercase tracking-[.15em]"
                             style={{ fontFamily: "var(--font-cinzel), serif" }}
                           >
                             {attr.name}
                           </div>
-                          <div className="text-[rgba(244,228,188,0.4)] text-[.65rem]">{attr.desc}</div>
+                          <div className="text-[var(--ink-50)] text-[.65rem]">{attr.desc}</div>
                         </div>
                       </div>
                       <span
-                        className="text-[var(--parchment)] text-[.85rem] font-bold"
+                        className="text-[var(--ink)] text-[.85rem] font-bold"
                         style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
                       >
                         {attr.value}
                       </span>
                     </div>
-                    <div className="h-1.5 bg-[rgba(184,134,11,0.1)] border border-[rgba(184,134,11,0.15)] overflow-hidden">
+                    <div className="h-1.5 bg-[rgba(96,66,26,0.15)] border border-[rgba(96,66,26,0.25)] overflow-hidden">
                       <AnimatedBar pct={attr.value} delay={i * 0.08} className="stat-bar-fill stat-bar" />
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="mt-6 p-4 bg-[rgba(74,14,14,0.15)] border-l-[3px] border-[rgba(184,134,11,0.4)]">
+              <div className="mt-6 p-4 bg-[rgba(140,35,24,0.08)] border-l-[3px] border-[rgba(140,35,24,0.55)]">
                 <div
-                  className="text-[.6rem] tracking-[.25em] uppercase text-[var(--gold)] opacity-70 mb-1"
+                  className="text-[.6rem] tracking-[.25em] uppercase text-[var(--seal)] opacity-80 mb-1"
                   style={{ fontFamily: "var(--font-cinzel), serif" }}
                 >
                   Pipeline de Cálculo
                 </div>
                 <code
-                  className="text-[rgba(244,228,188,0.6)] text-[.75rem] tracking-[.05em]"
+                  className="text-[var(--ink-70)] text-[.75rem] tracking-[.05em]"
                   style={{ fontFamily: "var(--font-cinzel), serif" }}
                 >
                   Respostas → 10 Dimensões → 7 Atributos → Classe
@@ -116,7 +116,7 @@ export default function AttributesSection() {
             </div>
           </Reveal>
 
-          {/* Classes grid */}
+          {/* Classes grid — cartas do baralho em pergaminho */}
           <div>
             <Reveal>
               <h3
@@ -130,13 +130,12 @@ export default function AttributesSection() {
               {classes.map((cls) => (
                 <StaggerItem key={cls.name} className="h-full">
                   <TiltCard className="h-full">
-                    <div className="card-hover arcane-corners bg-[rgba(20,12,6,0.8)] border border-[rgba(184,134,11,0.15)] p-4 h-full">
-                      <span className="ac-bl" /><span className="ac-br" />
+                    <div className="card-hover paper-card paper-frame p-4 h-full">
                       <div className="icon-frame w-11 h-11 mb-2.5">
                         <cls.Icon size={20} strokeWidth={1.5} />
                       </div>
                       <h4
-                        className="text-[var(--parchment)] text-[.75rem] tracking-[.06em] mb-2 leading-snug"
+                        className="text-[var(--ink)] text-[.75rem] tracking-[.06em] mb-2 leading-snug"
                         style={{ fontFamily: "var(--font-cinzel), serif" }}
                       >
                         {cls.name}
@@ -151,17 +150,17 @@ export default function AttributesSection() {
                 </StaggerItem>
               ))}
               <StaggerItem className="h-full">
-                <div className="arcane-corners bg-[rgba(74,14,14,0.1)] border border-dashed border-[rgba(184,134,11,0.2)] p-4 flex items-center justify-center text-center h-full">
-                  <span className="ac-bl" /><span className="ac-br" />
+                {/* Página em branco — "atividades em preparação", como no diário */}
+                <div className="border border-dashed border-[rgba(201,151,63,0.35)] bg-[rgba(238,221,179,0.05)] p-4 flex items-center justify-center text-center h-full">
                   <div>
                     <Sparkles size={28} strokeWidth={1.4} className="text-[var(--gold-light)] mx-auto mb-2" />
                     <div
-                      className="text-[rgba(184,134,11,0.6)] text-[.7rem] tracking-[.1em]"
+                      className="text-[rgba(230,188,106,0.75)] text-[.7rem] tracking-[.1em]"
                       style={{ fontFamily: "var(--font-cinzel), serif" }}
                     >
                       + 8 classes
                     </div>
-                    <div className="text-[rgba(244,228,188,0.3)] text-[.75rem] italic mt-1">
+                    <div className="text-[rgba(240,226,189,0.4)] text-[.75rem] italic mt-1">
                       Descubra jogando
                     </div>
                   </div>

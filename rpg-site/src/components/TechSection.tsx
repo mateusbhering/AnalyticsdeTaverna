@@ -58,7 +58,7 @@ export default function TechSection() {
             <h2 className="text-5xl text-[var(--parchment)] mb-4">
               Estrutura <span className="gold-grad">Técnica</span>
             </h2>
-            <p className="text-[rgba(244,228,188,0.55)] text-lg max-w-2xl mx-auto italic">
+            <p className="text-[rgba(240,226,189,0.6)] text-lg max-w-2xl mx-auto italic">
               Tecnologias modernas integradas para uma experiência que escala e impacta.
             </p>
           </div>
@@ -68,30 +68,29 @@ export default function TechSection() {
           {techStack.slice(0, 3).map((tech) => (
             <StaggerItem key={tech.name} className="h-full">
               <TiltCard className="h-full">
-                <div className="card-hover arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.15)] p-8 h-full">
-                  <span className="ac-bl" /><span className="ac-br" />
+                <div className="card-hover paper-card paper-frame p-8 h-full">
                   <div className="icon-frame w-[52px] h-[52px] mb-5">
                     <tech.Icon size={24} strokeWidth={1.5} />
                   </div>
                   <div className="flex items-center gap-3 mb-3">
                     <h3
-                      className="text-[var(--gold)] text-[.9rem]"
+                      className="text-[var(--seal)] text-[.9rem]"
                       style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
                     >
                       {tech.name}
                     </h3>
                     <span
-                      className="px-2 py-0.5 border border-[rgba(184,134,11,0.25)] text-[rgba(244,228,188,0.5)] text-[.55rem] tracking-[.15em] uppercase"
+                      className="px-2 py-0.5 border border-[rgba(96,66,26,0.4)] text-[var(--ink-50)] text-[.55rem] tracking-[.15em] uppercase"
                       style={{ fontFamily: "var(--font-cinzel), serif" }}
                     >
                       {tech.tag}
                     </span>
                   </div>
-                  <p className="text-[rgba(244,228,188,0.55)] text-[.88rem] leading-relaxed mb-4">{tech.desc}</p>
+                  <p className="text-[.88rem] leading-relaxed mb-4">{tech.desc}</p>
                   <div className="space-y-1.5">
                     {tech.items.map((item) => (
-                      <div key={item} className="flex items-center gap-2 text-[.82rem] text-[rgba(244,228,188,0.5)]">
-                        <div className="w-1 h-1 bg-[var(--gold)] opacity-50" />
+                      <div key={item} className="flex items-center gap-2 text-[.82rem] text-[var(--ink-70)]">
+                        <div className="w-1 h-1 bg-[var(--foil)] opacity-70" />
                         {item}
                       </div>
                     ))}
@@ -106,8 +105,7 @@ export default function TechSection() {
           {techStack.slice(3).map((tech) => (
             <StaggerItem key={tech.name} className="h-full">
               <TiltCard className="h-full">
-                <div className="card-hover arcane-corners bg-[rgba(15,9,5,0.9)] border border-[rgba(184,134,11,0.15)] p-8 h-full">
-                  <span className="ac-bl" /><span className="ac-br" />
+                <div className="card-hover paper-card paper-frame p-8 h-full">
                   <div className="flex items-start gap-5">
                     <div className="icon-frame flex-shrink-0 w-[52px] h-[52px]">
                       <tech.Icon size={24} strokeWidth={1.5} />
@@ -115,19 +113,19 @@ export default function TechSection() {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3
-                          className="text-[var(--gold)] text-[.9rem]"
+                          className="text-[var(--seal)] text-[.9rem]"
                           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
                         >
                           {tech.name}
                         </h3>
                         <span
-                          className="px-2 py-0.5 border border-[rgba(184,134,11,0.25)] text-[rgba(244,228,188,0.5)] text-[.55rem] tracking-[.15em] uppercase"
+                          className="px-2 py-0.5 border border-[rgba(96,66,26,0.4)] text-[var(--ink-50)] text-[.55rem] tracking-[.15em] uppercase"
                           style={{ fontFamily: "var(--font-cinzel), serif" }}
                         >
                           {tech.tag}
                         </span>
                       </div>
-                      <p className="text-[rgba(244,228,188,0.55)] text-[.88rem] leading-relaxed mb-4">{tech.desc}</p>
+                      <p className="text-[.88rem] leading-relaxed mb-4">{tech.desc}</p>
                       <div className="flex flex-wrap gap-2">
                         {tech.items.map((item) => (
                           <span key={item} className="tag-pill">{item}</span>

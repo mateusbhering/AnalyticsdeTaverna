@@ -64,72 +64,70 @@ export default function WebcamCapture({ onCapture }: Props) {
 
   return (
     <div className="space-y-4">
-      {/* Webcam frame with arcane corners */}
-      <div className="relative arcane-corners overflow-hidden bg-[rgba(10,6,3,0.8)] border border-[rgba(184,134,11,0.2)] aspect-square max-w-sm mx-auto">
-        <span className="ac-bl" /><span className="ac-br" />
+      {/* Visor da câmera — foto revelada colada na página */}
+      <div className="polaroid relative overflow-visible max-w-sm mx-auto">
+        <div className="relative overflow-hidden bg-[rgba(23,13,6,0.92)] border border-[rgba(96,66,26,0.4)] aspect-square">
+          {/* Video feed */}
+          {!captured && (
+            <video
+              ref={videoRef}
+              className="w-full h-full object-cover"
+              style={{ transform: "scaleX(-1)", display: streaming ? "block" : "none" }}
+              muted
+              playsInline
+            />
+          )}
 
-        {/* Video feed */}
-        {!captured && (
-          <video
-            ref={videoRef}
-            className="w-full h-full object-cover"
-            style={{ transform: "scaleX(-1)", display: streaming ? "block" : "none" }}
-            muted
-            playsInline
-          />
-        )}
+          {/* Captured photo */}
+          {captured && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={captured} alt="Foto capturada" className="w-full h-full object-cover" />
+          )}
 
-        {/* Captured photo */}
-        {captured && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={captured} alt="Foto capturada" className="w-full h-full object-cover" />
-        )}
-
-        {/* Placeholder */}
-        {!streaming && !captured && (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-[rgba(184,134,11,0.4)]">
-            <div className="text-6xl">📷</div>
-            <p
-              className="text-[.65rem] tracking-[.2em] uppercase"
-              style={{ fontFamily: "var(--font-cinzel), serif" }}
-            >
-              Câmera desligada
-            </p>
-          </div>
-        )}
-
-        {/* Face guide overlay */}
-        {streaming && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-48 h-56 rounded-full border-2 border-dashed border-[rgba(184,134,11,0.5)] shadow-[0_0_0_9999px_rgba(0,0,0,0.3)]" />
-            <div className="absolute bottom-4 left-0 right-0 text-center">
-              <span
-                className="text-[rgba(244,228,188,0.7)] text-[.6rem] bg-[rgba(0,0,0,0.6)] px-3 py-1 tracking-[.1em] uppercase"
+          {/* Placeholder */}
+          {!streaming && !captured && (
+            <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-[rgba(240,226,189,0.75)]">
+              <div className="text-6xl">📷</div>
+              <p
+                className="text-[.65rem] tracking-[.2em] uppercase"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
-                Centralize seu rosto
-              </span>
+                Câmera desligada
+              </p>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Success badge */}
-        {captured && (
-          <div className="absolute top-3 right-3 bg-[var(--gold)] w-8 h-8 flex items-center justify-center shadow-lg">
-            <svg className="w-4 h-4 text-[var(--wood)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-        )}
+          {/* Face guide overlay */}
+          {streaming && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-48 h-56 rounded-full border-2 border-dashed border-[rgba(230,188,106,0.55)] shadow-[0_0_0_9999px_rgba(0,0,0,0.3)]" />
+              <div className="absolute bottom-4 left-0 right-0 text-center">
+                <span
+                  className="text-[rgba(240,226,189,0.75)] text-[.6rem] bg-[rgba(0,0,0,0.6)] px-3 py-1 tracking-[.1em] uppercase"
+                  style={{ fontFamily: "var(--font-cinzel), serif" }}
+                >
+                  Centralize seu rosto
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Success badge — mini lacre de cera */}
+          {captured && (
+            <div className="absolute top-3 right-3 wax-seal !w-8 !h-8">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          )}
+        </div>
       </div>
 
       <canvas ref={canvasRef} className="hidden" />
 
       {/* Error message */}
       {error && (
-        <p
-          className="text-[var(--copper)] text-sm text-center bg-[rgba(74,14,14,0.2)] border border-[rgba(184,134,11,0.2)] px-4 py-3 italic"
-        >
+        <p className="text-[var(--seal)] text-sm text-center bg-[rgba(140,35,24,0.08)] border border-[rgba(140,35,24,0.35)] px-4 py-3 italic">
           {error}
         </p>
       )}
@@ -140,13 +138,13 @@ export default function WebcamCapture({ onCapture }: Props) {
           <>
             <button
               onClick={startCamera}
-              className="px-6 py-3 bg-[var(--wine)] border border-[rgba(184,134,11,0.5)] text-[var(--parchment)] text-[.75rem] tracking-[.15em] uppercase hover:border-[var(--gold)] transition-all"
-              style={{ fontFamily: "var(--font-cinzel), serif" }}
+              className="btn-seal press px-6 py-3 text-[.75rem] tracking-[.15em] uppercase cursor-pointer"
+              style={{ fontFamily: "var(--font-cinzel), serif", borderWidth: "1px" }}
             >
               📷 Abrir Câmera
             </button>
             <label
-              className="px-6 py-3 bg-[rgba(45,27,13,0.8)] border border-[rgba(184,134,11,0.3)] text-[var(--gold)] text-[.75rem] tracking-[.15em] uppercase hover:border-[var(--gold)] transition-all cursor-pointer"
+              className="press px-6 py-3 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.45)] text-[var(--ink)] text-[.75rem] tracking-[.15em] uppercase hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all cursor-pointer"
               style={{ fontFamily: "var(--font-cinzel), serif" }}
             >
               📁 Escolher Foto
@@ -172,7 +170,7 @@ export default function WebcamCapture({ onCapture }: Props) {
         {streaming && (
           <button
             onClick={takePhoto}
-            className="px-8 py-3 bg-[var(--wine)] border-2 border-[rgba(184,134,11,0.6)] text-[var(--parchment)] text-[.8rem] tracking-[.15em] uppercase hover:border-[var(--gold)] transition-all animate-pulse-wine"
+            className="btn-seal press px-8 py-3 text-[.8rem] tracking-[.15em] uppercase animate-pulse-wine cursor-pointer"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
           >
             ⚡ Tirar Foto
@@ -181,7 +179,7 @@ export default function WebcamCapture({ onCapture }: Props) {
         {captured && (
           <button
             onClick={retake}
-            className="px-6 py-3 bg-transparent border border-[rgba(184,134,11,0.25)] text-[rgba(184,134,11,0.6)] text-[.75rem] tracking-[.15em] uppercase hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all"
+            className="press px-6 py-3 bg-transparent border border-[rgba(96,66,26,0.4)] text-[var(--ink-70)] text-[.75rem] tracking-[.15em] uppercase hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all cursor-pointer"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             🔄 Refazer

@@ -1,23 +1,21 @@
 export default function Footer() {
   return (
     <footer
-      className="border-t border-[rgba(184,134,11,0.15)] py-10 px-6"
-      style={{ background: "rgba(10,6,3,0.95)" }}
+      className="border-t border-[rgba(201,151,63,0.2)] py-10 px-6"
+      style={{ background: "rgba(16, 9, 4, 0.97)" }}
     >
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-5">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-[var(--wine)] to-[var(--wood)] border border-[rgba(184,134,11,0.3)] flex items-center justify-center text-sm">
-            ⚔
-          </div>
+        <div className="flex items-center gap-2.5">
+          <div className="wax-seal !w-8 !h-8 text-[.8rem]">⚔</div>
           <span
-            className="text-[rgba(244,228,188,0.5)] text-[.75rem] tracking-[.1em]"
+            className="text-[rgba(240,226,189,0.55)] text-[.75rem] tracking-[.1em]"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             Analytics de Taverna
           </span>
         </div>
 
-        <p className="text-[rgba(244,228,188,0.3)] text-[.8rem] italic text-center">
+        <p className="text-[rgba(240,226,189,0.35)] text-[.8rem] italic text-center">
           Projeto Experimental · Gamificação + IA Generativa
         </p>
 
@@ -25,7 +23,7 @@ export default function Footer() {
           {["🧠 Psicologia", "🤖 IA", "🎮 RPG"].map((tag) => (
             <span
               key={tag}
-              className="text-[.6rem] text-[rgba(184,134,11,0.35)] tracking-[.15em]"
+              className="text-[.6rem] text-[rgba(230,188,106,0.45)] tracking-[.15em]"
               style={{ fontFamily: "var(--font-cinzel), serif" }}
             >
               {tag}

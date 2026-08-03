@@ -6,17 +6,11 @@ export default function PersonagemPage() {
   return (
     <div
       className="min-h-screen relative overflow-hidden flex items-center justify-center px-4 py-16"
-      style={{ background: "var(--charcoal)" }}
+      style={{
+        background:
+          "radial-gradient(60% 40% at 50% 0%, rgba(255,176,80,.13) 0%, transparent 70%), url('/textures/dark-wood.png'), linear-gradient(180deg, #2a180a 0%, #170d06 90%)",
+      }}
     >
-      <div className="bg-grid absolute inset-0 pointer-events-none" />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at top, rgba(74,14,14,0.18) 0%, transparent 65%)",
-        }}
-      />
-
       <div className="relative w-full max-w-sm">
         <div className="flex justify-center mb-10">
           <a href="/">
@@ -37,14 +31,14 @@ export default function PersonagemPage() {
         <div className="text-center mt-8 space-y-4">
           <a
             href="/jogar"
-            className="block w-full py-4 border border-[rgba(184,134,11,0.5)] bg-[var(--wine)] text-[var(--parchment)] text-[.75rem] tracking-[.12em] uppercase hover:border-[var(--gold)] transition-all"
+            className="btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
           >
             ⚔️ Descobrir minha classe
           </a>
           <a
             href="/"
-            className="block text-[rgba(184,134,11,0.45)] hover:text-[rgba(184,134,11,0.8)] text-[.7rem] tracking-[.15em] uppercase transition-colors"
+            className="block text-[rgba(230,188,106,0.55)] hover:text-[var(--gold-light)] text-[.7rem] tracking-[.15em] uppercase transition-colors"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             ← Voltar ao início
@@ -57,15 +51,12 @@ export default function PersonagemPage() {
 
 function CardSkeleton() {
   return (
-    <div
-      className="arcane-corners border-2 border-[rgba(184,134,11,0.2)] p-8 animate-pulse"
-      style={{ background: "rgba(30,10,4,0.95)" }}
-    >
+    <div className="paper-card paper-frame arcane-corners p-8 animate-pulse">
       <span className="ac-bl" /><span className="ac-br" />
       <div className="flex flex-col items-center gap-4">
-        <div className="w-20 h-20 bg-[rgba(184,134,11,0.08)]" />
-        <div className="h-6 w-48 bg-[rgba(184,134,11,0.08)]" />
-        <div className="h-4 w-64 bg-[rgba(184,134,11,0.05)]" />
+        <div className="w-20 h-20 rounded-full bg-[rgba(96,66,26,0.15)]" />
+        <div className="h-6 w-48 bg-[rgba(96,66,26,0.15)]" />
+        <div className="h-4 w-64 bg-[rgba(96,66,26,0.1)]" />
       </div>
     </div>
   );

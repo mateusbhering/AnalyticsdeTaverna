@@ -51,22 +51,27 @@ export default function AdminCalendar() {
   const selectedEvents = selected ? (EVENTS[eventKey(year, month, selected)] ?? []) : [];
 
   return (
-    <div className="rounded-2xl bg-white/3 border border-purple-800/30 p-6 backdrop-blur-sm">
+    <div className="paper-card paper-frame p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={prev}
-          className="w-8 h-8 rounded-lg bg-white/5 border border-purple-800/30 text-purple-300 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center"
+          className="w-8 h-8 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.35)] text-[var(--ink-70)] hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all flex items-center justify-center cursor-pointer"
         >
           ‹
         </button>
         <div className="text-center">
-          <div className="text-white font-bold">{MONTHS[month]}</div>
-          <div className="text-purple-400/60 text-xs">{year}</div>
+          <div
+            className="text-[var(--ink)] font-bold"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
+          >
+            {MONTHS[month]}
+          </div>
+          <div className="text-[var(--ink-50)] text-xs">{year}</div>
         </div>
         <button
           onClick={next}
-          className="w-8 h-8 rounded-lg bg-white/5 border border-purple-800/30 text-purple-300 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center"
+          className="w-8 h-8 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.35)] text-[var(--ink-70)] hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all flex items-center justify-center cursor-pointer"
         >
           ›
         </button>
@@ -75,7 +80,11 @@ export default function AdminCalendar() {
       {/* Weekdays */}
       <div className="grid grid-cols-7 mb-2">
         {WEEKDAYS.map((d) => (
-          <div key={d} className="text-center text-purple-500/60 text-xs py-1 font-semibold">
+          <div
+            key={d}
+            className="text-center text-[var(--foil)] text-xs py-1 font-semibold"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
+          >
             {d}
           </div>
         ))}
@@ -94,18 +103,18 @@ export default function AdminCalendar() {
               key={day}
               onClick={() => setSelected(day)}
               className={`
-                relative aspect-square rounded-lg text-sm font-medium transition-all duration-150 flex items-center justify-center
+                relative aspect-square text-sm font-medium transition-all duration-150 flex items-center justify-center cursor-pointer
                 ${todayCell
-                  ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30"
+                  ? "bg-[var(--seal)] text-[#f6e6c2] shadow-[0_2px_8px_rgba(140,35,24,0.4)]"
                   : selectedCell
-                  ? "bg-purple-900/60 border border-purple-600/60 text-white"
-                  : "text-purple-300/80 hover:bg-white/5 hover:text-white"
+                  ? "bg-[rgba(140,35,24,0.12)] border border-[rgba(140,35,24,0.5)] text-[var(--seal)]"
+                  : "text-[var(--ink-70)] hover:bg-[rgba(60,42,24,0.08)] hover:text-[var(--ink)]"
                 }
               `}
             >
               {day}
               {event && (
-                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-amber-400" />
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--gold)]" />
               )}
             </button>
           );
@@ -113,18 +122,18 @@ export default function AdminCalendar() {
       </div>
 
       {/* Selected day info */}
-      <div className="mt-4 pt-4 border-t border-purple-900/40">
+      <div className="mt-4 pt-4 border-t border-[rgba(96,66,26,0.25)]">
         {selectedEvents.length > 0 ? (
           <div className="space-y-2">
             {selectedEvents.map((ev, i) => (
-              <div key={i} className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-amber-900/20 border border-amber-700/40">
-                <div className="text-amber-400 font-bold text-xs w-10 flex-shrink-0">{ev.time}</div>
-                <div className="text-white text-xs font-semibold">{ev.title}</div>
+              <div key={i} className="flex items-center gap-3 px-3 py-2.5 bg-[rgba(201,151,63,0.12)] border border-[rgba(138,100,40,0.4)]">
+                <div className="text-[var(--foil)] font-bold text-xs w-10 flex-shrink-0">{ev.time}</div>
+                <div className="text-[var(--ink)] text-xs font-semibold">{ev.title}</div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-center text-xs text-purple-400/50">
+          <div className="text-center text-xs text-[var(--ink-50)] italic">
             {selected
               ? `${selected} de ${MONTHS[month]} de ${year} — sem compromissos`
               : "Selecione um dia"}

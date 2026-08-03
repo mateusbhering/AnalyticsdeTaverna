@@ -27,7 +27,7 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "glass border-b border-[rgba(184,134,11,0.2)] shadow-[0_4px_40px_rgba(0,0,0,0.5)]"
+          ? "glass border-b border-[rgba(201,151,63,0.25)] shadow-[0_4px_40px_rgba(0,0,0,0.5)]"
           : "bg-transparent"
       }`}
     >
@@ -39,7 +39,7 @@ export default function Navbar() {
             alt="Analytics de Taverna"
             width={512}
             height={512}
-            className="h-9 w-auto object-contain sm:hidden drop-shadow-[0_0_10px_rgba(184,134,11,0.35)]"
+            className="h-9 w-auto object-contain sm:hidden drop-shadow-[0_0_10px_rgba(255,176,80,0.4)]"
             priority
           />
           <div className="hidden sm:block">
@@ -62,7 +62,7 @@ export default function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className="text-[.65rem] text-[rgba(244,228,188,0.55)] hover:text-[var(--gold)] transition-colors duration-200 tracking-[.2em] uppercase"
+              className="text-[.65rem] text-[rgba(240,226,189,0.6)] hover:text-[var(--gold-light)] transition-colors duration-200 tracking-[.2em] uppercase"
               style={{ fontFamily: "var(--font-cinzel), serif" }}
             >
               {l.label}
@@ -70,14 +70,14 @@ export default function Navbar() {
           ))}
           <a
             href="#jornada"
-            className="press px-5 py-2 bg-[var(--wine)] border border-[rgba(184,134,11,0.5)] text-[var(--parchment)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold)] hover:bg-[rgba(74,14,14,0.7)] transition-all duration-200"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
+            className="press btn-seal px-5 py-2 text-[.6rem] tracking-[.2em] uppercase"
+            style={{ fontFamily: "var(--font-cinzel), serif", borderWidth: "1px" }}
           >
             Iniciar Jornada
           </a>
           <a
             href="/admin"
-            className="press px-5 py-2 bg-[rgba(74,14,14,0.6)] border border-[rgba(184,134,11,0.35)] text-[rgba(244,228,188,0.7)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold)] transition-all duration-200 inline-flex items-center gap-1.5"
+            className="press px-5 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             <Lock size={11} strokeWidth={1.8} /> Admin
@@ -85,7 +85,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="md:hidden text-[rgba(244,228,188,0.6)] hover:text-[var(--gold)]"
+          className="md:hidden text-[rgba(240,226,189,0.65)] hover:text-[var(--gold-light)]"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
@@ -98,13 +98,13 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className="md:hidden glass border-b border-[rgba(184,134,11,0.2)] px-6 pb-6">
+        <div className="md:hidden glass border-b border-[rgba(201,151,63,0.25)] px-6 pb-6">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setMenuOpen(false)}
-              className="block py-3 text-[rgba(244,228,188,0.55)] hover:text-[var(--gold)] border-b border-[rgba(184,134,11,0.1)] transition-colors text-[.65rem] tracking-[.2em] uppercase"
+              className="block py-3 text-[rgba(240,226,189,0.6)] hover:text-[var(--gold-light)] border-b border-[rgba(201,151,63,0.12)] transition-colors text-[.65rem] tracking-[.2em] uppercase"
               style={{ fontFamily: "var(--font-cinzel), serif" }}
             >
               {l.label}
@@ -112,15 +112,15 @@ export default function Navbar() {
           ))}
           <a
             href="#jornada"
-            className="press mt-4 block text-center px-5 py-3 bg-[var(--wine)] border border-[rgba(184,134,11,0.5)] text-[var(--parchment)] text-[.65rem] tracking-[.15em] uppercase"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
+            className="press btn-seal mt-4 block text-center px-5 py-3 text-[.65rem] tracking-[.15em] uppercase"
+            style={{ fontFamily: "var(--font-cinzel), serif", borderWidth: "1px" }}
             onClick={() => setMenuOpen(false)}
           >
             Iniciar Jornada
           </a>
           <a
             href="/admin"
-            className="press mt-2 flex items-center justify-center gap-1.5 text-center px-5 py-3 bg-[rgba(74,14,14,0.4)] border border-[rgba(184,134,11,0.3)] text-[rgba(244,228,188,0.7)] text-[.65rem] tracking-[.15em] uppercase"
+            className="press mt-2 flex items-center justify-center gap-1.5 text-center px-5 py-3 bg-[rgba(82,26,16,0.45)] border border-[rgba(201,151,63,0.35)] text-[rgba(240,226,189,0.75)] text-[.65rem] tracking-[.15em] uppercase"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
             onClick={() => setMenuOpen(false)}
           >
