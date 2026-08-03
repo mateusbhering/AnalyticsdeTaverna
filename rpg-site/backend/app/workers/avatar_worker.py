@@ -101,13 +101,42 @@ _TRANSIENT_TOKENS = (
 _GEMINI_MAX_ATTEMPTS = 4
 
 
-async def _run_gemini(image_bytes: bytes, prompt: str) -> tuple[str, str]:
-    """Chama o Gemini para gerar o avatar, com retry em erros transitórios.
+class _RateLimiter:
+    """Marca o ritmo das chamadas: no máximo `per_minute` inícios por minuto.
 
-    O modelo de imagem tem limite de taxa baixo: sob uso em rajada, algumas
-    chamadas voltam 429 RESOURCE_EXHAUSTED (transitório). Reintentamos com
-    backoff exponencial (3s, 6s, 12s). Isolado para facilitar o mock em testes;
-    import do SDK é lazy.
+    Compartilhado por todos os jobs concorrentes DESTE processo de worker — sob
+    rajada, os jobs esperam a vez aqui em vez de estourar o rate limit do Gemini
+    (que responderia 429). É pacing, não aumenta a cota: se o volume passar do
+    teto, as pessoas esperam mais (não tomam erro).
+    """
+
+    def __init__(self, per_minute: int) -> None:
+        self._interval = 60.0 / max(per_minute, 1)
+        self._lock = asyncio.Lock()
+        self._next_at = 0.0
+
+    async def wait(self) -> None:
+        async with self._lock:
+            now = asyncio.get_event_loop().time()
+            if self._next_at <= now:
+                self._next_at = now + self._interval
+                return
+            delay = self._next_at - now
+            self._next_at += self._interval
+        await asyncio.sleep(delay)
+
+
+# Instância global do worker (um processo → um limiter).
+_gemini_limiter = _RateLimiter(settings.gemini_max_rpm)
+
+
+async def _run_gemini(image_bytes: bytes, prompt: str) -> tuple[str, str]:
+    """Chama o Gemini para gerar o avatar, com pacing + retry.
+
+    O modelo de imagem tem limite de taxa baixo: sob rajada, chamadas voltam
+    429 RESOURCE_EXHAUSTED. O `_gemini_limiter` espaça os inícios de chamada
+    (inclusive dos retries) para ficar sob a cota; o retry cobre 429s residuais
+    e instabilidade (backoff 3s, 6s, 12s). Import do SDK é lazy (mock em testes).
     """
     from google import genai  # noqa: PLC0415  (import lazy proposital)
     from google.genai import types
@@ -120,6 +149,7 @@ async def _run_gemini(image_bytes: bytes, prompt: str) -> tuple[str, str]:
 
     delay = 3.0
     for attempt in range(1, _GEMINI_MAX_ATTEMPTS + 1):
+        await _gemini_limiter.wait()  # respeita o ritmo antes de cada chamada
         try:
             response = await client.aio.models.generate_content(
                 model=settings.gemini_image_model, contents=contents

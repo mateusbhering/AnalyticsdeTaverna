@@ -133,6 +133,19 @@ async def test_worker_passes_class_style_to_gemini(redis, monkeypatch):
     assert "paladin" in seen["prompt"]
 
 
+# ── Rate limiter (pacing) ──────────────────────────────────────────────
+async def test_rate_limiter_paces_calls():
+    import time
+
+    # 1200/min → 1 a cada 0.05s. A 1ª passa na hora; as seguintes esperam.
+    limiter = avatar_worker._RateLimiter(1200)
+    t0 = time.monotonic()
+    for _ in range(4):
+        await limiter.wait()
+    elapsed = time.monotonic() - t0
+    assert elapsed >= 3 * 0.05 * 0.9  # ~0.15s (com folga p/ jitter)
+
+
 # ── Retry em erro transitório (rate limit 429) ─────────────────────────
 async def test_run_gemini_retries_on_rate_limit(monkeypatch):
     import google.genai as genai_mod
@@ -163,6 +176,10 @@ async def test_run_gemini_retries_on_rate_limit(monkeypatch):
         return
     monkeypatch.setattr(avatar_worker.asyncio, "sleep", _no_sleep)
 
+    async def _no_wait():
+        return
+    monkeypatch.setattr(avatar_worker._gemini_limiter, "wait", _no_wait)
+
     b64, mime = await avatar_worker._run_gemini(b"x", "prompt")
     assert calls["n"] == 3  # 2 falhas transitórias + 1 sucesso
     assert mime == "image/png"
@@ -185,6 +202,10 @@ async def test_run_gemini_does_not_retry_permanent_error(monkeypatch):
 
     monkeypatch.setattr(genai_mod, "Client", FakeClient)
     monkeypatch.setattr(gtypes.Part, "from_bytes", staticmethod(lambda data, mime_type: None))
+
+    async def _no_wait():
+        return
+    monkeypatch.setattr(avatar_worker._gemini_limiter, "wait", _no_wait)
 
     import pytest as _pytest
     with _pytest.raises(ValueError):

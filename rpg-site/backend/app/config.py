@@ -27,6 +27,11 @@ class Settings(BaseSettings):
     # (Nano Banana 2); "gemini-2.5-flash-image" é legado. Confira o modelo
     # disponível para a sua API key em https://ai.google.dev/gemini-api/docs/image-generation
     gemini_image_model: str = "gemini-3.1-flash-image"
+    # Teto de chamadas/min ao Gemini (evita 429 sob rajada). Ajuste à cota do
+    # SEU projeto — AI Studio/Cloud Console → Quotas → "generate_content
+    # requests per minute" do modelo. O worker enfileira o excedente em vez de
+    # estourar o rate limit. Deixe um pouco ABAIXO da cota real por segurança.
+    gemini_max_rpm: int = 8
 
     # ── Upload ──────────────────────────────────────────────────────
     max_upload_bytes: int = 8 * 1024 * 1024  # 8 MB
@@ -39,12 +44,6 @@ class Settings(BaseSettings):
     # ── Retenção ────────────────────────────────────────────────────
     # Avatar gerado vive por 24h no Redis. A foto ORIGINAL nunca é persistida.
     result_ttl_seconds: int = 24 * 60 * 60  # 86400
-
-    # ── Supabase (armazenamento permanente do avatar gerado) ────────
-    # Nunca hardcoded — via env SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY.
-    # A service_role_key é secreta (só no backend); nunca exponha no frontend.
-    supabase_url: str = ""
-    supabase_service_role_key: str = ""
 
     # ── CORS ────────────────────────────────────────────────────────
     # Origens permitidas para o frontend Next.js chamar a API.
