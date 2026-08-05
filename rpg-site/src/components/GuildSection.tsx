@@ -12,7 +12,7 @@ const members = [
   { name: "Julia de Moraes Barbosa",           photo: "/guild/julia-moraes.png" },
   { name: "Mariana Ayumi Dantas Kuramitsu",    photo: "/guild/mariana-ayumi.png" },
   { name: "Yasmin Yumi Tsunokawa",             photo: "/guild/yasmin-yumi.png" },
-  { name: "Lucas Amaral da Silva Barros",      photo: null },
+  { name: "Lucas Amaral da Silva Barros",      photo: "/guild/lucas-amaral.jpg" },
   { name: "Mateus Bhering Beltrão Santos",     photo: "/guild/mateus-bhering.png" },
   { name: "Guilherme Ladeira Correa Santos",   photo: "/guild/guilherme-ladeira.png" },
 ];
