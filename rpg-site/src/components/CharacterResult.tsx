@@ -1,6 +1,7 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
+import { Download } from "lucide-react";
 import { useRef, useMemo, useEffect, useState } from "react";
 import type { Dimensions } from "./QuizForm";
 import { useAvatarGeneration } from "@/lib/useAvatarGeneration";
@@ -34,6 +35,19 @@ const CLASS_LIST: ClassInfo[] = [
 
 function byName(name: string): ClassInfo {
   return CLASS_LIST.find((c) => c.name === name) ?? CLASS_LIST[0];
+}
+
+/** Nome do arquivo ao baixar o avatar: slug da classe + extensão do data URL. */
+function avatarFileName(className: string, dataUrl: string): string {
+  const mime = /^data:(.*?);/.exec(dataUrl)?.[1] ?? "image/png";
+  const ext = mime === "image/jpeg" ? "jpg" : mime === "image/webp" ? "webp" : "png";
+  const slug = className
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  return `avatar-${slug}.${ext}`;
 }
 
 interface Attributes {
@@ -250,13 +264,25 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
             <div className="polaroid !p-2">
               <div className="relative w-48 h-48 border border-[rgba(96,66,26,0.4)] overflow-hidden bg-[rgba(23,13,6,0.9)]">
                 {avatarStatus === "done" && avatarUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={avatarUrl}
-                    alt={rpgClass.name}
-                    className="w-full h-full object-cover"
-                    style={{ imageRendering: "auto" }}
-                  />
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={avatarUrl}
+                      alt={rpgClass.name}
+                      className="w-full h-full object-cover"
+                      style={{ imageRendering: "auto" }}
+                    />
+                    {/* Baixar o avatar gerado — o data URL já traz a imagem inteira. */}
+                    <a
+                      href={avatarUrl}
+                      download={avatarFileName(rpgClass.name, avatarUrl)}
+                      title="Baixar avatar"
+                      aria-label="Baixar avatar"
+                      className="press absolute bottom-2 right-2 w-8 h-8 flex items-center justify-center bg-[rgba(23,13,6,0.78)] border border-[rgba(230,188,106,0.45)] text-[var(--gold-light)] hover:bg-[rgba(23,13,6,0.92)] hover:border-[var(--gold-light)] hover:text-[var(--parchment)] transition-colors"
+                    >
+                      <Download size={15} strokeWidth={1.8} />
+                    </a>
+                  </>
                 ) : avatarStatus === "error" ? (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3 text-center">
                     <span className="text-2xl opacity-50">🎭</span>
