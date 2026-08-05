@@ -2,9 +2,9 @@
 
 import { QRCodeSVG } from "qrcode.react";
 import { Download } from "lucide-react";
-import { useRef, useMemo, useEffect, useState } from "react";
+import { useRef, useMemo, useEffect, useState, type MouseEvent } from "react";
 import type { Dimensions } from "./QuizForm";
-import { useAvatarGeneration } from "@/lib/useAvatarGeneration";
+import { useAvatarGeneration, dataUrlToBlob } from "@/lib/useAvatarGeneration";
 import { getSupabaseClient } from "@/lib/supabase";
 
 interface ClassInfo {
@@ -211,6 +211,27 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   const shareUrl =
     personagemId != null ? `${origin}/personagem?id=${personagemId}` : terminal ? paramLink : null;
 
+  // No celular, `<a download>` sempre cai em Downloads/Arquivos — nenhuma API
+  // web escolhe a pasta de destino. A folha de compartilhamento nativa é o
+  // único caminho até a galeria: ela oferece "Salvar imagem" / "Save to Photos".
+  // Onde compartilhar arquivos não existe (desktop), o clique segue como
+  // download normal, via o próprio href/download do <a>.
+  const saveAvatar = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (!avatarUrl) return;
+    // Conversão síncrona de propósito: um await aqui perderia o gesto do
+    // usuário e o Safari do iOS recusaria o navigator.share.
+    const blob = dataUrlToBlob(avatarUrl);
+    const file = new File([blob], avatarFileName(rpgClass.name, avatarUrl), {
+      type: blob.type,
+    });
+    if (!navigator.canShare?.({ files: [file] })) return;
+
+    e.preventDefault();
+    navigator.share({ files: [file], title: rpgClass.name }).catch(() => {
+      /* usuário fechou a folha de compartilhamento */
+    });
+  };
+
   const copyLink = async () => {
     if (!shareUrl) return;
     try {
@@ -272,12 +293,14 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                       className="w-full h-full object-cover"
                       style={{ imageRendering: "auto" }}
                     />
-                    {/* Baixar o avatar gerado — o data URL já traz a imagem inteira. */}
+                    {/* Salvar o avatar — o data URL já traz a imagem inteira.
+                        No celular o onClick desvia para a folha nativa (galeria). */}
                     <a
                       href={avatarUrl}
                       download={avatarFileName(rpgClass.name, avatarUrl)}
-                      title="Baixar avatar"
-                      aria-label="Baixar avatar"
+                      onClick={saveAvatar}
+                      title="Salvar avatar"
+                      aria-label="Salvar avatar"
                       className="press absolute bottom-2 right-2 w-8 h-8 flex items-center justify-center bg-[rgba(23,13,6,0.78)] border border-[rgba(230,188,106,0.45)] text-[var(--gold-light)] hover:bg-[rgba(23,13,6,0.92)] hover:border-[var(--gold-light)] hover:text-[var(--parchment)] transition-colors"
                     >
                       <Download size={15} strokeWidth={1.8} />
