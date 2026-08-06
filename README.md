@@ -2,7 +2,7 @@
 
 Site institucional e experiência interativa de gamificação comportamental. Usuários respondem um quiz, recebem uma classe de RPG determinística e um card digital compartilhável via QR Code.
 
-🌐 **Produção:** [site-ic-orcin.vercel.app](https://site-ic-orcin.vercel.app)  
+🌐 **Produção:** [analyticsdetaverna.com.br](https://www.analyticsdetaverna.com.br)  
 📦 **Repositório:** [github.com/mateusbhering/site_ic](https://github.com/mateusbhering/site_ic)
 
 ---
