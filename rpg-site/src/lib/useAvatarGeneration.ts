@@ -26,9 +26,9 @@ export interface AvatarGeneration {
   reset: () => void;
 }
 
-/** Converte um data URL (ex.: da webcam) em Blob para envio multipart.
- *  Síncrono de propósito: quem compartilha o avatar depende disso para não
- *  perder o gesto do usuário antes de chamar `navigator.share`. */
+/** Converte um data URL (ex.: da webcam) em Blob para envio multipart e para
+ *  o download do avatar (Blob URL). Síncrono de propósito: no clique de baixar
+ *  um await perderia o gesto do usuário. */
 export function dataUrlToBlob(dataUrl: string): Blob {
   const [meta, b64] = dataUrl.split(",");
   const mime = /:(.*?);/.exec(meta)?.[1] ?? "image/jpeg";

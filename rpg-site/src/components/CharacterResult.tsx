@@ -1,8 +1,15 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
-import { Download } from "lucide-react";
-import { useRef, useMemo, useEffect, useState, type MouseEvent } from "react";
+import { Download, Share2 } from "lucide-react";
+import {
+  useRef,
+  useMemo,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+  type MouseEvent,
+} from "react";
 import type { Dimensions } from "./QuizForm";
 import { useAvatarGeneration, dataUrlToBlob } from "@/lib/useAvatarGeneration";
 import { getSupabaseClient } from "@/lib/supabase";
@@ -49,6 +56,30 @@ function avatarFileName(className: string, dataUrl: string): string {
     .replace(/^-|-$/g, "");
   return `avatar-${slug}.${ext}`;
 }
+
+/** Estilo comum dos botões sobre o avatar (baixar / compartilhar). */
+const AVATAR_ACTION_CLASS =
+  "press w-8 h-8 flex items-center justify-center bg-[rgba(23,13,6,0.78)] border border-[rgba(230,188,106,0.45)] text-[var(--gold-light)] hover:bg-[rgba(23,13,6,0.92)] hover:border-[var(--gold-light)] hover:text-[var(--parchment)] transition-colors";
+
+// O navegador consegue abrir a folha nativa com um arquivo? Na prática isso é
+// "está num celular": desktops não implementam share de arquivos. A resposta
+// não muda durante a sessão, então memorizamos — `useSyncExternalStore` exige
+// um snapshot estável.
+let fileShareSupport: boolean | null = null;
+function supportsFileShare(): boolean {
+  if (fileShareSupport === null) {
+    try {
+      const probe = new File([new Uint8Array()], "probe.png", { type: "image/png" });
+      fileShareSupport = navigator.canShare?.({ files: [probe] }) === true;
+    } catch {
+      fileShareSupport = false;
+    }
+  }
+  return fileShareSupport;
+}
+// A capacidade nunca muda: subscribe é um no-op e o servidor sempre vê `false`,
+// o que mantém o HTML do SSR igual ao da primeira renderização no cliente.
+const noopSubscribe = () => () => {};
 
 interface Attributes {
   forca: number;
@@ -144,6 +175,11 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   const [personagemId, setPersonagemId] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
 
+  // Botão de compartilhar só onde a folha nativa existe (celular). No servidor
+  // e na primeira renderização do cliente o snapshot é o mesmo — sem hydration
+  // mismatch; o botão surge no primeiro reconcile no browser.
+  const canShare = useSyncExternalStore(noopSubscribe, supportsFileShare, () => false);
+
   useEffect(() => {
     if (avatarStatus !== "done" && avatarStatus !== "error") return;
     if (savedRef.current || !jobId) return;
@@ -211,12 +247,37 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   const shareUrl =
     personagemId != null ? `${origin}/personagem?id=${personagemId}` : terminal ? paramLink : null;
 
-  // No celular, `<a download>` sempre cai em Downloads/Arquivos — nenhuma API
-  // web escolhe a pasta de destino. A folha de compartilhamento nativa é o
-  // único caminho até a galeria: ela oferece "Salvar imagem" / "Save to Photos".
-  // Onde compartilhar arquivos não existe (desktop), o clique segue como
-  // download normal, via o próprio href/download do <a>.
+  // Baixar: download direto em qualquer plataforma. O data URL vira Blob URL
+  // antes de baixar porque data URLs longos travam ou são bloqueados em vários
+  // navegadores móveis; com Blob URL o arquivo cai em Downloads (desktop) ou
+  // Downloads/Arquivos (celular).
+  // Se a conversão falhar, o clique segue para o href/download do próprio <a>.
   const saveAvatar = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (!avatarUrl) return;
+
+    let objectUrl: string;
+    try {
+      objectUrl = URL.createObjectURL(dataUrlToBlob(avatarUrl));
+    } catch {
+      return; // fallback: o navegador baixa o data URL do href
+    }
+
+    e.preventDefault();
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = avatarFileName(rpgClass.name, avatarUrl);
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    // Revogar na hora aborta o download em alguns navegadores; espera o início.
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+  };
+
+  // Compartilhar: só aparece onde a folha nativa aceita arquivos (celular). É o
+  // único caminho até a galeria — ela oferece "Salvar imagem" / "Save to Photos",
+  // coisa que nenhum download consegue fazer.
+  const shareAvatar = () => {
     if (!avatarUrl) return;
     // Conversão síncrona de propósito: um await aqui perderia o gesto do
     // usuário e o Safari do iOS recusaria o navigator.share.
@@ -226,7 +287,6 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
     });
     if (!navigator.canShare?.({ files: [file] })) return;
 
-    e.preventDefault();
     navigator.share({ files: [file], title: rpgClass.name }).catch(() => {
       /* usuário fechou a folha de compartilhamento */
     });
@@ -293,18 +353,32 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                       className="w-full h-full object-cover"
                       style={{ imageRendering: "auto" }}
                     />
-                    {/* Salvar o avatar — o data URL já traz a imagem inteira.
-                        No celular o onClick desvia para a folha nativa (galeria). */}
-                    <a
-                      href={avatarUrl}
-                      download={avatarFileName(rpgClass.name, avatarUrl)}
-                      onClick={saveAvatar}
-                      title="Salvar avatar"
-                      aria-label="Salvar avatar"
-                      className="press absolute bottom-2 right-2 w-8 h-8 flex items-center justify-center bg-[rgba(23,13,6,0.78)] border border-[rgba(230,188,106,0.45)] text-[var(--gold-light)] hover:bg-[rgba(23,13,6,0.92)] hover:border-[var(--gold-light)] hover:text-[var(--parchment)] transition-colors"
-                    >
-                      <Download size={15} strokeWidth={1.8} />
-                    </a>
+                    {/* Ações do avatar — o data URL já traz a imagem inteira.
+                        Baixar sempre; compartilhar só no celular (galeria). */}
+                    <div className="absolute bottom-2 right-2 flex items-center gap-1.5">
+                      {canShare && (
+                        <button
+                          type="button"
+                          onClick={shareAvatar}
+                          title="Compartilhar avatar"
+                          aria-label="Compartilhar avatar"
+                          className={AVATAR_ACTION_CLASS}
+                        >
+                          <Share2 size={15} strokeWidth={1.8} />
+                        </button>
+                      )}
+                      {/* O onClick baixa via Blob URL; o href/download é o fallback. */}
+                      <a
+                        href={avatarUrl}
+                        download={avatarFileName(rpgClass.name, avatarUrl)}
+                        onClick={saveAvatar}
+                        title="Baixar avatar"
+                        aria-label="Baixar avatar"
+                        className={AVATAR_ACTION_CLASS}
+                      >
+                        <Download size={15} strokeWidth={1.8} />
+                      </a>
+                    </div>
                   </>
                 ) : avatarStatus === "error" ? (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3 text-center">
