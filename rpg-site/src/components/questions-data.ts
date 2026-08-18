@@ -34,7 +34,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Abre o app do banco pra conferir cada centavo imediatamente.", dimMain: "percepcao", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
       { text: "Já manda pro iFood antes que a ansiedade financeira bata.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "DOPAMINA" },
-      { text: "Abre uma planilha de gastos que você montou exatamente pra esse momento.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "NERD" },
+      { text: "Abre uma planilha de gastos que você montou exatamente pra esse momento.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "TECNOLÓGICO" },
       { text: "Manda print pro grupo dos amigos com um emoji de coroa.", dimMain: "sociabilidade", dimSec: "impulsividade", pesoSec: 1, tag: "EXTROVERTIDO" },
     ],
   },
@@ -92,7 +92,7 @@ export const ALL_QUESTIONS: Question[] = [
     id: 8,
     text: "Você está em fila há 40 minutos e percebe que alguém furou na sua frente.",
     options: [
-      { text: "Fala educadamente que a fila começa atrás de você.", dimMain: null, dimSec: "lideranca", pesoSec: 1, tag: "JUSTICEIRO" },
+      { text: "Fala educadamente que a fila começa atrás de você.", dimMain: "lideranca", dimSec: "disciplina", pesoSec: 1, tag: "JUSTICEIRO" },
       { text: "Analisa se vale o desgaste e decide com base no humor do dia.", dimMain: "estrategia", dimSec: "adaptabilidade", pesoSec: 1, tag: "OVERTHINKING" },
       { text: "Fumaça interna, silêncio externo. Você vai processar isso por semanas.", dimMain: "percepcao", dimSec: "empatia", pesoSec: -1, tag: "ANSIOSO" },
       { text: "Conta pra pessoa do lado em voz baixa pra validar sua indignação.", dimMain: "sociabilidade", dimSec: "percepcao", pesoSec: 1, tag: "SOCIAL" },
@@ -132,9 +132,9 @@ export const ALL_QUESTIONS: Question[] = [
     id: 12,
     text: "São 17h50. Seu expediente acaba às 18h. Chega uma tarefa urgente.",
     options: [
-      { text: "Você para tudo, resolve com prioridade máxima. É urgente, ponto.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você para tudo, resolve com prioridade máxima. É urgente, ponto.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "ATLETA" },
       { text: "Você faz o mínimo pra não parecer que ignorou e deixa pro dia seguinte.", dimMain: "adaptabilidade", dimSec: "estrategia", pesoSec: 1, tag: "MALANDRO" },
-      { text: "\'Posso resolver isso amanhã cedo com mais qualidade?\' E você faz isso.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
+      { text: "\'Posso resolver isso amanhã cedo com mais qualidade?\' E você faz isso.", dimMain: "lideranca", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
       { text: "Você resolve, mas manda um \'anotado pra próxima vez evitarmos isso\'.", dimMain: "lideranca", dimSec: "persistencia", pesoSec: 1, tag: "JUSTICEIRO" },
     ],
   },
@@ -143,7 +143,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você precisa fazer uma tarefa chata mas necessária. Como começa?",
     options: [
       { text: "Coloca uma playlist específica e começa em exatos 5 minutos.", dimMain: "disciplina", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
-      { text: "Procrastina por 2h e faz em 20min com adrenalina de prazo.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "DOPAMINA" },
+      { text: "Procrastina por 2h e faz em 20min com adrenalina de prazo.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "PROCRASTINADOR" },
       { text: "Divide em partes pequenas e risca uma por uma como missão épica.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "GAMBIARRA" },
       { text: "Terceiriza pra alguém que vai gostar mais de fazer isso.", dimMain: "criatividade", dimSec: "sociabilidade", pesoSec: 1, tag: "MALANDRO" },
     ],
@@ -154,16 +154,16 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Pesquisa referências de mercado e agenda conversa com o gestor.", dimMain: "estrategia", dimSec: "persistencia", pesoSec: 1, tag: "RESOLUTIVO" },
       { text: "Desabafa com outro colega de confiança antes de qualquer ação.", dimMain: "sociabilidade", dimSec: "empatia", pesoSec: 1, tag: "SOCIAL" },
-      { text: "Fica ruminando por dias antes de decidir qualquer coisa.", dimMain: "percepcao", dimSec: "adaptabilidade", pesoSec: -1, tag: "OVERTHINKING" },
-      { text: "Entrega mais do que antes até ficar impossível não te dar aumento.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "COMPETITIVO" },
+      { text: "Fica ruminando por dias antes de decidir qualquer coisa.", dimMain: "percepcao", dimSec: "adaptabilidade", pesoSec: -1, tag: "ANSIOSO" },
+      { text: "Entrega mais do que antes até ficar impossível não te dar aumento.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "ATLETA" },
     ],
   },
   {
     id: 15,
     text: "Você precisa apresentar um projeto que está 70% pronto. O prazo chegou.",
     options: [
-      { text: "Apresenta o que tem com contexto claro do que falta e por quê.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "RESOLUTIVO" },
-      { text: "Passa a noite toda terminando. Entrega 100% e parece que foi fácil.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
+      { text: "Apresenta o que tem com contexto claro do que falta e por quê.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "LÍDER" },
+      { text: "Passa a noite toda terminando. Entrega 100% e parece que foi fácil.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "ATLETA" },
       { text: "Reformula a narrativa pra o 70% parecer a versão final planejada.", dimMain: "criatividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "MALANDRO" },
       { text: "Pede extensão de prazo com justificativa técnica detalhada.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
     ],
@@ -173,7 +173,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Reunião de 1 hora que poderia ser um e-mail. Você está lá.",
     options: [
       { text: "Responde os e-mails com câmera desligada e acena quando ouve seu nome.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: 1, tag: "FURTIVO" },
-      { text: "Participa genuinamente e tenta encurtar a reunião com objetividade.", dimMain: "lideranca", dimSec: "estrategia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Participa genuinamente e tenta encurtar a reunião com objetividade.", dimMain: "lideranca", dimSec: "estrategia", pesoSec: 1, tag: "LÍDER" },
       { text: "Anota insights reais em silêncio. Ninguém sabe que você está registrando tudo.", dimMain: "percepcao", dimSec: "disciplina", pesoSec: 1, tag: "INTROVERTIDO" },
       { text: "Posta no grupo secreto dos colegas comentários em tempo real.", dimMain: "sociabilidade", dimSec: "impulsividade", pesoSec: 1, tag: "CAÓTICO" },
     ],
@@ -182,9 +182,9 @@ export const ALL_QUESTIONS: Question[] = [
     id: 17,
     text: "Você se inscreveu num curso e travou no módulo 2 de 12 há 3 semanas.",
     options: [
-      { text: "Volta do começo. Precisa refazer a base pra seguir bem.", dimMain: "disciplina", dimSec: "persistencia", pesoSec: 1, tag: "PERFECCIONISTA" },
+      { text: "Volta do começo. Precisa refazer a base pra seguir bem.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
       { text: "Pula direto pro módulo 7 que parecia mais interessante.", dimMain: "impulsividade", dimSec: "criatividade", pesoSec: 1, tag: "CAÓTICO" },
-      { text: "Assiste em velocidade 1.5x sem pausa pra recuperar o atraso.", dimMain: "persistencia", dimSec: "estrategia", pesoSec: 1, tag: "COMPETITIVO" },
+      { text: "Assiste em velocidade 1.5x sem pausa pra recuperar o atraso.", dimMain: "persistencia", dimSec: "estrategia", pesoSec: 1, tag: "ATLETA" },
       { text: "Decide que o curso todo pode ser resumido pelo ChatGPT e faz isso.", dimMain: "criatividade", dimSec: "estrategia", pesoSec: 1, tag: "TECNOLÓGICO" },
     ],
   },
@@ -193,9 +193,9 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você está no flow trabalhando quando recebe uma notificação irrelevante.",
     options: [
       { text: "Fecha a notificação e volta ao que estava em 4 segundos.", dimMain: "disciplina", dimSec: "percepcao", pesoSec: 1, tag: "ZEN" },
-      { text: "Já está no feed. Não sabe como foi parar lá. São 30min depois.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: -1, tag: "DOPAMINA" },
+      { text: "Já está no feed. Não sabe como foi parar lá. São 30min depois.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: -1, tag: "PROCRASTINADOR" },
       { text: "Ativa o modo foco retroativamente e anota \'não repetir esse erro\'.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
-      { text: "Responde a notificação e usa isso como descanso mental ativo.", dimMain: "adaptabilidade", dimSec: "sociabilidade", pesoSec: 1, tag: "SOCIAL" },
+      { text: "Responde a notificação e usa isso como descanso mental ativo.", dimMain: "sociabilidade", dimSec: "adaptabilidade", pesoSec: 1, tag: "SOCIAL" },
     ],
   },
   {
@@ -203,7 +203,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você errou em algo no trabalho e ninguém percebeu ainda.",
     options: [
       { text: "Você corrige silenciosamente antes que alguém note.", dimMain: "disciplina", dimSec: "percepcao", pesoSec: 1, tag: "FURTIVO" },
-      { text: "Você avisa ao time por proatividade mesmo sem necessidade.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "JUSTICEIRO" },
+      { text: "Você avisa ao time por proatividade mesmo sem necessidade.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "LÍDER" },
       { text: "Você monitora se vai ter impacto antes de decidir se fala.", dimMain: "estrategia", dimSec: "percepcao", pesoSec: 1, tag: "OVERTHINKING" },
       { text: "Você segue em frente. Se ninguém viu, o bug não existe.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: 1, tag: "MALANDRO" },
     ],
@@ -223,7 +223,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "As pessoas do grupo decidiram pedir pizza. Você é intolerante a lactose.",
     options: [
       { text: "Pede a sua sem queijo sem fazer escândalo. Gerencia em silêncio.", dimMain: "adaptabilidade", dimSec: "disciplina", pesoSec: 1, tag: "INTROVERTIDO" },
-      { text: "Avisa o grupo e sugere um lugar que tem opção pra todo mundo.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
+      { text: "Avisa o grupo e sugere um lugar que tem opção pra todo mundo.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "LÍDER" },
       { text: "Come a pizza com queijo e paga o preço depois. YOLO.", dimMain: "impulsividade", dimSec: "sociabilidade", pesoSec: 1, tag: "DOPAMINA" },
       { text: "Já tinha visto isso vindo. Trouxe snack próprio como plano B.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "PERFECCIONISTA" },
     ],
@@ -233,7 +233,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você foi convidado pra festa que não quer ir. O anfitrião é amigo próximo.",
     options: [
       { text: "Vai por 1 hora. Mostra presença. Vai embora com desculpa digna.", dimMain: "estrategia", dimSec: "empatia", pesoSec: 1, tag: "MALANDRO" },
-      { text: "Inventa que tem compromisso. A mentira é misericordiosa aqui.", dimMain: "adaptabilidade", dimSec: "criatividade", pesoSec: 1, tag: "FURTIVO" },
+      { text: "Inventa que tem compromisso. A mentira é misericordiosa aqui.", dimMain: "criatividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "FURTIVO" },
       { text: "Vai e arruma um jeito de curtir. Social mode: ativado.", dimMain: "sociabilidade", dimSec: "adaptabilidade", pesoSec: 1, tag: "EXTROVERTIDO" },
       { text: "Diz a verdade com carinho: \'não tô pra festa, mas amo você\'.", dimMain: "empatia", dimSec: "disciplina", pesoSec: 1, tag: "INTROVERTIDO" },
     ],
@@ -263,9 +263,9 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Alguém te pede feedback sobre algo que ficou ruim. Você...",
     options: [
       { text: "Diz a verdade com cuidado. Elogio falso não ajuda ninguém.", dimMain: "empatia", dimSec: "disciplina", pesoSec: 1, tag: "JUSTICEIRO" },
-      { text: "Pergunta o que a pessoa mesma acha antes de falar qualquer coisa.", dimMain: "percepcao", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
-      { text: "Destaca o que funciona e encaixa os pontos críticos com tato.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "SOCIAL" },
-      { text: "Fala o que quer ouvir. Sua relação com a pessoa vale mais que isso.", dimMain: "adaptabilidade", dimSec: "sociabilidade", pesoSec: 1, tag: "MALANDRO" },
+      { text: "Pergunta o que a pessoa mesma acha antes de falar qualquer coisa.", dimMain: "empatia", dimSec: "percepcao", pesoSec: 1, tag: "CURADOR" },
+      { text: "Destaca o que funciona e encaixa os pontos críticos com tato.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "LÍDER" },
+      { text: "Fala o que quer ouvir. Sua relação com a pessoa vale mais que isso.", dimMain: "sociabilidade", dimSec: "adaptabilidade", pesoSec: 1, tag: "MALANDRO" },
     ],
   },
   {
@@ -275,14 +275,14 @@ export const ALL_QUESTIONS: Question[] = [
       { text: "Você já tinha desconfiado. Tinha plano B pronto.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "OVERTHINKING" },
       { text: "Você fala com carinho que isso está te afetando.", dimMain: "empatia", dimSec: "lideranca", pesoSec: 1, tag: "CURADOR" },
       { text: "Você marca de novo sem drama. Não vale o desgaste.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
-      { text: "Você cancela o próximo compromisso com ele. Igualdade.", dimMain: null, dimSec: "impulsividade", pesoSec: 1, tag: "JUSTICEIRO" },
+      { text: "Você cancela o próximo compromisso com ele. Igualdade.", dimMain: "impulsividade", dimSec: "lideranca", pesoSec: 1, tag: "JUSTICEIRO" },
     ],
   },
   {
     id: 27,
     text: "Você precisa dizer não pra um pedido que vai te sobrecarregar.",
     options: [
-      { text: "Diz não diretamente mas oferece uma alternativa.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Diz não diretamente mas oferece uma alternativa.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "LÍDER" },
       { text: "Diz que vai tentar e vai empurrando até se tornar impossível.", dimMain: "adaptabilidade", dimSec: "persistencia", pesoSec: -1, tag: "PROCRASTINADOR" },
       { text: "Diz não com uma explicação elaborada justificando cada ponto.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "PERFECCIONISTA" },
       { text: "Diz sim e resolve o seu problema depois. Sempre aparece um jeito.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "CAÓTICO" },
@@ -293,7 +293,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você encontra um conhecido na rua e não lembra o nome dele.",
     options: [
       { text: "Apresenta alguém junto pra ele se apresentar e você captura o nome.", dimMain: "criatividade", dimSec: "sociabilidade", pesoSec: 1, tag: "MALANDRO" },
-      { text: "Chama de \'cara\' e \'ei\' até aparecer o contexto certo.", dimMain: "adaptabilidade", dimSec: "sociabilidade", pesoSec: 1, tag: "FURTIVO" },
+      { text: "Chama de \'cara\' e \'ei\' até aparecer o contexto certo.", dimMain: "sociabilidade", dimSec: "adaptabilidade", pesoSec: 1, tag: "FURTIVO" },
       { text: "Assume que não lembrou e ri junto. Transparência desarmante.", dimMain: "empatia", dimSec: "sociabilidade", pesoSec: 1, tag: "EXTROVERTIDO" },
       { text: "Desvia o assunto habilmente até chegar no ponto onde ele diz o nome.", dimMain: "estrategia", dimSec: "percepcao", pesoSec: 1, tag: "OVERTHINKING" },
     ],
@@ -323,7 +323,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Seu treino começa às 18h e começa uma tempestade absurda.",
     options: [
       { text: "Você vai de qualquer forma. Barro faz parte do treino.", dimMain: "persistencia", dimSec: "impulsividade", pesoSec: 1, tag: "ATLETA" },
-      { text: "Você faz o treino em casa adaptado com o que tem.", dimMain: "adaptabilidade", dimSec: "criatividade", pesoSec: 1, tag: "GAMBIARRA" },
+      { text: "Você faz o treino em casa adaptado com o que tem.", dimMain: "criatividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "GAMBIARRA" },
       { text: "Você reprograma pra amanhã e usa o tempo pra descanso ativo.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "ZEN" },
       { text: "Você usa como desculpa e vai dormir cedo sem culpa.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: 1, tag: "PROCRASTINADOR" },
     ],
@@ -332,9 +332,9 @@ export const ALL_QUESTIONS: Question[] = [
     id: 32,
     text: "Você acordou 40 minutos mais cedo do que precisava. O que faz?",
     options: [
-      { text: "Volta a dormir. Sono é sagrado e você não vai desperdiçar.", dimMain: "adaptabilidade", dimSec: "disciplina", pesoSec: -1, tag: "ZEN" },
+      { text: "Volta a dormir. Sono é sagrado e você não vai desperdiçar.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
       { text: "Aproveita pra fazer aquela coisa que fica postergando.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
-      { text: "Fica no celular até a hora certa de levantar. Vitória moral.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "DOPAMINA" },
+      { text: "Fica no celular até a hora certa de levantar. Vitória moral.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "PROCRASTINADOR" },
       { text: "Planeja o dia inteiro com o tempo extra como se fosse uma missão.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
     ],
   },
@@ -352,9 +352,9 @@ export const ALL_QUESTIONS: Question[] = [
     id: 34,
     text: "Você tem 30 minutos livres inesperados no meio do dia.",
     options: [
-      { text: "Você usa pra adiantar algo que estava acumulando.", dimMain: "disciplina", dimSec: "persistencia", pesoSec: 1, tag: "RESOLUTIVO" },
-      { text: "Você usa pra não fazer absolutamente nada. E é ótimo.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
-      { text: "Você não sabe o que fazer e gasta os 30min decidindo.", dimMain: "percepcao", dimSec: "impulsividade", pesoSec: 1, tag: "OVERTHINKING" },
+      { text: "Você usa pra adiantar algo que estava acumulando.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você usa pra não fazer absolutamente nada. E é ótimo.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
+      { text: "Você não sabe o que fazer e gasta os 30min decidindo.", dimMain: "percepcao", dimSec: "impulsividade", pesoSec: 1, tag: "ANSIOSO" },
       { text: "Você abre um podcast ou série no meio do episódio mesmo.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "DOPAMINA" },
     ],
   },
@@ -393,9 +393,9 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você está tentando dormir mas seu cérebro decide iniciar uma reunião.",
     options: [
       { text: "Você levanta, escreve tudo num papel e volta pra cama.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
-      { text: "Você abre o celular e cai em scroll até apagar.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: -1, tag: "DOPAMINA" },
-      { text: "Você pratica respiração e força o silêncio mental.", dimMain: "disciplina", dimSec: "persistencia", pesoSec: 1, tag: "ZEN" },
-      { text: "Você decide que é hora de resolver o que tá na cabeça e acorda.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você abre o celular e cai em scroll até apagar.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: -1, tag: "PROCRASTINADOR" },
+      { text: "Você pratica respiração e força o silêncio mental.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "ZEN" },
+      { text: "Você decide que é hora de resolver o que tá na cabeça e acorda.", dimMain: "persistencia", dimSec: "impulsividade", pesoSec: 1, tag: "RESOLUTIVO" },
     ],
   },
   {
@@ -442,7 +442,7 @@ export const ALL_QUESTIONS: Question[] = [
     id: 43,
     text: "Você recebe um e-mail que parece golpe mas parece real demais.",
     options: [
-      { text: "Você pesquisa remetente, URL, domínio e headers antes de qualquer ação.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "NERD" },
+      { text: "Você pesquisa remetente, URL, domínio e headers antes de qualquer ação.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "TECNOLÓGICO" },
       { text: "Você encaminha pra alguém de TI ou mais experiente antes de agir.", dimMain: "empatia", dimSec: "estrategia", pesoSec: 1, tag: "OVERTHINKING" },
       { text: "Você ignora. Se for real, vão entrar em contato de outro jeito.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: 1, tag: "ZEN" },
       { text: "Você testa clicando em link não-suspeito com segurança máxima.", dimMain: "impulsividade", dimSec: null, pesoSec: 1, tag: "CAÓTICO" },
@@ -455,7 +455,7 @@ export const ALL_QUESTIONS: Question[] = [
       { text: "Você desinstala todos e volta pra papel e caneta.", dimMain: "disciplina", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
       { text: "Você dedica uma semana a cada um pra testar qual encaixa melhor.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
       { text: "Você cria um sistema próprio combinando pedaços de cada um.", dimMain: "criatividade", dimSec: "estrategia", pesoSec: 1, tag: "GAMBIARRA" },
-      { text: "Você baixa mais um app que promete ser diferente dos outros.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: -1, tag: "DOPAMINA" },
+      { text: "Você baixa mais um app que promete ser diferente dos outros.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: -1, tag: "PROCRASTINADOR" },
     ],
   },
   {
@@ -482,10 +482,10 @@ export const ALL_QUESTIONS: Question[] = [
     id: 47,
     text: "Seu celular notifica que você usou 6h de redes sociais hoje.",
     options: [
-      { text: "Você configura limite de tempo e ativa grayscale mode imediatamente.", dimMain: "disciplina", dimSec: "estrategia", pesoSec: 1, tag: "PERFECCIONISTA" },
+      { text: "Você configura limite de tempo e ativa grayscale mode imediatamente.", dimMain: "disciplina", dimSec: "estrategia", pesoSec: 1, tag: "TECNOLÓGICO" },
       { text: "Você usa o fato como desculpa pra mais 30 minutos. Já foi mesmo.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "PROCRASTINADOR" },
       { text: "Você avalia: foi de valor ou desperdício? Resposta honesta primeiro.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "OVERTHINKING" },
-      { text: "Você fecha o app de stats. Ignorância seletiva é saúde mental.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
+      { text: "Você fecha o app de stats. Ignorância seletiva é saúde mental.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
     ],
   },
   {
@@ -494,7 +494,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Você fecha tudo sem olhar. Recomeço total.", dimMain: "disciplina", dimSec: "impulsividade", pesoSec: 1, tag: "RESOLUTIVO" },
       { text: "Você vai abrindo uma por uma investigando o que estava pesquisando.", dimMain: "percepcao", dimSec: null, pesoSec: 1, tag: "NERD" },
-      { text: "Você salva todas num grupo de favoritos chamado \'depois\' e fecha.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
+      { text: "Você salva todas num grupo de favoritos chamado \'depois\' e fecha.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "TECNOLÓGICO" },
       { text: "Você começa a trabalhar normalmente com elas abertas. É contexto.", dimMain: "adaptabilidade", dimSec: "criatividade", pesoSec: 1, tag: "CAÓTICO" },
     ],
   },
@@ -512,7 +512,7 @@ export const ALL_QUESTIONS: Question[] = [
     id: 50,
     text: "Você quer aprender programação mas trava no \'Olá, Mundo\'.",
     options: [
-      { text: "Você começa do zero com um livro de verdade. Fundamento é fundamento.", dimMain: "disciplina", dimSec: "persistencia", pesoSec: 1, tag: "NERD" },
+      { text: "Você começa do zero com um livro de verdade. Fundamento é fundamento.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "NERD" },
       { text: "Você usa no-code/AI pra resolver o problema enquanto aprende.", dimMain: "criatividade", dimSec: "estrategia", pesoSec: 1, tag: "TECNOLÓGICO" },
       { text: "Você pede pra alguém que sabe te explicar ao vivo.", dimMain: "sociabilidade", dimSec: "empatia", pesoSec: 1, tag: "SOCIAL" },
       { text: "Você abandona e volta daqui a 2 semanas com novo ânimo.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: 1, tag: "PROCRASTINADOR" },
@@ -563,8 +563,8 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Alguém te pede sua opinião e a sua opinião vai desagradar.",
     options: [
       { text: "Você diz a verdade com tato. Mentira gentil não ajuda no longo prazo.", dimMain: "empatia", dimSec: "disciplina", pesoSec: 1, tag: "JUSTICEIRO" },
-      { text: "Você faz perguntas pra pessoa chegar sozinha à conclusão.", dimMain: "estrategia", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
-      { text: "Você diz o que quer ouvir. Harmonia também tem valor.", dimMain: "adaptabilidade", dimSec: "sociabilidade", pesoSec: 1, tag: "MALANDRO" },
+      { text: "Você faz perguntas pra pessoa chegar sozinha à conclusão.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
+      { text: "Você diz o que quer ouvir. Harmonia também tem valor.", dimMain: "sociabilidade", dimSec: "adaptabilidade", pesoSec: 1, tag: "MALANDRO" },
       { text: "Você pede tempo pra pensar. E pensa muito antes de falar.", dimMain: "percepcao", dimSec: "disciplina", pesoSec: 1, tag: "OVERTHINKING" },
     ],
   },
@@ -572,10 +572,10 @@ export const ALL_QUESTIONS: Question[] = [
     id: 56,
     text: "Você começa um projeto empolgante e trava no meio.",
     options: [
-      { text: "Você força por 25 minutos mesmo sem ânimo. O start é o mais difícil.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você força por 25 minutos mesmo sem ânimo. O start é o mais difícil.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "ATLETA" },
       { text: "Você muda de ângulo: qual parte me empolga mais agora?", dimMain: "criatividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "DOPAMINA" },
       { text: "Você faz a parte mais fácil pra criar momentum.", dimMain: "estrategia", dimSec: "adaptabilidade", pesoSec: 1, tag: "GAMBIARRA" },
-      { text: "Você pausa oficialmente, sem culpa, e retoma quando estiver pronto.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
+      { text: "Você pausa oficialmente, sem culpa, e retoma quando estiver pronto.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
     ],
   },
   {
@@ -594,7 +594,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Você aceita. Desconforto é o endereço do crescimento.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "ATLETA" },
       { text: "Você pesquisa tudo que pode antes de aceitar ou recusar.", dimMain: "estrategia", dimSec: "percepcao", pesoSec: 1, tag: "OVERTHINKING" },
-      { text: "Você negocia as condições pra reduzir o risco antes de aceitar.", dimMain: "estrategia", dimSec: "lideranca", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você negocia as condições pra reduzir o risco antes de aceitar.", dimMain: "lideranca", dimSec: "estrategia", pesoSec: 1, tag: "RESOLUTIVO" },
       { text: "Você deixa a oportunidade expirar enquanto decide. E aprende com isso.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: -1, tag: "PROCRASTINADOR" },
     ],
   },
@@ -602,17 +602,17 @@ export const ALL_QUESTIONS: Question[] = [
     id: 59,
     text: "Você recebe uma crítica pública nas redes sociais.",
     options: [
-      { text: "Você responde com fato e educação. Ignora o tom, foca no conteúdo.", dimMain: "estrategia", dimSec: "empatia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você responde com fato e educação. Ignora o tom, foca no conteúdo.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "RESOLUTIVO" },
       { text: "Você ignora. Não vale a energia. Próximo.", dimMain: "disciplina", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
       { text: "Você responde com humor e reverte o clima.", dimMain: "criatividade", dimSec: "sociabilidade", pesoSec: 1, tag: "EXTROVERTIDO" },
-      { text: "Você rumina por horas e compõe resposta épica que nunca envia.", dimMain: "percepcao", dimSec: "impulsividade", pesoSec: -1, tag: "OVERTHINKING" },
+      { text: "Você rumina por horas e compõe resposta épica que nunca envia.", dimMain: "percepcao", dimSec: "impulsividade", pesoSec: -1, tag: "ANSIOSO" },
     ],
   },
   {
     id: 60,
     text: "Você precisa pedir algo que te custa muito pedir.",
     options: [
-      { text: "Você treina o que vai falar, respira, e pede.", dimMain: "disciplina", dimSec: "persistencia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você treina o que vai falar, respira, e pede.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
       { text: "Você manda texto porque ao vivo seria mais difícil.", dimMain: "adaptabilidade", dimSec: "criatividade", pesoSec: 1, tag: "INTROVERTIDO" },
       { text: "Você espera o momento perfeito. Às vezes nunca vem.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: -1, tag: "PROCRASTINADOR" },
       { text: "Você reenquadra o pedido de forma que não parece pedido.", dimMain: "criatividade", dimSec: "estrategia", pesoSec: 1, tag: "MALANDRO" },
@@ -643,9 +643,9 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você precisa explicar um conceito complexo pra quem não entende nada.",
     options: [
       { text: "Você cria uma analogia inusitada que encaixa perfeitamente.", dimMain: "criatividade", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
-      { text: "Você vai do básico ao avançado passo a passo com paciência.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "PERFECCIONISTA" },
+      { text: "Você vai do básico ao avançado passo a passo com paciência.", dimMain: "persistencia", dimSec: "empatia", pesoSec: 1, tag: "PERFECCIONISTA" },
       { text: "Você encontra um vídeo ou recurso que explica melhor que você.", dimMain: "percepcao", dimSec: "empatia", pesoSec: 1, tag: "TECNOLÓGICO" },
-      { text: "Você mostra na prática em vez de explicar teoricamente.", dimMain: "adaptabilidade", dimSec: "criatividade", pesoSec: 1, tag: "GAMBIARRA" },
+      { text: "Você mostra na prática em vez de explicar teoricamente.", dimMain: "criatividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "GAMBIARRA" },
     ],
   },
   {
@@ -653,7 +653,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você está entediado num lugar sem ter o que fazer.",
     options: [
       { text: "Você inventa um jogo ou observação com o que tem ao redor.", dimMain: "criatividade", dimSec: "percepcao", pesoSec: 1, tag: "NERD" },
-      { text: "Você usa o tempo pra pensar em algo que estava postergando.", dimMain: "disciplina", dimSec: "estrategia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você usa o tempo pra pensar em algo que estava postergando.", dimMain: "persistencia", dimSec: "estrategia", pesoSec: 1, tag: "RESOLUTIVO" },
       { text: "Você começa a puxar papo com quem estiver por perto.", dimMain: "sociabilidade", dimSec: "adaptabilidade", pesoSec: 1, tag: "EXTROVERTIDO" },
       { text: "Você cai em modo vegetativo. Às vezes o cérebro precisa disso.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
     ],
@@ -662,9 +662,9 @@ export const ALL_QUESTIONS: Question[] = [
     id: 65,
     text: "Você errou feio em algo criativo que compartilhou.",
     options: [
-      { text: "Você assume o erro, ri de si mesmo e usa como história boa.", dimMain: "adaptabilidade", dimSec: "sociabilidade", pesoSec: 1, tag: "EXTROVERTIDO" },
-      { text: "Você explica o que quis dizer com clareza e encerra o assunto.", dimMain: "disciplina", dimSec: "lideranca", pesoSec: 1, tag: "RESOLUTIVO" },
-      { text: "Você fica quieto e espera o barulho passar.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: -1, tag: "INTROVERTIDO" },
+      { text: "Você assume o erro, ri de si mesmo e usa como história boa.", dimMain: "sociabilidade", dimSec: "adaptabilidade", pesoSec: 1, tag: "EXTROVERTIDO" },
+      { text: "Você explica o que quis dizer com clareza e encerra o assunto.", dimMain: "lideranca", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você fica quieto e espera o barulho passar.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: -1, tag: "FURTIVO" },
       { text: "Você usa o erro como ponto de partida pra algo melhor.", dimMain: "criatividade", dimSec: "persistencia", pesoSec: 1, tag: "DOPAMINA" },
     ],
   },
@@ -714,7 +714,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Você cria um pretexto crível sem mentira escancarada.", dimMain: "criatividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "MALANDRO" },
       { text: "Você fala diretamente que precisa ir. A honestidade é eficiente.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "RESOLUTIVO" },
-      { text: "Você usa linguagem corporal pra sinalizar que vai encerrando.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "INTROVERTIDO" },
+      { text: "Você usa linguagem corporal pra sinalizar que vai encerrando.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "FURTIVO" },
       { text: "Você apresenta a pessoa a alguém e sai enquanto elas se conhecem.", dimMain: "criatividade", dimSec: "sociabilidade", pesoSec: 1, tag: "MALANDRO" },
     ],
   },
@@ -723,7 +723,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você percebe que alguém do time está mal mas fingindo que não.",
     options: [
       { text: "Você aborda em particular com cuidado genuíno.", dimMain: "empatia", dimSec: "lideranca", pesoSec: 1, tag: "CURADOR" },
-      { text: "Você age de forma a aliviar a carga da pessoa sem perguntar.", dimMain: "percepcao", dimSec: "empatia", pesoSec: 1, tag: "FURTIVO" },
+      { text: "Você age de forma a aliviar a carga da pessoa sem perguntar.", dimMain: "empatia", dimSec: "percepcao", pesoSec: 1, tag: "FURTIVO" },
       { text: "Você espera a pessoa vir quando estiver pronta. Espaço também é cuidado.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
       { text: "Você cria um ambiente onde compartilhar fica mais fácil pra todos.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "LÍDER" },
     ],
@@ -734,7 +734,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Você oferece suporte de bastidores sem tomar a frente.", dimMain: "empatia", dimSec: "lideranca", pesoSec: 1, tag: "CURADOR" },
       { text: "Você assume a liderança diretamente. A situação exige.", dimMain: "lideranca", dimSec: "impulsividade", pesoSec: 1, tag: "LÍDER" },
-      { text: "Você faz perguntas que guiam o líder sem que ele saiba.", dimMain: "estrategia", dimSec: "percepcao", pesoSec: 1, tag: "MALANDRO" },
+      { text: "Você faz perguntas que guiam o líder sem que ele saiba.", dimMain: "lideranca", dimSec: "percepcao", pesoSec: 1, tag: "MALANDRO" },
       { text: "Você deixa o processo acontecer. Errar faz parte do aprendizado.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
     ],
   },
@@ -743,7 +743,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você precisa dar uma notícia ruim pra alguém que vai se abalar.",
     options: [
       { text: "Você é direto mas gentil. A clareza é a maior gentileza.", dimMain: "empatia", dimSec: "disciplina", pesoSec: 1, tag: "JUSTICEIRO" },
-      { text: "Você prepara o contexto antes de chegar na notícia.", dimMain: "estrategia", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
+      { text: "Você prepara o contexto antes de chegar na notícia.", dimMain: "empatia", dimSec: "estrategia", pesoSec: 1, tag: "CURADOR" },
       { text: "Você pergunta se a pessoa quer a versão curta ou contexto completo.", dimMain: "empatia", dimSec: "percepcao", pesoSec: 1, tag: "CURADOR" },
       { text: "Você adia inconscientemente porque sabe que vai doer.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: -1, tag: "PROCRASTINADOR" },
     ],
@@ -753,7 +753,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Seu grupo não sabe como resolver algo. Você sabe mas é o mais novo.",
     options: [
       { text: "Você propõe sua solução com confiança e contexto.", dimMain: "lideranca", dimSec: "disciplina", pesoSec: 1, tag: "LÍDER" },
-      { text: "Você apresenta como pergunta: \'e se a gente tentasse...\'", dimMain: "estrategia", dimSec: "empatia", pesoSec: 1, tag: "MALANDRO" },
+      { text: "Você apresenta como pergunta: \'e se a gente tentasse...\'", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "MALANDRO" },
       { text: "Você espera que alguém chegue perto da sua ideia e confirma.", dimMain: "percepcao", dimSec: "adaptabilidade", pesoSec: 1, tag: "FURTIVO" },
       { text: "Você manda a solução por escrito depois da reunião.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "INTROVERTIDO" },
     ],
@@ -763,7 +763,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "O grupo todo concorda com algo que você acha errado.",
     options: [
       { text: "Você fala. Pressão de grupo não muda o que você vê.", dimMain: "lideranca", dimSec: "persistencia", pesoSec: 1, tag: "JUSTICEIRO" },
-      { text: "Você aponta o que acha inconsistente de forma objetiva.", dimMain: "estrategia", dimSec: "lideranca", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você aponta o que acha inconsistente de forma objetiva.", dimMain: "lideranca", dimSec: "estrategia", pesoSec: 1, tag: "LÍDER" },
       { text: "Você cede. Talvez o grupo tenha informações que você não tem.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
       { text: "Você espera o resultado provar ou refutar. O tempo vai julgar.", dimMain: "percepcao", dimSec: "disciplina", pesoSec: 1, tag: "INTROVERTIDO" },
     ],
@@ -772,10 +772,10 @@ export const ALL_QUESTIONS: Question[] = [
     id: 76,
     text: "Você está liderando um projeto e percebe que vai atrasar.",
     options: [
-      { text: "Você comunica o atraso cedo com novo prazo realista.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você comunica o atraso cedo com novo prazo realista.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "LÍDER" },
       { text: "Você reorganiza o time e dobra esforço pra recuperar o prazo.", dimMain: "persistencia", dimSec: "lideranca", pesoSec: 1, tag: "COMPETITIVO" },
       { text: "Você identifica o gargalo e elimina antes que piore.", dimMain: "estrategia", dimSec: "percepcao", pesoSec: 1, tag: "PERFECCIONISTA" },
-      { text: "Você renegocia escopo: o que é essencial pra prazo manter-se?", dimMain: "estrategia", dimSec: "lideranca", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você renegocia escopo: o que é essencial pra prazo manter-se?", dimMain: "lideranca", dimSec: "estrategia", pesoSec: 1, tag: "LÍDER" },
     ],
   },
   {
@@ -792,9 +792,9 @@ export const ALL_QUESTIONS: Question[] = [
     id: 78,
     text: "Um conflito no grupo está afetando a entrega. Você...",
     options: [
-      { text: "Facilita uma conversa honesta pra resolver a raiz.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
-      { text: "Separa as pessoas em tarefas que não se cruzem até estabilizar.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
-      { text: "Ouve cada lado separado antes de qualquer intervenção.", dimMain: "percepcao", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
+      { text: "Facilita uma conversa honesta pra resolver a raiz.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "LÍDER" },
+      { text: "Separa as pessoas em tarefas que não se cruzem até estabilizar.", dimMain: "lideranca", dimSec: "disciplina", pesoSec: 1, tag: "LÍDER" },
+      { text: "Ouve cada lado separado antes de qualquer intervenção.", dimMain: "empatia", dimSec: "percepcao", pesoSec: 1, tag: "CURADOR" },
       { text: "Aumenta a pressão de prazo pra forçar foco no trabalho.", dimMain: "persistencia", dimSec: "lideranca", pesoSec: 1, tag: "COMPETITIVO" },
     ],
   },
@@ -803,7 +803,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você percebe que alguém do grupo não está contribuindo.",
     options: [
       { text: "Você conversa diretamente sobre o que está impedindo.", dimMain: "empatia", dimSec: "lideranca", pesoSec: 1, tag: "CURADOR" },
-      { text: "Você reorganiza as responsabilidades sutilmente sem confronto.", dimMain: "estrategia", dimSec: "adaptabilidade", pesoSec: 1, tag: "MALANDRO" },
+      { text: "Você reorganiza as responsabilidades sutilmente sem confronto.", dimMain: "lideranca", dimSec: "adaptabilidade", pesoSec: 1, tag: "MALANDRO" },
       { text: "Você documenta e escala se necessário. Processo existe pra isso.", dimMain: "disciplina", dimSec: "estrategia", pesoSec: 1, tag: "PERFECCIONISTA" },
       { text: "Você ignora e absorve o trabalho. Às vezes é mais rápido.", dimMain: "persistencia", dimSec: "adaptabilidade", pesoSec: 1, tag: "RESOLUTIVO" },
     ],
@@ -813,8 +813,8 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você precisa motivar alguém que desistiu de algo importante.",
     options: [
       { text: "Você ouve antes de qualquer tentativa de motivar.", dimMain: "empatia", dimSec: "percepcao", pesoSec: 1, tag: "CURADOR" },
-      { text: "Você mostra casos de quem quase desistiu e não desistiu.", dimMain: "estrategia", dimSec: "empatia", pesoSec: 1, tag: "SOCIAL" },
-      { text: "Você divide o objetivo em partes menores e celebra cada uma.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
+      { text: "Você mostra casos de quem quase desistiu e não desistiu.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "SOCIAL" },
+      { text: "Você divide o objetivo em partes menores e celebra cada uma.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "LÍDER" },
       { text: "Você respeita a decisão mas deixa a porta aberta sem pressão.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
     ],
   },
@@ -825,7 +825,7 @@ export const ALL_QUESTIONS: Question[] = [
       { text: "Você parte com o que tem e vai descobrindo no caminho.", dimMain: "impulsividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "CAÓTICO" },
       { text: "Você busca referências de quem fez algo similar antes de partir.", dimMain: "estrategia", dimSec: "percepcao", pesoSec: 1, tag: "NERD" },
       { text: "Você monta um plano mínimo viável antes de mover um passo.", dimMain: "disciplina", dimSec: "estrategia", pesoSec: 1, tag: "PERFECCIONISTA" },
-      { text: "Você convoca a galera antes. Missão solo é subótima.", dimMain: "sociabilidade", dimSec: "lideranca", pesoSec: 1, tag: "EXTROVERTIDO" },
+      { text: "Você convoca a galera antes. Missão solo é subótima.", dimMain: "sociabilidade", dimSec: "lideranca", pesoSec: 1, tag: "LÍDER" },
     ],
   },
   {
@@ -854,7 +854,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Você observa em silêncio até entender as regras do jogo.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "INTROVERTIDO" },
       { text: "Você se apresenta e começa a construir pontes ativamente.", dimMain: "sociabilidade", dimSec: "lideranca", pesoSec: 1, tag: "EXTROVERTIDO" },
-      { text: "Você encontra o aliado mais neutro e começa por ele.", dimMain: "estrategia", dimSec: "empatia", pesoSec: 1, tag: "MALANDRO" },
+      { text: "Você encontra o aliado mais neutro e começa por ele.", dimMain: "sociabilidade", dimSec: "estrategia", pesoSec: 1, tag: "MALANDRO" },
       { text: "Você age como se o ambiente fosse normal até virar.", dimMain: "adaptabilidade", dimSec: "impulsividade", pesoSec: 1, tag: "CAÓTICO" },
     ],
   },
@@ -862,7 +862,7 @@ export const ALL_QUESTIONS: Question[] = [
     id: 85,
     text: "Você está 80% completo numa tarefa longa e o cansaço bate.",
     options: [
-      { text: "Você vai até o fim. 80% não conta como feito.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você vai até o fim. 80% não conta como feito.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "ATLETA" },
       { text: "Você faz pausa de 20 minutos e retoma.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "ZEN" },
       { text: "Você vai até o próximo checkpoint e para sem culpa.", dimMain: "adaptabilidade", dimSec: "estrategia", pesoSec: 1, tag: "GAMBIARRA" },
       { text: "Você toma o energético mais próximo e enfrenta o resto com dopamina.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "ATLETA" },
@@ -874,7 +874,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Você questiona e pesquisa a origem antes de quebrar.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "NERD" },
       { text: "Você quebra a regra e observa o resultado com cuidado.", dimMain: "impulsividade", dimSec: "percepcao", pesoSec: 1, tag: "CAÓTICO" },
-      { text: "Você mantém até ter alternativa testada pra substituir.", dimMain: "disciplina", dimSec: "estrategia", pesoSec: 1, tag: "PERFECCIONISTA" },
+      { text: "Você mantém até ter alternativa testada pra substituir.", dimMain: "persistencia", dimSec: "estrategia", pesoSec: 1, tag: "PERFECCIONISTA" },
       { text: "Você conversa com quem também segue a regra antes de agir.", dimMain: "sociabilidade", dimSec: "empatia", pesoSec: 1, tag: "SOCIAL" },
     ],
   },
@@ -892,10 +892,10 @@ export const ALL_QUESTIONS: Question[] = [
     id: 88,
     text: "Você está num momento de seca criativa total.",
     options: [
-      { text: "Você expõe a inputs novos: livro diferente, lugar diferente, pessoa diferente.", dimMain: "adaptabilidade", dimSec: "criatividade", pesoSec: 1, tag: "DOPAMINA" },
+      { text: "Você expõe a inputs novos: livro diferente, lugar diferente, pessoa diferente.", dimMain: "criatividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "DOPAMINA" },
       { text: "Você se força a criar algo ruim de propósito. O filtro é o problema.", dimMain: "impulsividade", dimSec: "criatividade", pesoSec: 1, tag: "CAÓTICO" },
       { text: "Você documenta a seca e investiga o que te bloqueou.", dimMain: "percepcao", dimSec: "disciplina", pesoSec: 1, tag: "OVERTHINKING" },
-      { text: "Você descansa de verdade. A criatividade não funciona com força bruta.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
+      { text: "Você descansa de verdade. A criatividade não funciona com força bruta.", dimMain: "empatia", dimSec: "disciplina", pesoSec: 1, tag: "ZEN" },
     ],
   },
   {
@@ -923,7 +923,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você recebe um elogio que não esperava. Reação honesta?",
     options: [
       { text: "Você agradece, fica vermelho internamente e muda de assunto.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "INTROVERTIDO" },
-      { text: "Você agradece com genuinidade e pergunta o que especificamente.", dimMain: "percepcao", dimSec: "sociabilidade", pesoSec: 1, tag: "NERD" },
+      { text: "Você agradece com genuinidade e pergunta o que especificamente.", dimMain: "sociabilidade", dimSec: "percepcao", pesoSec: 1, tag: "NERD" },
       { text: "Você agradece e logo minimiza: \'foi sorte, na verdade\'.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: -1, tag: "ANSIOSO" },
       { text: "Você agradece com confiança e registra internamente como validação.", dimMain: "disciplina", dimSec: "persistencia", pesoSec: 1, tag: "COMPETITIVO" },
     ],
@@ -945,14 +945,14 @@ export const ALL_QUESTIONS: Question[] = [
       { text: "Você investiga se ainda ama de verdade ou mudou.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "OVERTHINKING" },
       { text: "Você reduz a barreira de entrada ao mínimo possível pra retomar.", dimMain: "criatividade", dimSec: "estrategia", pesoSec: 1, tag: "GAMBIARRA" },
       { text: "Você respeita o ciclo. Nem todo dia é dia de criar.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
-      { text: "Você define um horário fixo e se apresenta mesmo sem vontade.", dimMain: "disciplina", dimSec: "persistencia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você define um horário fixo e se apresenta mesmo sem vontade.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
     ],
   },
   {
     id: 94,
     text: "Você termina um ciclo longo. Como celebra?",
     options: [
-      { text: "Você descansa do jeito mais prazeroso que existir.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
+      { text: "Você descansa do jeito mais prazeroso que existir.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
       { text: "Você já está planejando o próximo. A energia do fim é o início.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "COMPETITIVO" },
       { text: "Você compartilha com pessoas que acompanharam a jornada.", dimMain: "sociabilidade", dimSec: "empatia", pesoSec: 1, tag: "SOCIAL" },
       { text: "Você documenta o que aprendeu antes de qualquer outra coisa.", dimMain: "disciplina", dimSec: "percepcao", pesoSec: 1, tag: "NERD" },
@@ -972,7 +972,7 @@ export const ALL_QUESTIONS: Question[] = [
     id: 96,
     text: "Você percebe que está carregando um hábito que não serve mais.",
     options: [
-      { text: "Você para imediatamente e constrói o substituto.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você para imediatamente e constrói o substituto.", dimMain: "persistencia", dimSec: "impulsividade", pesoSec: 1, tag: "RESOLUTIVO" },
       { text: "Você cria uma estratégia de substituição gradual.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
       { text: "Você observa o hábito por mais 30 dias antes de agir.", dimMain: "percepcao", dimSec: "disciplina", pesoSec: 1, tag: "OVERTHINKING" },
       { text: "Você conta pra alguém que vai te cobrar na substituição.", dimMain: "sociabilidade", dimSec: "persistencia", pesoSec: 1, tag: "SOCIAL" },
@@ -983,9 +983,9 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você está sobrecarregado e mais uma coisa aparece.",
     options: [
       { text: "Você avalia o que pode sair pra essa nova coisa entrar.", dimMain: "estrategia", dimSec: "disciplina", pesoSec: 1, tag: "RESOLUTIVO" },
-      { text: "Você fala \'não\' com clareza pela primeira vez.", dimMain: "disciplina", dimSec: "lideranca", pesoSec: 1, tag: "JUSTICEIRO" },
+      { text: "Você fala \'não\' com clareza pela primeira vez.", dimMain: "lideranca", dimSec: "disciplina", pesoSec: 1, tag: "JUSTICEIRO" },
       { text: "Você absorve e redistribui sua energia com criatividade.", dimMain: "criatividade", dimSec: "persistencia", pesoSec: 1, tag: "GAMBIARRA" },
-      { text: "Você entra em modo automático e processa tudo no piloto.", dimMain: "adaptabilidade", dimSec: "persistencia", pesoSec: 1, tag: "CAÓTICO" },
+      { text: "Você entra em modo automático e processa tudo no piloto.", dimMain: "persistencia", dimSec: "adaptabilidade", pesoSec: 1, tag: "CAÓTICO" },
     ],
   },
   {
@@ -1014,7 +1014,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Você escreve 3 coisas que funcionaram mesmo assim.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
       { text: "Você analisa o dia pra entender o padrão do que deu errado.", dimMain: "percepcao", dimSec: "estrategia", pesoSec: 1, tag: "OVERTHINKING" },
-      { text: "Você dorme. Amanhã é um novo save.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
+      { text: "Você dorme. Amanhã é um novo save.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
       { text: "Você conta pra alguém pra processar em voz alta.", dimMain: "sociabilidade", dimSec: "empatia", pesoSec: 1, tag: "EXTROVERTIDO" },
     ],
   },
@@ -1062,10 +1062,10 @@ export const ALL_QUESTIONS: Question[] = [
     id: 105,
     text: "Seu chefe propõe um desafio com bônus alto mas prazo impossível.",
     options: [
-      { text: "Você aceita. Impossível é subjetivo e o bônus é real.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "COMPETITIVO" },
-      { text: "Você negocia prazo ou escopo antes de aceitar.", dimMain: "estrategia", dimSec: "lideranca", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você aceita. Impossível é subjetivo e o bônus é real.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "ATLETA" },
+      { text: "Você negocia prazo ou escopo antes de aceitar.", dimMain: "lideranca", dimSec: "estrategia", pesoSec: 1, tag: "LÍDER" },
       { text: "Você pergunta o que acontece se você chegar perto mas não fechar.", dimMain: "percepcao", dimSec: "empatia", pesoSec: 1, tag: "OVERTHINKING" },
-      { text: "Você recusa. Prazo impossível cria trabalho ruim e esgota.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
+      { text: "Você recusa. Prazo impossível cria trabalho ruim e esgota.", dimMain: "empatia", dimSec: "disciplina", pesoSec: 1, tag: "ZEN" },
     ],
   },
   {
@@ -1073,9 +1073,9 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você começa o dia sem energia mas tem muito pra fazer.",
     options: [
       { text: "Você começa pela tarefa mais fácil pra criar momentum.", dimMain: "estrategia", dimSec: "adaptabilidade", pesoSec: 1, tag: "GAMBIARRA" },
-      { text: "Você faz o mais difícil primeiro. Depois só melhora.", dimMain: "disciplina", dimSec: "persistencia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você faz o mais difícil primeiro. Depois só melhora.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "ATLETA" },
       { text: "Você resolve por energia: café, sol ou música antes de qualquer coisa.", dimMain: "adaptabilidade", dimSec: "criatividade", pesoSec: 1, tag: "DOPAMINA" },
-      { text: "Você aceita o dia lento e faz o mínimo com qualidade.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
+      { text: "Você aceita o dia lento e faz o mínimo com qualidade.", dimMain: "empatia", dimSec: "adaptabilidade", pesoSec: 1, tag: "ZEN" },
     ],
   },
   {
@@ -1102,8 +1102,8 @@ export const ALL_QUESTIONS: Question[] = [
     id: 109,
     text: "Você está conversando com alguém e se pega pensando em outra coisa.",
     options: [
-      { text: "Você volta o foco intencionalmente sem se punir.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
-      { text: "Você faz uma pergunta sobre o que a pessoa disse pra se ancorar.", dimMain: "percepcao", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
+      { text: "Você volta o foco intencionalmente sem se punir.", dimMain: "empatia", dimSec: "disciplina", pesoSec: 1, tag: "ZEN" },
+      { text: "Você faz uma pergunta sobre o que a pessoa disse pra se ancorar.", dimMain: "empatia", dimSec: "percepcao", pesoSec: 1, tag: "CURADOR" },
       { text: "Você admite mentalmente que perdeu o fio e pede pra repetir.", dimMain: "empatia", dimSec: "disciplina", pesoSec: 1, tag: "JUSTICEIRO" },
       { text: "Você acena e espera o próximo contexto pra se reconectar.", dimMain: "adaptabilidade", dimSec: "sociabilidade", pesoSec: 1, tag: "FURTIVO" },
     ],
@@ -1115,7 +1115,7 @@ export const ALL_QUESTIONS: Question[] = [
       { text: "Você adora. Conversas longas são sinal de conexão real.", dimMain: "sociabilidade", dimSec: "empatia", pesoSec: 1, tag: "EXTROVERTIDO" },
       { text: "Você está presente mas monitorando sua energia interna.", dimMain: "percepcao", dimSec: "adaptabilidade", pesoSec: 1, tag: "INTROVERTIDO" },
       { text: "Você cria um encerramento natural sem que a outra pessoa perceba.", dimMain: "criatividade", dimSec: "estrategia", pesoSec: 1, tag: "MALANDRO" },
-      { text: "Você fala diretamente que precisa de um encerramento em breve.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "RESOLUTIVO" },
+      { text: "Você fala diretamente que precisa de um encerramento em breve.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "RESOLUTIVO" },
     ],
   },
   {
@@ -1124,7 +1124,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Você reconhece o padrão e força presença no momento atual.", dimMain: "percepcao", dimSec: "disciplina", pesoSec: 1, tag: "OVERTHINKING" },
       { text: "Você deixa a ansiedade existir sem agir sobre ela.", dimMain: "adaptabilidade", dimSec: "empatia", pesoSec: 1, tag: "ZEN" },
-      { text: "Você entende que é ansiedade de antecipação e nomeia isso.", dimMain: "percepcao", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
+      { text: "Você entende que é ansiedade de antecipação e nomeia isso.", dimMain: "empatia", dimSec: "percepcao", pesoSec: 1, tag: "CURADOR" },
       { text: "Você se joga mais fundo no momento pra combater a saída antecipada.", dimMain: "impulsividade", dimSec: "empatia", pesoSec: 1, tag: "DOPAMINA" },
     ],
   },
@@ -1144,7 +1144,7 @@ export const ALL_QUESTIONS: Question[] = [
     options: [
       { text: "Você fecha o livro. Leitura sem absorção é desperdício.", dimMain: "disciplina", dimSec: "percepcao", pesoSec: 1, tag: "RESOLUTIVO" },
       { text: "Você volta ao início do capítulo e tenta de novo com mais atenção.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "PERFECCIONISTA" },
-      { text: "Você muda de formato: ouve o audiobook pelo mesmo trecho.", dimMain: "adaptabilidade", dimSec: "criatividade", pesoSec: 1, tag: "GAMBIARRA" },
+      { text: "Você muda de formato: ouve o audiobook pelo mesmo trecho.", dimMain: "criatividade", dimSec: "adaptabilidade", pesoSec: 1, tag: "GAMBIARRA" },
       { text: "Você continua mesmo sem absorver. O ritmo vai voltar.", dimMain: "persistencia", dimSec: "adaptabilidade", pesoSec: 1, tag: "CAÓTICO" },
     ],
   },
@@ -1175,7 +1175,7 @@ export const ALL_QUESTIONS: Question[] = [
       { text: "Aproveita e entra em flow total. Esses dias são raros.", dimMain: "impulsividade", dimSec: "persistencia", pesoSec: 1, tag: "DOPAMINA" },
       { text: "Documenta o que estava diferente pra tentar replicar.", dimMain: "percepcao", dimSec: "disciplina", pesoSec: 1, tag: "NERD" },
       { text: "Usa a energia extra pra ajudar alguém que está travado.", dimMain: "empatia", dimSec: "lideranca", pesoSec: 1, tag: "CURADOR" },
-      { text: "Celebra com ritual que marque o dia como especial.", dimMain: "adaptabilidade", dimSec: "criatividade", pesoSec: 1, tag: "SOCIAL" },
+      { text: "Celebra com ritual que marque o dia como especial.", dimMain: "sociabilidade", dimSec: "criatividade", pesoSec: 1, tag: "SOCIAL" },
     ],
   },
   {
@@ -1183,9 +1183,9 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Alguém pede sua opinião genuína sobre um projeto mediano deles.",
     options: [
       { text: "Elogia o que funciona e aponta uma melhoria essencial com tato.", dimMain: "empatia", dimSec: "lideranca", pesoSec: 1, tag: "CURADOR" },
-      { text: "Faz perguntas pra eles chegarem às conclusões sozinhos.", dimMain: "estrategia", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
-      { text: "Diz a verdade com gentileza. Elogio falso é traição disfarçada.", dimMain: "disciplina", dimSec: "empatia", pesoSec: 1, tag: "JUSTICEIRO" },
-      { text: "Pergunta o que eles querem: honestidade ou encorajamento agora?", dimMain: "percepcao", dimSec: "empatia", pesoSec: 1, tag: "SOCIAL" },
+      { text: "Faz perguntas pra eles chegarem às conclusões sozinhos.", dimMain: "lideranca", dimSec: "empatia", pesoSec: 1, tag: "CURADOR" },
+      { text: "Diz a verdade com gentileza. Elogio falso é traição disfarçada.", dimMain: "empatia", dimSec: "disciplina", pesoSec: 1, tag: "JUSTICEIRO" },
+      { text: "Pergunta o que eles querem: honestidade ou encorajamento agora?", dimMain: "sociabilidade", dimSec: "empatia", pesoSec: 1, tag: "SOCIAL" },
     ],
   },
   {
@@ -1203,7 +1203,7 @@ export const ALL_QUESTIONS: Question[] = [
     text: "Você precisa pedir ajuda mas isso te custa muito.",
     options: [
       { text: "Você pede. Pedir ajuda é habilidade, não fraqueza.", dimMain: "empatia", dimSec: "lideranca", pesoSec: 1, tag: "RESOLUTIVO" },
-      { text: "Você tenta mais uma vez sozinho antes de pedir.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "COMPETITIVO" },
+      { text: "Você tenta mais uma vez sozinho antes de pedir.", dimMain: "persistencia", dimSec: "disciplina", pesoSec: 1, tag: "ATLETA" },
       { text: "Você enquadra o pedido como colaboração em vez de pedido.", dimMain: "criatividade", dimSec: "estrategia", pesoSec: 1, tag: "MALANDRO" },
       { text: "Você pesquisa mais antes de incomodar alguém com o pedido.", dimMain: "disciplina", dimSec: "percepcao", pesoSec: 1, tag: "INTROVERTIDO" },
     ],

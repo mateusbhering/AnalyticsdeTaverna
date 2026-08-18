@@ -27,9 +27,25 @@ const BASE_DIMS: Dimensions = {
 
 const QUIZ_SIZE = 5;
 
+/**
+ * Sorteia QUIZ_SIZE perguntas distintas do banco, todas com a mesma chance.
+ *
+ * Fisher-Yates parcial: para cada uma das QUIZ_SIZE primeiras posições, troca
+ * com uma posição sorteada entre ela e o fim. Como só as posições sorteadas
+ * importam, para o embaralhamento no tamanho do quiz em vez de percorrer as 120.
+ *
+ * O `sort(() => Math.random() - 0.5)` que estava aqui não serve: o comparador é
+ * inconsistente (não define uma ordem total), então o resultado depende do
+ * algoritmo de ordenação do motor e as perguntas do começo do banco saem com
+ * frequência bem maior que as do fim.
+ */
 function pickRandom() {
-  const shuffled = [...ALL_QUESTIONS].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, QUIZ_SIZE);
+  const pool = [...ALL_QUESTIONS];
+  for (let i = 0; i < QUIZ_SIZE; i++) {
+    const j = i + Math.floor(Math.random() * (pool.length - i));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, QUIZ_SIZE);
 }
 
 type Step = "photo" | "quiz" | "result";
