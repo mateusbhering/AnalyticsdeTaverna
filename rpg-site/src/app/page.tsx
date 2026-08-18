@@ -11,8 +11,12 @@ import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import MotionProvider from "@/components/MotionProvider";
+import { getPlayerStats } from "@/lib/stats";
 
-export default function Home() {
+export default async function Home() {
+  // Agregado no servidor: o navegador recebe os números prontos, não a tabela.
+  const stats = await getPlayerStats();
+
   return (
     <MotionProvider>
       <ScrollProgress />
@@ -24,7 +28,7 @@ export default function Home() {
         <AttributesSection />
         <WhyDifferent />
         <TechSection />
-        <DashboardSection />
+        <DashboardSection stats={stats} />
         <GuildSection />
         <CTASection />
       </main>

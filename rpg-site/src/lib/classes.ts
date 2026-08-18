@@ -39,3 +39,7 @@ export const CLASS_LIST: ClassInfo[] = [
 export function byName(name: string): ClassInfo {
   return CLASS_LIST.find((c) => c.name === name) ?? CLASS_LIST[0];
 }
+
+/** Nomes de classe do catálogo atual — separa o canônico de registros legados. */
+const NOMES_CONHECIDOS = new Set(CLASS_LIST.map((c) => c.name));
+export const isClasseConhecida = (nome: string) => NOMES_CONHECIDOS.has(nome);
