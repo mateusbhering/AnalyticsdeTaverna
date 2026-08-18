@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Swords, Lock } from "lucide-react";
+import { Swords, BarChart3 } from "lucide-react";
 
 const links = [
   { label: "Conceito", href: "#conceito" },
@@ -68,19 +68,21 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
+          {/* Ação secundária antes da principal: "Iniciar Jornada" fica na
+              última posição, que é a de maior peso na barra. */}
+          <a
+            href="#dashboard"
+            className="press px-5 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
+          >
+            <BarChart3 size={11} strokeWidth={1.8} /> Dashboard
+          </a>
           <a
             href="#jornada"
             className="press btn-seal px-5 py-2 text-[.6rem] tracking-[.2em] uppercase"
             style={{ fontFamily: "var(--font-cinzel), serif", borderWidth: "1px" }}
           >
             Iniciar Jornada
-          </a>
-          <a
-            href="/admin"
-            className="press px-5 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            <Lock size={11} strokeWidth={1.8} /> Admin
           </a>
         </div>
 
@@ -111,20 +113,20 @@ export default function Navbar() {
             </a>
           ))}
           <a
+            href="#dashboard"
+            className="press mt-4 flex items-center justify-center gap-1.5 text-center px-5 py-3 bg-[rgba(82,26,16,0.45)] border border-[rgba(201,151,63,0.35)] text-[rgba(240,226,189,0.75)] text-[.65rem] tracking-[.15em] uppercase"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
+            onClick={() => setMenuOpen(false)}
+          >
+            <BarChart3 size={11} strokeWidth={1.8} /> Dashboard
+          </a>
+          <a
             href="#jornada"
-            className="press btn-seal mt-4 block text-center px-5 py-3 text-[.65rem] tracking-[.15em] uppercase"
+            className="press btn-seal mt-2 block text-center px-5 py-3 text-[.65rem] tracking-[.15em] uppercase"
             style={{ fontFamily: "var(--font-cinzel), serif", borderWidth: "1px" }}
             onClick={() => setMenuOpen(false)}
           >
             Iniciar Jornada
-          </a>
-          <a
-            href="/admin"
-            className="press mt-2 flex items-center justify-center gap-1.5 text-center px-5 py-3 bg-[rgba(82,26,16,0.45)] border border-[rgba(201,151,63,0.35)] text-[rgba(240,226,189,0.75)] text-[.65rem] tracking-[.15em] uppercase"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-            onClick={() => setMenuOpen(false)}
-          >
-            <Lock size={11} strokeWidth={1.8} /> Admin
           </a>
         </div>
       )}

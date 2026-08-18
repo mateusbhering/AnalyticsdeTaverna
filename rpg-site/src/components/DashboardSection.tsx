@@ -42,7 +42,7 @@ export default function DashboardSection({ stats }: { stats: PlayerStats | null 
 
   return (
     <div className="bg-black-linen">
-      <section className="py-28 px-6 relative max-w-7xl mx-auto overflow-hidden">
+      <section id="dashboard" className="py-28 px-6 relative max-w-7xl mx-auto overflow-hidden">
         <div className="section-line-top" />
 
         <Reveal>
