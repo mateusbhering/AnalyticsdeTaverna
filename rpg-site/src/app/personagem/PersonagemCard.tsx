@@ -4,32 +4,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
 import { AVATAR_API_BASE } from "@/lib/useAvatarGeneration";
+import { byName } from "@/lib/classes";
 
-interface ClassInfo {
-  name: string;
-  icon: string;
-  desc: string;
-  photo: string;
-}
-
-const CLASS_LIST: ClassInfo[] = [
-  { name: "Mago do ChatGPT",           icon: "🔮", desc: "Você não resolve problemas, você prompta soluções. Sua magia é a IA.",            photo: "/fotos_cartas/mago_do_chat_gpt.jpeg" },
-  { name: "Ninja do Visto por Último", icon: "👁️", desc: "Visto. Não respondido. Estratégia ou procrastinação? Só você sabe.",              photo: "/fotos_cartas/ninja_do_visto_por_ultimo.jpeg" },
-  { name: "Berserker do Crossfit",     icon: "💪", desc: "Você não falha missões. Você falha repetições. E tenta de novo.",                  photo: "/fotos_cartas/beserk_do_crossfit.jpeg" },
-  { name: "Necromante de Planilha",    icon: "📊", desc: "Você ressuscita dados mortos e dá vida a abas que ninguém abre.",                  photo: "/fotos_cartas/necromante_de_planilha.png" },
-  { name: "Ladino do Home Office",     icon: "🏠", desc: "Câmera desligada. Microfone no mudo. Em algum lugar sendo produtivo.",             photo: "/fotos_cartas/ladino_do_home_office.png" },
-  { name: "Warlock do Boleto",         icon: "💸", desc: "Você fez um pacto sombrio com o sistema financeiro e sobreviveu.",                 photo: "/fotos_cartas/warlock_do_boleto.jpeg" },
-  { name: "Ilusionista de Call",       icon: "🎭", desc: "Você parece presente em toda reunião. Ninguém sabe o que você faz.",               photo: "/fotos_cartas/ilusionista_de_call.png" },
-  { name: "Artífice da Gambiarra",     icon: "🔧", desc: "Não é a solução certa. Mas funciona. E isso é o suficiente.",                      photo: "/fotos_cartas/artifice_da_gambiarra.png" },
-  { name: "Invocador de iFood",        icon: "🍕", desc: "Você transforma tédio em pedido. Seu familiar é o entregador.",                    photo: "/fotos_cartas/invocador_de_ifood.png" },
-  { name: "Druida de Varanda",         icon: "🌿", desc: "Você nutre plantas, gatos e amigos à distância com energia serena.",               photo: "/fotos_cartas/druida_de_varanda.png" },
-  { name: "Ranger da Faxina",          icon: "🧹", desc: "Você limpa o ambiente e a mente ao mesmo tempo. Método sagrado.",                  photo: "/fotos_cartas/ranger_da_faxina.jpeg" },
-  { name: "Bardo do Karaokê",          icon: "🎤", desc: "Você não canta bem. Você canta alto. E todo mundo ama.",                           photo: "/fotos_cartas/bardo_do_karaoke.jpeg" },
-  { name: "Xamã das Criptomoedas",     icon: "📈", desc: "Você lê gráficos como runas. Seu portfólio é uma profecia.",                       photo: "/fotos_cartas/xama_das_criptomodeas.jpeg" },
-  { name: "Vidente da Ansiedade",      icon: "🔭", desc: "Você previu todos os problemas. Inclusive os que não aconteceram.",                photo: "/fotos_cartas/vidente_da_ansiedade.jpeg" },
-  { name: "Paladino do Grupo",         icon: "🏰", desc: "Você não deixa ninguém pra trás. Nem no grupo de zap, nem na vida.",               photo: "/fotos_cartas/paladino_do_grupo.jpeg" },
-  { name: "Domador de Pet",            icon: "🐾", desc: "Você entende seu animal antes de entender as pessoas. Faz sentido.",               photo: "/fotos_cartas/domador_de_pet.png" },
-];
 
 const ATTR_LABELS: [string, string, string][] = [
   ["for", "Força",        "💪"],
@@ -97,7 +73,7 @@ export default function PersonagemCard() {
       : null;
 
   const className = row ? row.classe : params.get("classe") ?? "";
-  const rpgClass = CLASS_LIST.find((c) => c.name === className) ?? CLASS_LIST[0];
+  const rpgClass = byName(className);
 
   const attrs: Record<string, number> = row
     ? {
