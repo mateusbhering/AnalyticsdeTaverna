@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Swords, BarChart3 } from "lucide-react";
+import Link from "next/link";
+import { Swords, BarChart3, Trophy } from "lucide-react";
 
 const links = [
   { label: "Conceito", href: "#conceito" },
@@ -57,7 +58,7 @@ export default function Navbar() {
           </span>
         </a>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden xl:flex items-center gap-6">
           {links.map((l) => (
             <a
               key={l.href}
@@ -72,14 +73,21 @@ export default function Navbar() {
               última posição, que é a de maior peso na barra. */}
           <a
             href="#dashboard"
-            className="press px-5 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
+            className="press whitespace-nowrap px-4 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             <BarChart3 size={11} strokeWidth={1.8} /> Dashboard
           </a>
+          <Link
+            href="/ranking"
+            className="press whitespace-nowrap px-4 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
+          >
+            <Trophy size={11} strokeWidth={1.8} /> Ranking
+          </Link>
           <a
             href="#jornada"
-            className="press btn-seal px-5 py-2 text-[.6rem] tracking-[.2em] uppercase"
+            className="press btn-seal whitespace-nowrap px-4 py-2 text-[.6rem] tracking-[.2em] uppercase"
             style={{ fontFamily: "var(--font-cinzel), serif", borderWidth: "1px" }}
           >
             Iniciar Jornada
@@ -87,7 +95,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="md:hidden text-[rgba(240,226,189,0.65)] hover:text-[var(--gold-light)]"
+          className="xl:hidden text-[rgba(240,226,189,0.65)] hover:text-[var(--gold-light)]"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
@@ -100,7 +108,7 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className="md:hidden glass border-b border-[rgba(201,151,63,0.25)] px-6 pb-6">
+        <div className="xl:hidden glass border-b border-[rgba(201,151,63,0.25)] px-6 pb-6">
           {links.map((l) => (
             <a
               key={l.href}
@@ -120,6 +128,14 @@ export default function Navbar() {
           >
             <BarChart3 size={11} strokeWidth={1.8} /> Dashboard
           </a>
+          <Link
+            href="/ranking"
+            className="press mt-2 flex items-center justify-center gap-1.5 text-center px-5 py-3 bg-[rgba(82,26,16,0.45)] border border-[rgba(201,151,63,0.35)] text-[rgba(240,226,189,0.75)] text-[.65rem] tracking-[.15em] uppercase"
+            style={{ fontFamily: "var(--font-cinzel), serif" }}
+            onClick={() => setMenuOpen(false)}
+          >
+            <Trophy size={11} strokeWidth={1.8} /> Ranking
+          </Link>
           <a
             href="#jornada"
             className="press btn-seal mt-2 block text-center px-5 py-3 text-[.65rem] tracking-[.15em] uppercase"
