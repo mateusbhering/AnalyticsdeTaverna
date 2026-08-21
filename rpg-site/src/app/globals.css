@@ -621,3 +621,44 @@ h1,h2,h3,h4 {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
   animation: shimmer 2s linear infinite;
 }
+
+/* ── MIRA DO LEITOR DE QR (/batalha) ────────────────────────────── */
+/* Janela recortada no escurecimento do visor: só o miolo fica claro,
+   então o olho vai pro lugar certo antes de a pessoa ler o aviso. */
+.qr-reticle {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 62%; aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+.qr-corner {
+  position: absolute;
+  width: 26px; height: 26px;
+  border: 2px solid rgba(230, 188, 106, 0.9);
+  filter: drop-shadow(0 0 6px rgba(230, 188, 106, 0.5));
+}
+.qr-corner.tl { top: 0; left: 0;  border-width: 2px 0 0 2px; }
+.qr-corner.tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.qr-corner.bl { bottom: 0; left: 0;  border-width: 0 0 2px 2px; }
+.qr-corner.br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+/* Feixe de leitura varrendo a mira */
+@keyframes qr-sweep {
+  0%   { transform: translateY(-4%); opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { transform: translateY(104%); opacity: 0; }
+}
+.qr-beam {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+  box-shadow: 0 0 12px rgba(230, 188, 106, 0.75);
+  animation: qr-sweep 2.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .qr-beam { animation: none; opacity: .6; top: 50%; }
+}

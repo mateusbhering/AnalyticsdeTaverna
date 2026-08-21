@@ -16,6 +16,21 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { byName, type ClassInfo } from "@/lib/classes";
 
 
+/**
+ * Guarda o id deste jogador no aparelho. A página /batalha precisa saber QUEM
+ * está desafiando — sem isso não dá para impedir que alguém escaneie o próprio
+ * QR nem para registrar a batalha depois. Fica em localStorage (e não em
+ * sessionStorage, como o dedup do save) porque a pessoa fecha a aba e volta
+ * para desafiar alguém mais tarde no evento.
+ */
+function lembrarJogador(id: string) {
+  try {
+    localStorage.setItem("taverna:jogadorId", id);
+  } catch {
+    // Modo privado / storage bloqueado: seguimos sem lembrar.
+  }
+}
+
 /** Nome do arquivo ao baixar o avatar: slug da classe + extensão do data URL. */
 function avatarFileName(className: string, dataUrl: string): string {
   const mime = /^data:(.*?);/.exec(dataUrl)?.[1] ?? "image/png";
@@ -239,6 +254,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
     const cached = typeof window !== "undefined" ? sessionStorage.getItem(dedupKey) : null;
     if (cached) {
       setPersonagemId(Number(cached));
+      lembrarJogador(cached);
       savedRef.current = true;
       return;
     }
@@ -277,6 +293,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
         const id = data[0].id as number;
         setPersonagemId(id);
         if (typeof window !== "undefined") sessionStorage.setItem(dedupKey, String(id));
+        lembrarJogador(String(id));
       } catch (e) {
         console.error("Supabase indisponível:", e);
         savedRef.current = false;
@@ -559,11 +576,11 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
           🔄 Jogar Novamente
         </button>
         <a
-          href="/"
+          href="/batalha"
           className="btn-seal flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
         >
-          ✦ Voltar ao Início
+          ⚔ Desafiar Alguém
         </a>
       </div>
     </div>
