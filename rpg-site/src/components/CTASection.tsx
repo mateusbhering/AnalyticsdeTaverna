@@ -1,7 +1,6 @@
 import {
   Swords,
   WandSparkles,
-  Zap,
   Camera,
   Brain,
   WalletCards,
@@ -64,23 +63,15 @@ export default function CTASection() {
             <strong className="text-[var(--copper)] not-italic"> IA generativa</strong> para criar seu personagem único.
           </p>
 
-          <div className="flex flex-wrap gap-4 justify-center mb-12">
+          <div className="flex justify-center mb-12">
             <Magnetic>
               <a
                 href="/jogar"
-                className="press btn-glow btn-seal px-10 py-5 text-[.8rem] tracking-[.12em] uppercase flex items-center gap-2 animate-pulse-wine"
+                className="press btn-glow btn-seal px-10 py-5 text-[.8rem] tracking-[.12em] uppercase inline-flex items-center gap-2 animate-pulse-wine"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
               >
-                <Swords size={16} strokeWidth={1.8} /> Jogar Sozinho
+                <Swords size={16} strokeWidth={1.8} /> Jogar
               </a>
-            </Magnetic>
-            <Magnetic>
-              <button
-                className="press btn-glow btn-parchment px-10 py-5 text-[.8rem] tracking-[.12em] uppercase flex items-center gap-2 cursor-pointer"
-                style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-              >
-                <Zap size={16} strokeWidth={1.8} /> Desafiar Alguém
-              </button>
             </Magnetic>
           </div>
         </Reveal>
