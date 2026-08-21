@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
+import { PLAYER_STATS_TAG } from "./cache-tags";
 
 /**
  * Agregação das partidas para o dashboard da landing. SÓ SERVIDOR — importar
@@ -138,10 +139,14 @@ async function fetchStats(): Promise<PlayerStats | null> {
  * documentada para cachear consulta de banco é `unstable_cache`. Sem isso a
  * landing viraria dinâmica e bateria no Supabase a cada visita.
  *
- * 5 minutos: a seção se chama "ao Vivo", mas ninguém precisa do número ao
- * segundo, e a página continua servida do cache.
+ * A atualização de verdade é por evento: ao salvar um personagem novo, o
+ * CharacterResult chama `avisarNovoJogador()`, que expira esta tag na hora.
+ * Os 5 minutos ficam como rede de segurança para o que não passa pelo app —
+ * uma linha inserida direto no banco, por exemplo — e para o caso de a action
+ * falhar; sem eles, um número errado poderia ficar preso no cache até o
+ * próximo deploy.
  */
 export const getPlayerStats = unstable_cache(fetchStats, ["player-stats"], {
   revalidate: 300,
-  tags: ["player-stats"],
+  tags: [PLAYER_STATS_TAG],
 });

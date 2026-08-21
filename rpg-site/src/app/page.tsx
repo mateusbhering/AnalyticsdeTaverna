@@ -5,18 +5,13 @@ import FlowSection from "@/components/FlowSection";
 import AttributesSection from "@/components/AttributesSection";
 import WhyDifferent from "@/components/WhyDifferent";
 import TechSection from "@/components/TechSection";
-import DashboardSection from "@/components/DashboardSection";
 import GuildSection from "@/components/GuildSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import MotionProvider from "@/components/MotionProvider";
-import { getPlayerStats } from "@/lib/stats";
 
-export default async function Home() {
-  // Agregado no servidor: o navegador recebe os números prontos, não a tabela.
-  const stats = await getPlayerStats();
-
+export default function Home() {
   return (
     <MotionProvider>
       <ScrollProgress />
@@ -28,7 +23,6 @@ export default async function Home() {
         <AttributesSection />
         <WhyDifferent />
         <TechSection />
-        <DashboardSection stats={stats} />
         <GuildSection />
         <CTASection />
       </main>

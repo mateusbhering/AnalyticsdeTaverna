@@ -13,6 +13,7 @@ import {
 import type { Dimensions } from "./QuizForm";
 import { useAvatarGeneration, dataUrlToBlob } from "@/lib/useAvatarGeneration";
 import { getSupabaseClient } from "@/lib/supabase";
+import { avisarNovoJogador } from "@/lib/stats-actions";
 import { byName, type ClassInfo } from "@/lib/classes";
 
 
@@ -294,6 +295,14 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
         setPersonagemId(id);
         if (typeof window !== "undefined") sessionStorage.setItem(dedupKey, String(id));
         lembrarJogador(String(id));
+
+        // O dashboard da landing é cacheado; sem este aviso o personagem novo
+        // só entraria na contagem no próximo ciclo de 5 min. Sem await: é uma
+        // atualização de cache, não pode atrasar o card que já está pronto na
+        // tela — e se falhar, o revalidate por tempo ainda cobre.
+        avisarNovoJogador().catch((e) =>
+          console.error("Falha ao atualizar o dashboard:", e),
+        );
       } catch (e) {
         console.error("Supabase indisponível:", e);
         savedRef.current = false;

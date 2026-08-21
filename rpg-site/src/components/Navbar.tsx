@@ -71,13 +71,13 @@ export default function Navbar() {
           ))}
           {/* Ação secundária antes da principal: "Iniciar Jornada" fica na
               última posição, que é a de maior peso na barra. */}
-          <a
-            href="#dashboard"
+          <Link
+            href="/dashboard"
             className="press whitespace-nowrap px-4 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             <BarChart3 size={11} strokeWidth={1.8} /> Dashboard
-          </a>
+          </Link>
           <Link
             href="/ranking"
             className="press whitespace-nowrap px-4 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
@@ -120,14 +120,14 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
-          <a
-            href="#dashboard"
+          <Link
+            href="/dashboard"
             className="press mt-4 flex items-center justify-center gap-1.5 text-center px-5 py-3 bg-[rgba(82,26,16,0.45)] border border-[rgba(201,151,63,0.35)] text-[rgba(240,226,189,0.75)] text-[.65rem] tracking-[.15em] uppercase"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
             onClick={() => setMenuOpen(false)}
           >
             <BarChart3 size={11} strokeWidth={1.8} /> Dashboard
-          </a>
+          </Link>
           <Link
             href="/ranking"
             className="press mt-2 flex items-center justify-center gap-1.5 text-center px-5 py-3 bg-[rgba(82,26,16,0.45)] border border-[rgba(201,151,63,0.35)] text-[rgba(240,226,189,0.75)] text-[.65rem] tracking-[.15em] uppercase"
