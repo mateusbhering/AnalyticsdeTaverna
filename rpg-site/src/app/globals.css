@@ -662,3 +662,16 @@ h1,h2,h3,h4 {
 @media (prefers-reduced-motion: reduce) {
   .qr-beam { animation: none; opacity: .6; top: 50%; }
 }
+
+/* ── BARRA DA TELA DE CARREGAMENTO DO DUELO (/batalha) ──────────── */
+/* A duração casa com DUELO_CARREGANDO_MS no DesafioScanner: a barra chega
+   ao fim no mesmo instante em que a tela tem permissão de sair. `forwards`
+   segura o preenchimento cheio caso o oponente ainda não tenha chegado. */
+@keyframes barra-duelo {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+.barra-duelo {
+  width: 0%;
+  animation: barra-duelo var(--duelo-carregando, 2400ms) linear forwards;
+}

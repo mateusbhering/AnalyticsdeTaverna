@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { useSearchParams } from "next/navigation";
 import QrScanner from "@/components/QrScanner";
+import TelaCarregando from "@/components/TelaCarregando";
 import { getSupabaseClient } from "@/lib/supabase";
 import { byName } from "@/lib/classes";
 
@@ -32,6 +33,17 @@ function lerMeuId(): string | null {
   }
 }
 const meuIdNoServidor = () => undefined;
+
+/* Quanto a tela do duelo fica no ar antes de revelar o oponente. A consulta ao
+   Supabase leva uns 300ms — sem um mínimo, a arte apareceria e sumiria num
+   piscar. Precisa bater com a duração da animação em `.barra-duelo`. */
+const DUELO_CARREGANDO_MS = 2400;
+
+/* Só no celular, por ora. Lido no handler do scan (não na renderização), então
+   não há risco de divergência de hidratação. 639px = limite do `sm` do Tailwind. */
+function ehCelular() {
+  return typeof window !== "undefined" && window.matchMedia("(max-width: 639px)").matches;
+}
 
 /**
  * Aceita as duas formas de QR que circulam por aí:
@@ -64,6 +76,11 @@ export default function DesafioScanner() {
   const [oponenteId, setOponenteId] = useState<string | null>(params.get("oponenteId"));
   const [oponente, setOponente] = useState<Oponente | null>(null);
   const [erro, setErro] = useState<string | null>(null);
+
+  // Tela épica de carregamento: `pedida` no scan, `liberada` quando o tempo
+  // mínimo se cumpre. Ela sai quando o tempo acabou E o oponente chegou.
+  const [telaPedida, setTelaPedida] = useState(false);
+  const [telaLiberada, setTelaLiberada] = useState(false);
 
   const ehEuMesmo = oponenteId !== null && meuId != null && oponenteId === meuId;
   // Derivado em vez de um `useState` de loading: temos um id válido, ninguém
@@ -109,13 +126,27 @@ export default function DesafioScanner() {
     }
     setErro(null);
     setOponenteId(id);
+
+    if (ehCelular()) {
+      setTelaPedida(true);
+      setTelaLiberada(false);
+      setTimeout(() => setTelaLiberada(true), DUELO_CARREGANDO_MS);
+    }
   }, []);
 
   const escanearOutro = () => {
     setOponente(null);
     setOponenteId(null);
     setErro(null);
+    setTelaPedida(false);
+    setTelaLiberada(false);
   };
+
+  // A tela épica cobre a página inteira até o tempo fechar E o oponente chegar.
+  // Erro e auto-desafio saem na hora: não há duelo para anunciar.
+  if (telaPedida && !erro && !ehEuMesmo && !(telaLiberada && oponente)) {
+    return <TelaCarregando />;
+  }
 
   // ── Escaneou o próprio card ──
   if (ehEuMesmo) {
