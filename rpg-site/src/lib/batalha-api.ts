@@ -82,8 +82,20 @@ export async function lutar(
   } catch (erro) {
     // AbortError sobe como está: quem cancelou sabe o que fazer com ele.
     if (erro instanceof DOMException && erro.name === "AbortError") throw erro;
+
+    /* Aqui o pedido nem chegou a completar. São três causas bem diferentes
+       com a mesma cara pro `fetch` — servidor fora do ar, CORS barrando, ou
+       endereço errado — e nenhuma delas dá pra distinguir pelo objeto de erro.
+       O texto na tela fica temático; o diagnóstico de verdade vai pro console,
+       com o endereço tentado, senão não há como saber qual das três foi. */
+    console.error(
+      `[batalha] o pedido para ${API_BASE}/batalha não completou. ` +
+        "Confira se o backend FastAPI está no ar nesse endereço, se ele " +
+        "libera esta origem no CORS e se NEXT_PUBLIC_API_URL aponta pra ele.",
+      erro,
+    );
     throw new ErroDeBatalha(
-      "A taverna não respondeu. Verifique a conexão e tente de novo.",
+      "A taverna não respondeu — o servidor da batalha parece estar fora do ar.",
     );
   }
 
