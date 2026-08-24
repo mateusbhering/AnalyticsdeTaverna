@@ -87,11 +87,37 @@ async def test_worker_success(redis, monkeypatch, _mock_upload):
 
     stored = json.loads(await redis.get(result_key("job-ok")))
     assert stored["status"] == "done"
-    assert base64.b64decode(stored["image"]) == GENERATED_PNG
     assert stored["mime"] == "image/png"
     assert stored["public_url"] == "https://fake.supabase/avatars/job-ok"
+    # A imagem NÃO vai para o Redis — ela já está no Storage.
+    assert "image" not in stored
     # TTL de 24h aplicado.
     assert 0 < await redis.ttl(result_key("job-ok")) <= 86400
+
+
+async def test_worker_nao_refaz_o_gemini_quando_o_redis_recusa(redis, monkeypatch, _mock_upload):
+    """Redis cheio (`noeviction`) não pode virar falha de geração.
+
+    Foi o que derrubou o avatar em produção: o `SET` estourava com
+    OutOfMemoryError, a exceção subia, o arq reagendava o job e o Gemini era
+    pago de novo — sem nunca conseguir gravar nem o marcador de erro. A imagem
+    já está no Storage a essa altura; o job precisa terminar em paz.
+    """
+    chamadas = []
+
+    async def fake_run_gemini(image_bytes, prompt):
+        chamadas.append(1)
+        return base64.b64encode(GENERATED_PNG).decode(), "image/png"
+
+    async def set_que_recusa(*args, **kwargs):
+        raise Exception("OOM command not allowed when used memory > 'maxmemory'.")
+
+    monkeypatch.setattr(avatar_worker, "_run_gemini", fake_run_gemini)
+    monkeypatch.setattr(redis, "set", set_que_recusa)
+
+    # Não levanta: o job termina, e é o `/avatar/image` que resolve pelo Storage.
+    await avatar_worker.generate_avatar_task(_ctx(redis), "job-cheio", ORIGINAL_B64)
+    assert len(chamadas) == 1
 
 
 async def test_worker_uploads_generated_avatar_not_original(redis, monkeypatch, _mock_upload):

@@ -32,9 +32,8 @@ function lembrarJogador(id: string) {
   }
 }
 
-/** Nome do arquivo ao baixar o avatar: slug da classe + extensão do data URL. */
-function avatarFileName(className: string, dataUrl: string): string {
-  const mime = /^data:(.*?);/.exec(dataUrl)?.[1] ?? "image/png";
+/** Nome do arquivo ao baixar o avatar: slug da classe + extensão do mime. */
+function avatarFileName(className: string, mime: string): string {
   const ext = mime === "image/jpeg" ? "jpg" : mime === "image/webp" ? "webp" : "png";
   const slug = className
     .normalize("NFD")
@@ -230,6 +229,41 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
     if (photo) start(photo, rpgClass.name);
   }, [start, photo, rpgClass.name]);
 
+  /* O avatar agora chega como URL do Storage, não mais como data URL. Baixar e
+     compartilhar precisam dos BYTES, e `navigator.share` precisa deles de forma
+     SÍNCRONA — um await dentro do handler perde o gesto do usuário e o Safari
+     do iOS recusa. Então o blob é buscado assim que a URL aparece e fica
+     guardado, pronto para os dois botões. */
+  // Resultado no formato antigo (data URL): converte na hora, sem rede nem estado.
+  const blobLocal = useMemo(() => {
+    if (!avatarUrl?.startsWith("data:")) return null;
+    try {
+      return dataUrlToBlob(avatarUrl);
+    } catch {
+      return null;
+    }
+  }, [avatarUrl]);
+
+  // Formato novo (URL do Storage): busca os bytes uma vez, guardando de qual
+  // URL eles vieram — assim uma troca de avatar não serve o blob anterior.
+  const [baixado, setBaixado] = useState<{ url: string; blob: Blob } | null>(null);
+  useEffect(() => {
+    if (!avatarUrl || avatarUrl.startsWith("data:")) return;
+    let cancelado = false;
+    fetch(avatarUrl)
+      .then((r) => (r.ok ? r.blob() : null))
+      .then((blob) => {
+        // Sem os bytes os botões ficam inertes — a imagem continua na tela.
+        if (!cancelado && blob) setBaixado({ url: avatarUrl, blob });
+      })
+      .catch(() => {});
+    return () => {
+      cancelado = true;
+    };
+  }, [avatarUrl]);
+
+  const avatarBlob = blobLocal ?? (baixado?.url === avatarUrl ? baixado.blob : null);
+
   const maxAttr = Math.max(...Object.values(attrs), 1);
   const barPct = (v: number) => Math.round((v / maxAttr) * 100);
 
@@ -329,19 +363,16 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   // Downloads/Arquivos (celular).
   // Se a conversão falhar, o clique segue para o href/download do próprio <a>.
   const saveAvatar = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (!avatarUrl) return;
+    // Sem os bytes não há download: o `download` de um <a> é ignorado quando o
+    // href aponta para outra origem, e o clique só abriria a imagem.
+    if (!avatarBlob) return;
 
-    let objectUrl: string;
-    try {
-      objectUrl = URL.createObjectURL(dataUrlToBlob(avatarUrl));
-    } catch {
-      return; // fallback: o navegador baixa o data URL do href
-    }
+    const objectUrl = URL.createObjectURL(avatarBlob);
 
     e.preventDefault();
     const a = document.createElement("a");
     a.href = objectUrl;
-    a.download = avatarFileName(rpgClass.name, avatarUrl);
+    a.download = avatarFileName(rpgClass.name, avatarBlob.type);
     a.rel = "noopener";
     document.body.appendChild(a);
     a.click();
@@ -354,12 +385,11 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   // único caminho até a galeria — ela oferece "Salvar imagem" / "Save to Photos",
   // coisa que nenhum download consegue fazer.
   const shareAvatar = () => {
-    if (!avatarUrl) return;
-    // Conversão síncrona de propósito: um await aqui perderia o gesto do
-    // usuário e o Safari do iOS recusaria o navigator.share.
-    const blob = dataUrlToBlob(avatarUrl);
-    const file = new File([blob], avatarFileName(rpgClass.name, avatarUrl), {
-      type: blob.type,
+    // O blob já foi buscado quando a URL chegou: aqui é tudo síncrono, senão o
+    // Safari do iOS perderia o gesto do usuário e recusaria o navigator.share.
+    if (!avatarBlob) return;
+    const file = new File([avatarBlob], avatarFileName(rpgClass.name, avatarBlob.type), {
+      type: avatarBlob.type,
     });
     if (!navigator.canShare?.({ files: [file] })) return;
 
@@ -429,32 +459,36 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                       className="w-full h-full object-cover"
                       style={{ imageRendering: "auto" }}
                     />
-                    {/* Ações do avatar — o data URL já traz a imagem inteira.
+                    {/* Ações do avatar — dependem dos BYTES, não da URL: o
+                        `download` de um <a> é ignorado entre origens e o
+                        navigator.share precisa de um File. Só aparecem quando o
+                        blob chega, para nenhum botão ficar inerte na tela.
                         Baixar sempre; compartilhar só no celular (galeria). */}
-                    <div className="absolute bottom-2 right-2 flex items-center gap-1.5">
-                      {canShare && (
-                        <button
-                          type="button"
-                          onClick={shareAvatar}
-                          title="Compartilhar avatar"
-                          aria-label="Compartilhar avatar"
+                    {avatarBlob && (
+                      <div className="absolute bottom-2 right-2 flex items-center gap-1.5">
+                        {canShare && (
+                          <button
+                            type="button"
+                            onClick={shareAvatar}
+                            title="Compartilhar avatar"
+                            aria-label="Compartilhar avatar"
+                            className={AVATAR_ACTION_CLASS}
+                          >
+                            <Share2 size={15} strokeWidth={1.8} />
+                          </button>
+                        )}
+                        <a
+                          href={avatarUrl}
+                          download={avatarFileName(rpgClass.name, avatarBlob.type)}
+                          onClick={saveAvatar}
+                          title="Baixar avatar"
+                          aria-label="Baixar avatar"
                           className={AVATAR_ACTION_CLASS}
                         >
-                          <Share2 size={15} strokeWidth={1.8} />
-                        </button>
-                      )}
-                      {/* O onClick baixa via Blob URL; o href/download é o fallback. */}
-                      <a
-                        href={avatarUrl}
-                        download={avatarFileName(rpgClass.name, avatarUrl)}
-                        onClick={saveAvatar}
-                        title="Baixar avatar"
-                        aria-label="Baixar avatar"
-                        className={AVATAR_ACTION_CLASS}
-                      >
-                        <Download size={15} strokeWidth={1.8} />
-                      </a>
-                    </div>
+                          <Download size={15} strokeWidth={1.8} />
+                        </a>
+                      </div>
+                    )}
                   </>
                 ) : avatarStatus === "error" ? (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3 text-center">

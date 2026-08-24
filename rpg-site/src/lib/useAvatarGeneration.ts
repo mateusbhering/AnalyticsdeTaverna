@@ -15,7 +15,7 @@ export type AvatarStatus = "idle" | "processing" | "done" | "error";
 
 export interface AvatarGeneration {
   status: AvatarStatus;
-  /** data URL do avatar gerado (image/...;base64), ou null enquanto indisponível. */
+  /** URL do avatar no Storage do Supabase, ou null enquanto indisponível. */
   avatarUrl: string | null;
   /** id do job — usado no QR code para buscar o avatar em /personagem. */
   jobId: string | null;
@@ -104,12 +104,20 @@ export function useAvatarGeneration(): AvatarGeneration {
               if (!s.ok) return; // transiente — continua tentando
               const data = (await s.json()) as {
                 status: AvatarStatus;
+                public_url?: string;
+                /** Formato antigo: a imagem inteira em base64. Ver abaixo. */
                 image?: string;
                 mime?: string;
               };
-              if (data.status === "done" && data.image) {
+              if (data.status === "done" && (data.public_url || data.image)) {
                 stopPolling();
-                setAvatarUrl(`data:${data.mime ?? "image/png"};base64,${data.image}`);
+                /* A URL do Storage é o caminho normal. O `data:` continua aqui
+                   só para os resultados que já estavam no Redis no formato
+                   antigo — eles vencem em 24h e então este ramo morre. */
+                setAvatarUrl(
+                  data.public_url ??
+                    `data:${data.mime ?? "image/png"};base64,${data.image}`,
+                );
                 setStatus("done");
                 // NÃO apagamos o resultado aqui: o avatar precisa sobreviver o
                 // TTL de 24h para ser buscado pelo QR code em /personagem.

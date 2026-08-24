@@ -90,24 +90,53 @@ async def test_status_error_marker(client, fake_redis):
 
 
 # ── Imagem crua (para o QR / página de compartilhamento) ───────────────
-async def test_image_returns_raw_bytes(client, fake_redis):
-    img_b64 = base64.b64encode(PNG_BYTES).decode()
-    await fake_redis.set(result_key("job-img"), json.dumps({"status": "done", "image": img_b64, "mime": "image/jpeg"}))
+async def test_image_redireciona_para_o_storage(client, fake_redis):
+    """O ponteiro no Redis manda direto para a URL pública do avatar."""
+    await fake_redis.set(
+        result_key("job-img"),
+        json.dumps({
+            "status": "done",
+            "public_url": "https://projeto.supabase.co/storage/v1/object/public/avatars/job-img.png",
+            "mime": "image/png",
+        }),
+    )
 
-    resp = await client.get("/avatar/image/job-img")
-    assert resp.status_code == 200
-    assert resp.headers["content-type"] == "image/jpeg"
-    assert resp.content == PNG_BYTES
+    resp = await client.get("/avatar/image/job-img", follow_redirects=False)
+    assert resp.status_code == 307
+    assert resp.headers["location"].endswith("/avatars/job-img.png")
 
 
-async def test_image_404_when_missing(client):
-    resp = await client.get("/avatar/image/nope")
+async def test_image_acha_o_avatar_sem_o_redis(client, monkeypatch):
+    """TTL vencido, instância reiniciada ou `SET` recusado por memória cheia.
+
+    O caminho no bucket vem do job_id, então quem já gerou o avatar não o perde
+    junto com a chave do Redis — que é exatamente o que acontecia antes.
+    """
+    from app import config
+
+    monkeypatch.setattr(config.settings, "supabase_url", "https://projeto.supabase.co")
+
+    resp = await client.get("/avatar/image/job-sumido", follow_redirects=False)
+    assert resp.status_code == 307
+    assert resp.headers["location"] == (
+        "https://projeto.supabase.co/storage/v1/object/public/avatars/job-sumido.png"
+    )
+
+
+async def test_image_404_sem_storage_configurado(client, monkeypatch):
+    """Sem Supabase não há para onde redirecionar — 404 em vez de URL quebrada."""
+    from app import config
+
+    monkeypatch.setattr(config.settings, "supabase_url", "")
+
+    resp = await client.get("/avatar/image/nope", follow_redirects=False)
     assert resp.status_code == 404
 
 
 async def test_image_404_when_not_done(client, fake_redis):
+    """Marcador de erro é informação: a geração falhou, não adianta tentar o bucket."""
     await fake_redis.set(result_key("job-e"), json.dumps({"status": "error", "error": "generation_failed"}))
-    resp = await client.get("/avatar/image/job-e")
+    resp = await client.get("/avatar/image/job-e", follow_redirects=False)
     assert resp.status_code == 404
 
 

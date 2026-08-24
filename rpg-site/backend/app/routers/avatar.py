@@ -11,10 +11,14 @@ import base64
 import json
 from uuid import uuid4
 
+import logging
+
 from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
-from fastapi.responses import Response
+from fastapi.responses import RedirectResponse
 
 from ..config import result_key, settings
+
+log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/avatar", tags=["avatar"])
 
@@ -97,26 +101,52 @@ async def avatar_status(request: Request, job_id: str):
 
 @router.get("/image/{job_id}")
 async def avatar_image(request: Request, job_id: str):
-    """Retorna a imagem do avatar como bytes crus, para uso direto em `<img src>`.
+    """Redireciona para o avatar no Storage do Supabase.
 
-    Usada pela página de compartilhamento /personagem (via QR code). Disponível
-    enquanto durar o TTL de 24h; depois disso retorna 404 e o frontend cai no
-    fallback da ilustração da classe.
+    Usada pela página de compartilhamento /personagem (via QR code). Antes esta
+    rota devolvia os bytes lidos do Redis, o que amarrava a imagem ao TTL de 24h
+    e obrigava o worker a guardar o base64 lá. Agora o Redis guarda só um
+    ponteiro, e a imagem vive no Storage — permanente.
+
+    O caminho no bucket é determinístico (`{job_id}.jpg|png`), então o redirect
+    é montado a partir do id mesmo quando o Redis não tem nada: instância
+    reiniciada, TTL vencido ou `SET` recusado por memória cheia deixam de
+    derrubar o avatar de quem já o gerou.
     """
-    redis = _redis(request)
-    raw = await redis.get(result_key(job_id))
-    if raw is None:
-        raise HTTPException(status_code=404, detail="Avatar não encontrado ou expirado")
-    payload = json.loads(raw)
-    if payload.get("status") != "done" or not payload.get("image"):
-        raise HTTPException(status_code=404, detail="Avatar indisponível")
+    # O ponteiro, quando existe, dá a extensão certa de graça.
+    mime = None
+    try:
+        raw = await _redis(request).get(result_key(job_id))
+        if raw:
+            payload = json.loads(raw)
+            if payload.get("status") == "error":
+                raise HTTPException(status_code=404, detail="Avatar indisponível")
+            if payload.get("public_url"):
+                return RedirectResponse(payload["public_url"], status_code=307)
+            mime = payload.get("mime")
+    except HTTPException:
+        raise
+    except Exception:  # noqa: BLE001 — Redis fora do ar não derruba o avatar
+        log.warning("Redis indisponível ao resolver o avatar %s; usando o Storage.", job_id)
 
-    data = base64.b64decode(payload["image"])
-    return Response(
-        content=data,
-        media_type=payload.get("mime", "image/png"),
-        headers={"Cache-Control": "public, max-age=86400"},
-    )
+    url = _url_no_storage(job_id, mime)
+    if url is None:
+        raise HTTPException(status_code=404, detail="Avatar não encontrado ou expirado")
+    return RedirectResponse(url, status_code=307)
+
+
+def _url_no_storage(job_id: str, mime: str | None) -> str | None:
+    """Monta a URL pública do avatar no bucket a partir do id do job.
+
+    Espelha o nome que `_upload_avatar` usa no worker — se um lado mudar, o
+    outro para de achar a imagem. Sem `mime` assumimos `.png`, que é o que o
+    Gemini devolve por padrão.
+    """
+    if not settings.supabase_url:
+        return None
+    ext = "jpg" if mime and "jpeg" in mime else "png"
+    base = settings.supabase_url.rstrip("/")
+    return f"{base}/storage/v1/object/public/avatars/{job_id}.{ext}"
 
 
 @router.delete("/result/{job_id}")

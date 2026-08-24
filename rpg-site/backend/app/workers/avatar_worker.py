@@ -195,10 +195,18 @@ async def _upload_avatar(job_id: str, avatar_bytes: bytes, mime: str) -> str:
 
 
 async def generate_avatar_task(ctx, job_id: str, image_b64: str, class_name: str = "") -> None:
-    """Job arq: gera o avatar e salva o resultado em `avatar_result:{job_id}`.
+    """Job arq: gera o avatar e salva o PONTEIRO dele em `avatar_result:{job_id}`.
 
-    Em caso de sucesso salva {"status": "done", "image": <b64>, "mime": ...}.
+    Em caso de sucesso salva {"status": "done", "public_url": ..., "mime": ...}.
     Em caso de falha salva um marcador {"status": "error", ...}. Ambos com TTL.
+
+    O que NÃO vai para o Redis é a imagem. Ela já está no Storage do Supabase,
+    permanente; guardar o base64 aqui também custava ~1,4 MB por avatar (o
+    base64 infla um terço) e enchia os 25 MB da instância em menos de 20
+    gerações. Com `maxmemoryPolicy noeviction`, cheio significa que TODO `SET`
+    passa a falhar — inclusive o do marcador de erro logo abaixo, e aí o job
+    fica sem resposta nenhuma e o front gira até desistir. Um ponteiro de ~200
+    bytes tira esse teto do caminho.
 
     PRIVACIDADE: `image_b64` / `image_bytes` só existem em memória durante esta
     função. Nunca são gravados em nenhuma chave, log ou disco. Não adicione isso.
@@ -212,19 +220,24 @@ async def generate_avatar_task(ctx, job_id: str, image_b64: str, class_name: str
         # Sobe o avatar gerado ao Supabase Storage e pega a URL pública permanente.
         avatar_bytes = base64.b64decode(image_out_b64)
         public_url = await _upload_avatar(job_id, avatar_bytes, mime)
-        payload = {
-            "status": "done",
-            "image": image_out_b64,
-            "mime": mime,
-            "public_url": public_url,
-        }
+        payload = {"status": "done", "public_url": public_url, "mime": mime}
     except Exception:
         # NUNCA logamos a foto original nem os bytes — apenas o job_id e o traço.
         logger.exception("Falha ao gerar avatar para job %s", job_id)
         payload = {"status": "error", "error": "generation_failed"}
 
-    # Persistimos APENAS o resultado (avatar gerado ou marcador de erro), com TTL.
-    await redis.set(key, json.dumps(payload), ex=settings.result_ttl_seconds)
+    # Persistimos APENAS o ponteiro (URL do avatar ou marcador de erro), com TTL.
+    try:
+        await redis.set(key, json.dumps(payload), ex=settings.result_ttl_seconds)
+    except Exception:
+        # Um Redis indisponível não pode passar por falha de geração: se o
+        # avatar subiu, ele está no Storage e /avatar/image ainda o encontra
+        # pelo job_id. Sem isto, o arq reagenda o job e paga o Gemini de novo.
+        logger.exception(
+            "Avatar do job %s gerado, mas o resultado não pôde ser gravado no Redis. "
+            "A imagem está no Storage; o front cai no fallback por job_id.",
+            job_id,
+        )
 
 
 class WorkerSettings:

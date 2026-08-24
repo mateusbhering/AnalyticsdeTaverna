@@ -435,10 +435,29 @@ FastAPI ── valida content-type + tamanho (≤8MB) → enfileira no arq/Redis
     │  responde { job_id, status: "processing" }
     ▼
 Worker arq → Gemini → sobe no Storage `avatars` → SET avatar_result:{job_id} (TTL 24h)
+                                                    ↑ só a URL, nunca a imagem
     ▼
 Frontend faz polling a cada 2.5s (≤72 tentativas ≈ 3min)
-    GET /avatar/status/{job_id} → "processing" | "done" + image | "error"
+    GET /avatar/status/{job_id} → "processing" | "done" + public_url | "error"
 ```
+
+> **O Redis guarda um ponteiro, não a imagem.** Ela já vive no Storage do
+> Supabase, permanente. Gravar o base64 no Redis também custava ~925 KB por
+> avatar (o base64 infla um terço sobre os ~675 KB do arquivo) e enchia os 25 MB
+> da instância free em menos de 30 gerações. Com `maxmemoryPolicy noeviction`,
+> cheio significa que TODO `SET` passa a falhar — inclusive o do marcador de
+> erro, e aí o job termina sem resposta nenhuma e o front gira os 3 minutos
+> inteiros antes de desistir. Foi exatamente o que derrubou a geração em
+> produção. O ponteiro ocupa ~125 bytes.
+
+`GET /avatar/image/{job_id}` **redireciona** (307) para o Storage, montando o
+caminho a partir do id (`{job_id}.jpg|png`) quando o Redis não tem nada. Assim
+TTL vencido, instância reiniciada ou `SET` recusado por memória cheia deixam de
+derrubar o avatar de quem já o gerou.
+
+O worker também não deixa um Redis indisponível virar falha de geração: se o
+avatar subiu, o job termina em paz e registra o aviso. Sem isso o arq reagenda e
+o Gemini é pago de novo — por um resultado que já existe.
 
 | Var | Onde | Padrão |
 |---|---|---|
@@ -447,7 +466,7 @@ Frontend faz polling a cada 2.5s (≤72 tentativas ≈ 3min)
 | `GEMINI_IMAGE_MODEL` | Render | `gemini-3.1-flash-image` |
 | `GEMINI_MAX_RPM` | Render | `8` |
 
-**Retenção:** a foto original **nunca é persistida** — trafega só como payload do job (`keep_result = 0` no arq) e vive em memória durante a execução. O avatar gerado fica 24h no Redis e no bucket `avatars`. Há testes de invariante para isso em `tests/test_privacy.py`.
+**Retenção:** a foto original **nunca é persistida** — trafega só como payload do job (`keep_result = 0` no arq) e vive em memória durante a execução. O avatar gerado fica permanente no bucket `avatars`; o Redis guarda por 24h apenas a URL dele. Há testes de invariante para isso em `tests/test_privacy.py`, incluindo um que falha se alguém voltar a gravar bytes de imagem no Redis.
 
 **Rate limit:** o worker tem um limitador global que espaça as chamadas ao Gemini (inclusive os retries) para não estourar `GEMINI_MAX_RPM`. O excedente espera na fila em vez de tomar `429`. Detalhes e como ajustar a cota: [`backend/README.md`](rpg-site/backend/README.md#rate-limit--capacidade-do-gemini).
 
@@ -642,8 +661,8 @@ Documentação interativa em `/docs` quando o serviço está no ar.
 |---|---|---|
 | `GET` | `/health` | Status + se Redis e banco estão configurados |
 | `POST` | `/avatar/generate` | Enfileira a geração (multipart: `file`, `classe`) |
-| `GET` | `/avatar/status/{job_id}` | `processing` \| `done` + imagem \| `error` |
-| `GET` | `/avatar/image/{job_id}` | Bytes do avatar gerado |
+| `GET` | `/avatar/status/{job_id}` | `processing` \| `done` + `public_url` \| `error` |
+| `GET` | `/avatar/image/{job_id}` | Redirect (307) para o avatar no Storage |
 | `DELETE` | `/avatar/result/{job_id}` | Limpeza antecipada do resultado |
 | `POST` | `/jogadores` | Cadastra e devolve o registro com `id` |
 | `GET` | `/jogadores/{id}` · `/jogadores` | Consulta e listagem paginada |
@@ -731,15 +750,15 @@ pip install -r requirements-dev.txt
 pytest -q
 ```
 
-**393 testes.** Distribuição:
+**395 testes.** Distribuição:
 
 | Arquivo | Testes | Cobre |
 |---|---|---|
 | `test_sincronia_classes.py` | 285 | Igualdade com o motor TypeScript + o hash FNV-1a |
 | `test_api_rotas.py` | 34 | Rotas da API com repositório em memória |
 | `test_batalha_motor.py` | 31 | Validação da escolha, confronto, XP, narrativa, pareamento |
-| `test_avatar_endpoint.py` | 14 | Validação de upload, polling, limpeza |
-| `test_avatar_worker.py` | 11 | Job do Gemini (mockado), retries, rate limit |
+| `test_avatar_endpoint.py` | 15 | Validação de upload, polling, limpeza |
+| `test_avatar_worker.py` | 12 | Job do Gemini (mockado), retries, rate limit |
 | `test_repo_coluna_ausente.py` | 8 | Gravação com o banco atrasado no schema |
 | `test_personagem.py` | 7 | Atributos, determinismo, fallback |
 | `test_privacy.py` | 3 | Invariantes de retenção da foto original |

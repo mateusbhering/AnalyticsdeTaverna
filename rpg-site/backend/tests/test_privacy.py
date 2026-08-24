@@ -66,11 +66,21 @@ async def test_original_photo_never_persisted_in_redis(redis, monkeypatch):
         assert ORIGINAL_PHOTO not in value
         assert ORIGINAL_B64.encode() not in value
 
-    # E o resultado contém o avatar gerado, não a entrada.
+    # E o resultado é só um PONTEIRO: a URL do avatar no Storage.
     import json
 
     stored = json.loads(await redis.get(result_key("job-x")))
-    assert base64.b64decode(stored["image"]) == GENERATED_PNG
+    assert stored["status"] == "done"
+    assert stored["public_url"]
+
+    # Desde que o Redis passou a guardar só a URL, NENHUMA imagem vive nele —
+    # nem a original (acima) nem a gerada. Isso é o que mantém a instância
+    # dentro dos 25 MB; se alguém voltar a gravar bytes aqui, quebra.
+    assert "image" not in stored
+    valor = await redis.get(result_key("job-x"))
+    assert GENERATED_PNG not in valor
+    assert base64.b64encode(GENERATED_PNG) not in valor
+    assert len(valor) < 512, "o resultado tem de ser um ponteiro, não um payload"
 
 
 async def test_worker_never_calls_set_with_original_photo(redis, monkeypatch):
