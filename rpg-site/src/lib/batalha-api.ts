@@ -7,11 +7,19 @@
  * service_role. Ver `backend/sql/schema.sql`, seção RLS.
  */
 
-/** URL do backend Python. Em produção, defina NEXT_PUBLIC_API_URL na Vercel. */
-export const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ??
-  process.env.NEXT_PUBLIC_AVATAR_API_URL ??
-  "http://localhost:8000";
+/**
+ * Base da API de batalha — um caminho do NOSSO domínio, não a URL da Render.
+ *
+ * O `/taverna-api` é reescrito pelo Next para o FastAPI (ver `next.config.ts`).
+ * Falar com a própria origem tira do caminho tudo que costuma quebrar em
+ * produção: CORS, conteúdo misto e — o motivo de existir — bloqueadores de
+ * anúncio e filtros de DNS que derrubam domínios de hospedagem gratuita e
+ * fazem o `fetch` falhar como se o servidor estivesse fora do ar.
+ *
+ * Dá pra apontar para outro lugar com NEXT_PUBLIC_API_URL (útil pra depurar
+ * contra um backend específico), mas aí o pedido volta a ser entre origens.
+ */
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "/taverna-api";
 
 /** Uma das 3 rodadas do confronto posicional. */
 export interface Rodada {
