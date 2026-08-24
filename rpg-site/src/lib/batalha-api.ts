@@ -55,6 +55,25 @@ export interface ResultadoBatalha {
   narrativa: string;
 }
 
+/* O backend fica na Render. Quando o serviço está ocioso ele hiberna, e a
+   primeira requisição espera o processo subir — o que passa fácil dos 30s.
+   Sem um teto explícito, o navegador é quem decide desistir, e cada um decide
+   uma coisa (em rede móvel, mais cedo ainda). */
+const ESPERA_MAXIMA_MS = 75_000;
+
+/**
+ * Cutuca o backend para ele sair da hibernação.
+ *
+ * Chamado quando o oponente aparece na tela: o tempo que a pessoa leva lendo o
+ * card é o tempo que o servidor usa para acordar, então o duelo já encontra
+ * tudo de pé. É um GET no /health — idempotente, barato e sem efeito nenhum
+ * se o serviço já estiver acordado. Falha em silêncio de propósito: isto é
+ * conforto, não requisito.
+ */
+export function aquecer(): void {
+  void fetch(`${API_BASE}/health`, { cache: "no-store" }).catch(() => {});
+}
+
 export class ErroDeBatalha extends Error {}
 
 /**
@@ -68,6 +87,15 @@ export async function lutar(
   oponenteId: number | string,
   sinal?: AbortSignal,
 ): Promise<ResultadoBatalha> {
+  /* Relógio próprio, encadeado no sinal de quem chamou: assim o cancelamento
+     do componente continua funcionando e ainda existe um teto de espera. */
+  const controle = new AbortController();
+  const relogio = setTimeout(
+    () => controle.abort(new DOMException("Tempo esgotado.", "TimeoutError")),
+    ESPERA_MAXIMA_MS,
+  );
+  sinal?.addEventListener("abort", () => controle.abort(sinal.reason), { once: true });
+
   let resposta: Response;
   try {
     resposta = await fetch(`${API_BASE}/batalha`, {
@@ -77,11 +105,21 @@ export async function lutar(
         jogador_a_id: Number(desafianteId),
         jogador_b_id: Number(oponenteId),
       }),
-      signal: sinal,
+      signal: controle.signal,
     });
   } catch (erro) {
     // AbortError sobe como está: quem cancelou sabe o que fazer com ele.
     if (erro instanceof DOMException && erro.name === "AbortError") throw erro;
+
+    /* Estourou o teto: o servidor existe, só não respondeu a tempo. Não
+       tentamos de novo sozinhos — POST /batalha grava uma batalha e distribui
+       XP, então uma repetição automática pode contar o duelo duas vezes se a
+       primeira tiver chegado. Quem decide repetir é a pessoa, no botão. */
+    if (erro instanceof DOMException && erro.name === "TimeoutError") {
+      throw new ErroDeBatalha(
+        "A taverna demorou demais para responder. Tente de novo em alguns instantes.",
+      );
+    }
 
     /* Aqui o pedido nem chegou a completar. São três causas bem diferentes
        com a mesma cara pro `fetch` — servidor fora do ar, CORS barrando, ou
@@ -97,6 +135,8 @@ export async function lutar(
     throw new ErroDeBatalha(
       "A taverna não respondeu — o servidor da batalha parece estar fora do ar.",
     );
+  } finally {
+    clearTimeout(relogio);
   }
 
   if (!resposta.ok) {

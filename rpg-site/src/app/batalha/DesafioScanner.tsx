@@ -7,7 +7,7 @@ import TelaCarregando from "@/components/TelaCarregando";
 import { getSupabaseClient } from "@/lib/supabase";
 import { byName } from "@/lib/classes";
 import ArenaDuelo from "./ArenaDuelo";
-import { ErroDeBatalha, lutar, type ResultadoBatalha } from "@/lib/batalha-api";
+import { aquecer, ErroDeBatalha, lutar, type ResultadoBatalha } from "@/lib/batalha-api";
 
 interface Oponente {
   id: number | string;
@@ -141,6 +141,12 @@ export default function DesafioScanner() {
       setTimeout(() => setTelaLiberada(true), DUELO_CARREGANDO_MS);
     }
   }, []);
+
+  /* O oponente entrou na tela: o duelo é o próximo passo quase certo. Acordar
+     a Render agora esconde a hibernação atrás do tempo de leitura do card. */
+  useEffect(() => {
+    if (oponente) aquecer();
+  }, [oponente]);
 
   const duelar = useCallback(async () => {
     if (!meuId || !oponente || duelando) return;
