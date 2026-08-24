@@ -90,11 +90,10 @@ async def medias_de_atributos(repo: Repositorio = Depends(get_repo)):
 async def metricas_de_batalha(repo: Repositorio = Depends(get_repo)):
     """Atributos mais levados ao confronto e proporção de empates.
 
-    No formato posicional ninguém *escolhe* atributo: cada lado entra com os
-    seus 3 maiores. Então o que esta métrica mostra é quais atributos mais
-    aparecem no pódio de quem batalha — que é o insight interessante ("a
-    taverna decide no Caos"). Batalhas do formato antigo, que gravavam um
-    atributo único, continuam contando por ele.
+    Agora o desafiante escolhe 3 atributos, então esta métrica volta a medir
+    escolha de verdade — quais atributos a taverna acha que ganham batalha.
+    Linhas do formato antigo, que gravavam um atributo único, continuam
+    contando por ele.
     """
     batalhas = await repo.batalhas_para_analytics()
     total = len(batalhas)
@@ -104,15 +103,17 @@ async def metricas_de_batalha(repo: Repositorio = Depends(get_repo)):
         rodadas = b.get("rodadas")
         if rodadas:
             for rodada in rodadas:
-                for lado in ("atributo_a", "atributo_b"):
-                    if rodada.get(lado):
-                        escolhas[rodada[lado]] += 1
+                if rodada.get("atributo"):
+                    escolhas[rodada["atributo"]] += 1
         elif b.get("atributo"):
-            escolhas[b["atributo"]] += 1
+            # O formato de transição gravava os três separados por vírgula.
+            for atributo in str(b["atributo"]).split(","):
+                if atributo:
+                    escolhas[atributo] += 1
 
     empates = sum(1 for b in batalhas if b.get("resultado") == "empate")
-    # O percentual é sobre o total de aparições, não sobre o de batalhas: cada
-    # batalha posicional coloca 6 atributos em jogo (3 rodadas × 2 lados).
+    # O percentual é sobre o total de escolhas, não sobre o de batalhas: cada
+    # batalha coloca 3 atributos em jogo.
     aparicoes = sum(escolhas.values())
 
     return {

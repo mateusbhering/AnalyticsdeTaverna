@@ -14,6 +14,12 @@ from pydantic import BaseModel, Field
 
 from .domain.batalha import ATRIBUTOS_VALIDOS, RODADAS
 
+# Os 7 atributos do card. Literal em vez de `str` para o /docs listar as opções
+# e o 422 sair antes de a rota rodar.
+AtributoCard = Literal[
+    "forca", "inteligencia", "agilidade", "resistencia", "carisma", "sabedoria", "caos"
+]
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Geração de personagem
@@ -114,31 +120,27 @@ class OponenteResponse(BaseModel):
 
 
 class BatalhaRequest(BaseModel):
-    """Pedido de batalha.
+    """Pedido de batalha. O desafiante é sempre o lado A — quem escolheu.
 
-    Não há `atributo`: o confronto é posicional e cada lado entra com os seus
-    3 maiores atributos. O desafiante é sempre o lado A.
+    `atributos` são os 3 do card que ele apontou. A repetição é barrada no
+    motor (`validar_escolha`), não aqui: o Pydantic garante a quantidade e os
+    nomes, mas a mensagem de "escolheu o mesmo duas vezes" fica melhor vinda de
+    um lugar só, junto das outras regras de escolha.
     """
 
     jogador_a_id: int
     jogador_b_id: int
+    atributos: list[AtributoCard] = Field(min_length=RODADAS, max_length=RODADAS)
 
 
 class RodadaResponse(BaseModel):
-    """Uma das 3 rodadas — o Nº maior de A contra o Nº maior de B.
+    """Uma das 3 rodadas — o MESMO atributo dos dois lados."""
 
-    Os atributos dos dois lados podem ser diferentes: o que se compara é a
-    posição no pódio de cada um, não a categoria.
-    """
-
-    posicao: int
-    atributo_a: str
-    rotulo_a: str
+    atributo: str
+    rotulo: str
     valor_a: int
-    atributo_b: str
-    rotulo_b: str
     valor_b: int
-    resultado: Literal["a", "b", "empate"]
+    vencedor: Literal["a", "b", "empate"]
     diferenca: int
 
 
@@ -157,6 +159,7 @@ class BatalhaResponse(BaseModel):
     jogador_b_id: int
     desafiante: LadoBatalha | None = None
     oponente: LadoBatalha | None = None
+    atributos: list[str] = Field(min_length=RODADAS, max_length=RODADAS)
     rodadas: list[RodadaResponse] = Field(min_length=RODADAS, max_length=RODADAS)
     vitorias_a: int
     vitorias_b: int

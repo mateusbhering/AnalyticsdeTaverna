@@ -8,11 +8,13 @@
 
 Fluxo de uma partida (assíncrono e instantâneo):
   1. o desafiante escaneia o QR do card do oponente → /batalha?oponenteId=N
-  2. front chama POST /batalha com os dois ids      → recebe o resultado pronto
+  2. ele escolhe 3 atributos na tela
+  3. front chama POST /batalha (ids + atributos)    → recebe o resultado pronto
 
-Não há escolha de atributo nem convite a aceitar: o confronto é POSICIONAL
-(os 3 maiores de cada um, 1º contra 1º) e o oponente não tem ação ativa nem
-estado pendente. Quem quiser achar um adversário sem QR ainda usa /parear.
+O desafiante escolhe 3 dos 7 atributos do card e cada rodada compara o MESMO
+atributo dos dois lados (melhor de 3). Não há convite a aceitar: o oponente não
+tem ação ativa nem estado pendente. Quem quiser achar um adversário sem QR
+ainda usa /parear.
 """
 
 from __future__ import annotations
@@ -28,10 +30,10 @@ router = APIRouter(prefix="/batalha", tags=["batalha"])
 
 @router.get("/atributos")
 async def atributos_disputaveis():
-    """Os atributos que entram no confronto e as regras de XP.
+    """Os atributos que podem ser escolhidos e as regras de XP.
 
-    O front usa isto para legendas e para a tela de regras — ninguém *escolhe*
-    atributo, mas mostrar quais estão em jogo ajuda a explicar o resultado.
+    O front monta a grade de escolha a partir daqui, então nem a lista nem os
+    rótulos precisam ser duplicados na tela.
     """
     return {
         "atributos": [
@@ -39,7 +41,7 @@ async def atributos_disputaveis():
             for chave in motor.ATRIBUTOS_VALIDOS
         ],
         "rodadas": motor.RODADAS,
-        "formato": "posicional",
+        "escolhe": motor.RODADAS,
         "xp": {
             "vitoria": motor.XP_VITORIA,
             "empate": motor.XP_EMPATE,
@@ -69,10 +71,10 @@ async def parear(payload: PareamentoRequest, repo: Repositorio = Depends(get_rep
 
 @router.post("", response_model=BatalhaResponse, status_code=201)
 async def batalhar(payload: BatalhaRequest, repo: Repositorio = Depends(get_repo)):
-    """Resolve o confronto posicional, atualiza o placar dos dois e registra.
+    """Resolve o confronto, atualiza o placar dos dois e registra.
 
-    O lado A é o desafiante (quem escaneou o QR). Instantâneo: entra o pedido,
-    sai o resultado — o oponente não precisa fazer nada.
+    O lado A é o desafiante — quem escaneou o QR e escolheu os atributos.
+    Instantâneo: entra o pedido, sai o resultado; o oponente não faz nada.
     """
     if payload.jogador_a_id == payload.jogador_b_id:
         raise HTTPException(status_code=422, detail="Um jogador não pode batalhar contra si mesmo.")
@@ -85,21 +87,25 @@ async def batalhar(payload: BatalhaRequest, repo: Repositorio = Depends(get_repo
         raise HTTPException(status_code=404, detail=f"Jogador {faltando} não encontrado.")
 
     # 1. Decide o vencedor (regra pura, sem banco).
-    resultado = motor.resolver(jogador_a, jogador_b)
+    try:
+        resultado = motor.resolver(jogador_a, jogador_b, payload.atributos)
+    except motor.EscolhaInvalida as erro:
+        # 422 com a frase do motor: o front mostra o texto direto na tela.
+        raise HTTPException(status_code=422, detail=str(erro)) from erro
 
     # 2. Registra a batalha ANTES de mexer no placar. Se o insert falhar, o XP
     #    não foi distribuído — melhor uma batalha perdida do que XP fantasma.
     #
     #    As colunas `atributo`/`valor_a`/`valor_b` são do formato antigo (um
-    #    atributo só) e continuam `not null` no schema. No formato posicional
-    #    elas guardam o PLACAR de rodadas; o detalhe das 3 vai em `rodadas`
-    #    (jsonb). Assim as linhas antigas seguem legíveis e o histórico novo
-    #    não perde informação.
+    #    atributo só) e continuam `not null` no schema. Agora `atributo` guarda
+    #    os três escolhidos separados por vírgula e os valores guardam o PLACAR
+    #    de rodadas; o detalhe de cada uma vai em `rodadas` (jsonb). Assim as
+    #    linhas antigas seguem legíveis e o histórico novo não perde nada.
     registro = await repo.criar_batalha(
         {
             "jogador_a_id": payload.jogador_a_id,
             "jogador_b_id": payload.jogador_b_id,
-            "atributo": "posicional",
+            "atributo": ",".join(resultado["atributos"]),
             "valor_a": resultado["vitorias_a"],
             "valor_b": resultado["vitorias_b"],
             "rodadas": resultado["rodadas"],
@@ -133,6 +139,7 @@ async def batalhar(payload: BatalhaRequest, repo: Repositorio = Depends(get_repo
         **{
             k: resultado[k]
             for k in (
+                "atributos",
                 "rodadas",
                 "vitorias_a",
                 "vitorias_b",

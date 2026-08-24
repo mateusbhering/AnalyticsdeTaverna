@@ -1,21 +1,25 @@
-"""Motor da batalha — pareamento, confronto posicional e XP.
+"""Motor da batalha — pareamento, confronto de atributos escolhidos e XP.
 
 É PURO: recebe dicionários de jogador, devolve o resultado. Quem grava no
 banco é o router (`app/routers/batalha.py`). Essa separação é o que permite
 testar toda a regra do jogo sem Supabase, sem rede, sem nada.
 
-Regra do confronto (POSICIONAL):
-  1. Cada lado pega os SEUS 3 maiores atributos — o desafiante com os dele, o
-     oponente com os dele. Ninguém escolhe nada: o card já diz quem você é.
-  2. O 1º maior de A enfrenta o 1º maior de B, o 2º com o 2º, o 3º com o 3º.
-     Os atributos comparados podem ser DIFERENTES entre os lados; o que está
-     em jogo é a posição, não a categoria. É o pódio de um contra o do outro.
-  3. Quem vencer mais rodadas vence a batalha. 3 rodadas = nunca dá 1½ a 1½,
+Regra do confronto (MELHOR DE 3):
+  1. O desafiante ESCOLHE 3 dos 7 atributos do card antes de lutar. É a única
+     decisão do jogo — e é o que o torna um jogo, e não um sorteio: quem
+     conhece o próprio card aposta onde é forte.
+  2. Cada rodada compara o MESMO atributo dos dois lados. Maior valor vence a
+     rodada; iguais empatam.
+  3. Quem vencer mais rodadas vence a batalha. Três rodadas nunca dão 1½ a 1½,
      mas rodadas empatadas podem levar o placar a um empate geral.
 
-A batalha é assíncrona e instantânea: o desafiante escaneia o QR e o resultado
-sai na hora. O oponente não tem ação ativa nem estado pendente — não existe
-convite para aceitar, nem partida esperando resposta.
+A batalha é assíncrona e instantânea: o desafiante escaneia o QR, escolhe os
+atributos e o resultado sai na hora. O oponente não tem ação ativa nem estado
+pendente — não existe convite para aceitar, nem partida esperando resposta.
+
+O oponente não escolhe nada, e isso é assimétrico de propósito: ele entra com
+os valores que tem nos atributos que o desafiante apontou. A vantagem de
+escolher é o prêmio por ser quem lançou o desafio.
 """
 
 from __future__ import annotations
@@ -26,11 +30,11 @@ from typing import Mapping, Sequence
 from .personagem import ATRIBUTOS
 
 # Os atributos disputáveis são os 7 do card — os mesmos que o jogador vê no
-# próprio personagem. Não há mais escolha de atributo: o confronto é posicional.
+# próprio personagem, e as mesmas chaves de `src/lib/atributos.ts` no front.
 ATRIBUTOS_BATALHA: tuple[str, ...] = ATRIBUTOS
 ATRIBUTOS_VALIDOS: tuple[str, ...] = ATRIBUTOS_BATALHA
 
-# Quantas posições do pódio entram no confronto.
+# Quantos atributos o desafiante escolhe — e, portanto, quantas rodadas há.
 RODADAS = 3
 
 # XP por resultado. Derrota também dá XP (pouco) de propósito: quem perde
@@ -79,18 +83,39 @@ def valor_do_atributo(jogador: Mapping, atributo: str) -> int:
     return int(jogador.get(atributo) or 0)
 
 
-def tres_maiores(jogador: Mapping, quantidade: int = RODADAS) -> list[dict]:
-    """O pódio do jogador: seus `quantidade` maiores atributos, do maior ao menor.
+class EscolhaInvalida(ValueError):
+    """A escolha de atributos não fecha a regra (quantidade, repetição ou nome)."""
 
-    Empate de valor é resolvido pela ordem fixa de ATRIBUTOS — `sorted` é
-    estável, então o critério é posicional e sempre o mesmo. Isso importa: a
-    batalha precisa ser reproduzível para poder ser auditada depois.
+
+def validar_escolha(atributos: Sequence[str]) -> list[str]:
+    """Confere a escolha do desafiante e devolve a lista normalizada.
+
+    Três checagens, três mensagens distintas — o front mostra o texto direto na
+    tela, então "atributos inválidos" não serve para nada. A UI já impede as
+    três, mas a UI não é a fronteira de confiança: o pedido chega por HTTP e
+    qualquer um pode montá-lo à mão.
     """
-    valores = [
-        {"atributo": a, "valor": valor_do_atributo(jogador, a)} for a in ATRIBUTOS_BATALHA
-    ]
-    valores.sort(key=lambda item: -item["valor"])
-    return valores[:quantidade]
+    escolha = list(atributos)
+
+    if len(escolha) != RODADAS:
+        raise EscolhaInvalida(
+            f"Escolha exatamente {RODADAS} atributos (vieram {len(escolha)})."
+        )
+
+    if len(set(escolha)) != len(escolha):
+        repetidos = sorted({a for a in escolha if escolha.count(a) > 1})
+        raise EscolhaInvalida(
+            f"Não dá para escolher o mesmo atributo duas vezes: {', '.join(repetidos)}."
+        )
+
+    desconhecidos = [a for a in escolha if a not in ATRIBUTOS_BATALHA]
+    if desconhecidos:
+        raise EscolhaInvalida(
+            f"Atributo inválido: {', '.join(desconhecidos)}. "
+            f"Use estes: {', '.join(ATRIBUTOS_VALIDOS)}."
+        )
+
+    return escolha
 
 
 def parear(
@@ -129,19 +154,22 @@ def parear(
     return dict(rng.choice(empatados))
 
 
-def resolver(jogador_a: Mapping, jogador_b: Mapping) -> dict:
-    """Calcula o confronto posicional. NÃO grava nada — só decide.
+def resolver(
+    jogador_a: Mapping, jogador_b: Mapping, atributos: Sequence[str]
+) -> dict:
+    """Melhor de 3 nos atributos que o desafiante escolheu. NÃO grava nada.
 
     Devolve tudo o que o banco precisa registrar e o front precisa exibir.
+    Levanta `EscolhaInvalida` se a escolha não fechar a regra.
     """
-    podio_a = tres_maiores(jogador_a)
-    podio_b = tres_maiores(jogador_b)
+    escolha = validar_escolha(atributos)
 
     rodadas: list[dict] = []
     vitorias_a = vitorias_b = empates_rodada = 0
 
-    for posicao, (lado_a, lado_b) in enumerate(zip(podio_a, podio_b), start=1):
-        valor_a, valor_b = lado_a["valor"], lado_b["valor"]
+    for atributo in escolha:
+        valor_a = valor_do_atributo(jogador_a, atributo)
+        valor_b = valor_do_atributo(jogador_b, atributo)
 
         if valor_a > valor_b:
             vencedor = "a"
@@ -155,14 +183,11 @@ def resolver(jogador_a: Mapping, jogador_b: Mapping) -> dict:
 
         rodadas.append(
             {
-                "posicao": posicao,
-                "atributo_a": lado_a["atributo"],
-                "rotulo_a": RÓTULOS[lado_a["atributo"]],
+                "atributo": atributo,
+                "rotulo": RÓTULOS[atributo],
                 "valor_a": valor_a,
-                "atributo_b": lado_b["atributo"],
-                "rotulo_b": RÓTULOS[lado_b["atributo"]],
                 "valor_b": valor_b,
-                "resultado": vencedor,
+                "vencedor": vencedor,
                 "diferenca": abs(valor_a - valor_b),
             }
         )
@@ -181,6 +206,7 @@ def resolver(jogador_a: Mapping, jogador_b: Mapping) -> dict:
         xp_a = xp_b = XP_EMPATE
 
     return {
+        "atributos": escolha,
         "rodadas": rodadas,
         "vitorias_a": vitorias_a,
         "vitorias_b": vitorias_b,
@@ -241,12 +267,11 @@ def _narrar(
 
     # A rodada decisiva é a de maior diferença entre as que o vencedor levou —
     # é a que rende a melhor frase.
-    ganhas = [r for r in rodadas if r["resultado"] == lado]
+    ganhas = [r for r in rodadas if r["vencedor"] == lado]
     decisiva = max(ganhas, key=lambda r: r["diferenca"])
-    golpe = RÓTULOS[decisiva["atributo_a" if lado == "a" else "atributo_b"]]
 
     intensidade = "dominou" if placar_perdedor == 0 else "levou a melhor sobre"
     return (
         f"{vencedor} {intensidade} {perdedor} por {placar} a {placar_perdedor}, "
-        f"decidindo no golpe de {golpe}."
+        f"decidindo no golpe de {decisiva['rotulo']}."
     )

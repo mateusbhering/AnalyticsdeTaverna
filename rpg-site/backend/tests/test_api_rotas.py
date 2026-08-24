@@ -102,12 +102,17 @@ async def test_pareamento_sem_adversario_devolve_404(api, repo):
     assert resposta.status_code == 404
 
 
+TRIO = ["forca", "carisma", "caos"]
+
+
 async def test_batalha_completa_atualiza_placar_e_registra(api, repo):
     """Ana vence as 3 rodadas: 30 XP pra ela, 5 pro Beto, tudo registrado."""
     repo.semear_jogador(nome="Ana", forca=30, carisma=28, caos=26)
     repo.semear_jogador(nome="Beto", forca=5, carisma=4, caos=3)
 
-    resposta = await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2})
+    resposta = await api.post(
+        "/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2, "atributos": TRIO}
+    )
     assert resposta.status_code == 201
 
     corpo = resposta.json()
@@ -115,6 +120,7 @@ async def test_batalha_completa_atualiza_placar_e_registra(api, repo):
     assert corpo["vencedor_id"] == 1
     assert corpo["vitorias_a"] == 3
     assert corpo["vitorias_b"] == 0
+    assert corpo["atributos"] == TRIO
     assert len(corpo["rodadas"]) == 3
     assert corpo["desafiante"]["nome"] == "Ana"
     assert corpo["oponente"]["nome"] == "Beto"
@@ -132,34 +138,69 @@ async def test_batalha_completa_atualiza_placar_e_registra(api, repo):
     # batalha registrada no banco, com o detalhe das 3 rodadas
     assert len(repo.batalhas) == 1
     registro = repo.batalhas[0]
-    assert registro["atributo"] == "posicional"
+    assert registro["atributo"] == "forca,carisma,caos"
     assert (registro["valor_a"], registro["valor_b"]) == (3, 0)
     assert len(registro["rodadas"]) == 3
 
 
-async def test_batalha_e_posicional_e_pode_cruzar_atributos_diferentes(api, repo):
-    """Cada lado leva o SEU pódio: o 1º de um encara o 1º do outro."""
-    repo.semear_jogador(nome="Ana", forca=1, inteligencia=1, agilidade=1,
-                        resistencia=1, carisma=1, sabedoria=1, caos=20)
-    repo.semear_jogador(nome="Beto", forca=18, inteligencia=1, agilidade=1,
-                        resistencia=1, carisma=1, sabedoria=1, caos=1)
+async def test_cada_rodada_compara_o_mesmo_atributo(api, repo):
+    repo.semear_jogador(nome="Ana", forca=18, carisma=9, caos=21)
+    repo.semear_jogador(nome="Beto", forca=12, carisma=14, caos=7)
 
-    corpo = (await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2})).json()
+    corpo = (
+        await api.post(
+            "/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2, "atributos": TRIO}
+        )
+    ).json()
 
     primeira = corpo["rodadas"][0]
-    assert primeira["posicao"] == 1
-    assert (primeira["atributo_a"], primeira["valor_a"]) == ("caos", 20)
-    assert (primeira["atributo_b"], primeira["valor_b"]) == ("forca", 18)
-    assert primeira["resultado"] == "a"
-    assert primeira["rotulo_a"] == "Caos" and primeira["rotulo_b"] == "Força"
+    assert primeira["atributo"] == "forca"
+    assert primeira["rotulo"] == "Força"
+    assert (primeira["valor_a"], primeira["valor_b"]) == (18, 12)
+    assert primeira["vencedor"] == "a"
+    assert [r["vencedor"] for r in corpo["rodadas"]] == ["a", "b", "a"]
 
 
-async def test_batalha_nao_exige_escolha_de_atributo(api, repo):
-    """O confronto é instantâneo: só os dois ids, sem `atributo` no corpo."""
+async def test_batalha_exige_a_escolha_de_atributos(api, repo):
+    """Sem `atributos` o Pydantic recusa antes de a rota rodar."""
     repo.semear_jogador()
     repo.semear_jogador()
     resposta = await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2})
-    assert resposta.status_code == 201
+    assert resposta.status_code == 422
+
+
+async def test_batalha_recusa_quantidade_errada_de_atributos(api, repo):
+    repo.semear_jogador()
+    repo.semear_jogador()
+    for escolha in ([], ["forca"], ["forca", "caos", "carisma", "agilidade"]):
+        resposta = await api.post(
+            "/batalha",
+            json={"jogador_a_id": 1, "jogador_b_id": 2, "atributos": escolha},
+        )
+        assert resposta.status_code == 422, escolha
+
+
+async def test_batalha_recusa_atributo_repetido_com_mensagem_legivel(api, repo):
+    """A mensagem vai direto pra tela, então precisa dizer o que houve."""
+    repo.semear_jogador()
+    repo.semear_jogador()
+    resposta = await api.post(
+        "/batalha",
+        json={"jogador_a_id": 1, "jogador_b_id": 2, "atributos": ["forca", "forca", "caos"]},
+    )
+    assert resposta.status_code == 422
+    assert "duas vezes" in resposta.json()["detail"]
+
+
+async def test_batalha_recusa_atributo_que_nao_e_do_card(api, repo):
+    """'estrategia' é dimensão do quiz — o Literal do schema barra."""
+    repo.semear_jogador()
+    repo.semear_jogador()
+    resposta = await api.post(
+        "/batalha",
+        json={"jogador_a_id": 1, "jogador_b_id": 2, "atributos": ["forca", "estrategia", "caos"]},
+    )
+    assert resposta.status_code == 422
 
 
 async def test_oponente_nao_fica_com_batalha_pendente(api, repo):
@@ -167,7 +208,11 @@ async def test_oponente_nao_fica_com_batalha_pendente(api, repo):
     repo.semear_jogador(nome="Ana", forca=30)
     repo.semear_jogador(nome="Beto", forca=1)
 
-    corpo = (await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2})).json()
+    corpo = (
+        await api.post(
+            "/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2, "atributos": TRIO}
+        )
+    ).json()
 
     assert corpo["resultado"] in ("a", "b", "empate")
     assert corpo["id"] is not None
@@ -177,11 +222,15 @@ async def test_oponente_nao_fica_com_batalha_pendente(api, repo):
 
 
 async def test_empate_conta_para_os_dois(api, repo):
-    """Pódios idênticos: 3 rodadas empatadas → empate geral, 15 XP pra cada."""
+    """Atributos iguais: 3 rodadas empatadas → empate geral, 15 XP pra cada."""
     repo.semear_jogador()
     repo.semear_jogador()
 
-    corpo = (await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2})).json()
+    corpo = (
+        await api.post(
+            "/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2, "atributos": TRIO}
+        )
+    ).json()
 
     assert corpo["resultado"] == "empate"
     assert corpo["vencedor_id"] is None
@@ -192,21 +241,25 @@ async def test_empate_conta_para_os_dois(api, repo):
 
 async def test_batalha_contra_si_mesmo_e_recusada(api, repo):
     repo.semear_jogador()
-    resposta = await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 1})
+    resposta = await api.post(
+        "/batalha", json={"jogador_a_id": 1, "jogador_b_id": 1, "atributos": TRIO}
+    )
     assert resposta.status_code == 422
 
 
 async def test_batalha_com_jogador_inexistente_devolve_404(api, repo):
     repo.semear_jogador()
-    resposta = await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 77})
+    resposta = await api.post(
+        "/batalha", json={"jogador_a_id": 1, "jogador_b_id": 77, "atributos": TRIO}
+    )
     assert resposta.status_code == 404
 
 
 async def test_historico_traz_batalhas_dos_dois_lados(api, repo):
     repo.semear_jogador(carisma=30)
     repo.semear_jogador(carisma=5)
-    await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2})
-    await api.post("/batalha", json={"jogador_a_id": 2, "jogador_b_id": 1})
+    await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2, "atributos": TRIO})
+    await api.post("/batalha", json={"jogador_a_id": 2, "jogador_b_id": 1, "atributos": TRIO})
 
     corpo = (await api.get("/batalha/historico/2")).json()
     assert corpo["total"] == 2
@@ -287,17 +340,16 @@ async def test_metricas_de_batalha(api, repo):
     """Conta os atributos que apareceram no pódio dos dois lados."""
     repo.semear_jogador(carisma=30)
     repo.semear_jogador(carisma=5)
-    await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2})
+    await api.post("/batalha", json={"jogador_a_id": 1, "jogador_b_id": 2, "atributos": TRIO})
 
     corpo = (await api.get("/analytics/batalhas")).json()
     assert corpo["total_batalhas"] == 1
     assert corpo["taxa_empate"] == 0.0
 
-    # Uma batalha posicional põe 6 atributos em jogo (3 rodadas × 2 lados).
+    # Uma batalha põe em jogo os 3 atributos escolhidos.
     contagem = {a["atributo"]: a["quantidade"] for a in corpo["atributos_escolhidos"]}
-    assert sum(contagem.values()) == 6
-    # O carisma 30 do lado A entrou no pódio dele.
-    assert "carisma" in contagem
+    assert sum(contagem.values()) == 3
+    assert set(contagem) == set(TRIO)
 
 
 async def test_metricas_de_batalha_ainda_leem_o_formato_antigo(api, repo):

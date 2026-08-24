@@ -6,11 +6,12 @@ import QrScanner from "@/components/QrScanner";
 import TelaCarregando from "@/components/TelaCarregando";
 import { getSupabaseClient } from "@/lib/supabase";
 import { byName } from "@/lib/classes";
-import ArenaDuelo from "./ArenaDuelo";
-import { aquecer, ErroDeBatalha, lutar, type ResultadoBatalha } from "@/lib/batalha-api";
+import EscolhaAtributos from "./EscolhaAtributos";
+import ResultadoBatalha from "./ResultadoBatalha";
+import type { ResultadoBatalha as Resultado } from "@/lib/batalha-api";
 import { avisarBatalhaConcluida } from "@/lib/ranking-actions";
 
-interface Oponente {
+export interface Oponente {
   id: number | string;
   nome: string | null;
   classe: string | null;
@@ -85,11 +86,14 @@ export default function DesafioScanner() {
   const [telaPedida, setTelaPedida] = useState(false);
   const [telaLiberada, setTelaLiberada] = useState(false);
 
-  // Duelo: `null` até o jogador mandar lutar. O backend resolve na hora — não
-  // há convite pendente do outro lado.
-  const [duelo, setDuelo] = useState<ResultadoBatalha | null>(null);
-  const [duelando, setDuelando] = useState(false);
-  const [erroDuelo, setErroDuelo] = useState<string | null>(null);
+  /* Fases do duelo: revelação do oponente → escolha dos atributos → resultado.
+     `meuJogador` sobe da tela de escolha (que já busca classe/nome) para a de
+     resultado, evitando uma segunda consulta ao Supabase. */
+  const [fase, setFase] = useState<"revelacao" | "escolha" | "resultado">("revelacao");
+  const [resultado, setResultado] = useState<Resultado | null>(null);
+  const [meuJogador, setMeuJogador] = useState<{ nome: string | null; classe: string | null } | null>(
+    null,
+  );
 
   const ehEuMesmo = oponenteId !== null && meuId != null && oponenteId === meuId;
   // Derivado em vez de um `useState` de loading: temos um id válido, ninguém
@@ -143,37 +147,10 @@ export default function DesafioScanner() {
     }
   }, []);
 
-  /* O oponente entrou na tela: o duelo é o próximo passo quase certo. Acordar
-     a Render agora esconde a hibernação atrás do tempo de leitura do card. */
-  useEffect(() => {
-    if (oponente) aquecer();
-  }, [oponente]);
-
-  const duelar = useCallback(async () => {
-    if (!meuId || !oponente || duelando) return;
-    setDuelando(true);
-    setErroDuelo(null);
-    try {
-      const resultado = await lutar(meuId, oponente.id);
-      setDuelo(resultado);
-
-      /* O duelo mudou o XP dos dois lados: derruba o cache do ranking agora,
-         senão a tela seguinte ("Ver o ranking") mostraria o placar de antes.
-         Sem `await` no caminho principal — o resultado já está na tela e uma
-         falha aqui só significa que o quadro atualiza no `revalidate`. */
-      void avisarBatalhaConcluida().catch((erro) =>
-        console.error("[batalha] falha ao expirar o cache do ranking", erro),
-      );
-    } catch (erro) {
-      setErroDuelo(
-        erro instanceof ErroDeBatalha
-          ? erro.message
-          : "Não foi possível realizar o duelo agora.",
-      );
-    } finally {
-      setDuelando(false);
-    }
-  }, [meuId, oponente, duelando]);
+  const voltarParaRevelacao = () => {
+    setFase("revelacao");
+    setResultado(null);
+  };
 
   const escanearOutro = () => {
     setOponente(null);
@@ -181,13 +158,47 @@ export default function DesafioScanner() {
     setErro(null);
     setTelaPedida(false);
     setTelaLiberada(false);
-    setDuelo(null);
-    setErroDuelo(null);
-    setDuelando(false);
+    setFase("revelacao");
+    setResultado(null);
+    setMeuJogador(null);
   };
 
-  // ── Duelo resolvido: a arena toma a tela ──
-  if (duelo) return <ArenaDuelo resultado={duelo} onNovoDuelo={escanearOutro} />;
+  // ── Resultado do confronto ──
+  if (fase === "resultado" && resultado && meuJogador && oponente) {
+    return (
+      <ResultadoBatalha
+        resultado={resultado}
+        meuJogador={meuJogador}
+        oponente={oponente}
+        onBatalharDeNovo={voltarParaRevelacao}
+        onEscanearOutro={escanearOutro}
+      />
+    );
+  }
+
+  // ── Escolha dos atributos ──
+  if (fase === "escolha" && oponente && typeof meuId === "string") {
+    return (
+      <EscolhaAtributos
+        meuId={meuId}
+        oponente={oponente}
+        onVoltar={voltarParaRevelacao}
+        onBatalhaConcluida={(res, eu) => {
+          setResultado(res);
+          setMeuJogador(eu);
+          setFase("resultado");
+
+          /* O duelo mudou o XP dos dois lados: derruba o cache do ranking
+             agora, senão "Ver o ranking" mostraria o placar de antes. Sem
+             `await` — o resultado já está na tela e uma falha aqui só significa
+             que o quadro atualiza no `revalidate`. */
+          void avisarBatalhaConcluida().catch((erro) =>
+            console.error("[batalha] falha ao expirar o cache do ranking", erro),
+          );
+        }}
+      />
+    );
+  }
 
   // A tela épica cobre a página inteira até o tempo fechar E o oponente chegar.
   // Erro e auto-desafio saem na hora: não há duelo para anunciar.
@@ -268,9 +279,7 @@ export default function DesafioScanner() {
       <CardOponente
         oponente={oponente}
         onEscanearOutro={escanearOutro}
-        onDuelar={duelar}
-        duelando={duelando}
-        erroDuelo={erroDuelo}
+        onEscolherAtributos={() => setFase("escolha")}
       />
     );
 
@@ -313,15 +322,11 @@ function Painel({ children }: { children: React.ReactNode }) {
 function CardOponente({
   oponente,
   onEscanearOutro,
-  onDuelar,
-  duelando,
-  erroDuelo,
+  onEscolherAtributos,
 }: {
   oponente: Oponente;
   onEscanearOutro: () => void;
-  onDuelar: () => void;
-  duelando: boolean;
-  erroDuelo: string | null;
+  onEscolherAtributos: () => void;
 }) {
   const classe = byName(oponente.classe ?? "");
   const retrato = oponente.foto_url ?? classe.photo;
@@ -385,29 +390,21 @@ function CardOponente({
         </div>
       </Painel>
 
-      {erroDuelo && (
-        <p className="text-[var(--seal)] text-sm text-center bg-[rgba(140,35,24,0.08)] border border-[rgba(140,35,24,0.35)] px-4 py-3 italic">
-          {erroDuelo}
-        </p>
-      )}
-
       <div className="space-y-3">
         <button
-          onClick={onDuelar}
-          disabled={duelando}
-          className="press btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase cursor-pointer disabled:cursor-wait disabled:opacity-70"
+          onClick={onEscolherAtributos}
+          className="press btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase cursor-pointer"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
         >
-          {duelando ? "⏳ Cruzando as lâminas…" : "⚔ Iniciar o duelo"}
+          ⚔ Escolher atributos
         </button>
         <p className="text-center text-[.65rem] italic text-[rgba(230,188,106,0.5)] leading-relaxed px-2">
-          Vocês dois entram com os três maiores atributos. O oponente não
-          precisa fazer nada — o resultado sai na hora.
+          Você escolhe 3 atributos e cada um enfrenta o mesmo do oponente. Ele
+          não precisa fazer nada — o resultado sai na hora.
         </p>
         <button
           onClick={onEscanearOutro}
-          disabled={duelando}
-          className="press btn-parchment block w-full py-3.5 text-[.72rem] tracking-[.12em] uppercase cursor-pointer disabled:opacity-50"
+          className="press btn-parchment block w-full py-3.5 text-[.72rem] tracking-[.12em] uppercase cursor-pointer"
           style={{ fontFamily: "var(--font-cinzel), serif" }}
         >
           📷 Escanear outro oponente

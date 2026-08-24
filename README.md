@@ -46,8 +46,8 @@ navegador — é buscado no servidor, pela URL absoluta. Ver
 
 **Ciclo completo, ligado ponta a ponta:** quiz → classificação → `POST /avatar/generate` →
 insert em `jogadores` pela chave anon → card por link único → QR do card →
-`/batalha?oponenteId=…` → `POST /batalha` → XP distribuído → `/ranking` atualizado
-no mesmo instante.
+`/batalha?oponenteId=…` → escolha de 3 atributos → `POST /batalha` → XP
+distribuído → `/ranking` atualizado no mesmo instante.
 
 **O que existe na API mas ainda não é consumido pelo front:** `/jogadores`,
 `/personagem/gerar` e as rotas de `/analytics`. O cadastro do jogador continua
@@ -68,7 +68,7 @@ mas a troca ainda não foi feita.
 | TypeScript | ^5 | Tipagem estática |
 | Tailwind CSS | v4 | Estilização (plugin PostCSS) |
 | motion | ^12.42 | Animações (reveal, count-up, tilt, scroll progress) |
-| lucide-react | ^1.27 | Ícones |
+| lucide-react | ^1.27 | Ícones (inclusive os dos 7 atributos) |
 | @supabase/supabase-js | ^2.111 | Client do banco (anon, browser + servidor) |
 | NextAuth.js | 5.0.0-beta.31 | Autenticação GitHub OAuth (área admin) |
 | qrcode.react | 4.2.0 | QR Code SVG client-side (gera o do card) |
@@ -116,8 +116,9 @@ AnalyticsdeTaverna/
     │   │   │   └── PersonagemCard.tsx# Card compartilhado (lê ?id= ou query params)
     │   │   ├── batalha/
     │   │   │   ├── page.tsx          # /batalha — moldura + Suspense
-    │   │   │   ├── DesafioScanner.tsx# QR → oponente → dispara o duelo
-    │   │   │   └── ArenaDuelo.tsx    # Encenação das 3 rodadas + XP
+    │   │   │   ├── DesafioScanner.tsx# QR + máquina de fases do duelo
+    │   │   │   ├── EscolhaAtributos.tsx # Grade dos 7, até 3 marcados
+    │   │   │   └── ResultadoBatalha.tsx # Rodadas reveladas + XP
     │   │   ├── ranking/
     │   │   │   ├── page.tsx          # /ranking — quadro de feitos (dados reais)
     │   │   │   └── loading.tsx       # Esqueleto na mesma moldura
@@ -125,6 +126,7 @@ AnalyticsdeTaverna/
     │   │   └── api/auth/[...nextauth]/route.ts
     │   ├── lib/
     │   │   ├── classes.ts            # CLASS_LIST — as 16 classes (fonte única)
+    │   │   ├── atributos.ts          # Os 7 do card: chave, rótulo e ícone
     │   │   ├── backend-url.ts        # URL absoluta do FastAPI (só servidor)
     │   │   ├── batalha-api.ts        # Cliente do duelo (browser, via /taverna-api)
     │   │   ├── ranking.ts            # Leitura do ranking (server-only, cacheada)
@@ -469,7 +471,7 @@ O Supabase é usado de **dois lados, com chaves diferentes**:
 `sql/schema.sql` é idempotente e cria/estende tudo:
 
 - **`jogadores`** — classe, os 7 atributos, `foto_url`, as 10 dimensões brutas do quiz, placar (`xp`, `vitorias`, `derrotas`, `empates`) e `nome`. Índices em `xp desc`, `criado_em desc` e `classe`.
-- **`batalhas`** — uma linha por confronto, guardando os **valores** disputados (não só o vencedor), `resultado` (`a`/`b`/`empate`), `vencedor_id`, o XP de cada lado e `rodadas` (jsonb) com o detalhe das 3 posições do pódio.
+- **`batalhas`** — uma linha por confronto, guardando os **valores** disputados (não só o vencedor), `resultado` (`a`/`b`/`empate`), `vencedor_id`, o XP de cada lado e `rodadas` (jsonb) com o detalhe dos 3 atributos disputados.
 
 > **`rodadas` é coluna nova.** Se o `sql/schema.sql` não tiver sido rodado no
 > Supabase, o insert falha com `column batalhas.rodadas does not exist`. O
@@ -535,27 +537,38 @@ Importar `stats.ts` de um Client Component mandaria a tabela inteira para o nave
 
 ## Tela do Duelo (`/batalha`)
 
+Três fases numa página só (`DesafioScanner` é a máquina de estados):
+
 ```
 QR do card do oponente          ou   /batalha?oponenteId=42 direto
         │
         ▼  jsQR lê pela câmera → extrai o id
-  Card do oponente (Supabase, chave anon)
-        │  ← aqui dispara um GET /health que acorda a Render
-        ▼  "⚔ Iniciar o duelo"
-  POST /taverna-api/batalha  { jogador_a_id, jogador_b_id }
+  1. REVELAÇÃO — card do oponente (Supabase, chave anon)
+        │  "⚔ Escolher atributos"
+        ▼
+  2. ESCOLHA — grade dos 7 atributos, até 3 marcados
+        │  ← aqui um GET /health acorda a Render enquanto a pessoa decide
+        │  "⚔️ Confirmar escolha"
+        ▼  POST /taverna-api/batalha { ids + atributos }
+  3. RESULTADO — rodadas reveladas uma a uma, XP contando no fim
         │
-        ▼  ArenaDuelo: rodadas reveladas uma a uma, XP contando no fim
-  Server Action expira o cache do ranking
+        ▼  Server Action expira o cache do ranking
 ```
 
 O id do desafiante vem do `localStorage` (`taverna:jogadorId`), gravado ao fim do
 quiz. Sem ele não há duelo — a tela oferece o quiz.
 
-**Encenação (`ArenaDuelo`, motion/react):** o backend já devolveu tudo pronto; a
-espera na tela é dramaturgia, não latência. Revelar as três rodadas de uma vez
-entregaria o placar antes de a pessoa ler a primeira linha. As placas dos dois
-lados entram de cada borda e se encontram no meio, o vencedor da rodada pulsa, e o
-veredito fecha com a contagem do XP.
+**Grade de escolha** (`EscolhaAtributos`): os 7 atributos do card em dois por
+linha, com o Caos sozinho no fim. Marcar o quarto é ignorado, e o botão de
+confirmar só aparece com os 3 completos — assim não existe estado inválido para
+o backend recusar. Os ícones e a ordem vivem em `src/lib/atributos.ts`, com as
+mesmas chaves de `ATRIBUTOS_VALIDOS` no Python.
+
+**Encenação** (`ResultadoBatalha`, motion/react): o backend já devolveu tudo
+pronto; a espera na tela é dramaturgia, não latência. As rodadas aparecem uma a
+uma, os dois valores entram de cada borda, o troféu/caveira surge com um spring, e
+o veredito só fecha depois da terceira — revelar o placar antes tiraria a graça
+de ler linha a linha.
 
 Quem pede `prefers-reduced-motion` percorre **as mesmas etapas com espera zero**.
 Ramificar o estado inicial em `useReducedMotion` quebrava a hidratação: o servidor
@@ -564,12 +577,13 @@ do cliente divergiam.
 
 **Erros com nome:** o `fetch` falha do mesmo jeito para servidor fora do ar, CORS
 e endereço errado, então o console recebe o endereço tentado e as causas
-prováveis. O `detail` do FastAPI vem como string nas exceções nossas e como
-**lista** quando o Pydantic recusa o corpo (422) — o cliente lê as duas formas e
-nomeia o campo recusado. Os ids são validados antes do envio: um valor não
-numérico viraria `NaN`, que `JSON.stringify` grava como `null`, e a pessoa leria
-"não foi possível realizar o duelo" sem pista de que o problema é o cadastro dela
-naquele aparelho.
+prováveis. O `detail` do FastAPI vem como string nas exceções nossas — inclusive
+as de escolha inválida, que aparecem direto na tela — e como **lista** quando o
+Pydantic recusa o corpo (422); o cliente lê as duas formas e nomeia o campo
+recusado. Os ids e a escolha são validados antes do envio: um id não numérico
+viraria `NaN`, que `JSON.stringify` grava como `null`, e a pessoa leria "não foi
+possível realizar o duelo" sem pista de que o problema é o cadastro dela naquele
+aparelho.
 
 **Teto de 75s** no POST, com mensagem própria para "demorou demais" — a Render
 hiberna quando fica ociosa e a primeira requisição espera o processo subir. Sem
@@ -635,9 +649,9 @@ Documentação interativa em `/docs` quando o serviço está no ar.
 | `GET` | `/jogadores/{id}` · `/jogadores` | Consulta e listagem paginada |
 | `POST` | `/personagem/gerar` | Classe + atributos a partir das dimensões |
 | `GET` | `/personagem/classes` | Catálogo de classes |
-| `GET` | `/batalha/atributos` | Os 7 atributos em jogo, nº de rodadas e XP por resultado |
+| `GET` | `/batalha/atributos` | Os 7 atributos escolhíveis, quantos escolher e XP por resultado |
 | `POST` | `/batalha/parear` | Matchmaking por XP próximo (para duelar sem QR) |
-| `POST` | `/batalha` | Resolve o confronto posicional e registra tudo — corpo: só os dois ids |
+| `POST` | `/batalha` | Resolve o confronto e registra tudo — corpo: dois ids + os 3 atributos |
 | `GET` | `/batalha/{id}` · `/batalha/historico/{id}` | Detalhe e histórico |
 | `GET` | `/ranking` · `/ranking/{jogador_id}` | Top N por XP · posição de um jogador |
 | `GET` | `/analytics/resumo` · `/classes` · `/atributos` · `/batalhas` · `/taxa-vitoria` · `/insight` | Dashboard analytics |
@@ -652,34 +666,37 @@ repo.py   →  todo acesso ao Supabase; os testes injetam um repo em memória
 
 O client do Supabase é síncrono, então toda chamada passa por `run_in_threadpool` para não travar o event loop do FastAPI.
 
-### Sistema de Batalha — confronto posicional
+### Sistema de Batalha — melhor de 3
 
-Não há escolha de atributo. Cada lado entra com os **seus 3 maiores atributos do
-card**, e o confronto é por **posição no pódio**:
+O desafiante **escolhe 3 dos 7 atributos** do card antes de lutar. Cada rodada
+compara o **mesmo atributo** dos dois lados:
 
 ```
-        Desafiante (A)              Oponente (B)
-  1º    Inteligência  22   ×   20   Agilidade      → A
-  2º    Sabedoria     19   ×   18   Carisma        → A
-  3º    Carisma       14   ×   17   Força          → B
-                                    ──────────────────
-                                    A vence por 2 a 1
+POST /batalha { jogador_a_id, jogador_b_id, atributos: ["forca","carisma","caos"] }
+
+   Força        18  ×  12   → desafiante
+   Carisma       9  ×  14   → oponente
+   Caos         21  ×   7   → desafiante
+   ─────────────────────────────────────
+   Vitória por 2 a 1              +30 XP
 ```
 
-O 1º maior de um encara o 1º maior do outro — **os atributos comparados podem ser
-diferentes**. O que está em jogo é a posição, não a categoria: é o pódio de um
-contra o do outro. Quem vence mais rodadas vence a batalha; rodadas empatadas
-podem levar o placar a um empate geral.
+A escolha é a única decisão do jogo — e é o que o torna um jogo, e não um
+sorteio: quem conhece o próprio card aposta onde é forte. O oponente não escolhe
+nada e entra com os valores que tem nos atributos apontados; a vantagem de
+escolher é o prêmio por ter lançado o desafio.
 
-Os 7 atributos do card entram no pódio (`forca`, `inteligencia`, `agilidade`,
-`resistencia`, `carisma`, `sabedoria`, `caos`). Empate de valor é resolvido pela
-ordem fixa de `ATRIBUTOS` — `sorted` é estável, então o critério é sempre o mesmo
-e a batalha é reproduzível para auditoria.
+**Assíncrona e instantânea:** o desafiante escaneia o QR, escolhe e o resultado
+sai na hora. O oponente **não tem ação ativa nem estado pendente** — não existe
+convite para aceitar nem partida esperando resposta. O placar dele muda junto,
+porque o duelo aconteceu de verdade; senão o ranking premiaria quem nunca é
+escaneado.
 
-**Assíncrona e instantânea:** o desafiante escaneia o QR e o resultado sai na
-hora. O oponente **não tem ação ativa nem estado pendente** — não existe convite
-para aceitar nem partida esperando resposta. O placar dele muda junto, porque o
-duelo aconteceu de verdade; senão o ranking premiaria quem nunca é escaneado.
+**Validação da escolha** (`validar_escolha`), com três mensagens distintas
+porque o front mostra o texto direto na tela: quantidade diferente de 3,
+atributo repetido (triplicaria o peso do melhor — vira melhor-de-1) e nome fora
+dos 7 do card. A grade da UI impede as três, mas a UI não é a fronteira de
+confiança: o pedido chega por HTTP e qualquer um pode montá-lo à mão.
 
 **XP:** vitória `30`, empate `15`, derrota `5`. Derrota dá XP de propósito — quem
 perde continua tendo motivo para jogar.
@@ -693,9 +710,10 @@ Se o insert falhar, ninguém ganha XP — melhor uma batalha perdida do que XP
 fantasma.
 
 **Como fica no banco:** o detalhe das 3 rodadas vai em `rodadas` (jsonb). As
-colunas antigas `atributo`/`valor_a`/`valor_b`, que são `not null`, passam a
-guardar `'posicional'` e o **placar de rodadas** — assim as linhas do formato
-antigo continuam legíveis e o histórico novo não perde informação.
+colunas antigas `atributo`/`valor_a`/`valor_b`, que são `not null`, guardam os
+três escolhidos separados por vírgula (`forca,carisma,caos`) e o **placar de
+rodadas** — assim as linhas do formato antigo continuam legíveis e o histórico
+novo não perde informação.
 
 > Num banco que ainda não rodou o `sql/schema.sql` mais recente, o insert falharia
 > inteiro com `column batalhas.rodadas does not exist` — e o duelo devolveria 500
@@ -713,13 +731,13 @@ pip install -r requirements-dev.txt
 pytest -q
 ```
 
-**384 testes.** Distribuição:
+**393 testes.** Distribuição:
 
 | Arquivo | Testes | Cobre |
 |---|---|---|
 | `test_sincronia_classes.py` | 285 | Igualdade com o motor TypeScript + o hash FNV-1a |
-| `test_api_rotas.py` | 31 | Rotas da API com repositório em memória |
-| `test_batalha_motor.py` | 25 | Pódio, confronto posicional, XP, narrativa, pareamento |
+| `test_api_rotas.py` | 34 | Rotas da API com repositório em memória |
+| `test_batalha_motor.py` | 31 | Validação da escolha, confronto, XP, narrativa, pareamento |
 | `test_avatar_endpoint.py` | 14 | Validação de upload, polling, limpeza |
 | `test_avatar_worker.py` | 11 | Job do Gemini (mockado), retries, rate limit |
 | `test_repo_coluna_ausente.py` | 8 | Gravação com o banco atrasado no schema |
@@ -888,14 +906,14 @@ Tema **"Diário Mágico"**: mesa de mogno na penumbra, luz de vela âmbar; o con
 
 **Animações:** `float`, `shimmer`, `pulse-wine`, `candle-flicker`, `arcane-drift`, `bounce-down`, `qr-sweep`, `barra-duelo` — todas desligadas ou reduzidas sob `prefers-reduced-motion` (via `MotionProvider` e media queries no CSS).
 
-**Convenções:** seções da landing são Server Components; a interatividade fica isolada em `QuizForm`, `CharacterResult`, `PersonagemCard`, `WebcamCapture`, `QrScanner`, `DesafioScanner`, `ArenaDuelo`, `DashboardSection`, `Navbar`, `AdminCalendar` e nos componentes de `ui/`. No mobile os blobs de blur são desligados (custo de GPU) e a navbar usa fundo sólido — `backdrop-filter` em barra fixa causa glitches em navegadores móveis.
+**Convenções:** seções da landing são Server Components; a interatividade fica isolada em `QuizForm`, `CharacterResult`, `PersonagemCard`, `WebcamCapture`, `QrScanner`, `DesafioScanner`, `EscolhaAtributos`, `ResultadoBatalha`, `DashboardSection`, `Navbar`, `AdminCalendar` e nos componentes de `ui/`. No mobile os blobs de blur são desligados (custo de GPU) e a navbar usa fundo sólido — `backdrop-filter` em barra fixa causa glitches em navegadores móveis.
 
 **Regra que vale para toda tela nova:** nada que dependa de `prefers-reduced-motion`,
 `localStorage` ou `matchMedia` pode entrar no estado inicial de um componente
 renderizado no servidor — o servidor não conhece nada disso, e o HTML dele
 divergiria da primeira renderização do cliente. O padrão do projeto é começar
 igual nos dois lados e ajustar depois da montagem (`useSyncExternalStore` no
-`DesafioScanner`, espera zerada no `ArenaDuelo`).
+`DesafioScanner`, espera zerada no `ResultadoBatalha`).
 
 ---
 

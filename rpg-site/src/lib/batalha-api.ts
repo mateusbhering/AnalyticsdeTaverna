@@ -1,3 +1,6 @@
+import type { ChaveAtributo } from "./atributos";
+import { QTD_ATRIBUTOS_POR_BATALHA } from "./atributos";
+
 /**
  * Cliente da API de batalha (FastAPI).
  *
@@ -21,18 +24,14 @@
  */
 export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "/taverna-api";
 
-/** Uma das 3 rodadas do confronto posicional. */
+/** Uma das 3 rodadas — o MESMO atributo dos dois lados. */
 export interface Rodada {
-  /** 1, 2 ou 3 — a posição no pódio de cada lutador. */
-  posicao: number;
-  /** Os atributos dos dois lados PODEM ser diferentes: compara-se a posição. */
-  atributo_a: string;
-  rotulo_a: string;
+  atributo: string;
+  /** Rótulo pronto ("Força"): vem do backend para não duplicar a tradução. */
+  rotulo: string;
   valor_a: number;
-  atributo_b: string;
-  rotulo_b: string;
   valor_b: number;
-  resultado: "a" | "b" | "empate";
+  vencedor: "a" | "b" | "empate";
   diferenca: number;
 }
 
@@ -49,6 +48,8 @@ export interface ResultadoBatalha {
   jogador_b_id: number;
   desafiante: LadoBatalha | null;
   oponente: LadoBatalha | null;
+  /** Os 3 atributos que o desafiante escolheu, na ordem em que clicou. */
+  atributos: string[];
   rodadas: Rodada[];
   vitorias_a: number;
   vitorias_b: number;
@@ -88,11 +89,12 @@ export class ErroDeBatalha extends Error {}
  * Dispara o duelo. Instantâneo e assíncrono: o oponente não precisa aceitar
  * nada — o backend resolve as 3 rodadas e já devolve o resultado gravado.
  *
- * `desafianteId` é sempre o lado A.
+ * `desafianteId` é sempre o lado A: quem escaneou o QR e escolheu os atributos.
  */
 export async function lutar(
   desafianteId: number | string,
   oponenteId: number | string,
+  atributos: ChaveAtributo[],
   sinal?: AbortSignal,
 ): Promise<ResultadoBatalha> {
   /* Os ids vêm do localStorage e da URL — nenhum dos dois é confiável. Um
@@ -114,6 +116,17 @@ export async function lutar(
     throw new ErroDeBatalha("O brasão do oponente não foi reconhecido. Escaneie de novo.");
   }
 
+  /* A grade de escolha já impede as duas coisas, mas ela não é a fronteira de
+     confiança — e um 422 do backend por isso viraria uma mensagem pior. */
+  if (atributos.length !== QTD_ATRIBUTOS_POR_BATALHA) {
+    throw new ErroDeBatalha(
+      `Escolha ${QTD_ATRIBUTOS_POR_BATALHA} atributos para entrar no duelo.`,
+    );
+  }
+  if (new Set(atributos).size !== atributos.length) {
+    throw new ErroDeBatalha("Não dá para levar o mesmo atributo duas vezes.");
+  }
+
   /* Relógio próprio, encadeado no sinal de quem chamou: assim o cancelamento
      do componente continua funcionando e ainda existe um teto de espera. */
   const controle = new AbortController();
@@ -131,6 +144,7 @@ export async function lutar(
       body: JSON.stringify({
         jogador_a_id: a,
         jogador_b_id: b,
+        atributos,
       }),
       signal: controle.signal,
     });
