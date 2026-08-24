@@ -17,6 +17,17 @@ envVarGroups:
       # Modelo de imagem. Troque aqui se sua key usar outro (ex.: gemini-2.5-flash-image).
       - key: GEMINI_IMAGE_MODEL
         value: gemini-3.1-flash-image
+      # Teto de chamadas/min ao Gemini. Quem usa é o worker: o limitador espaça
+      # os inícios de chamada (retries inclusive) para o excedente esperar na
+      # fila em vez de tomar 429.
+      #
+      # 60 com a conta Nível 1, que permite 100 RPM — a margem existe porque os
+      # retries também passam por aqui. Confira o SEU limite em AI Studio →
+      # Limite de taxa e ajuste; deixar abaixo da cota é o que troca erro por
+      # espera. Note que o teto do DIA (1.000 RPD no Nível 1) não se resolve
+      # por aqui: nenhum valor de RPM compra requisição além dele.
+      - key: GEMINI_MAX_RPM
+        value: 60
 
 services:
   # ── API FastAPI ────────────────────────────────────────────────────
