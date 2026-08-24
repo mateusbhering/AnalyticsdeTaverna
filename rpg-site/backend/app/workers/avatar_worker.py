@@ -251,4 +251,12 @@ class WorkerSettings:
     # `arq:result:*`. NÃO aumente este valor.
     keep_result = 0
 
-    max_jobs = 10
+    # Quantos jobs correm ao mesmo tempo neste processo. Com o pacing em 60 rpm,
+    # 10 jobs de ~14s davam ~43 avatares/min — a concorrência virava o gargalo
+    # antes da cota do Gemini (100 rpm). Em 20, o teto sobe para ~85/min e quem
+    # manda de volta é o limitador, que é onde a decisão deve morar.
+    #
+    # O custo é memória: cada job segura a foto e o avatar em memória durante a
+    # execução (~1 MB somados, numa foto de 480×480). Vinte cabem folgado no
+    # plano starter.
+    max_jobs = 20

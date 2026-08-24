@@ -7,9 +7,18 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export const AVATAR_API_BASE =
   process.env.NEXT_PUBLIC_AVATAR_API_URL ?? "http://localhost:8000";
 
-// Polling: intervalo e teto de tentativas (2.5s × 72 ≈ 3min antes de desistir).
-const POLL_INTERVAL_MS = 2500;
-const MAX_POLLS = 72;
+/* Polling em duas velocidades. A geração leva ~12–15s quando não há fila, então
+   um intervalo fixo de 2,5s desperdiçava até 2,5s no fim — justo onde a pessoa
+   está olhando a tela esperando. Perto de 1,2s no começo o avatar aparece
+   praticamente assim que fica pronto; passada a janela rápida, o ritmo afrouxa
+   porque aí a espera é de fila e checar de segundo em segundo só gera tráfego. */
+const INTERVALO_RAPIDO_MS = 1200;
+const INTERVALO_NORMAL_MS = 2500;
+const JANELA_RAPIDA_MS = 30_000;
+
+/* Teto por TEMPO, não por número de tentativas: com intervalo variável, contar
+   tentativas faria o prazo mudar junto: 72 × 1,2s daria 1min26 em vez de 3min. */
+const PRAZO_MS = 180_000;
 
 export type AvatarStatus = "idle" | "processing" | "done" | "error";
 
@@ -49,12 +58,12 @@ export function useAvatarGeneration(): AvatarGeneration {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [jobId, setJobId] = useState<string | null>(null);
 
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const startedRef = useRef(false);
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) {
-      clearInterval(pollRef.current);
+      clearTimeout(pollRef.current);
       pollRef.current = null;
     }
   }, []);
@@ -91,17 +100,30 @@ export function useAvatarGeneration(): AvatarGeneration {
           const { job_id: id } = (await res.json()) as { job_id: string };
           setJobId(id);
 
-          let polls = 0;
-          pollRef.current = setInterval(async () => {
-            polls += 1;
-            if (polls > MAX_POLLS) {
+          /* `setTimeout` reagendado a cada volta, e não `setInterval`: o
+             intervalo muda com o tempo decorrido, e um intervalo fixo não
+             comporta isso. De quebra, evita empilhar chamadas se uma resposta
+             demorar mais que o intervalo. */
+          const inicio = Date.now();
+          const agendar = () => {
+            const decorrido = Date.now() - inicio;
+            const intervalo =
+              decorrido < JANELA_RAPIDA_MS ? INTERVALO_RAPIDO_MS : INTERVALO_NORMAL_MS;
+            pollRef.current = setTimeout(consultar, intervalo);
+          };
+
+          const consultar = async () => {
+            if (Date.now() - inicio > PRAZO_MS) {
               stopPolling();
               setStatus("error");
               return;
             }
             try {
               const s = await fetch(`${AVATAR_API_BASE}/avatar/status/${id}`);
-              if (!s.ok) return; // transiente — continua tentando
+              if (!s.ok) {
+                agendar(); // transiente — continua tentando
+                return;
+              }
               const data = (await s.json()) as {
                 status: AvatarStatus;
                 public_url?: string;
@@ -124,11 +146,15 @@ export function useAvatarGeneration(): AvatarGeneration {
               } else if (data.status === "error") {
                 stopPolling();
                 setStatus("error");
+              } else {
+                agendar(); // ainda processando
               }
             } catch {
-              // erro de rede transiente — mantém o polling
+              agendar(); // erro de rede transiente — mantém o polling
             }
-          }, POLL_INTERVAL_MS);
+          };
+
+          agendar();
         } catch {
           setStatus("error");
         }

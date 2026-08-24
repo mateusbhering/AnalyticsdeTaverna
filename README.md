@@ -437,7 +437,8 @@ FastAPI ── valida content-type + tamanho (≤8MB) → enfileira no arq/Redis
 Worker arq → Gemini → sobe no Storage `avatars` → SET avatar_result:{job_id} (TTL 24h)
                                                     ↑ só a URL, nunca a imagem
     ▼
-Frontend faz polling a cada 2.5s (≤72 tentativas ≈ 3min)
+Frontend faz polling em duas velocidades (1,2s nos primeiros 30s, 2,5s depois;
+    prazo de 3min por TEMPO, não por número de tentativas)
     GET /avatar/status/{job_id} → "processing" | "done" + public_url | "error"
 ```
 
@@ -469,6 +470,19 @@ o Gemini é pago de novo — por um resultado que já existe.
 **Retenção:** a foto original **nunca é persistida** — trafega só como payload do job (`keep_result = 0` no arq) e vive em memória durante a execução. O avatar gerado fica permanente no bucket `avatars`; o Redis guarda por 24h apenas a URL dele. Há testes de invariante para isso em `tests/test_privacy.py`, incluindo um que falha se alguém voltar a gravar bytes de imagem no Redis.
 
 **Rate limit:** o worker tem um limitador global que espaça as chamadas ao Gemini (inclusive os retries) para não estourar `GEMINI_MAX_RPM`. O excedente espera na fila em vez de tomar `429`. Detalhes e como ajustar a cota: [`backend/README.md`](rpg-site/backend/README.md#rate-limit--capacidade-do-gemini).
+
+**Vazão em evento.** Três tetos, em ordem de quem morde primeiro:
+
+| Teto | Onde se ajusta | Efeito |
+|---|---|---|
+| `GEMINI_MAX_RPM` | env da Render | Espaça os inícios de chamada |
+| `max_jobs` do worker | `avatar_worker.py` (20) | Jobs simultâneos → ~85/min a ~14s cada |
+| Cota do Gemini | Google AI Studio | 100 RPM e **1.000 RPD** no Nível 1 |
+
+O RPD é o limite real de um dia de evento — nem o RPM nem a concorrência
+adiantam depois dele, e cada retry consome uma unidade. Confira em
+**AI Studio → Limite de taxa**; deixe o `GEMINI_MAX_RPM` com margem abaixo do
+RPM da sua conta, porque os retries também passam pelo limitador.
 
 Se a geração falhar, o card mostra "Não foi possível conjurar seu avatar" — sem imagem de placeholder.
 
