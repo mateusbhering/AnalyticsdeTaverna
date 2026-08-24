@@ -154,11 +154,14 @@ function Linha({ item }: { item: ItemRanking }) {
   const classe = byName(item.classe ?? "");
   const medalha = MEDALHAS[item.posicao];
 
-  /* Nem todo mundo digita o nome no quiz. Repetir a classe aqui — que já ocupa
-     a coluna ao lado — faz a linha parecer defeito, então quem não se
-     identificou entra como anônimo mesmo, em itálico para não passar por nome
-     próprio de alguém. */
-  const nome = item.nome?.trim();
+  /* Nem todo mundo digita o nome no quiz. Quem não digitou entra pelo id do
+     personagem — que é identificação de verdade, e não um rótulo genérico: é o
+     mesmo número do `/personagem?id=N` e do QR do card, então a pessoa se
+     reconhece na lista e consegue apontar qual linha é a dela. */
+  /* `|| null` e não só `?.trim()`: um nome de puros espaços vira string vazia,
+     que passa ileso pelo `??` e imprimiria uma linha sem identificação
+     nenhuma. Aqui o vazio precisa cair no id junto com o nulo. */
+  const nome = item.nome?.trim() || null;
 
   return (
     <li className="grid grid-cols-[3rem_1fr_auto] sm:grid-cols-[4rem_1fr_10rem_5rem] items-center gap-3 border-b border-dashed border-[rgba(96,66,26,0.22)] py-4">
@@ -177,10 +180,19 @@ function Linha({ item }: { item: ItemRanking }) {
         <span className="min-w-0">
           <span
             className={`block truncate text-[1.05rem] sm:text-[1.15rem] font-semibold ${
-              nome ? "text-[rgba(60,42,24,0.92)]" : "italic text-[rgba(60,42,24,0.6)]"
+              nome ? "text-[rgba(60,42,24,0.92)]" : "text-[rgba(60,42,24,0.66)]"
             }`}
+            /* Tom mais claro sem o id: continua legível como identificação,
+               mas não se passa por um nome que alguém escolheu. */
           >
-            {nome ?? "aventureiro sem nome"}
+            {nome ?? (
+              <>
+                Aventureiro{" "}
+                <span className="tabular-nums" style={{ fontFamily: "var(--font-cinzel), serif" }}>
+                  #{item.id}
+                </span>
+              </>
+            )}
           </span>
           {/* Em telas estreitas a coluna Classe some; aqui ela vira legenda. */}
           <span className="block truncate text-[.8rem] italic text-[rgba(60,42,24,0.55)] sm:hidden">
