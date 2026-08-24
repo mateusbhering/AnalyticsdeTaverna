@@ -14,12 +14,19 @@ durante a consulta). Por isso toda chamada vai via `run_in_threadpool`.
 
 from __future__ import annotations
 
+import logging
 from typing import Any, Protocol
 
 from fastapi import HTTPException
 from starlette.concurrency import run_in_threadpool
 
 from .config import settings
+
+log = logging.getLogger(__name__)
+
+# Colunas que a batalha grava mas que podem não existir num banco que ainda não
+# rodou o `sql/schema.sql` mais recente. Ver `criar_batalha`.
+COLUNAS_OPCIONAIS = ("rodadas",)
 
 # Teto de linhas lidas nas rotas de análise. O dashboard agrega em Python;
 # sem um limite, uma tabela grande derrubaria a memória do plano da Render.
@@ -147,10 +154,37 @@ class SupabaseRepo:
     # ── batalhas ─────────────────────────────────────────────────────
 
     async def criar_batalha(self, dados: dict) -> dict:
-        def _exec():
-            return self.client.table("batalhas").insert(dados).execute()
+        """Grava a batalha, tolerando um banco atrasado em relação ao schema.
 
-        resposta = await run_in_threadpool(_exec)
+        `rodadas` (jsonb) é coluna nova. Num projeto onde o `sql/schema.sql`
+        ainda não foi rodado, o insert inteiro falha com "column
+        batalhas.rodadas does not exist" — e aí o duelo devolve 500, apesar de
+        o resultado já estar calculado e de as colunas antigas darem conta do
+        placar. Perder o detalhe das rodadas é ruim; perder a batalha é pior.
+
+        Então: tenta com tudo, e se o banco reclamar de uma coluna opcional,
+        regrava sem ela e AVISA no log. O aviso é de propósito barulhento —
+        isto é remendo até alguém rodar a migração, não um modo de operação.
+        """
+
+        def _exec(payload: dict):
+            return self.client.table("batalhas").insert(payload).execute()
+
+        try:
+            resposta = await run_in_threadpool(_exec, dados)
+        except Exception as erro:  # noqa: BLE001 — reclassificado logo abaixo
+            ausente = _coluna_ausente(erro, dados)
+            if ausente is None:
+                raise
+            log.warning(
+                "Coluna '%s' não existe em `batalhas`: a batalha foi registrada SEM ela. "
+                "Rode `sql/schema.sql` no Supabase para parar de perder esse dado.",
+                ausente,
+            )
+            resposta = await run_in_threadpool(
+                _exec, {k: v for k, v in dados.items() if k != ausente}
+            )
+
         if not resposta.data:
             raise HTTPException(status_code=500, detail="Falha ao registrar a batalha.")
         return resposta.data[0]
@@ -228,6 +262,20 @@ class SupabaseRepo:
             )
 
         return (await run_in_threadpool(_exec)).data or []
+
+
+def _coluna_ausente(erro: Exception, dados: dict) -> str | None:
+    """Descobre se `erro` é "essa coluna não existe" de uma coluna opcional.
+
+    O PostgREST devolve 42703 com a mensagem do Postgres ("column X does not
+    exist") ou PGRST204 quando o cache de schema dele está desatualizado. A
+    checagem é pelo texto porque o tipo da exceção varia com a versão do
+    supabase-py — e um erro de rede não pode ser confundido com este.
+    """
+    texto = str(erro).lower()
+    if "does not exist" not in texto and "schema cache" not in texto:
+        return None
+    return next((c for c in COLUNAS_OPCIONAIS if c in dados and c in texto), None)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
