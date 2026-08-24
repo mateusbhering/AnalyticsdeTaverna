@@ -9,3 +9,10 @@
  * importar um módulo marcado "SÓ SERVIDOR" só para ler uma constante.
  */
 export const PLAYER_STATS_TAG = "player-stats";
+
+/**
+ * Cache do ranking. Cai quando um duelo termina — quem acabou de ganhar 30 XP
+ * clica em "Ver o ranking" segundos depois e não pode encontrar o número
+ * antigo lá.
+ */
+export const RANKING_TAG = "ranking";

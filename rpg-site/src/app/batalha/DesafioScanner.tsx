@@ -8,6 +8,7 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { byName } from "@/lib/classes";
 import ArenaDuelo from "./ArenaDuelo";
 import { aquecer, ErroDeBatalha, lutar, type ResultadoBatalha } from "@/lib/batalha-api";
+import { avisarBatalhaConcluida } from "@/lib/ranking-actions";
 
 interface Oponente {
   id: number | string;
@@ -153,7 +154,16 @@ export default function DesafioScanner() {
     setDuelando(true);
     setErroDuelo(null);
     try {
-      setDuelo(await lutar(meuId, oponente.id));
+      const resultado = await lutar(meuId, oponente.id);
+      setDuelo(resultado);
+
+      /* O duelo mudou o XP dos dois lados: derruba o cache do ranking agora,
+         senão a tela seguinte ("Ver o ranking") mostraria o placar de antes.
+         Sem `await` no caminho principal — o resultado já está na tela e uma
+         falha aqui só significa que o quadro atualiza no `revalidate`. */
+      void avisarBatalhaConcluida().catch((erro) =>
+        console.error("[batalha] falha ao expirar o cache do ranking", erro),
+      );
     } catch (erro) {
       setErroDuelo(
         erro instanceof ErroDeBatalha

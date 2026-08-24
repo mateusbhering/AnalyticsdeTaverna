@@ -1,17 +1,6 @@
 import type { NextConfig } from "next";
 
-/**
- * Endereço do backend FastAPI para onde o proxy aponta.
- *
- * Fica só no servidor (sem NEXT_PUBLIC_): o navegador nunca vê esta URL — ele
- * fala com o próprio domínio e o Next repassa. Em produção a Vercel já tem
- * NEXT_PUBLIC_AVATAR_API_URL apontando pra Render; localmente cai no :8000.
- */
-const BACKEND =
-  process.env.BACKEND_URL ??
-  process.env.NEXT_PUBLIC_API_URL ??
-  process.env.NEXT_PUBLIC_AVATAR_API_URL ??
-  "http://localhost:8000";
+import { BACKEND_URL } from "./src/lib/backend-url";
 
 const nextConfig: NextConfig = {
   /**
@@ -28,7 +17,7 @@ const nextConfig: NextConfig = {
    * conteúdo misto. O custo é um salto a mais pela Vercel.
    */
   async rewrites() {
-    return [{ source: "/taverna-api/:caminho*", destination: `${BACKEND}/:caminho*` }];
+    return [{ source: "/taverna-api/:caminho*", destination: `${BACKEND_URL}/:caminho*` }];
   },
 };
 
