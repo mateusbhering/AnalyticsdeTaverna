@@ -28,11 +28,19 @@ class RepoMemoria:
             "vitorias": 0,
             "derrotas": 0,
             "empates": 0,
+            # Os 7 atributos do card — é com eles que a batalha posicional
+            # monta o pódio. Todos iguais por padrão: assim um `semear_jogador(
+            # carisma=30)` deixa claro que só o carisma foi mexido.
+            "forca": 10,
             "inteligencia": 10,
+            "agilidade": 10,
+            "resistencia": 10,
             "carisma": 10,
+            "sabedoria": 10,
+            "caos": 10,
+            # Dimensões do quiz (usadas pelo analytics, não pela batalha).
             "estrategia": 10,
             "criatividade": 10,
-            "caos": 10,
         }
         base.update(campos)
         return self._inserir_jogador(base)

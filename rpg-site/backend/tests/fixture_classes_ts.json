@@ -1,0 +1,5520 @@
+[
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 3,
+   "criatividade": 3,
+   "impulsividade": 2,
+   "percepcao": 1
+  },
+  "tags": [
+   "CURADOR",
+   "GAMBIARRA",
+   "GAMBIARRA"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 1,
+   "disciplina": 5,
+   "persistencia": 1,
+   "sociabilidade": 5,
+   "empatia": 7,
+   "adaptabilidade": 1,
+   "criatividade": 4,
+   "impulsividade": 0,
+   "percepcao": 2
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "OVERTHINKING",
+   "RESOLUTIVO",
+   "JUSTICEIRO",
+   "GAMBIARRA",
+   "JUSTICEIRO",
+   "OVERTHINKING"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 5,
+   "disciplina": 1,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 2,
+   "impulsividade": 3,
+   "percepcao": 1
+  },
+  "tags": [
+   "RESOLUTIVO",
+   "GAMBIARRA",
+   "CURADOR"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 10,
+   "estrategia": 0,
+   "disciplina": 16,
+   "persistencia": 2,
+   "sociabilidade": 9,
+   "empatia": 12,
+   "adaptabilidade": 5,
+   "criatividade": 11,
+   "impulsividade": 4,
+   "percepcao": 1
+  },
+  "tags": [
+   "GAMBIARRA",
+   "NERD",
+   "RESOLUTIVO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 1,
+   "disciplina": 6,
+   "persistencia": 7,
+   "sociabilidade": 9,
+   "empatia": 0,
+   "adaptabilidade": 5,
+   "criatividade": 17,
+   "impulsividade": 1,
+   "percepcao": 4
+  },
+  "tags": [
+   "SOCIAL",
+   "GAMBIARRA",
+   "GAMBIARRA",
+   "DOPAMINA",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 2,
+   "impulsividade": 0,
+   "percepcao": 3
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "GAMBIARRA",
+   "CURADOR",
+   "EXTROVERTIDO",
+   "RESOLUTIVO",
+   "COMPETITIVO",
+   "LÍDER",
+   "COMPETITIVO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 17,
+   "disciplina": 11,
+   "persistencia": 8,
+   "sociabilidade": 13,
+   "empatia": 3,
+   "adaptabilidade": 17,
+   "criatividade": 8,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "GAMBIARRA",
+   "RESOLUTIVO",
+   "ATLETA",
+   "PERFECCIONISTA",
+   "DOPAMINA",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 1,
+   "persistencia": 0,
+   "sociabilidade": 5,
+   "empatia": 0,
+   "adaptabilidade": 1,
+   "criatividade": 0,
+   "impulsividade": 1,
+   "percepcao": 1
+  },
+  "tags": [
+   "CAÓTICO",
+   "PROCRASTINADOR",
+   "EXTROVERTIDO",
+   "RESOLUTIVO",
+   "DOPAMINA",
+   "GAMBIARRA",
+   "LÍDER",
+   "OVERTHINKING"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 0,
+   "persistencia": 1,
+   "sociabilidade": 5,
+   "empatia": 4,
+   "adaptabilidade": 3,
+   "criatividade": 0,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "tags": [
+   "LÍDER",
+   "EXTROVERTIDO",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 2,
+   "disciplina": 3,
+   "persistencia": 2,
+   "sociabilidade": 5,
+   "empatia": 2,
+   "adaptabilidade": 1,
+   "criatividade": 3,
+   "impulsividade": 2,
+   "percepcao": 4
+  },
+  "tags": [
+   "EXTROVERTIDO",
+   "TECNOLÓGICO",
+   "JUSTICEIRO",
+   "JUSTICEIRO",
+   "RESOLUTIVO",
+   "FURTIVO",
+   "JUSTICEIRO",
+   "COMPETITIVO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 2,
+   "disciplina": 2,
+   "persistencia": 4,
+   "sociabilidade": 5,
+   "empatia": 3,
+   "adaptabilidade": 3,
+   "criatividade": 3,
+   "impulsividade": 0,
+   "percepcao": 2
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "EXTROVERTIDO",
+   "LÍDER",
+   "MALANDRO",
+   "MALANDRO",
+   "LÍDER"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 1,
+   "sociabilidade": 3,
+   "empatia": 4,
+   "adaptabilidade": 4,
+   "criatividade": 0,
+   "impulsividade": 0,
+   "percepcao": 2
+  },
+  "tags": [
+   "ATLETA",
+   "RESOLUTIVO",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 1,
+   "disciplina": 2,
+   "persistencia": 0,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 4,
+   "criatividade": 1,
+   "impulsividade": 5,
+   "percepcao": 2
+  },
+  "tags": [
+   "GAMBIARRA",
+   "MALANDRO",
+   "MALANDRO",
+   "ATLETA",
+   "CURADOR",
+   "CAÓTICO",
+   "CURADOR",
+   "CURADOR"
+  ],
+  "classe": "Berserker do Crossfit"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 0,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 4,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 2,
+   "impulsividade": 3,
+   "percepcao": 1
+  },
+  "tags": [
+   "EXTROVERTIDO",
+   "INTROVERTIDO",
+   "ATLETA",
+   "COMPETITIVO"
+  ],
+  "classe": "Berserker do Crossfit"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 11,
+   "persistencia": 12,
+   "sociabilidade": 0,
+   "empatia": 0,
+   "adaptabilidade": 9,
+   "criatividade": 16,
+   "impulsividade": 5,
+   "percepcao": 11
+  },
+  "tags": [
+   "OVERTHINKING",
+   "INTROVERTIDO",
+   "NERD",
+   "ATLETA",
+   "CURADOR",
+   "MALANDRO",
+   "COMPETITIVO",
+   "COMPETITIVO"
+  ],
+  "classe": "Berserker do Crossfit"
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 16,
+   "disciplina": 15,
+   "persistencia": 1,
+   "sociabilidade": 11,
+   "empatia": 16,
+   "adaptabilidade": 4,
+   "criatividade": 15,
+   "impulsividade": 9,
+   "percepcao": 4
+  },
+  "tags": [
+   "ATLETA",
+   "DOPAMINA",
+   "ATLETA",
+   "ZEN",
+   "MALANDRO",
+   "ZEN",
+   "OVERTHINKING",
+   "CAÓTICO"
+  ],
+  "classe": "Berserker do Crossfit"
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 1,
+   "disciplina": 13,
+   "persistencia": 2,
+   "sociabilidade": 7,
+   "empatia": 17,
+   "adaptabilidade": 6,
+   "criatividade": 15,
+   "impulsividade": 14,
+   "percepcao": 2
+  },
+  "tags": [
+   "ATLETA",
+   "ZEN",
+   "DOPAMINA",
+   "ANSIOSO",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Berserker do Crossfit"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 10,
+   "disciplina": 8,
+   "persistencia": 2,
+   "sociabilidade": 15,
+   "empatia": 17,
+   "adaptabilidade": 8,
+   "criatividade": 15,
+   "impulsividade": 12,
+   "percepcao": 17
+  },
+  "tags": [
+   "MALANDRO",
+   "INTROVERTIDO",
+   "ZEN",
+   "INTROVERTIDO",
+   "ATLETA",
+   "ZEN",
+   "CAÓTICO",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Berserker do Crossfit"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 12,
+   "persistencia": 10,
+   "sociabilidade": 4,
+   "empatia": 17,
+   "adaptabilidade": 1,
+   "criatividade": 3,
+   "impulsividade": 16,
+   "percepcao": 13
+  },
+  "tags": [
+   "ZEN",
+   "PERFECCIONISTA",
+   "CURADOR"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 1,
+   "persistencia": 3,
+   "sociabilidade": 3,
+   "empatia": 3,
+   "adaptabilidade": 5,
+   "criatividade": 5,
+   "impulsividade": 2,
+   "percepcao": 1
+  },
+  "tags": [
+   "SOCIAL",
+   "CURADOR",
+   "DOPAMINA",
+   "ZEN",
+   "PERFECCIONISTA",
+   "JUSTICEIRO",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 5,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 0,
+   "empatia": 3,
+   "adaptabilidade": 1,
+   "criatividade": 2,
+   "impulsividade": 5,
+   "percepcao": 0
+  },
+  "tags": [
+   "ZEN",
+   "CURADOR",
+   "NERD",
+   "SOCIAL",
+   "NERD"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 15,
+   "disciplina": 14,
+   "persistencia": 11,
+   "sociabilidade": 16,
+   "empatia": 13,
+   "adaptabilidade": 6,
+   "criatividade": 12,
+   "impulsividade": 2,
+   "percepcao": 6
+  },
+  "tags": [
+   "SOCIAL",
+   "CURADOR",
+   "COMPETITIVO",
+   "RESOLUTIVO",
+   "JUSTICEIRO",
+   "CURADOR",
+   "ATLETA",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 17,
+   "disciplina": 7,
+   "persistencia": 2,
+   "sociabilidade": 9,
+   "empatia": 15,
+   "adaptabilidade": 1,
+   "criatividade": 0,
+   "impulsividade": 5,
+   "percepcao": 12
+  },
+  "tags": [
+   "CURADOR",
+   "CURADOR",
+   "LÍDER",
+   "INTROVERTIDO"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 3,
+   "persistencia": 5,
+   "sociabilidade": 5,
+   "empatia": 4,
+   "adaptabilidade": 5,
+   "criatividade": 5,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [
+   "CURADOR",
+   "RESOLUTIVO",
+   "JUSTICEIRO",
+   "OVERTHINKING",
+   "RESOLUTIVO",
+   "ZEN"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 1,
+   "persistencia": 0,
+   "sociabilidade": 0,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "tags": [
+   "ZEN",
+   "RESOLUTIVO",
+   "ZEN",
+   "CAÓTICO",
+   "EXTROVERTIDO",
+   "ZEN",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Druida de Varanda"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 0,
+   "empatia": 4,
+   "adaptabilidade": 1,
+   "criatividade": 3,
+   "impulsividade": 2,
+   "percepcao": 2
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "MALANDRO",
+   "MALANDRO",
+   "ZEN",
+   "ZEN",
+   "COMPETITIVO",
+   "PERFECCIONISTA",
+   "NERD"
+  ],
+  "classe": "Druida de Varanda"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 2,
+   "disciplina": 1,
+   "persistencia": 3,
+   "sociabilidade": 2,
+   "empatia": 2,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 0,
+   "percepcao": 0
+  },
+  "tags": [
+   "EXTROVERTIDO",
+   "PERFECCIONISTA",
+   "GAMBIARRA",
+   "ZEN",
+   "OVERTHINKING",
+   "INTROVERTIDO"
+  ],
+  "classe": "Druida de Varanda"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 3,
+   "disciplina": 5,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 3,
+   "adaptabilidade": 0,
+   "criatividade": 1,
+   "impulsividade": 5,
+   "percepcao": 4
+  },
+  "tags": [
+   "COMPETITIVO",
+   "INTROVERTIDO",
+   "TECNOLÓGICO",
+   "ZEN",
+   "JUSTICEIRO",
+   "ZEN",
+   "PERFECCIONISTA",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Druida de Varanda"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 1,
+   "sociabilidade": 1,
+   "empatia": 4,
+   "adaptabilidade": 0,
+   "criatividade": 2,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "tags": [
+   "EXTROVERTIDO",
+   "INTROVERTIDO",
+   "ANSIOSO",
+   "PROCRASTINADOR",
+   "ZEN"
+  ],
+  "classe": "Druida de Varanda"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 11,
+   "disciplina": 13,
+   "persistencia": 13,
+   "sociabilidade": 8,
+   "empatia": 4,
+   "adaptabilidade": 15,
+   "criatividade": 13,
+   "impulsividade": 5,
+   "percepcao": 4
+  },
+  "tags": [
+   "ZEN",
+   "ZEN",
+   "OVERTHINKING"
+  ],
+  "classe": "Druida de Varanda"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 12,
+   "disciplina": 0,
+   "persistencia": 2,
+   "sociabilidade": 14,
+   "empatia": 9,
+   "adaptabilidade": 0,
+   "criatividade": 6,
+   "impulsividade": 16,
+   "percepcao": 17
+  },
+  "tags": [
+   "MALANDRO"
+  ],
+  "classe": "Ilusionista de Call"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 9,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 8,
+   "empatia": 15,
+   "adaptabilidade": 4,
+   "criatividade": 1,
+   "impulsividade": 10,
+   "percepcao": 4
+  },
+  "tags": [
+   "COMPETITIVO",
+   "MALANDRO",
+   "ANSIOSO",
+   "PERFECCIONISTA",
+   "COMPETITIVO",
+   "ZEN"
+  ],
+  "classe": "Ilusionista de Call"
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 10,
+   "disciplina": 1,
+   "persistencia": 2,
+   "sociabilidade": 9,
+   "empatia": 14,
+   "adaptabilidade": 13,
+   "criatividade": 5,
+   "impulsividade": 11,
+   "percepcao": 16
+  },
+  "tags": [
+   "MALANDRO",
+   "OVERTHINKING"
+  ],
+  "classe": "Ilusionista de Call"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 4,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 2,
+   "adaptabilidade": 5,
+   "criatividade": 3,
+   "impulsividade": 1,
+   "percepcao": 3
+  },
+  "tags": [
+   "ANSIOSO",
+   "PROCRASTINADOR",
+   "MALANDRO"
+  ],
+  "classe": "Ilusionista de Call"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 3,
+   "persistencia": 3,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 4,
+   "percepcao": 3
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "LÍDER",
+   "MALANDRO",
+   "CAÓTICO",
+   "CURADOR",
+   "NERD",
+   "CURADOR",
+   "GAMBIARRA"
+  ],
+  "classe": "Ilusionista de Call"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 3,
+   "empatia": 2,
+   "adaptabilidade": 2,
+   "criatividade": 2,
+   "impulsividade": 4,
+   "percepcao": 0
+  },
+  "tags": [
+   "COMPETITIVO",
+   "OVERTHINKING",
+   "COMPETITIVO",
+   "MALANDRO",
+   "PROCRASTINADOR",
+   "ANSIOSO",
+   "JUSTICEIRO",
+   "JUSTICEIRO"
+  ],
+  "classe": "Ilusionista de Call"
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 8,
+   "disciplina": 12,
+   "persistencia": 7,
+   "sociabilidade": 17,
+   "empatia": 5,
+   "adaptabilidade": 15,
+   "criatividade": 14,
+   "impulsividade": 4,
+   "percepcao": 11
+  },
+  "tags": [
+   "DOPAMINA",
+   "SOCIAL",
+   "MALANDRO",
+   "MALANDRO",
+   "ZEN",
+   "GAMBIARRA"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 10,
+   "estrategia": 9,
+   "disciplina": 13,
+   "persistencia": 13,
+   "sociabilidade": 4,
+   "empatia": 0,
+   "adaptabilidade": 17,
+   "criatividade": 15,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [
+   "MALANDRO",
+   "CURADOR",
+   "CURADOR",
+   "DOPAMINA",
+   "OVERTHINKING",
+   "DOPAMINA",
+   "GAMBIARRA",
+   "DOPAMINA"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 2,
+   "disciplina": 2,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 1,
+   "adaptabilidade": 5,
+   "criatividade": 0,
+   "impulsividade": 3,
+   "percepcao": 2
+  },
+  "tags": [
+   "GAMBIARRA",
+   "DOPAMINA"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 9,
+   "disciplina": 13,
+   "persistencia": 6,
+   "sociabilidade": 14,
+   "empatia": 10,
+   "adaptabilidade": 17,
+   "criatividade": 14,
+   "impulsividade": 14,
+   "percepcao": 10
+  },
+  "tags": [
+   "RESOLUTIVO",
+   "DOPAMINA",
+   "ZEN",
+   "LÍDER",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 5,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 3,
+   "adaptabilidade": 0,
+   "criatividade": 3,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "tags": [
+   "RESOLUTIVO",
+   "ANSIOSO",
+   "RESOLUTIVO",
+   "LÍDER",
+   "DOPAMINA",
+   "ZEN"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 16,
+   "disciplina": 14,
+   "persistencia": 16,
+   "sociabilidade": 13,
+   "empatia": 14,
+   "adaptabilidade": 3,
+   "criatividade": 16,
+   "impulsividade": 16,
+   "percepcao": 8
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "LÍDER",
+   "LÍDER",
+   "RESOLUTIVO",
+   "DOPAMINA",
+   "MALANDRO"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 0,
+   "disciplina": 15,
+   "persistencia": 0,
+   "sociabilidade": 13,
+   "empatia": 4,
+   "adaptabilidade": 12,
+   "criatividade": 2,
+   "impulsividade": 4,
+   "percepcao": 2
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "LÍDER",
+   "SOCIAL",
+   "EXTROVERTIDO",
+   "TECNOLÓGICO",
+   "SOCIAL",
+   "TECNOLÓGICO",
+   "COMPETITIVO"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 9,
+   "persistencia": 16,
+   "sociabilidade": 0,
+   "empatia": 12,
+   "adaptabilidade": 11,
+   "criatividade": 11,
+   "impulsividade": 15,
+   "percepcao": 10
+  },
+  "tags": [
+   "SOCIAL",
+   "JUSTICEIRO",
+   "INTROVERTIDO",
+   "GAMBIARRA"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 13,
+   "disciplina": 5,
+   "persistencia": 13,
+   "sociabilidade": 8,
+   "empatia": 2,
+   "adaptabilidade": 11,
+   "criatividade": 5,
+   "impulsividade": 3,
+   "percepcao": 15
+  },
+  "tags": [
+   "COMPETITIVO",
+   "CURADOR",
+   "PERFECCIONISTA",
+   "DOPAMINA",
+   "CURADOR",
+   "INTROVERTIDO"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 8,
+   "disciplina": 17,
+   "persistencia": 5,
+   "sociabilidade": 2,
+   "empatia": 4,
+   "adaptabilidade": 9,
+   "criatividade": 16,
+   "impulsividade": 12,
+   "percepcao": 15
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "INTROVERTIDO",
+   "COMPETITIVO"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 14,
+   "disciplina": 17,
+   "persistencia": 1,
+   "sociabilidade": 16,
+   "empatia": 8,
+   "adaptabilidade": 3,
+   "criatividade": 6,
+   "impulsividade": 12,
+   "percepcao": 13
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "INTROVERTIDO"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 14,
+   "disciplina": 14,
+   "persistencia": 10,
+   "sociabilidade": 10,
+   "empatia": 0,
+   "adaptabilidade": 17,
+   "criatividade": 5,
+   "impulsividade": 7,
+   "percepcao": 14
+  },
+  "tags": [
+   "ANSIOSO",
+   "PERFECCIONISTA",
+   "INTROVERTIDO",
+   "ANSIOSO"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 4,
+   "disciplina": 3,
+   "persistencia": 5,
+   "sociabilidade": 2,
+   "empatia": 3,
+   "adaptabilidade": 4,
+   "criatividade": 0,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [
+   "CAÓTICO",
+   "COMPETITIVO",
+   "EXTROVERTIDO",
+   "GAMBIARRA",
+   "RESOLUTIVO",
+   "TECNOLÓGICO",
+   "NERD"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 17,
+   "disciplina": 17,
+   "persistencia": 4,
+   "sociabilidade": 4,
+   "empatia": 15,
+   "adaptabilidade": 8,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 17
+  },
+  "tags": [
+   "OVERTHINKING",
+   "TECNOLÓGICO",
+   "ZEN",
+   "ZEN",
+   "CAÓTICO"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 4,
+   "disciplina": 3,
+   "persistencia": 5,
+   "sociabilidade": 0,
+   "empatia": 3,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 0,
+   "percepcao": 1
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 10,
+   "disciplina": 3,
+   "persistencia": 6,
+   "sociabilidade": 9,
+   "empatia": 16,
+   "adaptabilidade": 6,
+   "criatividade": 8,
+   "impulsividade": 12,
+   "percepcao": 9
+  },
+  "tags": [
+   "COMPETITIVO",
+   "CURADOR",
+   "EXTROVERTIDO",
+   "TECNOLÓGICO",
+   "OVERTHINKING",
+   "EXTROVERTIDO",
+   "RESOLUTIVO",
+   "INTROVERTIDO"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 5,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 3,
+   "criatividade": 5,
+   "impulsividade": 1,
+   "percepcao": 4
+  },
+  "tags": [
+   "CAÓTICO",
+   "TECNOLÓGICO",
+   "MALANDRO",
+   "MALANDRO"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 16,
+   "estrategia": 14,
+   "disciplina": 6,
+   "persistencia": 1,
+   "sociabilidade": 17,
+   "empatia": 1,
+   "adaptabilidade": 11,
+   "criatividade": 12,
+   "impulsividade": 16,
+   "percepcao": 8
+  },
+  "tags": [
+   "FURTIVO",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 3,
+   "persistencia": 4,
+   "sociabilidade": 0,
+   "empatia": 5,
+   "adaptabilidade": 3,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 0
+  },
+  "tags": [
+   "ATLETA",
+   "CURADOR",
+   "PERFECCIONISTA",
+   "PERFECCIONISTA",
+   "OVERTHINKING",
+   "SOCIAL",
+   "ZEN"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 3,
+   "impulsividade": 0,
+   "percepcao": 3
+  },
+  "tags": [
+   "PERFECCIONISTA",
+   "NERD"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 1,
+   "disciplina": 4,
+   "persistencia": 4,
+   "sociabilidade": 1,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 3,
+   "impulsividade": 0,
+   "percepcao": 0
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "FURTIVO",
+   "NERD",
+   "CAÓTICO",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 11,
+   "disciplina": 8,
+   "persistencia": 3,
+   "sociabilidade": 14,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 9,
+   "impulsividade": 17,
+   "percepcao": 14
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "FURTIVO",
+   "PERFECCIONISTA",
+   "INTROVERTIDO",
+   "NERD"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 3,
+   "empatia": 4,
+   "adaptabilidade": 5,
+   "criatividade": 2,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "tags": [
+   "PERFECCIONISTA",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 5,
+   "persistencia": 5,
+   "sociabilidade": 1,
+   "empatia": 4,
+   "adaptabilidade": 0,
+   "criatividade": 2,
+   "impulsividade": 3,
+   "percepcao": 3
+  },
+  "tags": [
+   "NERD",
+   "PERFECCIONISTA",
+   "MALANDRO",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 4,
+   "disciplina": 8,
+   "persistencia": 1,
+   "sociabilidade": 14,
+   "empatia": 17,
+   "adaptabilidade": 12,
+   "criatividade": 5,
+   "impulsividade": 8,
+   "percepcao": 15
+  },
+  "tags": [
+   "ATLETA",
+   "COMPETITIVO",
+   "FURTIVO"
+  ],
+  "classe": "Ninja do Visto por Último"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 2,
+   "disciplina": 5,
+   "persistencia": 2,
+   "sociabilidade": 5,
+   "empatia": 1,
+   "adaptabilidade": 5,
+   "criatividade": 3,
+   "impulsividade": 2,
+   "percepcao": 2
+  },
+  "tags": [
+   "MALANDRO",
+   "EXTROVERTIDO",
+   "FURTIVO",
+   "EXTROVERTIDO",
+   "ZEN",
+   "ZEN",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Ninja do Visto por Último"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 8,
+   "disciplina": 6,
+   "persistencia": 12,
+   "sociabilidade": 4,
+   "empatia": 15,
+   "adaptabilidade": 8,
+   "criatividade": 12,
+   "impulsividade": 3,
+   "percepcao": 12
+  },
+  "tags": [
+   "CAÓTICO",
+   "FURTIVO",
+   "LÍDER",
+   "GAMBIARRA"
+  ],
+  "classe": "Ninja do Visto por Último"
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 1,
+   "disciplina": 0,
+   "persistencia": 10,
+   "sociabilidade": 4,
+   "empatia": 11,
+   "adaptabilidade": 10,
+   "criatividade": 15,
+   "impulsividade": 14,
+   "percepcao": 16
+  },
+  "tags": [
+   "FURTIVO",
+   "ANSIOSO",
+   "EXTROVERTIDO",
+   "MALANDRO",
+   "COMPETITIVO"
+  ],
+  "classe": "Ninja do Visto por Último"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 13,
+   "disciplina": 11,
+   "persistencia": 13,
+   "sociabilidade": 11,
+   "empatia": 8,
+   "adaptabilidade": 17,
+   "criatividade": 0,
+   "impulsividade": 3,
+   "percepcao": 15
+  },
+  "tags": [
+   "FURTIVO",
+   "ZEN",
+   "LÍDER",
+   "COMPETITIVO",
+   "SOCIAL",
+   "SOCIAL",
+   "CAÓTICO",
+   "JUSTICEIRO"
+  ],
+  "classe": "Ninja do Visto por Último"
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 0,
+   "disciplina": 10,
+   "persistencia": 8,
+   "sociabilidade": 12,
+   "empatia": 1,
+   "adaptabilidade": 14,
+   "criatividade": 13,
+   "impulsividade": 12,
+   "percepcao": 0
+  },
+  "tags": [
+   "ZEN",
+   "COMPETITIVO",
+   "FURTIVO",
+   "PROCRASTINADOR",
+   "ZEN",
+   "GAMBIARRA",
+   "ANSIOSO"
+  ],
+  "classe": "Ninja do Visto por Último"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 0,
+   "disciplina": 5,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 4,
+   "adaptabilidade": 3,
+   "criatividade": 2,
+   "impulsividade": 2,
+   "percepcao": 1
+  },
+  "tags": [
+   "CURADOR",
+   "NERD",
+   "CAÓTICO",
+   "GAMBIARRA",
+   "LÍDER",
+   "FURTIVO",
+   "ATLETA"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 7,
+   "estrategia": 11,
+   "disciplina": 11,
+   "persistencia": 14,
+   "sociabilidade": 10,
+   "empatia": 7,
+   "adaptabilidade": 2,
+   "criatividade": 14,
+   "impulsividade": 4,
+   "percepcao": 13
+  },
+  "tags": [
+   "ZEN",
+   "OVERTHINKING",
+   "LÍDER",
+   "ANSIOSO",
+   "PERFECCIONISTA",
+   "COMPETITIVO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 1,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 3,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 4,
+   "percepcao": 0
+  },
+  "tags": [
+   "FURTIVO",
+   "ZEN",
+   "COMPETITIVO",
+   "GAMBIARRA",
+   "MALANDRO",
+   "PERFECCIONISTA",
+   "NERD",
+   "LÍDER"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 0,
+   "disciplina": 4,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 3,
+   "criatividade": 1,
+   "impulsividade": 2,
+   "percepcao": 4
+  },
+  "tags": [
+   "MALANDRO",
+   "COMPETITIVO",
+   "ANSIOSO",
+   "TECNOLÓGICO",
+   "LÍDER",
+   "LÍDER",
+   "MALANDRO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 1,
+   "impulsividade": 5,
+   "percepcao": 4
+  },
+  "tags": [
+   "LÍDER",
+   "OVERTHINKING",
+   "CAÓTICO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 6,
+   "disciplina": 11,
+   "persistencia": 4,
+   "sociabilidade": 3,
+   "empatia": 3,
+   "adaptabilidade": 0,
+   "criatividade": 6,
+   "impulsividade": 14,
+   "percepcao": 16
+  },
+  "tags": [
+   "PERFECCIONISTA",
+   "SOCIAL",
+   "RESOLUTIVO",
+   "LÍDER",
+   "GAMBIARRA",
+   "INTROVERTIDO",
+   "RESOLUTIVO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 1,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 3,
+   "criatividade": 5,
+   "impulsividade": 1,
+   "percepcao": 0
+  },
+  "tags": [
+   "MALANDRO",
+   "ZEN",
+   "RESOLUTIVO",
+   "PROCRASTINADOR",
+   "ATLETA",
+   "FURTIVO",
+   "PROCRASTINADOR"
+  ],
+  "classe": "Ranger da Faxina"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 12,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 15,
+   "empatia": 1,
+   "adaptabilidade": 5,
+   "criatividade": 5,
+   "impulsividade": 13,
+   "percepcao": 16
+  },
+  "tags": [
+   "ZEN",
+   "GAMBIARRA"
+  ],
+  "classe": "Ranger da Faxina"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 2,
+   "disciplina": 3,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 1,
+   "adaptabilidade": 5,
+   "criatividade": 4,
+   "impulsividade": 0,
+   "percepcao": 3
+  },
+  "tags": [
+   "GAMBIARRA",
+   "JUSTICEIRO",
+   "ZEN",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Ranger da Faxina"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 3,
+   "empatia": 4,
+   "adaptabilidade": 1,
+   "criatividade": 0,
+   "impulsividade": 2,
+   "percepcao": 5
+  },
+  "tags": [
+   "DOPAMINA",
+   "ZEN"
+  ],
+  "classe": "Ranger da Faxina"
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 8,
+   "disciplina": 4,
+   "persistencia": 15,
+   "sociabilidade": 16,
+   "empatia": 4,
+   "adaptabilidade": 8,
+   "criatividade": 1,
+   "impulsividade": 11,
+   "percepcao": 9
+  },
+  "tags": [
+   "ZEN",
+   "NERD",
+   "SOCIAL"
+  ],
+  "classe": "Ranger da Faxina"
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 5,
+   "disciplina": 9,
+   "persistencia": 1,
+   "sociabilidade": 1,
+   "empatia": 1,
+   "adaptabilidade": 6,
+   "criatividade": 0,
+   "impulsividade": 14,
+   "percepcao": 8
+  },
+  "tags": [
+   "ZEN",
+   "GAMBIARRA",
+   "NERD"
+  ],
+  "classe": "Ranger da Faxina"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 2,
+   "disciplina": 2,
+   "persistencia": 0,
+   "sociabilidade": 4,
+   "empatia": 5,
+   "adaptabilidade": 3,
+   "criatividade": 1,
+   "impulsividade": 2,
+   "percepcao": 5
+  },
+  "tags": [
+   "CURADOR",
+   "PERFECCIONISTA",
+   "OVERTHINKING",
+   "RESOLUTIVO",
+   "ANSIOSO",
+   "ZEN"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 4,
+   "disciplina": 0,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 3,
+   "percepcao": 5
+  },
+  "tags": [
+   "OVERTHINKING",
+   "NERD",
+   "ZEN",
+   "ANSIOSO",
+   "ANSIOSO",
+   "COMPETITIVO",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 2,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 4,
+   "empatia": 1,
+   "adaptabilidade": 4,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 3
+  },
+  "tags": [
+   "RESOLUTIVO",
+   "ZEN",
+   "ANSIOSO",
+   "ZEN"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 1,
+   "disciplina": 5,
+   "persistencia": 0,
+   "sociabilidade": 5,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 3,
+   "impulsividade": 3,
+   "percepcao": 4
+  },
+  "tags": [
+   "PERFECCIONISTA",
+   "ANSIOSO",
+   "PERFECCIONISTA",
+   "RESOLUTIVO",
+   "LÍDER",
+   "PROCRASTINADOR",
+   "LÍDER"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 16,
+   "disciplina": 11,
+   "persistencia": 1,
+   "sociabilidade": 1,
+   "empatia": 15,
+   "adaptabilidade": 7,
+   "criatividade": 15,
+   "impulsividade": 0,
+   "percepcao": 7
+  },
+  "tags": [
+   "ANSIOSO",
+   "DOPAMINA",
+   "CAÓTICO",
+   "CURADOR",
+   "ZEN",
+   "CURADOR",
+   "CURADOR"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 11,
+   "disciplina": 12,
+   "persistencia": 0,
+   "sociabilidade": 17,
+   "empatia": 6,
+   "adaptabilidade": 8,
+   "criatividade": 14,
+   "impulsividade": 8,
+   "percepcao": 5
+  },
+  "tags": [
+   "ANSIOSO"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 9,
+   "disciplina": 13,
+   "persistencia": 13,
+   "sociabilidade": 17,
+   "empatia": 8,
+   "adaptabilidade": 3,
+   "criatividade": 17,
+   "impulsividade": 9,
+   "percepcao": 17
+  },
+  "tags": [
+   "ANSIOSO",
+   "GAMBIARRA"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 14,
+   "disciplina": 2,
+   "persistencia": 17,
+   "sociabilidade": 0,
+   "empatia": 3,
+   "adaptabilidade": 2,
+   "criatividade": 14,
+   "impulsividade": 11,
+   "percepcao": 15
+  },
+  "tags": [
+   "FURTIVO",
+   "COMPETITIVO",
+   "ANSIOSO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 4,
+   "disciplina": 1,
+   "persistencia": 5,
+   "sociabilidade": 5,
+   "empatia": 1,
+   "adaptabilidade": 4,
+   "criatividade": 0,
+   "impulsividade": 2,
+   "percepcao": 5
+  },
+  "tags": [
+   "ANSIOSO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 2,
+   "persistencia": 2,
+   "sociabilidade": 3,
+   "empatia": 0,
+   "adaptabilidade": 0,
+   "criatividade": 0,
+   "impulsividade": 3,
+   "percepcao": 4
+  },
+  "tags": [
+   "ANSIOSO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 16,
+   "estrategia": 2,
+   "disciplina": 8,
+   "persistencia": 15,
+   "sociabilidade": 3,
+   "empatia": 3,
+   "adaptabilidade": 14,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 10
+  },
+  "tags": [
+   "COMPETITIVO",
+   "SOCIAL",
+   "ZEN",
+   "ANSIOSO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 2,
+   "disciplina": 3,
+   "persistencia": 3,
+   "sociabilidade": 0,
+   "empatia": 4,
+   "adaptabilidade": 0,
+   "criatividade": 4,
+   "impulsividade": 4,
+   "percepcao": 1
+  },
+  "tags": [
+   "TECNOLÓGICO",
+   "CURADOR",
+   "FURTIVO",
+   "ANSIOSO",
+   "CAÓTICO",
+   "MALANDRO",
+   "GAMBIARRA"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 11,
+   "estrategia": 17,
+   "disciplina": 9,
+   "persistencia": 16,
+   "sociabilidade": 12,
+   "empatia": 13,
+   "adaptabilidade": 6,
+   "criatividade": 14,
+   "impulsividade": 9,
+   "percepcao": 10
+  },
+  "tags": [
+   "COMPETITIVO",
+   "CAÓTICO",
+   "PROCRASTINADOR"
+  ],
+  "classe": "Xamã das Criptomoedas"
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 8,
+   "disciplina": 4,
+   "persistencia": 7,
+   "sociabilidade": 0,
+   "empatia": 2,
+   "adaptabilidade": 5,
+   "criatividade": 3,
+   "impulsividade": 7,
+   "percepcao": 11
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "CAÓTICO",
+   "PERFECCIONISTA",
+   "GAMBIARRA",
+   "NERD"
+  ],
+  "classe": "Xamã das Criptomoedas"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 3,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 1,
+   "empatia": 3,
+   "adaptabilidade": 3,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 2
+  },
+  "tags": [
+   "CAÓTICO",
+   "RESOLUTIVO"
+  ],
+  "classe": "Xamã das Criptomoedas"
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 13,
+   "disciplina": 11,
+   "persistencia": 1,
+   "sociabilidade": 1,
+   "empatia": 10,
+   "adaptabilidade": 17,
+   "criatividade": 16,
+   "impulsividade": 9,
+   "percepcao": 4
+  },
+  "tags": [
+   "CAÓTICO",
+   "RESOLUTIVO",
+   "JUSTICEIRO",
+   "GAMBIARRA"
+  ],
+  "classe": "Xamã das Criptomoedas"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 5,
+   "disciplina": 5,
+   "persistencia": 3,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 3,
+   "criatividade": 1,
+   "impulsividade": 4,
+   "percepcao": 5
+  },
+  "tags": [
+   "CAÓTICO",
+   "GAMBIARRA",
+   "PERFECCIONISTA",
+   "CURADOR"
+  ],
+  "classe": "Xamã das Criptomoedas"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 4,
+   "disciplina": 1,
+   "persistencia": 2,
+   "sociabilidade": 2,
+   "empatia": 1,
+   "adaptabilidade": 3,
+   "criatividade": 3,
+   "impulsividade": 4,
+   "percepcao": 5
+  },
+  "tags": [
+   "CURADOR",
+   "SOCIAL",
+   "CAÓTICO"
+  ],
+  "classe": "Xamã das Criptomoedas"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 0,
+   "disciplina": 5,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 4,
+   "adaptabilidade": 3,
+   "criatividade": 2,
+   "impulsividade": 1,
+   "percepcao": 4
+  },
+  "tags": [
+   "NERD",
+   "CAÓTICO",
+   "OVERTHINKING",
+   "TECNOLÓGICO",
+   "CAÓTICO",
+   "CAÓTICO"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 9,
+   "disciplina": 10,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 14,
+   "adaptabilidade": 0,
+   "criatividade": 16,
+   "impulsividade": 7,
+   "percepcao": 9
+  },
+  "tags": [
+   "LÍDER",
+   "INTROVERTIDO",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 1,
+   "empatia": 2,
+   "adaptabilidade": 0,
+   "criatividade": 3,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 0,
+   "persistencia": 0,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 1,
+   "criatividade": 4,
+   "impulsividade": 0,
+   "percepcao": 4
+  },
+  "tags": [
+   "EXTROVERTIDO",
+   "EXTROVERTIDO",
+   "RESOLUTIVO",
+   "DOPAMINA",
+   "ZEN"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 2,
+   "impulsividade": 0,
+   "percepcao": 3
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 7,
+   "estrategia": 0,
+   "disciplina": 11,
+   "persistencia": 7,
+   "sociabilidade": 15,
+   "empatia": 8,
+   "adaptabilidade": 6,
+   "criatividade": 15,
+   "impulsividade": 16,
+   "percepcao": 9
+  },
+  "tags": [],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 4,
+   "empatia": 2,
+   "adaptabilidade": 1,
+   "criatividade": 3,
+   "impulsividade": 3,
+   "percepcao": 4
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "INTROVERTIDO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 2,
+   "disciplina": 4,
+   "persistencia": 15,
+   "sociabilidade": 12,
+   "empatia": 14,
+   "adaptabilidade": 3,
+   "criatividade": 14,
+   "impulsividade": 11,
+   "percepcao": 13
+  },
+  "tags": [],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 16,
+   "estrategia": 11,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 8,
+   "empatia": 14,
+   "adaptabilidade": 8,
+   "criatividade": 3,
+   "impulsividade": 11,
+   "percepcao": 9
+  },
+  "tags": [],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 3,
+   "disciplina": 7,
+   "persistencia": 0,
+   "sociabilidade": 8,
+   "empatia": 16,
+   "adaptabilidade": 4,
+   "criatividade": 2,
+   "impulsividade": 7,
+   "percepcao": 9
+  },
+  "tags": [
+   "SOCIAL",
+   "PROCRASTINADOR"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 1,
+   "sociabilidade": 5,
+   "empatia": 1,
+   "adaptabilidade": 0,
+   "criatividade": 3,
+   "impulsividade": 1,
+   "percepcao": 1
+  },
+  "tags": [
+   "FURTIVO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 1,
+   "disciplina": 8,
+   "persistencia": 14,
+   "sociabilidade": 10,
+   "empatia": 9,
+   "adaptabilidade": 2,
+   "criatividade": 7,
+   "impulsividade": 16,
+   "percepcao": 10
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "SOCIAL",
+   "CAÓTICO",
+   "FURTIVO",
+   "INTROVERTIDO"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 1,
+   "disciplina": 10,
+   "persistencia": 3,
+   "sociabilidade": 8,
+   "empatia": 12,
+   "adaptabilidade": 1,
+   "criatividade": 6,
+   "impulsividade": 8,
+   "percepcao": 7
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 0,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 2,
+   "empatia": 1,
+   "adaptabilidade": 1,
+   "criatividade": 5,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [
+   "ZEN"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 10,
+   "disciplina": 3,
+   "persistencia": 8,
+   "sociabilidade": 6,
+   "empatia": 12,
+   "adaptabilidade": 13,
+   "criatividade": 15,
+   "impulsividade": 2,
+   "percepcao": 1
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "JUSTICEIRO",
+   "CURADOR"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 13,
+   "disciplina": 0,
+   "persistencia": 2,
+   "sociabilidade": 11,
+   "empatia": 6,
+   "adaptabilidade": 17,
+   "criatividade": 8,
+   "impulsividade": 14,
+   "percepcao": 11
+  },
+  "tags": [
+   "PROCRASTINADOR"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 2,
+   "disciplina": 3,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 3,
+   "adaptabilidade": 3,
+   "criatividade": 3,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "tags": [
+   "OVERTHINKING"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 3,
+   "disciplina": 17,
+   "persistencia": 2,
+   "sociabilidade": 7,
+   "empatia": 14,
+   "adaptabilidade": 12,
+   "criatividade": 14,
+   "impulsividade": 10,
+   "percepcao": 11
+  },
+  "tags": [
+   "PROCRASTINADOR"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 1,
+   "disciplina": 1,
+   "persistencia": 2,
+   "sociabilidade": 5,
+   "empatia": 2,
+   "adaptabilidade": 3,
+   "criatividade": 3,
+   "impulsividade": 0,
+   "percepcao": 0
+  },
+  "tags": [
+   "ZEN"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 17,
+   "disciplina": 10,
+   "persistencia": 5,
+   "sociabilidade": 2,
+   "empatia": 11,
+   "adaptabilidade": 15,
+   "criatividade": 1,
+   "impulsividade": 12,
+   "percepcao": 5
+  },
+  "tags": [],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 4,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 2,
+   "adaptabilidade": 2,
+   "criatividade": 3,
+   "impulsividade": 3,
+   "percepcao": 2
+  },
+  "tags": [
+   "OVERTHINKING",
+   "RESOLUTIVO",
+   "SOCIAL"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 12,
+   "disciplina": 14,
+   "persistencia": 15,
+   "sociabilidade": 7,
+   "empatia": 7,
+   "adaptabilidade": 9,
+   "criatividade": 11,
+   "impulsividade": 10,
+   "percepcao": 4
+  },
+  "tags": [
+   "CURADOR",
+   "JUSTICEIRO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 7,
+   "estrategia": 9,
+   "disciplina": 13,
+   "persistencia": 17,
+   "sociabilidade": 16,
+   "empatia": 6,
+   "adaptabilidade": 1,
+   "criatividade": 9,
+   "impulsividade": 3,
+   "percepcao": 8
+  },
+  "tags": [
+   "JUSTICEIRO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 17,
+   "disciplina": 9,
+   "persistencia": 11,
+   "sociabilidade": 15,
+   "empatia": 4,
+   "adaptabilidade": 16,
+   "criatividade": 5,
+   "impulsividade": 12,
+   "percepcao": 8
+  },
+  "tags": [],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 3,
+   "disciplina": 1,
+   "persistencia": 3,
+   "sociabilidade": 2,
+   "empatia": 4,
+   "adaptabilidade": 0,
+   "criatividade": 3,
+   "impulsividade": 5,
+   "percepcao": 4
+  },
+  "tags": [],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 11,
+   "disciplina": 11,
+   "persistencia": 12,
+   "sociabilidade": 9,
+   "empatia": 17,
+   "adaptabilidade": 4,
+   "criatividade": 8,
+   "impulsividade": 3,
+   "percepcao": 12
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 8,
+   "disciplina": 2,
+   "persistencia": 9,
+   "sociabilidade": 10,
+   "empatia": 3,
+   "adaptabilidade": 3,
+   "criatividade": 2,
+   "impulsividade": 3,
+   "percepcao": 12
+  },
+  "tags": [
+   "SOCIAL",
+   "PROCRASTINADOR",
+   "FURTIVO",
+   "OVERTHINKING",
+   "ZEN",
+   "RESOLUTIVO",
+   "JUSTICEIRO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 14,
+   "disciplina": 3,
+   "persistencia": 8,
+   "sociabilidade": 4,
+   "empatia": 9,
+   "adaptabilidade": 0,
+   "criatividade": 15,
+   "impulsividade": 0,
+   "percepcao": 3
+  },
+  "tags": [
+   "COMPETITIVO",
+   "COMPETITIVO",
+   "OVERTHINKING",
+   "NERD"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 5,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 2,
+   "adaptabilidade": 0,
+   "criatividade": 3,
+   "impulsividade": 1,
+   "percepcao": 2
+  },
+  "tags": [
+   "DOPAMINA",
+   "ATLETA",
+   "INTROVERTIDO"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 2,
+   "disciplina": 1,
+   "persistencia": 0,
+   "sociabilidade": 0,
+   "empatia": 3,
+   "adaptabilidade": 1,
+   "criatividade": 0,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "tags": [
+   "TECNOLÓGICO"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 0,
+   "sociabilidade": 2,
+   "empatia": 2,
+   "adaptabilidade": 3,
+   "criatividade": 2,
+   "impulsividade": 0,
+   "percepcao": 3
+  },
+  "tags": [
+   "CURADOR"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 0,
+   "persistencia": 2,
+   "sociabilidade": 5,
+   "empatia": 3,
+   "adaptabilidade": 1,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 1
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "CAÓTICO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 0,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 3,
+   "percepcao": 5
+  },
+  "tags": [],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 10,
+   "disciplina": 2,
+   "persistencia": 13,
+   "sociabilidade": 0,
+   "empatia": 17,
+   "adaptabilidade": 4,
+   "criatividade": 7,
+   "impulsividade": 6,
+   "percepcao": 5
+  },
+  "tags": [
+   "MALANDRO",
+   "CURADOR"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 2,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 0,
+   "empatia": 4,
+   "adaptabilidade": 0,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 3
+  },
+  "tags": [
+   "NERD",
+   "ZEN"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 0,
+   "adaptabilidade": 1,
+   "criatividade": 1,
+   "impulsividade": 3,
+   "percepcao": 1
+  },
+  "tags": [
+   "TECNOLÓGICO",
+   "OVERTHINKING",
+   "PROCRASTINADOR",
+   "SOCIAL",
+   "CURADOR",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 0,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 5,
+   "empatia": 1,
+   "adaptabilidade": 4,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 3
+  },
+  "tags": [
+   "GAMBIARRA",
+   "LÍDER",
+   "ZEN",
+   "ZEN",
+   "JUSTICEIRO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 9,
+   "disciplina": 7,
+   "persistencia": 3,
+   "sociabilidade": 4,
+   "empatia": 4,
+   "adaptabilidade": 13,
+   "criatividade": 10,
+   "impulsividade": 1,
+   "percepcao": 1
+  },
+  "tags": [
+   "GAMBIARRA",
+   "OVERTHINKING"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 1,
+   "persistencia": 0,
+   "sociabilidade": 2,
+   "empatia": 1,
+   "adaptabilidade": 3,
+   "criatividade": 3,
+   "impulsividade": 0,
+   "percepcao": 0
+  },
+  "tags": [
+   "CURADOR",
+   "SOCIAL"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 3,
+   "persistencia": 3,
+   "sociabilidade": 2,
+   "empatia": 4,
+   "adaptabilidade": 3,
+   "criatividade": 4,
+   "impulsividade": 0,
+   "percepcao": 0
+  },
+  "tags": [],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 0,
+   "disciplina": 10,
+   "persistencia": 9,
+   "sociabilidade": 10,
+   "empatia": 11,
+   "adaptabilidade": 14,
+   "criatividade": 6,
+   "impulsividade": 14,
+   "percepcao": 2
+  },
+  "tags": [
+   "PROCRASTINADOR"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 1,
+   "sociabilidade": 0,
+   "empatia": 12,
+   "adaptabilidade": 1,
+   "criatividade": 10,
+   "impulsividade": 2,
+   "percepcao": 16
+  },
+  "tags": [
+   "FURTIVO",
+   "INTROVERTIDO"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 4,
+   "disciplina": 13,
+   "persistencia": 7,
+   "sociabilidade": 4,
+   "empatia": 15,
+   "adaptabilidade": 15,
+   "criatividade": 16,
+   "impulsividade": 2,
+   "percepcao": 9
+  },
+  "tags": [],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 0,
+   "disciplina": 11,
+   "persistencia": 2,
+   "sociabilidade": 0,
+   "empatia": 8,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 5,
+   "percepcao": 12
+  },
+  "tags": [
+   "COMPETITIVO",
+   "LÍDER",
+   "PROCRASTINADOR"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 4,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 0,
+   "percepcao": 2
+  },
+  "tags": [
+   "ATLETA",
+   "MALANDRO",
+   "COMPETITIVO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 15,
+   "disciplina": 1,
+   "persistencia": 2,
+   "sociabilidade": 4,
+   "empatia": 9,
+   "adaptabilidade": 13,
+   "criatividade": 3,
+   "impulsividade": 4,
+   "percepcao": 7
+  },
+  "tags": [],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 11,
+   "estrategia": 2,
+   "disciplina": 6,
+   "persistencia": 17,
+   "sociabilidade": 5,
+   "empatia": 0,
+   "adaptabilidade": 0,
+   "criatividade": 3,
+   "impulsividade": 2,
+   "percepcao": 3
+  },
+  "tags": [
+   "RESOLUTIVO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 5,
+   "sociabilidade": 0,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 4,
+   "impulsividade": 0,
+   "percepcao": 1
+  },
+  "tags": [
+   "COMPETITIVO",
+   "MALANDRO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 3,
+   "persistencia": 2,
+   "sociabilidade": 0,
+   "empatia": 1,
+   "adaptabilidade": 1,
+   "criatividade": 0,
+   "impulsividade": 0,
+   "percepcao": 0
+  },
+  "tags": [
+   "RESOLUTIVO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 5,
+   "disciplina": 0,
+   "persistencia": 2,
+   "sociabilidade": 2,
+   "empatia": 3,
+   "adaptabilidade": 4,
+   "criatividade": 2,
+   "impulsividade": 4,
+   "percepcao": 4
+  },
+  "tags": [],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 4,
+   "disciplina": 1,
+   "persistencia": 5,
+   "sociabilidade": 4,
+   "empatia": 1,
+   "adaptabilidade": 3,
+   "criatividade": 1,
+   "impulsividade": 3,
+   "percepcao": 2
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "SOCIAL"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 2,
+   "disciplina": 4,
+   "persistencia": 2,
+   "sociabilidade": 2,
+   "empatia": 1,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "tags": [
+   "ATLETA"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 16,
+   "disciplina": 6,
+   "persistencia": 9,
+   "sociabilidade": 4,
+   "empatia": 4,
+   "adaptabilidade": 9,
+   "criatividade": 9,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 1,
+   "empatia": 1,
+   "adaptabilidade": 1,
+   "criatividade": 3,
+   "impulsividade": 5,
+   "percepcao": 4
+  },
+  "tags": [
+   "CURADOR",
+   "CURADOR",
+   "SOCIAL",
+   "LÍDER"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 4,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 0,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "tags": [
+   "CURADOR",
+   "PROCRASTINADOR"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 4,
+   "disciplina": 1,
+   "persistencia": 4,
+   "sociabilidade": 0,
+   "empatia": 1,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 2,
+   "percepcao": 3
+  },
+  "tags": [
+   "ZEN",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 4,
+   "empatia": 4,
+   "adaptabilidade": 0,
+   "criatividade": 4,
+   "impulsividade": 0,
+   "percepcao": 1
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "ATLETA",
+   "PROCRASTINADOR",
+   "OVERTHINKING",
+   "FURTIVO",
+   "RESOLUTIVO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 7,
+   "disciplina": 5,
+   "persistencia": 10,
+   "sociabilidade": 16,
+   "empatia": 4,
+   "adaptabilidade": 7,
+   "criatividade": 14,
+   "impulsividade": 8,
+   "percepcao": 1
+  },
+  "tags": [
+   "JUSTICEIRO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 1,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 1,
+   "adaptabilidade": 0,
+   "criatividade": 2,
+   "impulsividade": 4,
+   "percepcao": 3
+  },
+  "tags": [
+   "MALANDRO",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 2,
+   "disciplina": 4,
+   "persistencia": 1,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 4,
+   "criatividade": 3,
+   "impulsividade": 0,
+   "percepcao": 4
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 0,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 0,
+   "adaptabilidade": 3,
+   "criatividade": 2,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [
+   "NERD"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 5,
+   "disciplina": 2,
+   "persistencia": 3,
+   "sociabilidade": 0,
+   "empatia": 3,
+   "adaptabilidade": 4,
+   "criatividade": 3,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "tags": [
+   "NERD",
+   "CURADOR",
+   "ATLETA"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 0,
+   "disciplina": 5,
+   "persistencia": 0,
+   "sociabilidade": 4,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 4,
+   "impulsividade": 4,
+   "percepcao": 5
+  },
+  "tags": [
+   "CURADOR",
+   "OVERTHINKING"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 0,
+   "disciplina": 2,
+   "persistencia": 2,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 0,
+   "impulsividade": 3,
+   "percepcao": 2
+  },
+  "tags": [
+   "CURADOR"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 2,
+   "disciplina": 4,
+   "persistencia": 4,
+   "sociabilidade": 1,
+   "empatia": 1,
+   "adaptabilidade": 1,
+   "criatividade": 5,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "tags": [
+   "COMPETITIVO",
+   "TECNOLÓGICO",
+   "PERFECCIONISTA",
+   "JUSTICEIRO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 5,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 4,
+   "empatia": 5,
+   "adaptabilidade": 3,
+   "criatividade": 2,
+   "impulsividade": 5,
+   "percepcao": 0
+  },
+  "tags": [
+   "COMPETITIVO",
+   "GAMBIARRA",
+   "ZEN"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 11,
+   "disciplina": 14,
+   "persistencia": 0,
+   "sociabilidade": 9,
+   "empatia": 16,
+   "adaptabilidade": 17,
+   "criatividade": 0,
+   "impulsividade": 12,
+   "percepcao": 2
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "JUSTICEIRO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 0,
+   "disciplina": 5,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 4,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 4,
+   "percepcao": 0
+  },
+  "tags": [
+   "NERD",
+   "FURTIVO",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 4,
+   "persistencia": 4,
+   "sociabilidade": 0,
+   "empatia": 1,
+   "adaptabilidade": 3,
+   "criatividade": 3,
+   "impulsividade": 3,
+   "percepcao": 2
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "NERD"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 2,
+   "disciplina": 17,
+   "persistencia": 15,
+   "sociabilidade": 17,
+   "empatia": 9,
+   "adaptabilidade": 15,
+   "criatividade": 12,
+   "impulsividade": 5,
+   "percepcao": 14
+  },
+  "tags": [
+   "PERFECCIONISTA",
+   "RESOLUTIVO"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 1,
+   "empatia": 1,
+   "adaptabilidade": 0,
+   "criatividade": 2,
+   "impulsividade": 3,
+   "percepcao": 5
+  },
+  "tags": [
+   "RESOLUTIVO",
+   "FURTIVO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 0,
+   "disciplina": 5,
+   "persistencia": 5,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 4,
+   "criatividade": 1,
+   "impulsividade": 3,
+   "percepcao": 2
+  },
+  "tags": [
+   "NERD"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 0,
+   "disciplina": 4,
+   "persistencia": 1,
+   "sociabilidade": 2,
+   "empatia": 3,
+   "adaptabilidade": 0,
+   "criatividade": 5,
+   "impulsividade": 1,
+   "percepcao": 1
+  },
+  "tags": [
+   "NERD",
+   "INTROVERTIDO",
+   "RESOLUTIVO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 5,
+   "disciplina": 4,
+   "persistencia": 1,
+   "sociabilidade": 0,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 1,
+   "impulsividade": 4,
+   "percepcao": 5
+  },
+  "tags": [
+   "NERD"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 1,
+   "persistencia": 1,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 0,
+   "criatividade": 2,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "CURADOR",
+   "PERFECCIONISTA",
+   "SOCIAL",
+   "GAMBIARRA"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 3,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 0,
+   "adaptabilidade": 3,
+   "criatividade": 1,
+   "impulsividade": 2,
+   "percepcao": 1
+  },
+  "tags": [
+   "OVERTHINKING",
+   "TECNOLÓGICO",
+   "JUSTICEIRO"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 5,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 3,
+   "adaptabilidade": 2,
+   "criatividade": 3,
+   "impulsividade": 2,
+   "percepcao": 3
+  },
+  "tags": [
+   "PERFECCIONISTA"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 1,
+   "empatia": 1,
+   "adaptabilidade": 1,
+   "criatividade": 0,
+   "impulsividade": 2,
+   "percepcao": 2
+  },
+  "tags": [
+   "ATLETA",
+   "OVERTHINKING",
+   "DOPAMINA",
+   "COMPETITIVO",
+   "MALANDRO",
+   "RESOLUTIVO",
+   "SOCIAL",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 16,
+   "disciplina": 4,
+   "persistencia": 2,
+   "sociabilidade": 3,
+   "empatia": 5,
+   "adaptabilidade": 17,
+   "criatividade": 0,
+   "impulsividade": 4,
+   "percepcao": 17
+  },
+  "tags": [
+   "OVERTHINKING",
+   "JUSTICEIRO"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 2,
+   "disciplina": 5,
+   "persistencia": 0,
+   "sociabilidade": 4,
+   "empatia": 0,
+   "adaptabilidade": 5,
+   "criatividade": 5,
+   "impulsividade": 3,
+   "percepcao": 5
+  },
+  "tags": [
+   "CURADOR",
+   "PROCRASTINADOR",
+   "GAMBIARRA"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 5,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 0,
+   "impulsividade": 4,
+   "percepcao": 1
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "CURADOR",
+   "PERFECCIONISTA",
+   "GAMBIARRA"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 3,
+   "disciplina": 10,
+   "persistencia": 8,
+   "sociabilidade": 9,
+   "empatia": 7,
+   "adaptabilidade": 12,
+   "criatividade": 16,
+   "impulsividade": 11,
+   "percepcao": 16
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "GAMBIARRA"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 6,
+   "disciplina": 16,
+   "persistencia": 16,
+   "sociabilidade": 0,
+   "empatia": 15,
+   "adaptabilidade": 10,
+   "criatividade": 1,
+   "impulsividade": 16,
+   "percepcao": 12
+  },
+  "tags": [
+   "GAMBIARRA",
+   "PROCRASTINADOR"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 1,
+   "persistencia": 0,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 5,
+   "impulsividade": 3,
+   "percepcao": 5
+  },
+  "tags": [
+   "RESOLUTIVO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 9,
+   "disciplina": 17,
+   "persistencia": 17,
+   "sociabilidade": 4,
+   "empatia": 12,
+   "adaptabilidade": 5,
+   "criatividade": 6,
+   "impulsividade": 15,
+   "percepcao": 1
+  },
+  "tags": [
+   "OVERTHINKING",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 0,
+   "criatividade": 5,
+   "impulsividade": 2,
+   "percepcao": 3
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 3,
+   "disciplina": 2,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 4,
+   "adaptabilidade": 2,
+   "criatividade": 4,
+   "impulsividade": 2,
+   "percepcao": 0
+  },
+  "tags": [
+   "GAMBIARRA",
+   "OVERTHINKING"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 11,
+   "estrategia": 16,
+   "disciplina": 7,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 16,
+   "adaptabilidade": 7,
+   "criatividade": 4,
+   "impulsividade": 2,
+   "percepcao": 6
+  },
+  "tags": [
+   "CURADOR"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 3,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 2,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "tags": [
+   "RESOLUTIVO",
+   "CURADOR"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 3,
+   "disciplina": 1,
+   "persistencia": 4,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 3,
+   "impulsividade": 3,
+   "percepcao": 5
+  },
+  "tags": [
+   "ZEN"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 10,
+   "estrategia": 16,
+   "disciplina": 0,
+   "persistencia": 9,
+   "sociabilidade": 13,
+   "empatia": 2,
+   "adaptabilidade": 1,
+   "criatividade": 16,
+   "impulsividade": 4,
+   "percepcao": 7
+  },
+  "tags": [
+   "PERFECCIONISTA",
+   "NERD"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 1,
+   "disciplina": 4,
+   "persistencia": 0,
+   "sociabilidade": 3,
+   "empatia": 0,
+   "adaptabilidade": 1,
+   "criatividade": 4,
+   "impulsividade": 5,
+   "percepcao": 5
+  },
+  "tags": [
+   "OVERTHINKING"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 1,
+   "disciplina": 2,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 0
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "RESOLUTIVO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 2,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 4,
+   "empatia": 1,
+   "adaptabilidade": 0,
+   "criatividade": 2,
+   "impulsividade": 0,
+   "percepcao": 0
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "SOCIAL",
+   "SOCIAL",
+   "COMPETITIVO",
+   "RESOLUTIVO",
+   "DOPAMINA"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 2,
+   "sociabilidade": 3,
+   "empatia": 3,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 1
+  },
+  "tags": [
+   "LÍDER",
+   "CAÓTICO",
+   "DOPAMINA",
+   "RESOLUTIVO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 1,
+   "disciplina": 5,
+   "persistencia": 1,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 0,
+   "impulsividade": 2,
+   "percepcao": 0
+  },
+  "tags": [
+   "PERFECCIONISTA",
+   "DOPAMINA"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 4,
+   "empatia": 2,
+   "adaptabilidade": 5,
+   "criatividade": 0,
+   "impulsividade": 4,
+   "percepcao": 5
+  },
+  "tags": [
+   "COMPETITIVO",
+   "OVERTHINKING",
+   "NERD",
+   "GAMBIARRA"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 3,
+   "persistencia": 2,
+   "sociabilidade": 4,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 5,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "tags": [
+   "OVERTHINKING"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 1,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 5,
+   "empatia": 2,
+   "adaptabilidade": 2,
+   "criatividade": 4,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "tags": [
+   "PROCRASTINADOR"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 7,
+   "estrategia": 3,
+   "disciplina": 10,
+   "persistencia": 11,
+   "sociabilidade": 17,
+   "empatia": 13,
+   "adaptabilidade": 9,
+   "criatividade": 6,
+   "impulsividade": 17,
+   "percepcao": 13
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "COMPETITIVO",
+   "OVERTHINKING",
+   "PROCRASTINADOR"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 2,
+   "disciplina": 4,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 1,
+   "adaptabilidade": 0,
+   "criatividade": 4,
+   "impulsividade": 0,
+   "percepcao": 2
+  },
+  "tags": [
+   "GAMBIARRA",
+   "SOCIAL"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 4,
+   "disciplina": 1,
+   "persistencia": 3,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 3,
+   "criatividade": 4,
+   "impulsividade": 4,
+   "percepcao": 1
+  },
+  "tags": [
+   "NERD",
+   "NERD",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 5,
+   "sociabilidade": 2,
+   "empatia": 1,
+   "adaptabilidade": 5,
+   "criatividade": 1,
+   "impulsividade": 2,
+   "percepcao": 2
+  },
+  "tags": [
+   "RESOLUTIVO",
+   "NERD",
+   "EXTROVERTIDO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 2,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 0,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 4
+  },
+  "tags": [
+   "EXTROVERTIDO",
+   "EXTROVERTIDO",
+   "CURADOR",
+   "DOPAMINA",
+   "MALANDRO",
+   "CAÓTICO",
+   "OVERTHINKING"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 1,
+   "disciplina": 0,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 3,
+   "adaptabilidade": 3,
+   "criatividade": 0,
+   "impulsividade": 1,
+   "percepcao": 3
+  },
+  "tags": [
+   "CURADOR",
+   "CAÓTICO",
+   "NERD"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 0,
+   "disciplina": 1,
+   "persistencia": 5,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 4,
+   "percepcao": 1
+  },
+  "tags": [
+   "CAÓTICO",
+   "GAMBIARRA",
+   "TECNOLÓGICO",
+   "NERD"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 2,
+   "disciplina": 5,
+   "persistencia": 1,
+   "sociabilidade": 5,
+   "empatia": 3,
+   "adaptabilidade": 2,
+   "criatividade": 4,
+   "impulsividade": 5,
+   "percepcao": 0
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "PROCRASTINADOR",
+   "COMPETITIVO",
+   "RESOLUTIVO"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 4,
+   "criatividade": 0,
+   "impulsividade": 5,
+   "percepcao": 5
+  },
+  "tags": [
+   "ZEN",
+   "OVERTHINKING",
+   "SOCIAL"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 2,
+   "disciplina": 4,
+   "persistencia": 2,
+   "sociabilidade": 3,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 4,
+   "impulsividade": 2,
+   "percepcao": 2
+  },
+  "tags": [
+   "COMPETITIVO",
+   "PERFECCIONISTA",
+   "COMPETITIVO",
+   "ATLETA",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 4,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 3,
+   "adaptabilidade": 3,
+   "criatividade": 3,
+   "impulsividade": 0,
+   "percepcao": 2
+  },
+  "tags": [
+   "ATLETA",
+   "ZEN",
+   "JUSTICEIRO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 3,
+   "disciplina": 5,
+   "persistencia": 2,
+   "sociabilidade": 4,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 0,
+   "percepcao": 4
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "PERFECCIONISTA",
+   "INTROVERTIDO"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 1,
+   "disciplina": 5,
+   "persistencia": 2,
+   "sociabilidade": 2,
+   "empatia": 3,
+   "adaptabilidade": 1,
+   "criatividade": 5,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "tags": [
+   "PERFECCIONISTA",
+   "INTROVERTIDO"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 4,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 2,
+   "impulsividade": 0,
+   "percepcao": 3
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "CURADOR"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 1,
+   "persistencia": 5,
+   "sociabilidade": 4,
+   "empatia": 3,
+   "adaptabilidade": 2,
+   "criatividade": 2,
+   "impulsividade": 4,
+   "percepcao": 1
+  },
+  "tags": [
+   "RESOLUTIVO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 5,
+   "disciplina": 3,
+   "persistencia": 5,
+   "sociabilidade": 1,
+   "empatia": 0,
+   "adaptabilidade": 4,
+   "criatividade": 1,
+   "impulsividade": 0,
+   "percepcao": 0
+  },
+  "tags": [
+   "LÍDER",
+   "PROCRASTINADOR",
+   "RESOLUTIVO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 5,
+   "disciplina": 1,
+   "persistencia": 5,
+   "sociabilidade": 5,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "tags": [
+   "GAMBIARRA",
+   "NERD",
+   "SOCIAL"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 3,
+   "disciplina": 1,
+   "persistencia": 0,
+   "sociabilidade": 0,
+   "empatia": 4,
+   "adaptabilidade": 3,
+   "criatividade": 2,
+   "impulsividade": 4,
+   "percepcao": 3
+  },
+  "tags": [
+   "RESOLUTIVO",
+   "JUSTICEIRO",
+   "ZEN",
+   "JUSTICEIRO",
+   "FURTIVO"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 16,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 7,
+   "sociabilidade": 13,
+   "empatia": 16,
+   "adaptabilidade": 8,
+   "criatividade": 2,
+   "impulsividade": 6,
+   "percepcao": 15
+  },
+  "tags": [
+   "NERD",
+   "CURADOR"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 2,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 3
+  },
+  "tags": [
+   "ZEN",
+   "SOCIAL",
+   "NERD",
+   "JUSTICEIRO",
+   "PERFECCIONISTA",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 0,
+   "disciplina": 10,
+   "persistencia": 11,
+   "sociabilidade": 0,
+   "empatia": 14,
+   "adaptabilidade": 1,
+   "criatividade": 17,
+   "impulsividade": 15,
+   "percepcao": 17
+  },
+  "tags": [
+   "MALANDRO",
+   "TECNOLÓGICO",
+   "GAMBIARRA"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 17,
+   "disciplina": 8,
+   "persistencia": 5,
+   "sociabilidade": 8,
+   "empatia": 10,
+   "adaptabilidade": 17,
+   "criatividade": 6,
+   "impulsividade": 4,
+   "percepcao": 0
+  },
+  "tags": [],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 2,
+   "disciplina": 0,
+   "persistencia": 1,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 0,
+   "criatividade": 2,
+   "impulsividade": 1,
+   "percepcao": 2
+  },
+  "tags": [
+   "LÍDER",
+   "ZEN",
+   "INTROVERTIDO",
+   "TECNOLÓGICO",
+   "SOCIAL",
+   "GAMBIARRA",
+   "CAÓTICO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 0,
+   "empatia": 3,
+   "adaptabilidade": 4,
+   "criatividade": 0,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "tags": [
+   "MALANDRO",
+   "PROCRASTINADOR"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 17,
+   "disciplina": 16,
+   "persistencia": 2,
+   "sociabilidade": 16,
+   "empatia": 11,
+   "adaptabilidade": 13,
+   "criatividade": 6,
+   "impulsividade": 3,
+   "percepcao": 17
+  },
+  "tags": [],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 2,
+   "adaptabilidade": 4,
+   "criatividade": 0,
+   "impulsividade": 0,
+   "percepcao": 1
+  },
+  "tags": [],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 12,
+   "persistencia": 13,
+   "sociabilidade": 3,
+   "empatia": 3,
+   "adaptabilidade": 13,
+   "criatividade": 2,
+   "impulsividade": 1,
+   "percepcao": 11
+  },
+  "tags": [
+   "LÍDER",
+   "LÍDER",
+   "GAMBIARRA",
+   "SOCIAL",
+   "CURADOR"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 11,
+   "disciplina": 8,
+   "persistencia": 16,
+   "sociabilidade": 5,
+   "empatia": 16,
+   "adaptabilidade": 0,
+   "criatividade": 1,
+   "impulsividade": 3,
+   "percepcao": 2
+  },
+  "tags": [],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 5,
+   "disciplina": 1,
+   "persistencia": 5,
+   "sociabilidade": 4,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 3,
+   "percepcao": 5
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 0,
+   "disciplina": 4,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 3,
+   "impulsividade": 3,
+   "percepcao": 3
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 5,
+   "persistencia": 0,
+   "sociabilidade": 3,
+   "empatia": 1,
+   "adaptabilidade": 3,
+   "criatividade": 5,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "tags": [
+   "LÍDER"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 1,
+   "persistencia": 4,
+   "sociabilidade": 5,
+   "empatia": 4,
+   "adaptabilidade": 1,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "RESOLUTIVO",
+   "PROCRASTINADOR",
+   "COMPETITIVO"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 3,
+   "empatia": 0,
+   "adaptabilidade": 0,
+   "criatividade": 5,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "tags": [
+   "DOPAMINA"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 11,
+   "disciplina": 11,
+   "persistencia": 15,
+   "sociabilidade": 16,
+   "empatia": 4,
+   "adaptabilidade": 17,
+   "criatividade": 12,
+   "impulsividade": 13,
+   "percepcao": 6
+  },
+  "tags": [
+   "CURADOR"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 0,
+   "disciplina": 3,
+   "persistencia": 3,
+   "sociabilidade": 3,
+   "empatia": 2,
+   "adaptabilidade": 0,
+   "criatividade": 1,
+   "impulsividade": 0,
+   "percepcao": 1
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "SOCIAL"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 2,
+   "disciplina": 0,
+   "persistencia": 5,
+   "sociabilidade": 2,
+   "empatia": 1,
+   "adaptabilidade": 3,
+   "criatividade": 5,
+   "impulsividade": 1,
+   "percepcao": 3
+  },
+  "tags": [],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 0,
+   "disciplina": 5,
+   "persistencia": 5,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 0,
+   "criatividade": 1,
+   "impulsividade": 5,
+   "percepcao": 4
+  },
+  "tags": [],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 0,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 0,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "tags": [
+   "PERFECCIONISTA"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 3,
+   "disciplina": 11,
+   "persistencia": 4,
+   "sociabilidade": 17,
+   "empatia": 6,
+   "adaptabilidade": 6,
+   "criatividade": 15,
+   "impulsividade": 16,
+   "percepcao": 17
+  },
+  "tags": [],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 2,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 3,
+   "impulsividade": 4,
+   "percepcao": 0
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "INTROVERTIDO",
+   "FURTIVO",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 0,
+   "persistencia": 5,
+   "sociabilidade": 3,
+   "empatia": 4,
+   "adaptabilidade": 4,
+   "criatividade": 2,
+   "impulsividade": 5,
+   "percepcao": 3
+  },
+  "tags": [
+   "OVERTHINKING",
+   "ZEN"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 0,
+   "disciplina": 1,
+   "persistencia": 5,
+   "sociabilidade": 4,
+   "empatia": 3,
+   "adaptabilidade": 5,
+   "criatividade": 0,
+   "impulsividade": 3,
+   "percepcao": 2
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "LÍDER"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 1,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 2,
+   "impulsividade": 3,
+   "percepcao": 1
+  },
+  "tags": [],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 1,
+   "sociabilidade": 0,
+   "empatia": 2,
+   "adaptabilidade": 1,
+   "criatividade": 5,
+   "impulsividade": 3,
+   "percepcao": 1
+  },
+  "tags": [
+   "MALANDRO",
+   "OVERTHINKING",
+   "SOCIAL",
+   "PROCRASTINADOR",
+   "FURTIVO",
+   "RESOLUTIVO",
+   "JUSTICEIRO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 0,
+   "disciplina": 3,
+   "persistencia": 4,
+   "sociabilidade": 2,
+   "empatia": 4,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 4,
+   "percepcao": 5
+  },
+  "tags": [
+   "FURTIVO",
+   "NERD"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 3,
+   "disciplina": 1,
+   "persistencia": 3,
+   "sociabilidade": 3,
+   "empatia": 5,
+   "adaptabilidade": 0,
+   "criatividade": 3,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 4,
+   "sociabilidade": 0,
+   "empatia": 3,
+   "adaptabilidade": 4,
+   "criatividade": 0,
+   "impulsividade": 1,
+   "percepcao": 3
+  },
+  "tags": [],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 0,
+   "disciplina": 4,
+   "persistencia": 4,
+   "sociabilidade": 1,
+   "empatia": 3,
+   "adaptabilidade": 1,
+   "criatividade": 5,
+   "impulsividade": 5,
+   "percepcao": 0
+  },
+  "tags": [
+   "MALANDRO",
+   "SOCIAL",
+   "TECNOLÓGICO",
+   "CURADOR",
+   "PROCRASTINADOR",
+   "INTROVERTIDO",
+   "OVERTHINKING",
+   "GAMBIARRA"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 11,
+   "estrategia": 16,
+   "disciplina": 9,
+   "persistencia": 1,
+   "sociabilidade": 6,
+   "empatia": 13,
+   "adaptabilidade": 16,
+   "criatividade": 15,
+   "impulsividade": 1,
+   "percepcao": 8
+  },
+  "tags": [
+   "ATLETA",
+   "CURADOR",
+   "COMPETITIVO",
+   "OVERTHINKING",
+   "RESOLUTIVO"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 2,
+   "disciplina": 3,
+   "persistencia": 1,
+   "sociabilidade": 5,
+   "empatia": 1,
+   "adaptabilidade": 2,
+   "criatividade": 0,
+   "impulsividade": 5,
+   "percepcao": 4
+  },
+  "tags": [
+   "OVERTHINKING",
+   "NERD"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 11,
+   "estrategia": 7,
+   "disciplina": 2,
+   "persistencia": 9,
+   "sociabilidade": 0,
+   "empatia": 17,
+   "adaptabilidade": 17,
+   "criatividade": 8,
+   "impulsividade": 13,
+   "percepcao": 13
+  },
+  "tags": [
+   "PERFECCIONISTA",
+   "SOCIAL"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 5,
+   "disciplina": 4,
+   "persistencia": 2,
+   "sociabilidade": 2,
+   "empatia": 5,
+   "adaptabilidade": 3,
+   "criatividade": 1,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 9,
+   "disciplina": 7,
+   "persistencia": 11,
+   "sociabilidade": 9,
+   "empatia": 12,
+   "adaptabilidade": 1,
+   "criatividade": 14,
+   "impulsividade": 14,
+   "percepcao": 0
+  },
+  "tags": [
+   "COMPETITIVO",
+   "JUSTICEIRO"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 10,
+   "disciplina": 11,
+   "persistencia": 16,
+   "sociabilidade": 4,
+   "empatia": 13,
+   "adaptabilidade": 5,
+   "criatividade": 16,
+   "impulsividade": 5,
+   "percepcao": 12
+  },
+  "tags": [
+   "COMPETITIVO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 1,
+   "disciplina": 3,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 1,
+   "adaptabilidade": 0,
+   "criatividade": 0,
+   "impulsividade": 1,
+   "percepcao": 1
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "PROCRASTINADOR",
+   "GAMBIARRA",
+   "EXTROVERTIDO",
+   "JUSTICEIRO",
+   "TECNOLÓGICO"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 5,
+   "empatia": 0,
+   "adaptabilidade": 1,
+   "criatividade": 2,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "TECNOLÓGICO",
+   "GAMBIARRA",
+   "PERFECCIONISTA",
+   "INTROVERTIDO"
+  ],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 15,
+   "disciplina": 9,
+   "persistencia": 17,
+   "sociabilidade": 13,
+   "empatia": 14,
+   "adaptabilidade": 6,
+   "criatividade": 13,
+   "impulsividade": 8,
+   "percepcao": 6
+  },
+  "tags": [
+   "SOCIAL"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 14,
+   "disciplina": 6,
+   "persistencia": 5,
+   "sociabilidade": 1,
+   "empatia": 16,
+   "adaptabilidade": 12,
+   "criatividade": 10,
+   "impulsividade": 16,
+   "percepcao": 16
+  },
+  "tags": [
+   "PROCRASTINADOR",
+   "OVERTHINKING"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 5,
+   "disciplina": 5,
+   "persistencia": 0,
+   "sociabilidade": 5,
+   "empatia": 3,
+   "adaptabilidade": 5,
+   "criatividade": 2,
+   "impulsividade": 4,
+   "percepcao": 1
+  },
+  "tags": [
+   "PROCRASTINADOR"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 4,
+   "sociabilidade": 0,
+   "empatia": 2,
+   "adaptabilidade": 1,
+   "criatividade": 2,
+   "impulsividade": 4,
+   "percepcao": 2
+  },
+  "tags": [
+   "ZEN"
+  ],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 5,
+   "disciplina": 5,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 4,
+   "adaptabilidade": 4,
+   "criatividade": 3,
+   "impulsividade": 3,
+   "percepcao": 2
+  },
+  "tags": [
+   "JUSTICEIRO"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 2,
+   "disciplina": 1,
+   "persistencia": 4,
+   "sociabilidade": 3,
+   "empatia": 2,
+   "adaptabilidade": 2,
+   "criatividade": 5,
+   "impulsividade": 0,
+   "percepcao": 2
+  },
+  "tags": [
+   "CURADOR",
+   "ATLETA",
+   "INTROVERTIDO",
+   "INTROVERTIDO",
+   "ATLETA",
+   "PERFECCIONISTA"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 1,
+   "sociabilidade": 4,
+   "empatia": 5,
+   "adaptabilidade": 0,
+   "criatividade": 4,
+   "impulsividade": 4,
+   "percepcao": 5
+  },
+  "tags": [
+   "PERFECCIONISTA"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 0,
+   "disciplina": 3,
+   "persistencia": 4,
+   "sociabilidade": 0,
+   "empatia": 2,
+   "adaptabilidade": 3,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 2
+  },
+  "tags": [
+   "SOCIAL",
+   "MALANDRO",
+   "NERD",
+   "DOPAMINA",
+   "CAÓTICO"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 5,
+   "disciplina": 2,
+   "persistencia": 5,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 1,
+   "impulsividade": 3,
+   "percepcao": 4
+  },
+  "tags": [],
+  "classe": "Bardo do Karaokê"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 1,
+   "sociabilidade": 4,
+   "empatia": 0,
+   "adaptabilidade": 3,
+   "criatividade": 5,
+   "impulsividade": 2,
+   "percepcao": 4
+  },
+  "tags": [],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 2,
+   "disciplina": 0,
+   "persistencia": 5,
+   "sociabilidade": 2,
+   "empatia": 1,
+   "adaptabilidade": 1,
+   "criatividade": 5,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "tags": [
+   "EXTROVERTIDO",
+   "PERFECCIONISTA",
+   "INTROVERTIDO",
+   "FURTIVO",
+   "CURADOR"
+  ],
+  "classe": "Artífice da Gambiarra"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 5,
+   "disciplina": 2,
+   "persistencia": 2,
+   "sociabilidade": 3,
+   "empatia": 5,
+   "adaptabilidade": 0,
+   "criatividade": 5,
+   "impulsividade": 2,
+   "percepcao": 0
+  },
+  "tags": [],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 4,
+   "adaptabilidade": 1,
+   "criatividade": 0,
+   "impulsividade": 5,
+   "percepcao": 5
+  },
+  "tags": [
+   "INTROVERTIDO",
+   "SOCIAL"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 1,
+   "disciplina": 2,
+   "persistencia": 2,
+   "sociabilidade": 4,
+   "empatia": 4,
+   "adaptabilidade": 0,
+   "criatividade": 0,
+   "impulsividade": 0,
+   "percepcao": 0
+  },
+  "tags": [
+   "OVERTHINKING",
+   "NERD"
+  ],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 5,
+   "disciplina": 4,
+   "persistencia": 2,
+   "sociabilidade": 0,
+   "empatia": 1,
+   "adaptabilidade": 3,
+   "criatividade": 5,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "tags": [
+   "JUSTICEIRO",
+   "FURTIVO"
+  ],
+  "classe": "Mago do ChatGPT"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 5,
+   "disciplina": 5,
+   "persistencia": 2,
+   "sociabilidade": 0,
+   "empatia": 4,
+   "adaptabilidade": 4,
+   "criatividade": 3,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "tags": [
+   "COMPETITIVO",
+   "OVERTHINKING"
+  ],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 0,
+   "disciplina": 5,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 3,
+   "adaptabilidade": 0,
+   "criatividade": 3,
+   "impulsividade": 2,
+   "percepcao": 5
+  },
+  "tags": [
+   "CAÓTICO",
+   "JUSTICEIRO"
+  ],
+  "classe": "Vidente da Ansiedade"
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 0,
+   "persistencia": 0,
+   "sociabilidade": 4,
+   "empatia": 4,
+   "adaptabilidade": 5,
+   "criatividade": 0,
+   "impulsividade": 5,
+   "percepcao": 4
+  },
+  "tags": [
+   "OVERTHINKING",
+   "NERD",
+   "NERD",
+   "NERD"
+  ],
+  "classe": "Paladino do Grupo"
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 3,
+   "disciplina": 2,
+   "persistencia": 0,
+   "sociabilidade": 0,
+   "empatia": 1,
+   "adaptabilidade": 5,
+   "criatividade": 2,
+   "impulsividade": 5,
+   "percepcao": 0
+  },
+  "tags": [
+   "OVERTHINKING"
+  ],
+  "classe": "Ladino do Home Office"
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 0,
+   "disciplina": 5,
+   "persistencia": 5,
+   "sociabilidade": 4,
+   "empatia": 1,
+   "adaptabilidade": 3,
+   "criatividade": 4,
+   "impulsividade": 4,
+   "percepcao": 3
+  },
+  "tags": [
+   "PROCRASTINADOR"
+  ],
+  "classe": "Warlock do Boleto"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 17,
+   "disciplina": 8,
+   "persistencia": 15,
+   "sociabilidade": 1,
+   "empatia": 17,
+   "adaptabilidade": 6,
+   "criatividade": 17,
+   "impulsividade": 8,
+   "percepcao": 5
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 4,
+   "empatia": 3,
+   "adaptabilidade": 4,
+   "criatividade": 1,
+   "impulsividade": 4,
+   "percepcao": 2
+  },
+  "tags": [],
+  "classe": "Invocador de iFood"
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 4,
+   "disciplina": 17,
+   "persistencia": 3,
+   "sociabilidade": 15,
+   "empatia": 7,
+   "adaptabilidade": 17,
+   "criatividade": 4,
+   "impulsividade": 11,
+   "percepcao": 3
+  },
+  "tags": [],
+  "classe": "Necromante de Planilha"
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 1,
+   "impulsividade": 4,
+   "percepcao": 4
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 15,
+   "disciplina": 10,
+   "persistencia": 5,
+   "sociabilidade": 9,
+   "empatia": 15,
+   "adaptabilidade": 7,
+   "criatividade": 3,
+   "impulsividade": 4,
+   "percepcao": 1
+  },
+  "tags": [],
+  "classe": "Domador de Pet"
+ }
+]

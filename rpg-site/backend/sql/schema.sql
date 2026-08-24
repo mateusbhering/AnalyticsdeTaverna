@@ -77,9 +77,12 @@ create table if not exists public.batalhas (
   jogador_a_id bigint not null references public.jogadores(id) on delete cascade,
   jogador_b_id bigint not null references public.jogadores(id) on delete cascade,
 
-  -- Atributo disputado: 'inteligencia' | 'criatividade' | 'estrategia' | 'carisma'
+  -- Formato do confronto. Hoje sempre 'posicional'; linhas antigas guardam o
+  -- nome do atributo único que era disputado antes do formato posicional.
   atributo     text   not null,
 
+  -- No formato posicional: PLACAR de rodadas (0..3) de cada lado.
+  -- Nas linhas antigas: o valor do atributo único disputado.
   valor_a      integer not null,
   valor_b      integer not null,
 
@@ -97,6 +100,14 @@ create table if not exists public.batalhas (
   -- Ninguém batalha contra si mesmo.
   constraint batalha_jogadores_distintos check (jogador_a_id <> jogador_b_id)
 );
+
+-- Detalhe das 3 rodadas do confronto posicional. Cada item traz a posição no
+-- pódio, o atributo que CADA lado levou àquela posição (podem ser diferentes),
+-- os dois valores e quem venceu. NULL nas batalhas do formato antigo.
+--
+-- Por que jsonb e não 3 trios de colunas: o número de rodadas é regra de jogo,
+-- não de banco. Se o formato virar 5 rodadas, nada aqui muda.
+alter table public.batalhas add column if not exists rodadas jsonb;
 
 create index if not exists batalhas_jogador_a_idx on public.batalhas (jogador_a_id);
 create index if not exists batalhas_jogador_b_idx on public.batalhas (jogador_b_id);

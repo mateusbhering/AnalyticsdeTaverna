@@ -38,7 +38,7 @@ async def listar_classes():
 
     O frontend usa isto para montar filtros e legendas sem hardcodar a lista.
     """
-    classes = sorted({nome for nome, _ in REGRAS_CLASSE} | set(CLASSE_POR_DIMENSAO.values()))
+    classes = sorted({regra[0] for regra in REGRAS_CLASSE} | set(CLASSE_POR_DIMENSAO.values()))
     return {
         "classes": classes,
         "total": len(classes),

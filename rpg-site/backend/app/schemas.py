@@ -12,9 +12,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-from .domain.batalha import ATRIBUTOS_VALIDOS
-
-AtributoBatalha = Literal["inteligencia", "criatividade", "estrategia", "carisma"]
+from .domain.batalha import ATRIBUTOS_VALIDOS, RODADAS
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -116,18 +114,53 @@ class OponenteResponse(BaseModel):
 
 
 class BatalhaRequest(BaseModel):
+    """Pedido de batalha.
+
+    Não há `atributo`: o confronto é posicional e cada lado entra com os seus
+    3 maiores atributos. O desafiante é sempre o lado A.
+    """
+
     jogador_a_id: int
     jogador_b_id: int
-    atributo: AtributoBatalha
+
+
+class RodadaResponse(BaseModel):
+    """Uma das 3 rodadas — o Nº maior de A contra o Nº maior de B.
+
+    Os atributos dos dois lados podem ser diferentes: o que se compara é a
+    posição no pódio de cada um, não a categoria.
+    """
+
+    posicao: int
+    atributo_a: str
+    rotulo_a: str
+    valor_a: int
+    atributo_b: str
+    rotulo_b: str
+    valor_b: int
+    resultado: Literal["a", "b", "empate"]
+    diferenca: int
+
+
+class LadoBatalha(BaseModel):
+    """Quem lutou — o suficiente pro front montar a tela sem outra chamada."""
+
+    id: int
+    nome: str | None = None
+    classe: str | None = None
+    foto_url: str | None = None
 
 
 class BatalhaResponse(BaseModel):
     id: int | None = None
     jogador_a_id: int
     jogador_b_id: int
-    atributo: str
-    valor_a: int
-    valor_b: int
+    desafiante: LadoBatalha | None = None
+    oponente: LadoBatalha | None = None
+    rodadas: list[RodadaResponse] = Field(min_length=RODADAS, max_length=RODADAS)
+    vitorias_a: int
+    vitorias_b: int
+    empates_rodada: int
     resultado: Literal["a", "b", "empate"]
     vencedor_id: int | None = None
     xp_a: int

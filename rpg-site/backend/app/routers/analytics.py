@@ -88,11 +88,32 @@ async def medias_de_atributos(repo: Repositorio = Depends(get_repo)):
 
 @router.get("/batalhas")
 async def metricas_de_batalha(repo: Repositorio = Depends(get_repo)):
-    """Atributos mais escolhidos e proporção de empates."""
+    """Atributos mais levados ao confronto e proporção de empates.
+
+    No formato posicional ninguém *escolhe* atributo: cada lado entra com os
+    seus 3 maiores. Então o que esta métrica mostra é quais atributos mais
+    aparecem no pódio de quem batalha — que é o insight interessante ("a
+    taverna decide no Caos"). Batalhas do formato antigo, que gravavam um
+    atributo único, continuam contando por ele.
+    """
     batalhas = await repo.batalhas_para_analytics()
     total = len(batalhas)
-    escolhas = Counter(b.get("atributo") for b in batalhas if b.get("atributo"))
+
+    escolhas: Counter[str] = Counter()
+    for b in batalhas:
+        rodadas = b.get("rodadas")
+        if rodadas:
+            for rodada in rodadas:
+                for lado in ("atributo_a", "atributo_b"):
+                    if rodada.get(lado):
+                        escolhas[rodada[lado]] += 1
+        elif b.get("atributo"):
+            escolhas[b["atributo"]] += 1
+
     empates = sum(1 for b in batalhas if b.get("resultado") == "empate")
+    # O percentual é sobre o total de aparições, não sobre o de batalhas: cada
+    # batalha posicional coloca 6 atributos em jogo (3 rodadas × 2 lados).
+    aparicoes = sum(escolhas.values())
 
     return {
         "total_batalhas": total,
@@ -102,7 +123,7 @@ async def metricas_de_batalha(repo: Repositorio = Depends(get_repo)):
             {
                 "atributo": atributo,
                 "quantidade": qtd,
-                "percentual": round(qtd / total * 100, 1) if total else 0.0,
+                "percentual": round(qtd / aparicoes * 100, 1) if aparicoes else 0.0,
             }
             for atributo, qtd in escolhas.most_common()
         ],

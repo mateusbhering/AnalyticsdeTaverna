@@ -6,6 +6,8 @@ import QrScanner from "@/components/QrScanner";
 import TelaCarregando from "@/components/TelaCarregando";
 import { getSupabaseClient } from "@/lib/supabase";
 import { byName } from "@/lib/classes";
+import ArenaDuelo from "./ArenaDuelo";
+import { ErroDeBatalha, lutar, type ResultadoBatalha } from "@/lib/batalha-api";
 
 interface Oponente {
   id: number | string;
@@ -82,6 +84,12 @@ export default function DesafioScanner() {
   const [telaPedida, setTelaPedida] = useState(false);
   const [telaLiberada, setTelaLiberada] = useState(false);
 
+  // Duelo: `null` até o jogador mandar lutar. O backend resolve na hora — não
+  // há convite pendente do outro lado.
+  const [duelo, setDuelo] = useState<ResultadoBatalha | null>(null);
+  const [duelando, setDuelando] = useState(false);
+  const [erroDuelo, setErroDuelo] = useState<string | null>(null);
+
   const ehEuMesmo = oponenteId !== null && meuId != null && oponenteId === meuId;
   // Derivado em vez de um `useState` de loading: temos um id válido, ninguém
   // carregado e nenhum erro ⇒ a busca está em andamento.
@@ -134,13 +142,36 @@ export default function DesafioScanner() {
     }
   }, []);
 
+  const duelar = useCallback(async () => {
+    if (!meuId || !oponente || duelando) return;
+    setDuelando(true);
+    setErroDuelo(null);
+    try {
+      setDuelo(await lutar(meuId, oponente.id));
+    } catch (erro) {
+      setErroDuelo(
+        erro instanceof ErroDeBatalha
+          ? erro.message
+          : "Não foi possível realizar o duelo agora.",
+      );
+    } finally {
+      setDuelando(false);
+    }
+  }, [meuId, oponente, duelando]);
+
   const escanearOutro = () => {
     setOponente(null);
     setOponenteId(null);
     setErro(null);
     setTelaPedida(false);
     setTelaLiberada(false);
+    setDuelo(null);
+    setErroDuelo(null);
+    setDuelando(false);
   };
+
+  // ── Duelo resolvido: a arena toma a tela ──
+  if (duelo) return <ArenaDuelo resultado={duelo} onNovoDuelo={escanearOutro} />;
 
   // A tela épica cobre a página inteira até o tempo fechar E o oponente chegar.
   // Erro e auto-desafio saem na hora: não há duelo para anunciar.
@@ -216,7 +247,16 @@ export default function DesafioScanner() {
   }
 
   // ── Oponente encontrado ──
-  if (oponente) return <CardOponente oponente={oponente} onEscanearOutro={escanearOutro} />;
+  if (oponente)
+    return (
+      <CardOponente
+        oponente={oponente}
+        onEscanearOutro={escanearOutro}
+        onDuelar={duelar}
+        duelando={duelando}
+        erroDuelo={erroDuelo}
+      />
+    );
 
   // ── Leitor de QR ──
   return (
@@ -257,9 +297,15 @@ function Painel({ children }: { children: React.ReactNode }) {
 function CardOponente({
   oponente,
   onEscanearOutro,
+  onDuelar,
+  duelando,
+  erroDuelo,
 }: {
   oponente: Oponente;
   onEscanearOutro: () => void;
+  onDuelar: () => void;
+  duelando: boolean;
+  erroDuelo: string | null;
 }) {
   const classe = byName(oponente.classe ?? "");
   const retrato = oponente.foto_url ?? classe.photo;
@@ -323,10 +369,29 @@ function CardOponente({
         </div>
       </Painel>
 
+      {erroDuelo && (
+        <p className="text-[var(--seal)] text-sm text-center bg-[rgba(140,35,24,0.08)] border border-[rgba(140,35,24,0.35)] px-4 py-3 italic">
+          {erroDuelo}
+        </p>
+      )}
+
       <div className="space-y-3">
         <button
+          onClick={onDuelar}
+          disabled={duelando}
+          className="press btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase cursor-pointer disabled:cursor-wait disabled:opacity-70"
+          style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
+        >
+          {duelando ? "⏳ Cruzando as lâminas…" : "⚔ Iniciar o duelo"}
+        </button>
+        <p className="text-center text-[.65rem] italic text-[rgba(230,188,106,0.5)] leading-relaxed px-2">
+          Vocês dois entram com os três maiores atributos. O oponente não
+          precisa fazer nada — o resultado sai na hora.
+        </p>
+        <button
           onClick={onEscanearOutro}
-          className="press btn-parchment block w-full py-3.5 text-[.72rem] tracking-[.12em] uppercase cursor-pointer"
+          disabled={duelando}
+          className="press btn-parchment block w-full py-3.5 text-[.72rem] tracking-[.12em] uppercase cursor-pointer disabled:opacity-50"
           style={{ fontFamily: "var(--font-cinzel), serif" }}
         >
           📷 Escanear outro oponente
