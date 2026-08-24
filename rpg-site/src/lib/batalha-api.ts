@@ -95,6 +95,25 @@ export async function lutar(
   oponenteId: number | string,
   sinal?: AbortSignal,
 ): Promise<ResultadoBatalha> {
+  /* Os ids vêm do localStorage e da URL — nenhum dos dois é confiável. Um
+     valor estranho vira NaN no `Number`, e `JSON.stringify` transforma NaN em
+     `null`, porque JSON não tem NaN. O backend responderia 422 e a pessoa
+     leria "não foi possível realizar o duelo" sem nenhuma pista de que o
+     problema é o cadastro dela neste aparelho. Melhor barrar aqui e dizer o
+     que fazer. */
+  const a = Number(desafianteId);
+  const b = Number(oponenteId);
+  if (!Number.isInteger(a) || a <= 0) {
+    console.error(`[batalha] id do desafiante inválido: ${JSON.stringify(desafianteId)}`);
+    throw new ErroDeBatalha(
+      "Seu personagem não foi reconhecido neste aparelho. Refaça o quiz para desafiar alguém.",
+    );
+  }
+  if (!Number.isInteger(b) || b <= 0) {
+    console.error(`[batalha] id do oponente inválido: ${JSON.stringify(oponenteId)}`);
+    throw new ErroDeBatalha("O brasão do oponente não foi reconhecido. Escaneie de novo.");
+  }
+
   /* Relógio próprio, encadeado no sinal de quem chamou: assim o cancelamento
      do componente continua funcionando e ainda existe um teto de espera. */
   const controle = new AbortController();
@@ -110,8 +129,8 @@ export async function lutar(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        jogador_a_id: Number(desafianteId),
-        jogador_b_id: Number(oponenteId),
+        jogador_a_id: a,
+        jogador_b_id: b,
       }),
       signal: controle.signal,
     });
@@ -148,15 +167,59 @@ export async function lutar(
   }
 
   if (!resposta.ok) {
-    // O FastAPI devolve { detail: "..." }; se vier outra coisa, não quebra.
-    const detalhe = await resposta
-      .json()
-      .then((c) => (typeof c?.detail === "string" ? c.detail : null))
-      .catch(() => null);
-    throw new ErroDeBatalha(detalhe ?? "Não foi possível realizar o duelo agora.");
+    /* O corpo é lido como texto e só depois interpretado: um 502 do proxy ou
+       uma página de erro em HTML fariam `.json()` estourar, e o `catch` engolia
+       junto o status — que é justamente o que diz onde olhar. */
+    const bruto = await resposta.text().catch(() => "");
+    console.error(
+      `[batalha] ${resposta.status} ${resposta.statusText} em ${API_BASE}/batalha`,
+      bruto.slice(0, 500),
+    );
+    throw new ErroDeBatalha(descreverErro(resposta.status, bruto));
   }
 
   return (await resposta.json()) as ResultadoBatalha;
+}
+
+/**
+ * Transforma o corpo de erro do backend numa frase para a tela.
+ *
+ * O FastAPI usa `detail` de dois jeitos: string nas exceções que nós lançamos
+ * ("Jogador 7 não encontrado") e LISTA de objetos quando o Pydantic recusa o
+ * corpo (422). A versão anterior só sabia ler a string e mandava todo o resto
+ * para uma mensagem genérica — que é o mesmo que não dizer nada.
+ */
+function descreverErro(status: number, bruto: string): string {
+  let corpo: unknown;
+  try {
+    corpo = JSON.parse(bruto);
+  } catch {
+    // Não é JSON: veio de um proxy ou de uma página de erro, não do FastAPI.
+    return status >= 500
+      ? "A taverna tropeçou no próprio feitiço. Tente de novo em alguns instantes."
+      : "Não foi possível realizar o duelo agora.";
+  }
+
+  const detalhe = (corpo as { detail?: unknown })?.detail;
+
+  if (typeof detalhe === "string") return detalhe;
+
+  if (Array.isArray(detalhe)) {
+    const campos = detalhe
+      .map((e) => {
+        const loc = (e as { loc?: unknown[] })?.loc;
+        return Array.isArray(loc) ? loc[loc.length - 1] : null;
+      })
+      .filter(Boolean)
+      .join(", ");
+    return campos
+      ? `A taverna recusou o pedido do duelo (${campos}). Escaneie o card de novo.`
+      : "A taverna recusou o pedido do duelo. Escaneie o card de novo.";
+  }
+
+  return status >= 500
+    ? "A taverna tropeçou no próprio feitiço. Tente de novo em alguns instantes."
+    : "Não foi possível realizar o duelo agora.";
 }
 
 /** XP que o desafiante levou — é o número que a tela de resultado destaca. */
