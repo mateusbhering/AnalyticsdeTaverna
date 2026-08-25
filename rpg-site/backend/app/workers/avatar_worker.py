@@ -221,10 +221,26 @@ async def generate_avatar_task(ctx, job_id: str, image_b64: str, class_name: str
         avatar_bytes = base64.b64decode(image_out_b64)
         public_url = await _upload_avatar(job_id, avatar_bytes, mime)
         payload = {"status": "done", "public_url": public_url, "mime": mime}
-    except Exception:
+    except BaseException as erro:
+        # `BaseException` e não `Exception` de propósito. Quando o arq mata o job
+        # por `job_timeout`, o que sobe é `CancelledError` — que herda de
+        # BaseException e passava direto por um `except Exception`. Resultado: o
+        # marcador de erro nunca era gravado, o status ficava "processing" para
+        # sempre e a pessoa esperava os 3 minutos do front por um job que já
+        # estava morto. Nenhuma forma de morte pode sair daqui sem deixar rastro.
+        #
         # NUNCA logamos a foto original nem os bytes — apenas o job_id e o traço.
         logger.exception("Falha ao gerar avatar para job %s", job_id)
         payload = {"status": "error", "error": "generation_failed"}
+
+        # Cancelamento não é erro de aplicação: grava o marcador e devolve o
+        # controle ao arq, que precisa saber que a tarefa de fato encerrou.
+        if isinstance(erro, asyncio.CancelledError):
+            try:
+                await redis.set(key, json.dumps(payload), ex=settings.result_ttl_seconds)
+            except Exception:
+                logger.exception("Job %s cancelado e sem marcador no Redis", job_id)
+            raise
 
     # Persistimos APENAS o ponteiro (URL do avatar ou marcador de erro), com TTL.
     try:
@@ -260,3 +276,18 @@ class WorkerSettings:
     # execução (~1 MB somados, numa foto de 480×480). Vinte cabem folgado no
     # plano starter.
     max_jobs = 20
+
+    # Teto de vida de um job. O padrão do arq é 300s, e o nosso orçamento de
+    # retry cabia por pouco: 4 chamadas ao Gemini (que já medimos em até 65s)
+    # mais 21s de backoff dão ~281s. Sob rajada, os 429 empurravam além disso e
+    # o job era cortado no meio da última tentativa. 420s deixa o orçamento
+    # inteiro caber; quem desiste antes é a nossa própria contagem de tentativas.
+    job_timeout = 420
+
+    # Quantas vezes o arq REEXECUTA o job inteiro. O padrão é 5 — e como
+    # `_run_gemini` já tenta 4 vezes por conta própria, isso chegava a 20
+    # chamadas ao Gemini por um único avatar. Com 1.000 requisições por dia de
+    # cota, um punhado de jobs ruins consome o dia. O retry que importa é o
+    # interno, que tem backoff e distingue erro transitório de definitivo; este
+    # aqui cobre só a morte do processo no meio do trabalho.
+    max_tries = 2

@@ -476,8 +476,21 @@ o Gemini é pago de novo — por um resultado que já existe.
 | Teto | Onde se ajusta | Efeito |
 |---|---|---|
 | `GEMINI_MAX_RPM` | env da Render | Espaça os inícios de chamada |
-| `max_jobs` do worker | `avatar_worker.py` (20) | Jobs simultâneos → ~85/min a ~14s cada |
+| `max_jobs` do worker | `avatar_worker.py` (20) | Jobs simultâneos |
 | Cota do Gemini | Google AI Studio | 100 RPM e **1.000 RPD** no Nível 1 |
+
+A latência de uma geração é do Gemini, não nossa: medimos **13s a 65s** em
+produção. Mexer no RPM não a encurta — o que ele resolve é a espera de FILA.
+
+**Orçamento de um job.** Nosso retry interno são 4 chamadas com backoff de 3+6+12s:
+no pior caso ~281s. O `job_timeout` do arq fica em **420s** para isso caber, e o
+`max_tries` em **2** (o padrão, 5, daria até 20 chamadas ao Gemini por avatar).
+
+> Quando o arq mata um job por timeout, o que sobe é `CancelledError` — que herda
+> de `BaseException` e passava direto por um `except Exception`. O marcador de
+> erro não era gravado, o status ficava `processing` para sempre e a pessoa
+> esperava os 3 minutos do front por um job já morto. O handler captura
+> `BaseException` e re-levanta o cancelamento depois de gravar.
 
 O RPD é o limite real de um dia de evento — nem o RPM nem a concorrência
 adiantam depois dele, e cada retry consome uma unidade. Confira em
@@ -764,7 +777,7 @@ pip install -r requirements-dev.txt
 pytest -q
 ```
 
-**395 testes.** Distribuição:
+**398 testes.** Distribuição:
 
 | Arquivo | Testes | Cobre |
 |---|---|---|
@@ -772,7 +785,7 @@ pytest -q
 | `test_api_rotas.py` | 34 | Rotas da API com repositório em memória |
 | `test_batalha_motor.py` | 31 | Validação da escolha, confronto, XP, narrativa, pareamento |
 | `test_avatar_endpoint.py` | 15 | Validação de upload, polling, limpeza |
-| `test_avatar_worker.py` | 12 | Job do Gemini (mockado), retries, rate limit |
+| `test_avatar_worker.py` | 15 | Job do Gemini (mockado), retries, rate limit |
 | `test_repo_coluna_ausente.py` | 8 | Gravação com o banco atrasado no schema |
 | `test_personagem.py` | 7 | Atributos, determinismo, fallback |
 | `test_privacy.py` | 3 | Invariantes de retenção da foto original |

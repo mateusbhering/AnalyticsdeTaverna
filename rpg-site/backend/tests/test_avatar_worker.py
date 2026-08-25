@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import base64
 import json
 from types import SimpleNamespace
@@ -252,3 +253,54 @@ async def test_worker_failure_stores_error_marker(redis, monkeypatch):
     assert stored["status"] == "error"
     # Marcador de erro também com TTL.
     assert 0 < await redis.ttl(result_key("job-fail")) <= 86400
+
+
+async def test_job_cancelado_ainda_grava_o_marcador(redis, monkeypatch, _mock_upload):
+    """O arq mata o job por `job_timeout` levantando CancelledError.
+
+    Ela herda de BaseException, então passava direto por um `except Exception`:
+    nenhum marcador era gravado, o status ficava "processing" para sempre e a
+    pessoa esperava os 3 minutos do front por um job que já estava morto. Foi o
+    que deixou 3 de 5 gerações penduradas num teste de rajada.
+    """
+
+    async def gemini_cancelado(image_bytes, prompt):
+        raise asyncio.CancelledError()
+
+    monkeypatch.setattr(avatar_worker, "_run_gemini", gemini_cancelado)
+
+    # O cancelamento precisa CONTINUAR subindo: o arq tem de saber que acabou.
+    with pytest.raises(asyncio.CancelledError):
+        await avatar_worker.generate_avatar_task(_ctx(redis), "job-morto", ORIGINAL_B64)
+
+    # ...mas não sem deixar rastro para quem está esperando na tela.
+    stored = json.loads(await redis.get(result_key("job-morto")))
+    assert stored["status"] == "error"
+
+
+async def test_orcamento_de_retry_cabe_no_job_timeout():
+    """O teto do arq tem de comportar o pior caso das nossas tentativas.
+
+    Se não couber, o job é cortado no meio da última chamada — que foi
+    exatamente como os jobs morriam em silêncio.
+    """
+    from app.workers.avatar_worker import _GEMINI_MAX_ATTEMPTS, WorkerSettings
+
+    backoff = sum(3.0 * 2**i for i in range(_GEMINI_MAX_ATTEMPTS - 1))  # 3 + 6 + 12
+    pior_chamada = 65.0  # maior latência medida do Gemini em produção
+    pior_caso = _GEMINI_MAX_ATTEMPTS * pior_chamada + backoff
+
+    assert WorkerSettings.job_timeout > pior_caso, (
+        f"job_timeout {WorkerSettings.job_timeout}s não cobre o pior caso de {pior_caso:.0f}s"
+    )
+
+
+def test_arq_nao_multiplica_o_gasto_de_gemini():
+    """`max_tries` do arq × tentativas internas = chamadas por avatar.
+
+    O padrão do arq (5) daria 20 chamadas por um único avatar — com 1.000
+    requisições por dia de cota, um punhado de jobs ruins consome o dia.
+    """
+    from app.workers.avatar_worker import _GEMINI_MAX_ATTEMPTS, WorkerSettings
+
+    assert WorkerSettings.max_tries * _GEMINI_MAX_ATTEMPTS <= 8
