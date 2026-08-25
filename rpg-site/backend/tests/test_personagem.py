@@ -32,7 +32,7 @@ def test_atributos_seguem_a_formula_do_projeto():
     dims = {
         "persistencia": 4,
         "lideranca": 3,
-        "impulsividade": 5,   # metade arredondada = 2 (round(2.5) = 2 em Python)
+        "impulsividade": 5,   # metade arredondada = 3 (meio para cima, como o JS)
         "estrategia": 6,
         "percepcao": 2,
         "adaptabilidade": 1,
@@ -44,7 +44,7 @@ def test_atributos_seguem_a_formula_do_projeto():
     attrs = calcular_atributos(dims)
 
     assert set(attrs) == set(ATRIBUTOS)
-    assert attrs["forca"] == 4 + 3 + 2
+    assert attrs["forca"] == 4 + 3 + 3
     assert attrs["inteligencia"] == 6 + 2
     assert attrs["carisma"] == 8 + 3
     assert attrs["caos"] == 3 + 5

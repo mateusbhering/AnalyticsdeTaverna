@@ -1,0 +1,3452 @@
+[
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 6,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 6,
+   "empatia": 5,
+   "adaptabilidade": 0,
+   "criatividade": 1,
+   "impulsividade": 0,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 5,
+   "inteligencia": 7,
+   "agilidade": 0,
+   "resistencia": 4,
+   "carisma": 7,
+   "sabedoria": 6,
+   "caos": 1
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 6,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 0,
+   "adaptabilidade": 0,
+   "criatividade": 1,
+   "impulsividade": 0,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 0,
+   "inteligencia": 7,
+   "agilidade": 0,
+   "resistencia": 3,
+   "carisma": 1,
+   "sabedoria": 1,
+   "caos": 1
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 9,
+   "disciplina": 12,
+   "persistencia": 12,
+   "sociabilidade": 2,
+   "empatia": 17,
+   "adaptabilidade": 1,
+   "criatividade": 8,
+   "impulsividade": 0,
+   "percepcao": 19
+  },
+  "attrs": {
+   "forca": 14,
+   "inteligencia": 28,
+   "agilidade": 1,
+   "resistencia": 24,
+   "carisma": 4,
+   "sabedoria": 36,
+   "caos": 8
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 10,
+   "disciplina": 7,
+   "persistencia": 13,
+   "sociabilidade": 6,
+   "empatia": 14,
+   "adaptabilidade": 10,
+   "criatividade": 19,
+   "impulsividade": 0,
+   "percepcao": 9
+  },
+  "attrs": {
+   "forca": 28,
+   "inteligencia": 19,
+   "agilidade": 10,
+   "resistencia": 20,
+   "carisma": 21,
+   "sabedoria": 23,
+   "caos": 19
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 4,
+   "disciplina": 3,
+   "persistencia": 6,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 6,
+   "criatividade": 1,
+   "impulsividade": 0,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 10,
+   "inteligencia": 6,
+   "agilidade": 6,
+   "resistencia": 9,
+   "carisma": 6,
+   "sabedoria": 2,
+   "caos": 1
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 1,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 2,
+   "adaptabilidade": 5,
+   "criatividade": 0,
+   "impulsividade": 0,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 7,
+   "inteligencia": 9,
+   "agilidade": 5,
+   "resistencia": 3,
+   "carisma": 6,
+   "sabedoria": 7,
+   "caos": 0
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 6,
+   "disciplina": 8,
+   "persistencia": 7,
+   "sociabilidade": 16,
+   "empatia": 15,
+   "adaptabilidade": 10,
+   "criatividade": 18,
+   "impulsividade": 1,
+   "percepcao": 19
+  },
+  "attrs": {
+   "forca": 17,
+   "inteligencia": 25,
+   "agilidade": 11,
+   "resistencia": 15,
+   "carisma": 25,
+   "sabedoria": 34,
+   "caos": 19
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 6,
+   "disciplina": 1,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 2,
+   "adaptabilidade": 2,
+   "criatividade": 2,
+   "impulsividade": 1,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 3,
+   "inteligencia": 10,
+   "agilidade": 3,
+   "resistencia": 3,
+   "carisma": 1,
+   "sabedoria": 6,
+   "caos": 3
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 3,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 4,
+   "empatia": 4,
+   "adaptabilidade": 0,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 11,
+   "inteligencia": 3,
+   "agilidade": 1,
+   "resistencia": 9,
+   "carisma": 10,
+   "sabedoria": 4,
+   "caos": 5
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 11,
+   "disciplina": 3,
+   "persistencia": 13,
+   "sociabilidade": 15,
+   "empatia": 3,
+   "adaptabilidade": 8,
+   "criatividade": 13,
+   "impulsividade": 1,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 22,
+   "inteligencia": 11,
+   "agilidade": 9,
+   "resistencia": 16,
+   "carisma": 23,
+   "sabedoria": 3,
+   "caos": 14
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 6,
+   "disciplina": 6,
+   "persistencia": 3,
+   "sociabilidade": 3,
+   "empatia": 3,
+   "adaptabilidade": 5,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 5,
+   "inteligencia": 11,
+   "agilidade": 6,
+   "resistencia": 9,
+   "carisma": 4,
+   "sabedoria": 8,
+   "caos": 5
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 0,
+   "adaptabilidade": 0,
+   "criatividade": 3,
+   "impulsividade": 1,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 1,
+   "inteligencia": 10,
+   "agilidade": 1,
+   "resistencia": 2,
+   "carisma": 1,
+   "sabedoria": 6,
+   "caos": 4
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 19,
+   "estrategia": 11,
+   "disciplina": 6,
+   "persistencia": 10,
+   "sociabilidade": 8,
+   "empatia": 2,
+   "adaptabilidade": 12,
+   "criatividade": 18,
+   "impulsividade": 1,
+   "percepcao": 16
+  },
+  "attrs": {
+   "forca": 30,
+   "inteligencia": 27,
+   "agilidade": 13,
+   "resistencia": 16,
+   "carisma": 27,
+   "sabedoria": 18,
+   "caos": 19
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 3,
+   "disciplina": 0,
+   "persistencia": 4,
+   "sociabilidade": 3,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 6,
+   "inteligencia": 8,
+   "agilidade": 3,
+   "resistencia": 4,
+   "carisma": 4,
+   "sabedoria": 10,
+   "caos": 2
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 3,
+   "disciplina": 3,
+   "persistencia": 1,
+   "sociabilidade": 6,
+   "empatia": 0,
+   "adaptabilidade": 4,
+   "criatividade": 2,
+   "impulsividade": 1,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 8,
+   "inteligencia": 8,
+   "agilidade": 5,
+   "resistencia": 4,
+   "carisma": 12,
+   "sabedoria": 5,
+   "caos": 3
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 10,
+   "disciplina": 1,
+   "persistencia": 1,
+   "sociabilidade": 14,
+   "empatia": 1,
+   "adaptabilidade": 12,
+   "criatividade": 12,
+   "impulsividade": 1,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 15,
+   "inteligencia": 10,
+   "agilidade": 13,
+   "resistencia": 2,
+   "carisma": 27,
+   "sabedoria": 1,
+   "caos": 13
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 16,
+   "disciplina": 5,
+   "persistencia": 14,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 18,
+   "criatividade": 1,
+   "impulsividade": 1,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 16,
+   "inteligencia": 16,
+   "agilidade": 19,
+   "resistencia": 19,
+   "carisma": 3,
+   "sabedoria": 0,
+   "caos": 2
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 5,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 0,
+   "adaptabilidade": 0,
+   "criatividade": 4,
+   "impulsividade": 1,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 8,
+   "inteligencia": 5,
+   "agilidade": 1,
+   "resistencia": 8,
+   "carisma": 5,
+   "sabedoria": 2,
+   "caos": 5
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 6,
+   "disciplina": 7,
+   "persistencia": 6,
+   "sociabilidade": 11,
+   "empatia": 15,
+   "adaptabilidade": 8,
+   "criatividade": 14,
+   "impulsividade": 2,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 19,
+   "inteligencia": 12,
+   "agilidade": 9,
+   "resistencia": 13,
+   "carisma": 23,
+   "sabedoria": 21,
+   "caos": 16
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 5,
+   "sociabilidade": 4,
+   "empatia": 4,
+   "adaptabilidade": 4,
+   "criatividade": 4,
+   "impulsividade": 2,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 6,
+   "inteligencia": 8,
+   "agilidade": 5,
+   "resistencia": 10,
+   "carisma": 4,
+   "sabedoria": 8,
+   "caos": 6
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 2,
+   "disciplina": 2,
+   "persistencia": 6,
+   "sociabilidade": 6,
+   "empatia": 6,
+   "adaptabilidade": 3,
+   "criatividade": 4,
+   "impulsividade": 2,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 7,
+   "inteligencia": 7,
+   "agilidade": 4,
+   "resistencia": 8,
+   "carisma": 6,
+   "sabedoria": 11,
+   "caos": 6
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 3,
+   "disciplina": 2,
+   "persistencia": 6,
+   "sociabilidade": 5,
+   "empatia": 2,
+   "adaptabilidade": 5,
+   "criatividade": 4,
+   "impulsividade": 2,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 10,
+   "inteligencia": 4,
+   "agilidade": 6,
+   "resistencia": 8,
+   "carisma": 8,
+   "sabedoria": 3,
+   "caos": 6
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 6,
+   "disciplina": 6,
+   "persistencia": 4,
+   "sociabilidade": 5,
+   "empatia": 6,
+   "adaptabilidade": 2,
+   "criatividade": 6,
+   "impulsividade": 2,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 9,
+   "inteligencia": 8,
+   "agilidade": 3,
+   "resistencia": 10,
+   "carisma": 9,
+   "sabedoria": 8,
+   "caos": 8
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 19,
+   "estrategia": 10,
+   "disciplina": 4,
+   "persistencia": 17,
+   "sociabilidade": 13,
+   "empatia": 1,
+   "adaptabilidade": 6,
+   "criatividade": 15,
+   "impulsividade": 2,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 37,
+   "inteligencia": 27,
+   "agilidade": 7,
+   "resistencia": 21,
+   "carisma": 32,
+   "sabedoria": 18,
+   "caos": 17
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 16,
+   "disciplina": 10,
+   "persistencia": 0,
+   "sociabilidade": 15,
+   "empatia": 9,
+   "adaptabilidade": 19,
+   "criatividade": 17,
+   "impulsividade": 3,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 2,
+   "inteligencia": 33,
+   "agilidade": 21,
+   "resistencia": 10,
+   "carisma": 15,
+   "sabedoria": 26,
+   "caos": 20
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 0,
+   "adaptabilidade": 5,
+   "criatividade": 4,
+   "impulsividade": 3,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 5,
+   "inteligencia": 3,
+   "agilidade": 7,
+   "resistencia": 6,
+   "carisma": 2,
+   "sabedoria": 0,
+   "caos": 7
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 6,
+   "disciplina": 3,
+   "persistencia": 5,
+   "sociabilidade": 0,
+   "empatia": 4,
+   "adaptabilidade": 0,
+   "criatividade": 0,
+   "impulsividade": 3,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 9,
+   "inteligencia": 7,
+   "agilidade": 2,
+   "resistencia": 8,
+   "carisma": 2,
+   "sabedoria": 5,
+   "caos": 3
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 1,
+   "disciplina": 0,
+   "persistencia": 2,
+   "sociabilidade": 5,
+   "empatia": 6,
+   "adaptabilidade": 2,
+   "criatividade": 6,
+   "impulsividade": 3,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 10,
+   "inteligencia": 2,
+   "agilidade": 4,
+   "resistencia": 2,
+   "carisma": 11,
+   "sabedoria": 7,
+   "caos": 9
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 5,
+   "disciplina": 0,
+   "persistencia": 3,
+   "sociabilidade": 3,
+   "empatia": 3,
+   "adaptabilidade": 2,
+   "criatividade": 1,
+   "impulsividade": 3,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 7,
+   "inteligencia": 9,
+   "agilidade": 4,
+   "resistencia": 3,
+   "carisma": 5,
+   "sabedoria": 7,
+   "caos": 4
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 6,
+   "persistencia": 16,
+   "sociabilidade": 17,
+   "empatia": 14,
+   "adaptabilidade": 12,
+   "criatividade": 8,
+   "impulsividade": 3,
+   "percepcao": 10
+  },
+  "attrs": {
+   "forca": 23,
+   "inteligencia": 14,
+   "agilidade": 14,
+   "resistencia": 22,
+   "carisma": 22,
+   "sabedoria": 24,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 5,
+   "disciplina": 5,
+   "persistencia": 4,
+   "sociabilidade": 5,
+   "empatia": 6,
+   "adaptabilidade": 1,
+   "criatividade": 4,
+   "impulsividade": 4,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 8,
+   "inteligencia": 11,
+   "agilidade": 3,
+   "resistencia": 9,
+   "carisma": 7,
+   "sabedoria": 12,
+   "caos": 8
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 5,
+   "disciplina": 1,
+   "persistencia": 5,
+   "sociabilidade": 0,
+   "empatia": 2,
+   "adaptabilidade": 1,
+   "criatividade": 1,
+   "impulsividade": 4,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 11,
+   "inteligencia": 9,
+   "agilidade": 3,
+   "resistencia": 6,
+   "carisma": 4,
+   "sabedoria": 6,
+   "caos": 5
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 1,
+   "disciplina": 5,
+   "persistencia": 0,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 2,
+   "criatividade": 3,
+   "impulsividade": 4,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 4,
+   "inteligencia": 2,
+   "agilidade": 4,
+   "resistencia": 5,
+   "carisma": 7,
+   "sabedoria": 6,
+   "caos": 7
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 1,
+   "persistencia": 1,
+   "sociabilidade": 0,
+   "empatia": 1,
+   "adaptabilidade": 0,
+   "criatividade": 4,
+   "impulsividade": 4,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 3,
+   "inteligencia": 5,
+   "agilidade": 2,
+   "resistencia": 2,
+   "carisma": 0,
+   "sabedoria": 5,
+   "caos": 8
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 17,
+   "disciplina": 3,
+   "persistencia": 6,
+   "sociabilidade": 2,
+   "empatia": 6,
+   "adaptabilidade": 18,
+   "criatividade": 12,
+   "impulsividade": 4,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 21,
+   "inteligencia": 19,
+   "agilidade": 20,
+   "resistencia": 9,
+   "carisma": 15,
+   "sabedoria": 8,
+   "caos": 16
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 2,
+   "disciplina": 4,
+   "persistencia": 1,
+   "sociabilidade": 6,
+   "empatia": 5,
+   "adaptabilidade": 6,
+   "criatividade": 2,
+   "impulsividade": 4,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 9,
+   "inteligencia": 6,
+   "agilidade": 8,
+   "resistencia": 5,
+   "carisma": 12,
+   "sabedoria": 9,
+   "caos": 6
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 16,
+   "disciplina": 8,
+   "persistencia": 19,
+   "sociabilidade": 11,
+   "empatia": 8,
+   "adaptabilidade": 6,
+   "criatividade": 10,
+   "impulsividade": 5,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 31,
+   "inteligencia": 33,
+   "agilidade": 9,
+   "resistencia": 27,
+   "carisma": 20,
+   "sabedoria": 25,
+   "caos": 15
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 5,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 2,
+   "empatia": 0,
+   "adaptabilidade": 1,
+   "criatividade": 1,
+   "impulsividade": 5,
+   "percepcao": 3
+  },
+  "attrs": {
+   "forca": 8,
+   "inteligencia": 8,
+   "agilidade": 4,
+   "resistencia": 7,
+   "carisma": 4,
+   "sabedoria": 3,
+   "caos": 6
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 3,
+   "disciplina": 0,
+   "persistencia": 5,
+   "sociabilidade": 6,
+   "empatia": 3,
+   "adaptabilidade": 1,
+   "criatividade": 6,
+   "impulsividade": 5,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 10,
+   "inteligencia": 9,
+   "agilidade": 4,
+   "resistencia": 5,
+   "carisma": 8,
+   "sabedoria": 9,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 3,
+   "adaptabilidade": 2,
+   "criatividade": 4,
+   "impulsividade": 5,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 11,
+   "inteligencia": 8,
+   "agilidade": 5,
+   "resistencia": 7,
+   "carisma": 10,
+   "sabedoria": 7,
+   "caos": 9
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 0,
+   "disciplina": 18,
+   "persistencia": 3,
+   "sociabilidade": 18,
+   "empatia": 15,
+   "adaptabilidade": 19,
+   "criatividade": 7,
+   "impulsividade": 5,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 19,
+   "inteligencia": 17,
+   "agilidade": 22,
+   "resistencia": 21,
+   "carisma": 31,
+   "sabedoria": 32,
+   "caos": 12
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 4,
+   "disciplina": 0,
+   "persistencia": 2,
+   "sociabilidade": 14,
+   "empatia": 12,
+   "adaptabilidade": 15,
+   "criatividade": 4,
+   "impulsividade": 5,
+   "percepcao": 18
+  },
+  "attrs": {
+   "forca": 10,
+   "inteligencia": 22,
+   "agilidade": 18,
+   "resistencia": 2,
+   "carisma": 19,
+   "sabedoria": 30,
+   "caos": 9
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 4,
+   "disciplina": 6,
+   "persistencia": 6,
+   "sociabilidade": 0,
+   "empatia": 1,
+   "adaptabilidade": 6,
+   "criatividade": 0,
+   "impulsividade": 5,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 9,
+   "inteligencia": 4,
+   "agilidade": 9,
+   "resistencia": 12,
+   "carisma": 0,
+   "sabedoria": 1,
+   "caos": 5
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 2,
+   "disciplina": 2,
+   "persistencia": 4,
+   "sociabilidade": 6,
+   "empatia": 1,
+   "adaptabilidade": 2,
+   "criatividade": 6,
+   "impulsividade": 5,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 11,
+   "inteligencia": 8,
+   "agilidade": 5,
+   "resistencia": 6,
+   "carisma": 10,
+   "sabedoria": 7,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 5,
+   "criatividade": 1,
+   "impulsividade": 5,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 7,
+   "inteligencia": 5,
+   "agilidade": 8,
+   "resistencia": 7,
+   "carisma": 6,
+   "sabedoria": 6,
+   "caos": 6
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 1,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 4,
+   "empatia": 0,
+   "adaptabilidade": 4,
+   "criatividade": 6,
+   "impulsividade": 5,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 6,
+   "inteligencia": 7,
+   "agilidade": 7,
+   "resistencia": 3,
+   "carisma": 7,
+   "sabedoria": 6,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 0,
+   "sociabilidade": 3,
+   "empatia": 5,
+   "adaptabilidade": 1,
+   "criatividade": 6,
+   "impulsividade": 5,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 7,
+   "inteligencia": 3,
+   "agilidade": 4,
+   "resistencia": 4,
+   "carisma": 7,
+   "sabedoria": 5,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 3,
+   "disciplina": 3,
+   "persistencia": 6,
+   "sociabilidade": 3,
+   "empatia": 3,
+   "adaptabilidade": 4,
+   "criatividade": 4,
+   "impulsividade": 5,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 12,
+   "inteligencia": 3,
+   "agilidade": 7,
+   "resistencia": 9,
+   "carisma": 6,
+   "sabedoria": 3,
+   "caos": 9
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 0,
+   "disciplina": 4,
+   "persistencia": 3,
+   "sociabilidade": 2,
+   "empatia": 2,
+   "adaptabilidade": 2,
+   "criatividade": 3,
+   "impulsividade": 6,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 6,
+   "inteligencia": 0,
+   "agilidade": 5,
+   "resistencia": 7,
+   "carisma": 2,
+   "sabedoria": 2,
+   "caos": 9
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 17,
+   "disciplina": 16,
+   "persistencia": 12,
+   "sociabilidade": 0,
+   "empatia": 10,
+   "adaptabilidade": 3,
+   "criatividade": 18,
+   "impulsividade": 6,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 16,
+   "inteligencia": 18,
+   "agilidade": 6,
+   "resistencia": 28,
+   "carisma": 1,
+   "sabedoria": 11,
+   "caos": 24
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 3,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 0,
+   "criatividade": 5,
+   "impulsividade": 6,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 8,
+   "inteligencia": 4,
+   "agilidade": 3,
+   "resistencia": 9,
+   "carisma": 1,
+   "sabedoria": 6,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 0,
+   "disciplina": 1,
+   "persistencia": 6,
+   "sociabilidade": 1,
+   "empatia": 6,
+   "adaptabilidade": 6,
+   "criatividade": 5,
+   "impulsividade": 6,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 12,
+   "inteligencia": 6,
+   "agilidade": 9,
+   "resistencia": 7,
+   "carisma": 4,
+   "sabedoria": 12,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 6,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 3,
+   "criatividade": 3,
+   "impulsividade": 6,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 5,
+   "inteligencia": 6,
+   "agilidade": 6,
+   "resistencia": 8,
+   "carisma": 1,
+   "sabedoria": 10,
+   "caos": 9
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 13,
+   "disciplina": 3,
+   "persistencia": 11,
+   "sociabilidade": 14,
+   "empatia": 15,
+   "adaptabilidade": 2,
+   "criatividade": 14,
+   "impulsividade": 6,
+   "percepcao": 10
+  },
+  "attrs": {
+   "forca": 15,
+   "inteligencia": 23,
+   "agilidade": 5,
+   "resistencia": 14,
+   "carisma": 15,
+   "sabedoria": 25,
+   "caos": 20
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 16,
+   "disciplina": 13,
+   "persistencia": 18,
+   "sociabilidade": 6,
+   "empatia": 9,
+   "adaptabilidade": 7,
+   "criatividade": 3,
+   "impulsividade": 7,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 37,
+   "inteligencia": 20,
+   "agilidade": 11,
+   "resistencia": 31,
+   "carisma": 21,
+   "sabedoria": 13,
+   "caos": 10
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 2,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 4,
+   "empatia": 0,
+   "adaptabilidade": 14,
+   "criatividade": 4,
+   "impulsividade": 7,
+   "percepcao": 14
+  },
+  "attrs": {
+   "forca": 22,
+   "inteligencia": 16,
+   "agilidade": 18,
+   "resistencia": 3,
+   "carisma": 21,
+   "sabedoria": 14,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 18,
+   "disciplina": 2,
+   "persistencia": 11,
+   "sociabilidade": 2,
+   "empatia": 15,
+   "adaptabilidade": 3,
+   "criatividade": 16,
+   "impulsividade": 7,
+   "percepcao": 19
+  },
+  "attrs": {
+   "forca": 30,
+   "inteligencia": 37,
+   "agilidade": 7,
+   "resistencia": 13,
+   "carisma": 17,
+   "sabedoria": 34,
+   "caos": 23
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 17,
+   "disciplina": 16,
+   "persistencia": 9,
+   "sociabilidade": 1,
+   "empatia": 4,
+   "adaptabilidade": 16,
+   "criatividade": 2,
+   "impulsividade": 7,
+   "percepcao": 15
+  },
+  "attrs": {
+   "forca": 21,
+   "inteligencia": 32,
+   "agilidade": 20,
+   "resistencia": 25,
+   "carisma": 9,
+   "sabedoria": 19,
+   "caos": 9
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 11,
+   "estrategia": 14,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 16,
+   "empatia": 2,
+   "adaptabilidade": 0,
+   "criatividade": 5,
+   "impulsividade": 7,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 20,
+   "inteligencia": 15,
+   "agilidade": 4,
+   "resistencia": 9,
+   "carisma": 27,
+   "sabedoria": 3,
+   "caos": 12
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 3,
+   "disciplina": 7,
+   "persistencia": 18,
+   "sociabilidade": 5,
+   "empatia": 1,
+   "adaptabilidade": 2,
+   "criatividade": 12,
+   "impulsividade": 7,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 27,
+   "inteligencia": 3,
+   "agilidade": 6,
+   "resistencia": 25,
+   "carisma": 10,
+   "sabedoria": 1,
+   "caos": 19
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 19,
+   "estrategia": 7,
+   "disciplina": 11,
+   "persistencia": 13,
+   "sociabilidade": 5,
+   "empatia": 16,
+   "adaptabilidade": 16,
+   "criatividade": 12,
+   "impulsividade": 8,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 36,
+   "inteligencia": 9,
+   "agilidade": 20,
+   "resistencia": 24,
+   "carisma": 24,
+   "sabedoria": 18,
+   "caos": 20
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 11,
+   "disciplina": 0,
+   "persistencia": 1,
+   "sociabilidade": 0,
+   "empatia": 16,
+   "adaptabilidade": 8,
+   "criatividade": 16,
+   "impulsividade": 8,
+   "percepcao": 3
+  },
+  "attrs": {
+   "forca": 7,
+   "inteligencia": 14,
+   "agilidade": 12,
+   "resistencia": 1,
+   "carisma": 2,
+   "sabedoria": 19,
+   "caos": 24
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 11,
+   "disciplina": 12,
+   "persistencia": 5,
+   "sociabilidade": 1,
+   "empatia": 18,
+   "adaptabilidade": 5,
+   "criatividade": 12,
+   "impulsividade": 8,
+   "percepcao": 12
+  },
+  "attrs": {
+   "forca": 9,
+   "inteligencia": 23,
+   "agilidade": 9,
+   "resistencia": 17,
+   "carisma": 1,
+   "sabedoria": 30,
+   "caos": 20
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 13,
+   "disciplina": 4,
+   "persistencia": 13,
+   "sociabilidade": 10,
+   "empatia": 9,
+   "adaptabilidade": 13,
+   "criatividade": 15,
+   "impulsividade": 8,
+   "percepcao": 19
+  },
+  "attrs": {
+   "forca": 18,
+   "inteligencia": 32,
+   "agilidade": 17,
+   "resistencia": 17,
+   "carisma": 11,
+   "sabedoria": 28,
+   "caos": 23
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 11,
+   "disciplina": 4,
+   "persistencia": 6,
+   "sociabilidade": 9,
+   "empatia": 6,
+   "adaptabilidade": 19,
+   "criatividade": 14,
+   "impulsividade": 8,
+   "percepcao": 12
+  },
+  "attrs": {
+   "forca": 19,
+   "inteligencia": 23,
+   "agilidade": 23,
+   "resistencia": 10,
+   "carisma": 18,
+   "sabedoria": 18,
+   "caos": 22
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 19,
+   "estrategia": 14,
+   "disciplina": 5,
+   "persistencia": 17,
+   "sociabilidade": 6,
+   "empatia": 12,
+   "adaptabilidade": 9,
+   "criatividade": 0,
+   "impulsividade": 8,
+   "percepcao": 14
+  },
+  "attrs": {
+   "forca": 40,
+   "inteligencia": 28,
+   "agilidade": 13,
+   "resistencia": 22,
+   "carisma": 25,
+   "sabedoria": 26,
+   "caos": 8
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 11,
+   "disciplina": 19,
+   "persistencia": 6,
+   "sociabilidade": 2,
+   "empatia": 14,
+   "adaptabilidade": 0,
+   "criatividade": 9,
+   "impulsividade": 9,
+   "percepcao": 8
+  },
+  "attrs": {
+   "forca": 23,
+   "inteligencia": 19,
+   "agilidade": 5,
+   "resistencia": 25,
+   "carisma": 14,
+   "sabedoria": 22,
+   "caos": 18
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 0,
+   "disciplina": 10,
+   "persistencia": 19,
+   "sociabilidade": 10,
+   "empatia": 7,
+   "adaptabilidade": 11,
+   "criatividade": 4,
+   "impulsividade": 9,
+   "percepcao": 8
+  },
+  "attrs": {
+   "forca": 33,
+   "inteligencia": 8,
+   "agilidade": 16,
+   "resistencia": 29,
+   "carisma": 19,
+   "sabedoria": 15,
+   "caos": 13
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 11,
+   "disciplina": 0,
+   "persistencia": 14,
+   "sociabilidade": 7,
+   "empatia": 5,
+   "adaptabilidade": 8,
+   "criatividade": 5,
+   "impulsividade": 9,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 21,
+   "inteligencia": 15,
+   "agilidade": 13,
+   "resistencia": 14,
+   "carisma": 9,
+   "sabedoria": 9,
+   "caos": 14
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 18,
+   "disciplina": 15,
+   "persistencia": 0,
+   "sociabilidade": 18,
+   "empatia": 12,
+   "adaptabilidade": 7,
+   "criatividade": 3,
+   "impulsividade": 9,
+   "percepcao": 8
+  },
+  "attrs": {
+   "forca": 19,
+   "inteligencia": 26,
+   "agilidade": 12,
+   "resistencia": 15,
+   "carisma": 32,
+   "sabedoria": 20,
+   "caos": 12
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 10,
+   "estrategia": 13,
+   "disciplina": 5,
+   "persistencia": 7,
+   "sociabilidade": 17,
+   "empatia": 5,
+   "adaptabilidade": 4,
+   "criatividade": 11,
+   "impulsividade": 9,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 22,
+   "inteligencia": 19,
+   "agilidade": 9,
+   "resistencia": 12,
+   "carisma": 27,
+   "sabedoria": 11,
+   "caos": 20
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 19,
+   "estrategia": 18,
+   "disciplina": 19,
+   "persistencia": 2,
+   "sociabilidade": 1,
+   "empatia": 5,
+   "adaptabilidade": 10,
+   "criatividade": 18,
+   "impulsividade": 9,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 26,
+   "inteligencia": 19,
+   "agilidade": 15,
+   "resistencia": 21,
+   "carisma": 20,
+   "sabedoria": 6,
+   "caos": 27
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 0,
+   "disciplina": 5,
+   "persistencia": 7,
+   "sociabilidade": 10,
+   "empatia": 13,
+   "adaptabilidade": 1,
+   "criatividade": 9,
+   "impulsividade": 9,
+   "percepcao": 12
+  },
+  "attrs": {
+   "forca": 12,
+   "inteligencia": 12,
+   "agilidade": 6,
+   "resistencia": 12,
+   "carisma": 10,
+   "sabedoria": 25,
+   "caos": 18
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 18,
+   "estrategia": 9,
+   "disciplina": 10,
+   "persistencia": 12,
+   "sociabilidade": 11,
+   "empatia": 18,
+   "adaptabilidade": 13,
+   "criatividade": 0,
+   "impulsividade": 9,
+   "percepcao": 10
+  },
+  "attrs": {
+   "forca": 35,
+   "inteligencia": 19,
+   "agilidade": 18,
+   "resistencia": 22,
+   "carisma": 29,
+   "sabedoria": 28,
+   "caos": 9
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 6,
+   "disciplina": 3,
+   "persistencia": 0,
+   "sociabilidade": 0,
+   "empatia": 3,
+   "adaptabilidade": 14,
+   "criatividade": 11,
+   "impulsividade": 9,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 13,
+   "inteligencia": 8,
+   "agilidade": 19,
+   "resistencia": 3,
+   "carisma": 8,
+   "sabedoria": 5,
+   "caos": 20
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 6,
+   "disciplina": 19,
+   "persistencia": 10,
+   "sociabilidade": 7,
+   "empatia": 8,
+   "adaptabilidade": 14,
+   "criatividade": 10,
+   "impulsividade": 9,
+   "percepcao": 8
+  },
+  "attrs": {
+   "forca": 15,
+   "inteligencia": 14,
+   "agilidade": 19,
+   "resistencia": 29,
+   "carisma": 7,
+   "sabedoria": 16,
+   "caos": 19
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 5,
+   "disciplina": 10,
+   "persistencia": 11,
+   "sociabilidade": 0,
+   "empatia": 18,
+   "adaptabilidade": 18,
+   "criatividade": 10,
+   "impulsividade": 9,
+   "percepcao": 14
+  },
+  "attrs": {
+   "forca": 21,
+   "inteligencia": 19,
+   "agilidade": 23,
+   "resistencia": 21,
+   "carisma": 5,
+   "sabedoria": 32,
+   "caos": 19
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 10,
+   "disciplina": 1,
+   "persistencia": 10,
+   "sociabilidade": 3,
+   "empatia": 10,
+   "adaptabilidade": 10,
+   "criatividade": 7,
+   "impulsividade": 9,
+   "percepcao": 11
+  },
+  "attrs": {
+   "forca": 21,
+   "inteligencia": 21,
+   "agilidade": 15,
+   "resistencia": 11,
+   "carisma": 9,
+   "sabedoria": 21,
+   "caos": 16
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 15,
+   "disciplina": 9,
+   "persistencia": 0,
+   "sociabilidade": 3,
+   "empatia": 6,
+   "adaptabilidade": 4,
+   "criatividade": 8,
+   "impulsividade": 10,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 13,
+   "inteligencia": 21,
+   "agilidade": 9,
+   "resistencia": 9,
+   "carisma": 11,
+   "sabedoria": 12,
+   "caos": 18
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 0,
+   "disciplina": 4,
+   "persistencia": 10,
+   "sociabilidade": 9,
+   "empatia": 2,
+   "adaptabilidade": 9,
+   "criatividade": 0,
+   "impulsividade": 10,
+   "percepcao": 11
+  },
+  "attrs": {
+   "forca": 27,
+   "inteligencia": 11,
+   "agilidade": 14,
+   "resistencia": 14,
+   "carisma": 21,
+   "sabedoria": 13,
+   "caos": 10
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 14,
+   "disciplina": 16,
+   "persistencia": 10,
+   "sociabilidade": 15,
+   "empatia": 8,
+   "adaptabilidade": 11,
+   "criatividade": 5,
+   "impulsividade": 10,
+   "percepcao": 15
+  },
+  "attrs": {
+   "forca": 30,
+   "inteligencia": 29,
+   "agilidade": 16,
+   "resistencia": 26,
+   "carisma": 30,
+   "sabedoria": 23,
+   "caos": 15
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 2,
+   "disciplina": 1,
+   "persistencia": 3,
+   "sociabilidade": 1,
+   "empatia": 11,
+   "adaptabilidade": 17,
+   "criatividade": 1,
+   "impulsividade": 10,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 17,
+   "inteligencia": 4,
+   "agilidade": 22,
+   "resistencia": 4,
+   "carisma": 10,
+   "sabedoria": 13,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 15,
+   "disciplina": 19,
+   "persistencia": 8,
+   "sociabilidade": 9,
+   "empatia": 14,
+   "adaptabilidade": 7,
+   "criatividade": 6,
+   "impulsividade": 10,
+   "percepcao": 18
+  },
+  "attrs": {
+   "forca": 22,
+   "inteligencia": 33,
+   "agilidade": 12,
+   "resistencia": 27,
+   "carisma": 18,
+   "sabedoria": 32,
+   "caos": 16
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 18,
+   "estrategia": 5,
+   "disciplina": 0,
+   "persistencia": 0,
+   "sociabilidade": 1,
+   "empatia": 16,
+   "adaptabilidade": 3,
+   "criatividade": 1,
+   "impulsividade": 10,
+   "percepcao": 10
+  },
+  "attrs": {
+   "forca": 23,
+   "inteligencia": 15,
+   "agilidade": 8,
+   "resistencia": 0,
+   "carisma": 19,
+   "sabedoria": 26,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 18,
+   "disciplina": 9,
+   "persistencia": 9,
+   "sociabilidade": 6,
+   "empatia": 16,
+   "adaptabilidade": 13,
+   "criatividade": 12,
+   "impulsividade": 11,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 30,
+   "inteligencia": 35,
+   "agilidade": 19,
+   "resistencia": 18,
+   "carisma": 21,
+   "sabedoria": 33,
+   "caos": 23
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 17,
+   "disciplina": 0,
+   "persistencia": 13,
+   "sociabilidade": 19,
+   "empatia": 12,
+   "adaptabilidade": 0,
+   "criatividade": 0,
+   "impulsividade": 11,
+   "percepcao": 9
+  },
+  "attrs": {
+   "forca": 22,
+   "inteligencia": 26,
+   "agilidade": 6,
+   "resistencia": 13,
+   "carisma": 22,
+   "sabedoria": 21,
+   "caos": 11
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 7,
+   "estrategia": 11,
+   "disciplina": 18,
+   "persistencia": 1,
+   "sociabilidade": 19,
+   "empatia": 9,
+   "adaptabilidade": 3,
+   "criatividade": 4,
+   "impulsividade": 11,
+   "percepcao": 3
+  },
+  "attrs": {
+   "forca": 14,
+   "inteligencia": 14,
+   "agilidade": 9,
+   "resistencia": 19,
+   "carisma": 26,
+   "sabedoria": 12,
+   "caos": 15
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 16,
+   "estrategia": 8,
+   "disciplina": 15,
+   "persistencia": 6,
+   "sociabilidade": 7,
+   "empatia": 16,
+   "adaptabilidade": 7,
+   "criatividade": 16,
+   "impulsividade": 11,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 28,
+   "inteligencia": 8,
+   "agilidade": 13,
+   "resistencia": 21,
+   "carisma": 23,
+   "sabedoria": 16,
+   "caos": 27
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 1,
+   "disciplina": 8,
+   "persistencia": 5,
+   "sociabilidade": 17,
+   "empatia": 1,
+   "adaptabilidade": 7,
+   "criatividade": 14,
+   "impulsividade": 11,
+   "percepcao": 3
+  },
+  "attrs": {
+   "forca": 26,
+   "inteligencia": 4,
+   "agilidade": 13,
+   "resistencia": 13,
+   "carisma": 32,
+   "sabedoria": 4,
+   "caos": 25
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 1,
+   "disciplina": 2,
+   "persistencia": 11,
+   "sociabilidade": 2,
+   "empatia": 14,
+   "adaptabilidade": 11,
+   "criatividade": 7,
+   "impulsividade": 11,
+   "percepcao": 7
+  },
+  "attrs": {
+   "forca": 29,
+   "inteligencia": 8,
+   "agilidade": 17,
+   "resistencia": 13,
+   "carisma": 14,
+   "sabedoria": 21,
+   "caos": 18
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 9,
+   "estrategia": 12,
+   "disciplina": 4,
+   "persistencia": 8,
+   "sociabilidade": 2,
+   "empatia": 7,
+   "adaptabilidade": 6,
+   "criatividade": 13,
+   "impulsividade": 12,
+   "percepcao": 1
+  },
+  "attrs": {
+   "forca": 23,
+   "inteligencia": 13,
+   "agilidade": 12,
+   "resistencia": 12,
+   "carisma": 11,
+   "sabedoria": 8,
+   "caos": 25
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 9,
+   "disciplina": 6,
+   "persistencia": 7,
+   "sociabilidade": 18,
+   "empatia": 19,
+   "adaptabilidade": 13,
+   "criatividade": 4,
+   "impulsividade": 12,
+   "percepcao": 15
+  },
+  "attrs": {
+   "forca": 25,
+   "inteligencia": 24,
+   "agilidade": 19,
+   "resistencia": 13,
+   "carisma": 30,
+   "sabedoria": 34,
+   "caos": 16
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 8,
+   "disciplina": 17,
+   "persistencia": 10,
+   "sociabilidade": 5,
+   "empatia": 2,
+   "adaptabilidade": 18,
+   "criatividade": 7,
+   "impulsividade": 12,
+   "percepcao": 14
+  },
+  "attrs": {
+   "forca": 24,
+   "inteligencia": 22,
+   "agilidade": 24,
+   "resistencia": 27,
+   "carisma": 13,
+   "sabedoria": 16,
+   "caos": 19
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 0,
+   "disciplina": 15,
+   "persistencia": 15,
+   "sociabilidade": 6,
+   "empatia": 18,
+   "adaptabilidade": 1,
+   "criatividade": 8,
+   "impulsividade": 12,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 25,
+   "inteligencia": 17,
+   "agilidade": 7,
+   "resistencia": 30,
+   "carisma": 10,
+   "sabedoria": 35,
+   "caos": 20
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 18,
+   "estrategia": 7,
+   "disciplina": 7,
+   "persistencia": 12,
+   "sociabilidade": 19,
+   "empatia": 0,
+   "adaptabilidade": 7,
+   "criatividade": 19,
+   "impulsividade": 12,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 36,
+   "inteligencia": 12,
+   "agilidade": 13,
+   "resistencia": 19,
+   "carisma": 37,
+   "sabedoria": 5,
+   "caos": 31
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 18,
+   "estrategia": 13,
+   "disciplina": 14,
+   "persistencia": 2,
+   "sociabilidade": 5,
+   "empatia": 5,
+   "adaptabilidade": 16,
+   "criatividade": 9,
+   "impulsividade": 12,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 26,
+   "inteligencia": 15,
+   "agilidade": 22,
+   "resistencia": 16,
+   "carisma": 23,
+   "sabedoria": 7,
+   "caos": 21
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 16,
+   "estrategia": 2,
+   "disciplina": 3,
+   "persistencia": 18,
+   "sociabilidade": 14,
+   "empatia": 17,
+   "adaptabilidade": 8,
+   "criatividade": 15,
+   "impulsividade": 13,
+   "percepcao": 8
+  },
+  "attrs": {
+   "forca": 41,
+   "inteligencia": 10,
+   "agilidade": 15,
+   "resistencia": 21,
+   "carisma": 30,
+   "sabedoria": 25,
+   "caos": 28
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 14,
+   "disciplina": 18,
+   "persistencia": 10,
+   "sociabilidade": 7,
+   "empatia": 6,
+   "adaptabilidade": 12,
+   "criatividade": 9,
+   "impulsividade": 13,
+   "percepcao": 15
+  },
+  "attrs": {
+   "forca": 21,
+   "inteligencia": 29,
+   "agilidade": 19,
+   "resistencia": 28,
+   "carisma": 11,
+   "sabedoria": 21,
+   "caos": 22
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 4,
+   "estrategia": 3,
+   "disciplina": 17,
+   "persistencia": 7,
+   "sociabilidade": 18,
+   "empatia": 2,
+   "adaptabilidade": 1,
+   "criatividade": 5,
+   "impulsividade": 13,
+   "percepcao": 11
+  },
+  "attrs": {
+   "forca": 18,
+   "inteligencia": 14,
+   "agilidade": 8,
+   "resistencia": 24,
+   "carisma": 22,
+   "sabedoria": 13,
+   "caos": 18
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 17,
+   "disciplina": 0,
+   "persistencia": 0,
+   "sociabilidade": 6,
+   "empatia": 18,
+   "adaptabilidade": 7,
+   "criatividade": 15,
+   "impulsividade": 13,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 20,
+   "inteligencia": 22,
+   "agilidade": 14,
+   "resistencia": 0,
+   "carisma": 19,
+   "sabedoria": 23,
+   "caos": 28
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 10,
+   "estrategia": 11,
+   "disciplina": 3,
+   "persistencia": 7,
+   "sociabilidade": 4,
+   "empatia": 16,
+   "adaptabilidade": 17,
+   "criatividade": 14,
+   "impulsividade": 13,
+   "percepcao": 19
+  },
+  "attrs": {
+   "forca": 24,
+   "inteligencia": 30,
+   "agilidade": 24,
+   "resistencia": 10,
+   "carisma": 14,
+   "sabedoria": 35,
+   "caos": 27
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 19,
+   "estrategia": 8,
+   "disciplina": 19,
+   "persistencia": 11,
+   "sociabilidade": 12,
+   "empatia": 17,
+   "adaptabilidade": 17,
+   "criatividade": 9,
+   "impulsividade": 13,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 37,
+   "inteligencia": 14,
+   "agilidade": 24,
+   "resistencia": 30,
+   "carisma": 31,
+   "sabedoria": 23,
+   "caos": 22
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 10,
+   "disciplina": 19,
+   "persistencia": 1,
+   "sociabilidade": 11,
+   "empatia": 2,
+   "adaptabilidade": 10,
+   "criatividade": 16,
+   "impulsividade": 13,
+   "percepcao": 14
+  },
+  "attrs": {
+   "forca": 21,
+   "inteligencia": 24,
+   "agilidade": 17,
+   "resistencia": 20,
+   "carisma": 24,
+   "sabedoria": 16,
+   "caos": 29
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 12,
+   "sociabilidade": 10,
+   "empatia": 12,
+   "adaptabilidade": 14,
+   "criatividade": 2,
+   "impulsividade": 13,
+   "percepcao": 19
+  },
+  "attrs": {
+   "forca": 32,
+   "inteligencia": 23,
+   "agilidade": 21,
+   "resistencia": 14,
+   "carisma": 23,
+   "sabedoria": 31,
+   "caos": 15
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 11,
+   "disciplina": 15,
+   "persistencia": 3,
+   "sociabilidade": 0,
+   "empatia": 3,
+   "adaptabilidade": 10,
+   "criatividade": 19,
+   "impulsividade": 13,
+   "percepcao": 11
+  },
+  "attrs": {
+   "forca": 22,
+   "inteligencia": 22,
+   "agilidade": 17,
+   "resistencia": 18,
+   "carisma": 12,
+   "sabedoria": 14,
+   "caos": 32
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 10,
+   "estrategia": 13,
+   "disciplina": 12,
+   "persistencia": 1,
+   "sociabilidade": 8,
+   "empatia": 18,
+   "adaptabilidade": 14,
+   "criatividade": 10,
+   "impulsividade": 13,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 18,
+   "inteligencia": 19,
+   "agilidade": 21,
+   "resistencia": 13,
+   "carisma": 18,
+   "sabedoria": 24,
+   "caos": 23
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 4,
+   "disciplina": 5,
+   "persistencia": 17,
+   "sociabilidade": 11,
+   "empatia": 16,
+   "adaptabilidade": 18,
+   "criatividade": 14,
+   "impulsividade": 13,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 39,
+   "inteligencia": 9,
+   "agilidade": 25,
+   "resistencia": 22,
+   "carisma": 26,
+   "sabedoria": 21,
+   "caos": 27
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 1,
+   "disciplina": 3,
+   "persistencia": 2,
+   "sociabilidade": 15,
+   "empatia": 17,
+   "adaptabilidade": 6,
+   "criatividade": 15,
+   "impulsividade": 13,
+   "percepcao": 16
+  },
+  "attrs": {
+   "forca": 9,
+   "inteligencia": 17,
+   "agilidade": 13,
+   "resistencia": 5,
+   "carisma": 15,
+   "sabedoria": 33,
+   "caos": 28
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 5,
+   "disciplina": 12,
+   "persistencia": 15,
+   "sociabilidade": 7,
+   "empatia": 3,
+   "adaptabilidade": 3,
+   "criatividade": 8,
+   "impulsividade": 14,
+   "percepcao": 16
+  },
+  "attrs": {
+   "forca": 23,
+   "inteligencia": 21,
+   "agilidade": 10,
+   "resistencia": 27,
+   "carisma": 8,
+   "sabedoria": 19,
+   "caos": 22
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 9,
+   "disciplina": 14,
+   "persistencia": 5,
+   "sociabilidade": 6,
+   "empatia": 10,
+   "adaptabilidade": 3,
+   "criatividade": 18,
+   "impulsividade": 14,
+   "percepcao": 7
+  },
+  "attrs": {
+   "forca": 26,
+   "inteligencia": 16,
+   "agilidade": 10,
+   "resistencia": 19,
+   "carisma": 20,
+   "sabedoria": 17,
+   "caos": 32
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 17,
+   "disciplina": 5,
+   "persistencia": 8,
+   "sociabilidade": 4,
+   "empatia": 8,
+   "adaptabilidade": 9,
+   "criatividade": 16,
+   "impulsividade": 14,
+   "percepcao": 3
+  },
+  "attrs": {
+   "forca": 28,
+   "inteligencia": 20,
+   "agilidade": 16,
+   "resistencia": 13,
+   "carisma": 17,
+   "sabedoria": 11,
+   "caos": 30
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 4,
+   "disciplina": 4,
+   "persistencia": 14,
+   "sociabilidade": 9,
+   "empatia": 7,
+   "adaptabilidade": 8,
+   "criatividade": 19,
+   "impulsividade": 14,
+   "percepcao": 13
+  },
+  "attrs": {
+   "forca": 22,
+   "inteligencia": 17,
+   "agilidade": 15,
+   "resistencia": 18,
+   "carisma": 10,
+   "sabedoria": 20,
+   "caos": 33
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 13,
+   "disciplina": 6,
+   "persistencia": 8,
+   "sociabilidade": 14,
+   "empatia": 18,
+   "adaptabilidade": 12,
+   "criatividade": 8,
+   "impulsividade": 14,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 28,
+   "inteligencia": 30,
+   "agilidade": 19,
+   "resistencia": 14,
+   "carisma": 27,
+   "sabedoria": 35,
+   "caos": 22
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 3,
+   "disciplina": 6,
+   "persistencia": 6,
+   "sociabilidade": 10,
+   "empatia": 1,
+   "adaptabilidade": 13,
+   "criatividade": 2,
+   "impulsividade": 14,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 16,
+   "inteligencia": 9,
+   "agilidade": 20,
+   "resistencia": 12,
+   "carisma": 13,
+   "sabedoria": 7,
+   "caos": 16
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 1,
+   "disciplina": 8,
+   "persistencia": 11,
+   "sociabilidade": 18,
+   "empatia": 13,
+   "adaptabilidade": 7,
+   "criatividade": 11,
+   "impulsividade": 15,
+   "percepcao": 19
+  },
+  "attrs": {
+   "forca": 32,
+   "inteligencia": 20,
+   "agilidade": 15,
+   "resistencia": 19,
+   "carisma": 31,
+   "sabedoria": 32,
+   "caos": 26
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 19,
+   "disciplina": 19,
+   "persistencia": 17,
+   "sociabilidade": 19,
+   "empatia": 18,
+   "adaptabilidade": 4,
+   "criatividade": 9,
+   "impulsividade": 15,
+   "percepcao": 10
+  },
+  "attrs": {
+   "forca": 42,
+   "inteligencia": 29,
+   "agilidade": 12,
+   "resistencia": 36,
+   "carisma": 36,
+   "sabedoria": 28,
+   "caos": 24
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 13,
+   "disciplina": 9,
+   "persistencia": 9,
+   "sociabilidade": 14,
+   "empatia": 3,
+   "adaptabilidade": 17,
+   "criatividade": 0,
+   "impulsividade": 15,
+   "percepcao": 15
+  },
+  "attrs": {
+   "forca": 20,
+   "inteligencia": 28,
+   "agilidade": 25,
+   "resistencia": 18,
+   "carisma": 17,
+   "sabedoria": 18,
+   "caos": 15
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 18,
+   "estrategia": 3,
+   "disciplina": 11,
+   "persistencia": 1,
+   "sociabilidade": 7,
+   "empatia": 10,
+   "adaptabilidade": 10,
+   "criatividade": 19,
+   "impulsividade": 15,
+   "percepcao": 15
+  },
+  "attrs": {
+   "forca": 27,
+   "inteligencia": 18,
+   "agilidade": 18,
+   "resistencia": 12,
+   "carisma": 25,
+   "sabedoria": 25,
+   "caos": 34
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 16,
+   "disciplina": 8,
+   "persistencia": 12,
+   "sociabilidade": 5,
+   "empatia": 10,
+   "adaptabilidade": 11,
+   "criatividade": 18,
+   "impulsividade": 15,
+   "percepcao": 10
+  },
+  "attrs": {
+   "forca": 37,
+   "inteligencia": 26,
+   "agilidade": 19,
+   "resistencia": 20,
+   "carisma": 22,
+   "sabedoria": 20,
+   "caos": 33
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 15,
+   "estrategia": 9,
+   "disciplina": 9,
+   "persistencia": 7,
+   "sociabilidade": 8,
+   "empatia": 12,
+   "adaptabilidade": 8,
+   "criatividade": 11,
+   "impulsividade": 15,
+   "percepcao": 3
+  },
+  "attrs": {
+   "forca": 30,
+   "inteligencia": 12,
+   "agilidade": 16,
+   "resistencia": 16,
+   "carisma": 23,
+   "sabedoria": 15,
+   "caos": 26
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 14,
+   "estrategia": 12,
+   "disciplina": 19,
+   "persistencia": 5,
+   "sociabilidade": 15,
+   "empatia": 19,
+   "adaptabilidade": 19,
+   "criatividade": 18,
+   "impulsividade": 16,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 27,
+   "inteligencia": 16,
+   "agilidade": 27,
+   "resistencia": 24,
+   "carisma": 29,
+   "sabedoria": 23,
+   "caos": 34
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 12,
+   "estrategia": 4,
+   "disciplina": 2,
+   "persistencia": 4,
+   "sociabilidade": 11,
+   "empatia": 15,
+   "adaptabilidade": 12,
+   "criatividade": 14,
+   "impulsividade": 16,
+   "percepcao": 11
+  },
+  "attrs": {
+   "forca": 24,
+   "inteligencia": 15,
+   "agilidade": 20,
+   "resistencia": 6,
+   "carisma": 23,
+   "sabedoria": 26,
+   "caos": 30
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 1,
+   "disciplina": 16,
+   "persistencia": 4,
+   "sociabilidade": 13,
+   "empatia": 0,
+   "adaptabilidade": 17,
+   "criatividade": 5,
+   "impulsividade": 16,
+   "percepcao": 9
+  },
+  "attrs": {
+   "forca": 15,
+   "inteligencia": 10,
+   "agilidade": 25,
+   "resistencia": 20,
+   "carisma": 16,
+   "sabedoria": 9,
+   "caos": 21
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 13,
+   "disciplina": 9,
+   "persistencia": 12,
+   "sociabilidade": 18,
+   "empatia": 14,
+   "adaptabilidade": 2,
+   "criatividade": 3,
+   "impulsividade": 16,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 26,
+   "inteligencia": 17,
+   "agilidade": 10,
+   "resistencia": 21,
+   "carisma": 24,
+   "sabedoria": 18,
+   "caos": 19
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 11,
+   "estrategia": 19,
+   "disciplina": 12,
+   "persistencia": 15,
+   "sociabilidade": 9,
+   "empatia": 15,
+   "adaptabilidade": 9,
+   "criatividade": 18,
+   "impulsividade": 16,
+   "percepcao": 8
+  },
+  "attrs": {
+   "forca": 34,
+   "inteligencia": 27,
+   "agilidade": 17,
+   "resistencia": 27,
+   "carisma": 20,
+   "sabedoria": 23,
+   "caos": 34
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 12,
+   "disciplina": 17,
+   "persistencia": 15,
+   "sociabilidade": 7,
+   "empatia": 4,
+   "adaptabilidade": 19,
+   "criatividade": 11,
+   "impulsividade": 16,
+   "percepcao": 16
+  },
+  "attrs": {
+   "forca": 36,
+   "inteligencia": 28,
+   "agilidade": 27,
+   "resistencia": 32,
+   "carisma": 20,
+   "sabedoria": 20,
+   "caos": 27
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 0,
+   "estrategia": 12,
+   "disciplina": 7,
+   "persistencia": 18,
+   "sociabilidade": 17,
+   "empatia": 10,
+   "adaptabilidade": 14,
+   "criatividade": 6,
+   "impulsividade": 17,
+   "percepcao": 9
+  },
+  "attrs": {
+   "forca": 27,
+   "inteligencia": 21,
+   "agilidade": 23,
+   "resistencia": 25,
+   "carisma": 17,
+   "sabedoria": 19,
+   "caos": 23
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 17,
+   "disciplina": 4,
+   "persistencia": 5,
+   "sociabilidade": 13,
+   "empatia": 8,
+   "adaptabilidade": 10,
+   "criatividade": 9,
+   "impulsividade": 17,
+   "percepcao": 9
+  },
+  "attrs": {
+   "forca": 15,
+   "inteligencia": 26,
+   "agilidade": 19,
+   "resistencia": 9,
+   "carisma": 14,
+   "sabedoria": 17,
+   "caos": 26
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 12,
+   "disciplina": 18,
+   "persistencia": 19,
+   "sociabilidade": 1,
+   "empatia": 18,
+   "adaptabilidade": 16,
+   "criatividade": 14,
+   "impulsividade": 17,
+   "percepcao": 8
+  },
+  "attrs": {
+   "forca": 33,
+   "inteligencia": 20,
+   "agilidade": 25,
+   "resistencia": 37,
+   "carisma": 6,
+   "sabedoria": 26,
+   "caos": 31
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 19,
+   "disciplina": 6,
+   "persistencia": 3,
+   "sociabilidade": 17,
+   "empatia": 11,
+   "adaptabilidade": 16,
+   "criatividade": 10,
+   "impulsividade": 17,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 25,
+   "inteligencia": 24,
+   "agilidade": 25,
+   "resistencia": 9,
+   "carisma": 30,
+   "sabedoria": 16,
+   "caos": 27
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 7,
+   "disciplina": 1,
+   "persistencia": 3,
+   "sociabilidade": 6,
+   "empatia": 2,
+   "adaptabilidade": 12,
+   "criatividade": 2,
+   "impulsividade": 17,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 25,
+   "inteligencia": 7,
+   "agilidade": 21,
+   "resistencia": 4,
+   "carisma": 19,
+   "sabedoria": 2,
+   "caos": 19
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 10,
+   "disciplina": 2,
+   "persistencia": 17,
+   "sociabilidade": 15,
+   "empatia": 9,
+   "adaptabilidade": 12,
+   "criatividade": 10,
+   "impulsividade": 17,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 39,
+   "inteligencia": 27,
+   "agilidade": 21,
+   "resistencia": 19,
+   "carisma": 28,
+   "sabedoria": 26,
+   "caos": 27
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 18,
+   "estrategia": 9,
+   "disciplina": 8,
+   "persistencia": 16,
+   "sociabilidade": 11,
+   "empatia": 18,
+   "adaptabilidade": 9,
+   "criatividade": 1,
+   "impulsividade": 17,
+   "percepcao": 5
+  },
+  "attrs": {
+   "forca": 43,
+   "inteligencia": 14,
+   "agilidade": 18,
+   "resistencia": 24,
+   "carisma": 29,
+   "sabedoria": 23,
+   "caos": 18
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 0,
+   "disciplina": 0,
+   "persistencia": 13,
+   "sociabilidade": 13,
+   "empatia": 4,
+   "adaptabilidade": 15,
+   "criatividade": 19,
+   "impulsividade": 17,
+   "percepcao": 6
+  },
+  "attrs": {
+   "forca": 28,
+   "inteligencia": 6,
+   "agilidade": 24,
+   "resistencia": 13,
+   "carisma": 19,
+   "sabedoria": 10,
+   "caos": 36
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 8,
+   "disciplina": 1,
+   "persistencia": 10,
+   "sociabilidade": 15,
+   "empatia": 16,
+   "adaptabilidade": 4,
+   "criatividade": 9,
+   "impulsividade": 17,
+   "percepcao": 4
+  },
+  "attrs": {
+   "forca": 24,
+   "inteligencia": 12,
+   "agilidade": 13,
+   "resistencia": 11,
+   "carisma": 20,
+   "sabedoria": 20,
+   "caos": 26
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 10,
+   "estrategia": 13,
+   "disciplina": 13,
+   "persistencia": 4,
+   "sociabilidade": 3,
+   "empatia": 16,
+   "adaptabilidade": 8,
+   "criatividade": 12,
+   "impulsividade": 17,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 23,
+   "inteligencia": 15,
+   "agilidade": 17,
+   "resistencia": 17,
+   "carisma": 13,
+   "sabedoria": 18,
+   "caos": 29
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 6,
+   "estrategia": 10,
+   "disciplina": 10,
+   "persistencia": 9,
+   "sociabilidade": 9,
+   "empatia": 8,
+   "adaptabilidade": 3,
+   "criatividade": 17,
+   "impulsividade": 17,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 24,
+   "inteligencia": 10,
+   "agilidade": 12,
+   "resistencia": 19,
+   "carisma": 15,
+   "sabedoria": 8,
+   "caos": 34
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 8,
+   "estrategia": 16,
+   "disciplina": 2,
+   "persistencia": 1,
+   "sociabilidade": 6,
+   "empatia": 19,
+   "adaptabilidade": 5,
+   "criatividade": 17,
+   "impulsividade": 17,
+   "percepcao": 3
+  },
+  "attrs": {
+   "forca": 18,
+   "inteligencia": 19,
+   "agilidade": 14,
+   "resistencia": 3,
+   "carisma": 14,
+   "sabedoria": 22,
+   "caos": 34
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 17,
+   "disciplina": 3,
+   "persistencia": 9,
+   "sociabilidade": 10,
+   "empatia": 9,
+   "adaptabilidade": 7,
+   "criatividade": 6,
+   "impulsividade": 18,
+   "percepcao": 15
+  },
+  "attrs": {
+   "forca": 23,
+   "inteligencia": 32,
+   "agilidade": 16,
+   "resistencia": 12,
+   "carisma": 15,
+   "sabedoria": 24,
+   "caos": 24
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 16,
+   "estrategia": 2,
+   "disciplina": 18,
+   "persistencia": 13,
+   "sociabilidade": 2,
+   "empatia": 1,
+   "adaptabilidade": 16,
+   "criatividade": 4,
+   "impulsividade": 18,
+   "percepcao": 14
+  },
+  "attrs": {
+   "forca": 38,
+   "inteligencia": 16,
+   "agilidade": 25,
+   "resistencia": 31,
+   "carisma": 18,
+   "sabedoria": 15,
+   "caos": 22
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 3,
+   "estrategia": 14,
+   "disciplina": 5,
+   "persistencia": 18,
+   "sociabilidade": 12,
+   "empatia": 8,
+   "adaptabilidade": 2,
+   "criatividade": 3,
+   "impulsividade": 18,
+   "percepcao": 7
+  },
+  "attrs": {
+   "forca": 30,
+   "inteligencia": 21,
+   "agilidade": 11,
+   "resistencia": 23,
+   "carisma": 15,
+   "sabedoria": 15,
+   "caos": 21
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 13,
+   "estrategia": 11,
+   "disciplina": 19,
+   "persistencia": 3,
+   "sociabilidade": 8,
+   "empatia": 10,
+   "adaptabilidade": 19,
+   "criatividade": 3,
+   "impulsividade": 18,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 25,
+   "inteligencia": 28,
+   "agilidade": 28,
+   "resistencia": 22,
+   "carisma": 21,
+   "sabedoria": 27,
+   "caos": 21
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 1,
+   "estrategia": 8,
+   "disciplina": 13,
+   "persistencia": 8,
+   "sociabilidade": 18,
+   "empatia": 18,
+   "adaptabilidade": 3,
+   "criatividade": 6,
+   "impulsividade": 18,
+   "percepcao": 17
+  },
+  "attrs": {
+   "forca": 18,
+   "inteligencia": 25,
+   "agilidade": 12,
+   "resistencia": 21,
+   "carisma": 19,
+   "sabedoria": 35,
+   "caos": 24
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 19,
+   "estrategia": 5,
+   "disciplina": 15,
+   "persistencia": 19,
+   "sociabilidade": 8,
+   "empatia": 4,
+   "adaptabilidade": 4,
+   "criatividade": 5,
+   "impulsividade": 18,
+   "percepcao": 11
+  },
+  "attrs": {
+   "forca": 47,
+   "inteligencia": 16,
+   "agilidade": 13,
+   "resistencia": 34,
+   "carisma": 27,
+   "sabedoria": 15,
+   "caos": 23
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 2,
+   "estrategia": 10,
+   "disciplina": 14,
+   "persistencia": 1,
+   "sociabilidade": 1,
+   "empatia": 2,
+   "adaptabilidade": 17,
+   "criatividade": 16,
+   "impulsividade": 19,
+   "percepcao": 13
+  },
+  "attrs": {
+   "forca": 13,
+   "inteligencia": 23,
+   "agilidade": 27,
+   "resistencia": 15,
+   "carisma": 3,
+   "sabedoria": 15,
+   "caos": 35
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 17,
+   "estrategia": 9,
+   "disciplina": 3,
+   "persistencia": 9,
+   "sociabilidade": 14,
+   "empatia": 9,
+   "adaptabilidade": 1,
+   "criatividade": 14,
+   "impulsividade": 19,
+   "percepcao": 15
+  },
+  "attrs": {
+   "forca": 36,
+   "inteligencia": 24,
+   "agilidade": 11,
+   "resistencia": 12,
+   "carisma": 31,
+   "sabedoria": 24,
+   "caos": 33
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 7,
+   "estrategia": 16,
+   "disciplina": 13,
+   "persistencia": 12,
+   "sociabilidade": 10,
+   "empatia": 12,
+   "adaptabilidade": 5,
+   "criatividade": 11,
+   "impulsividade": 19,
+   "percepcao": 0
+  },
+  "attrs": {
+   "forca": 29,
+   "inteligencia": 16,
+   "agilidade": 15,
+   "resistencia": 25,
+   "carisma": 17,
+   "sabedoria": 12,
+   "caos": 30
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 5,
+   "estrategia": 17,
+   "disciplina": 15,
+   "persistencia": 10,
+   "sociabilidade": 19,
+   "empatia": 10,
+   "adaptabilidade": 14,
+   "criatividade": 16,
+   "impulsividade": 19,
+   "percepcao": 2
+  },
+  "attrs": {
+   "forca": 25,
+   "inteligencia": 19,
+   "agilidade": 24,
+   "resistencia": 25,
+   "carisma": 24,
+   "sabedoria": 12,
+   "caos": 35
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 16,
+   "estrategia": 11,
+   "disciplina": 17,
+   "persistencia": 19,
+   "sociabilidade": 5,
+   "empatia": 3,
+   "adaptabilidade": 0,
+   "criatividade": 5,
+   "impulsividade": 19,
+   "percepcao": 9
+  },
+  "attrs": {
+   "forca": 45,
+   "inteligencia": 20,
+   "agilidade": 10,
+   "resistencia": 36,
+   "carisma": 21,
+   "sabedoria": 12,
+   "caos": 24
+  }
+ },
+ {
+  "dims": {
+   "lideranca": 16,
+   "estrategia": 7,
+   "disciplina": 16,
+   "persistencia": 16,
+   "sociabilidade": 18,
+   "empatia": 5,
+   "adaptabilidade": 12,
+   "criatividade": 17,
+   "impulsividade": 19,
+   "percepcao": 19
+  },
+  "attrs": {
+   "forca": 42,
+   "inteligencia": 26,
+   "agilidade": 22,
+   "resistencia": 32,
+   "carisma": 34,
+   "sabedoria": 24,
+   "caos": 36
+  }
+ }
+]

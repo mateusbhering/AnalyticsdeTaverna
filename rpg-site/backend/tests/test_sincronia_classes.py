@@ -27,12 +27,18 @@ from app.domain.personagem import (
     DIMENSOES,
     FALLBACK_POR_DIMENSAO,
     REGRAS_CLASSE,
+    _metade_arredondada,
+    calcular_atributos,
     classificar,
     hash_estado,
 )
 
 FIXTURE = json.loads(
     (Path(__file__).parent / "fixture_classes_ts.json").read_text(encoding="utf-8")
+)
+
+FIXTURE_ATRIBUTOS = json.loads(
+    (Path(__file__).parent / "fixture_atributos_ts.json").read_text(encoding="utf-8")
 )
 
 
@@ -109,3 +115,30 @@ def test_quiz_vazio_ainda_devolve_uma_classe():
     resultado = classificar({}, [])
     assert resultado["classe"]
     assert resultado["origem"] == "dimensao_dominante"
+
+
+# ── atributos: a mesma trava, para `calcAttributes` ──────────────────
+#
+# Os 7 atributos do card também são calculados dos dois lados, e também
+# divergiam: `round` do Python arredonda para o par mais próximo, `Math.round`
+# do JS arredonda o meio para cima. Força e agilidade somam metade da
+# impulsividade, então davam valores diferentes sempre que ela caía em
+# {1, 5, 9, 13, 17}. A fixture veio do `calcAttributes` real do componente.
+
+
+@pytest.mark.parametrize(
+    "caso", FIXTURE_ATRIBUTOS, ids=[f"attr{i:04d}" for i in range(len(FIXTURE_ATRIBUTOS))]
+)
+def test_atributos_batem_com_o_typescript(caso):
+    assert calcular_atributos(caso["dims"]) == caso["attrs"]
+
+
+def test_metade_da_impulsividade_arredonda_o_meio_para_cima():
+    """O caso exato que divergia. `round` embutido daria 0, 2 e 4 aqui."""
+    assert [_metade_arredondada(i) for i in (1, 5, 9)] == [1, 3, 5]
+
+
+def test_fixture_de_atributos_cobre_os_impares_problematicos():
+    """Guarda contra alguém regenerar a fixture sem os casos que pegam o bug."""
+    impares = {c["dims"]["impulsividade"] for c in FIXTURE_ATRIBUTOS}
+    assert {1, 5, 9, 13, 17} <= impares

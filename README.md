@@ -294,6 +294,41 @@ function calcAttributes(dims: Dimensions) {
 }
 ```
 
+> **Arredondamento é contrato.** `Math.round(0.5)` em JS é `1`; `round(0.5)` em
+> Python é `0` — o embutido usa arredondamento bancário (para o par mais
+> próximo). Como força e agilidade somam **metade da impulsividade**, os dois
+> motores davam valores diferentes sempre que ela caía em {1, 5, 9, 13, 17}. O
+> Python usa `(valor + 1) // 2`, que é o meio para cima sem passar por float.
+> `tests/fixture_atributos_ts.json` trava isso com casos gerados pelo
+> `calcAttributes` real do componente.
+
+### Por que alguns atributos ficam zerados
+
+Não é bug, é aritmética do quiz. Sobre 200 mil partidas simuladas contra o banco
+real, **63,8% dos cards têm ao menos um atributo em zero**:
+
+| Atributo | Zera em | Soma de |
+|---|---|---|
+| Carisma | 27,8% | sociabilidade + liderança |
+| Caos | 17,7% | criatividade + impulsividade |
+| Força | 12,6% | persistência + liderança + ½ impulsividade |
+| Resistência | 11,0% | disciplina + persistência |
+| Agilidade | 9,5% | adaptabilidade + ½ impulsividade |
+| Inteligência | 7,3% | estratégia + percepção |
+| Sabedoria | 5,3% | empatia + percepção |
+
+São **5 perguntas para 10 dimensões**: cada resposta dá `+2` a uma e `±1` a no
+máximo outra, então **pelo menos 5 dimensões terminam em zero por construção**.
+Um atributo zera quando todas as dimensões que o alimentam ficaram de fora.
+
+O banco desbalanceado decide quais: liderança tem 36 alternativas e persistência
+35, contra 61 de estratégia. Liderança fica em zero em 56,2% das partidas e
+sociabilidade em 51,9% — e o carisma precisa das duas, daí os 27,8%.
+
+Para reduzir, há três caminhos, todos com custo: aumentar o `QUIZ_SIZE` (quiz
+mais longo), rebalancear o banco a favor das dimensões raras, ou dar um piso de 1
+a cada atributo (cosmético, não estrutural).
+
 **Normalização para exibição:** as barras são relativas ao atributo mais alto do próprio jogador.
 
 ```ts
@@ -777,11 +812,11 @@ pip install -r requirements-dev.txt
 pytest -q
 ```
 
-**398 testes.** Distribuição:
+**550 testes.** Distribuição:
 
 | Arquivo | Testes | Cobre |
 |---|---|---|
-| `test_sincronia_classes.py` | 285 | Igualdade com o motor TypeScript + o hash FNV-1a |
+| `test_sincronia_classes.py` | 437 | Igualdade com o TypeScript: classes, hash FNV-1a e atributos |
 | `test_api_rotas.py` | 34 | Rotas da API com repositório em memória |
 | `test_batalha_motor.py` | 31 | Validação da escolha, confronto, XP, narrativa, pareamento |
 | `test_avatar_endpoint.py` | 15 | Validação de upload, polling, limpeza |

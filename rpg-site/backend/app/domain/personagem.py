@@ -51,10 +51,26 @@ def normalizar_dimensoes(dims: Mapping[str, int] | None) -> dict[str, int]:
     return {d: max(0, int(dims.get(d, 0) or 0)) for d in DIMENSOES}
 
 
+def _metade_arredondada(valor: int) -> int:
+    """Metade de `valor`, com o meio indo PARA CIMA — como o `Math.round` do JS.
+
+    O `round` do Python arredonda para o par mais próximo (arredondamento
+    bancário): `round(0.5)` é 0 e `round(2.5)` é 2, enquanto o `Math.round` do
+    JS dá 1 e 3. Como `calcular_atributos` espelha `calcAttributes` do
+    `CharacterResult.tsx`, usar o `round` embutido fazia força e agilidade
+    divergirem em 1 sempre que `impulsividade` caísse em {1, 5, 9, 13, 17} —
+    exatamente os ímpares cuja metade termina em .5 sobre um par.
+
+    Com inteiros não negativos, `(valor + 1) // 2` é a metade para cima sem
+    passar por float nenhum.
+    """
+    return (valor + 1) // 2
+
+
 def calcular_atributos(dims: Mapping[str, int]) -> dict[str, int]:
     """Converte as 10 dimensões do quiz nos 7 atributos do card."""
     d = normalizar_dimensoes(dims)
-    meia_impulsividade = round(d["impulsividade"] * 0.5)
+    meia_impulsividade = _metade_arredondada(d["impulsividade"])
 
     return {
         "forca": d["persistencia"] + d["lideranca"] + meia_impulsividade,
