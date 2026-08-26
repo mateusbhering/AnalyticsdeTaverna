@@ -5,6 +5,7 @@ import WebcamCapture from "./WebcamCapture";
 import CharacterResult from "./CharacterResult";
 import { ALL_QUESTIONS } from "./questions-data";
 import type { Option } from "./questions-data";
+import { useTavernFeedback } from "@/lib/useTavernFeedback";
 
 export interface Dimensions {
   lideranca: number;
@@ -51,6 +52,11 @@ function pickRandom() {
 type Step = "photo" | "quiz" | "result";
 
 export default function QuizForm() {
+  /* Som e vibração ficam no topo do componente porque hooks não podem viver
+     dentro dos ramos de `step`. Nada toca até o primeiro gesto do usuário — o
+     próprio hook segura isso. */
+  const { playPageTurn, playStamp } = useTavernFeedback();
+
   const [step, setStep] = useState<Step>("photo");
   const [photo, setPhoto] = useState("");
   const [questions, setQuestions] = useState(pickRandom);
@@ -119,8 +125,13 @@ export default function QuizForm() {
         return next;
       });
       if (opt.tag) setTags((prev) => [...prev, opt.tag]);
-      if (current < total - 1) setCurrent((c) => c + 1);
-      else setStep("result");
+      if (current < total - 1) {
+        setCurrent((c) => c + 1);
+        playPageTurn(); // mais uma página do diário
+      } else {
+        setStep("result");
+        playStamp(); // o lacre fecha o personagem
+      }
     };
 
     return (

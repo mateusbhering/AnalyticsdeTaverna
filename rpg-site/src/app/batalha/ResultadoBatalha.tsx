@@ -13,6 +13,7 @@ import type { ResultadoBatalha as Resultado, Rodada } from "@/lib/batalha-api";
 import type { Oponente } from "./DesafioScanner";
 import ArenaImpacto, { type Impacto } from "@/components/ui/arena-impacto";
 import TintaViva from "@/components/ui/tinta-viva";
+import { useTavernFeedback } from "@/lib/useTavernFeedback";
 
 interface Props {
   resultado: Resultado;
@@ -49,6 +50,7 @@ export default function ResultadoBatalha({
   onEscanearOutro,
 }: Props) {
   const semMovimento = useReducedMotion();
+  const { playClash, playStamp } = useTavernFeedback();
   const total = resultado.rodadas.length;
 
   /* Começa SEMPRE em 0, inclusive para quem pediu menos movimento: o servidor
@@ -78,10 +80,15 @@ export default function ResultadoBatalha({
       setEtapa((e) => e + 1);
       /* Bate quando uma RODADA entra — não no veredito. É ali que os dois
          valores colidem, e é a colisão que sacode a sala. */
-      if (etapa < total) impacto.current?.bater();
+      if (etapa < total) {
+        impacto.current?.bater();
+        playClash();
+      } else {
+        playStamp(); // o veredito é carimbado
+      }
     }, espera);
     return () => clearTimeout(id);
-  }, [etapa, total, semMovimento]);
+  }, [etapa, total, semMovimento, playClash, playStamp]);
 
   const fechado = etapa > total;
 
