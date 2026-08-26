@@ -22,10 +22,26 @@ const PRAZO_MS = 180_000;
 
 export type AvatarStatus = "idle" | "processing" | "done" | "error";
 
+/* Códigos de falha que o backend publica em `/avatar/status` (ver
+   `MOTIVO_*` em backend/app/workers/avatar_worker.py), mais os dois que só o
+   navegador sabe: não alcançou a API, e desistiu de esperar. */
+export type AvatarErrorReason =
+  | "billing"
+  | "quota_exhausted"
+  | "upstream_unavailable"
+  | "no_image"
+  | "upload_failed"
+  | "generation_failed"
+  | "unreachable"
+  | "timeout";
+
 export interface AvatarGeneration {
   status: AvatarStatus;
   /** URL do avatar no Storage do Supabase, ou null enquanto indisponível. */
   avatarUrl: string | null;
+  /** Por que falhou, quando `status === "error"`. Serve tanto à mensagem na
+   *  tela quanto ao diagnóstico — antes todo erro era indistinguível. */
+  errorReason: AvatarErrorReason | null;
   /** id do job — usado no QR code para buscar o avatar em /personagem. */
   jobId: string | null;
   /** Dispara a geração a partir da foto (data URL) e da classe de RPG.
@@ -53,9 +69,33 @@ function extFor(mime: string): string {
   return "jpg";
 }
 
+/** Traduz o motivo técnico na frase que aparece na tela.
+ *
+ *  Os códigos (`billing`, `quota_exhausted`, …) existem para o log e para o
+ *  `/avatar/status`; quem está esperando o avatar não tem o que fazer com eles.
+ *  O que muda aqui é só a expectativa: "volte depois" é diferente de "tente
+ *  outra foto", e antes as duas coisas viravam a mesma mensagem genérica. */
+export function mensagemDeFalha(motivo: AvatarErrorReason | null): string {
+  switch (motivo) {
+    case "billing":
+    case "quota_exhausted":
+      return "A forja de avatares atingiu o limite por hoje";
+    case "upstream_unavailable":
+    case "unreachable":
+      return "A forja está fora de alcance — tente de novo em instantes";
+    case "timeout":
+      return "A conjuração demorou demais e foi interrompida";
+    case "no_image":
+      return "Não conseguimos retratar esta foto — tente outra";
+    default:
+      return "Não foi possível conjurar seu avatar";
+  }
+}
+
 export function useAvatarGeneration(): AvatarGeneration {
   const [status, setStatus] = useState<AvatarStatus>("idle");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [errorReason, setErrorReason] = useState<AvatarErrorReason | null>(null);
   const [jobId, setJobId] = useState<string | null>(null);
 
   const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -76,6 +116,7 @@ export function useAvatarGeneration(): AvatarGeneration {
     startedRef.current = false;
     setStatus("idle");
     setAvatarUrl(null);
+    setErrorReason(null);
     setJobId(null);
   }, [stopPolling]);
 
@@ -84,6 +125,7 @@ export function useAvatarGeneration(): AvatarGeneration {
       if (startedRef.current) return; // dispara uma única vez até reset()
       startedRef.current = true;
       setStatus("processing");
+      setErrorReason(null);
 
       (async () => {
         try {
@@ -115,6 +157,7 @@ export function useAvatarGeneration(): AvatarGeneration {
           const consultar = async () => {
             if (Date.now() - inicio > PRAZO_MS) {
               stopPolling();
+              setErrorReason("timeout");
               setStatus("error");
               return;
             }
@@ -126,6 +169,8 @@ export function useAvatarGeneration(): AvatarGeneration {
               }
               const data = (await s.json()) as {
                 status: AvatarStatus;
+                /** Motivo da falha — só vem quando `status === "error"`. */
+                error?: AvatarErrorReason;
                 public_url?: string;
                 /** Formato antigo: a imagem inteira em base64. Ver abaixo. */
                 image?: string;
@@ -145,6 +190,7 @@ export function useAvatarGeneration(): AvatarGeneration {
                 // TTL de 24h para ser buscado pelo QR code em /personagem.
               } else if (data.status === "error") {
                 stopPolling();
+                setErrorReason(data.error ?? "generation_failed");
                 setStatus("error");
               } else {
                 agendar(); // ainda processando
@@ -156,6 +202,9 @@ export function useAvatarGeneration(): AvatarGeneration {
 
           agendar();
         } catch {
+          /* Não chegamos nem a ter um job: ou a API não respondeu, ou recusou o
+             upload. Nos dois casos o servidor não tem motivo nenhum a informar. */
+          setErrorReason("unreachable");
           setStatus("error");
         }
       })();
@@ -163,5 +212,5 @@ export function useAvatarGeneration(): AvatarGeneration {
     [stopPolling],
   );
 
-  return { status, avatarUrl, jobId, start, reset };
+  return { status, avatarUrl, errorReason, jobId, start, reset };
 }

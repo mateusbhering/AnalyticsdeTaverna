@@ -70,10 +70,18 @@ def build_prompt(class_name: str) -> str:
     return _BASE_PROMPT + style + _COMPOSITION
 
 
+class SemImagem(ValueError):
+    """O Gemini respondeu, mas sem `inline_data` — recusa ou resposta só de texto."""
+
+
+class FalhaNoUpload(RuntimeError):
+    """O avatar foi gerado, mas o Supabase Storage recusou a gravação."""
+
+
 def _extract_image(response) -> tuple[str, str]:
     """Extrai a imagem gerada (inline_data) das parts da resposta do Gemini.
 
-    Retorna (imagem_base64, mime_type). Levanta ValueError se não houver imagem.
+    Retorna (imagem_base64, mime_type). Levanta `SemImagem` se não houver imagem.
     """
     candidates = getattr(response, "candidates", None) or []
     for candidate in candidates:
@@ -90,15 +98,64 @@ def _extract_image(response) -> tuple[str, str]:
                     image_b64 = data
                 mime = getattr(inline, "mime_type", None) or "image/png"
                 return image_b64, mime
-    raise ValueError("Nenhuma imagem (inline_data) na resposta do Gemini")
+    raise SemImagem("Nenhuma imagem (inline_data) na resposta do Gemini")
 
 
-# Erros transitórios do Gemini que valem retry (rate limit / instabilidade).
-_TRANSIENT_TOKENS = (
-    "429", "RESOURCE_EXHAUSTED", "500", "INTERNAL",
-    "503", "UNAVAILABLE", "deadline", "timeout",
-)
 _GEMINI_MAX_ATTEMPTS = 4
+
+# ── Motivos de falha ───────────────────────────────────────────────────
+# O marcador de erro no Redis carrega UM destes códigos, e só eles. A mensagem
+# crua do Gemini nunca vai junto: ela cita projeto, cota e billing da conta —
+# nada disso tem por que trafegar até o navegador de quem joga.
+MOTIVO_SALDO = "billing"  # créditos acabaram: esperar não resolve
+MOTIVO_COTA = "quota_exhausted"  # ritmo/cota excedido: mais tarde funciona
+MOTIVO_INDISPONIVEL = "upstream_unavailable"  # 5xx / timeout do Gemini
+MOTIVO_SEM_IMAGEM = "no_image"  # respondeu, mas sem imagem (recusa do modelo)
+MOTIVO_UPLOAD = "upload_failed"  # gerou o avatar, mas o Storage recusou
+MOTIVO_CANCELADO = "timeout"  # o arq matou o job por `job_timeout`
+MOTIVO_DESCONHECIDO = "generation_failed"
+
+# Trechos que aparecem SÓ no 429 de saldo. Não use "billing" como marcador: a
+# mensagem de rate limit também manda checar "your plan and billing details",
+# e aí os dois casos voltariam a se confundir — que é o bug que isto conserta.
+_MARCADORES_DE_SALDO = ("prepayment credit", "depleted", "insufficient credit")
+
+# Palavras que denunciam instabilidade do lado de lá. Antes esta lista tinha
+# "500" e "503" soltos, casados por substring contra o texto inteiro do erro —
+# qualquer mensagem que citasse uma dimensão de imagem virava "transitório".
+_MARCADORES_DE_INSTABILIDADE = ("internal", "unavailable", "deadline", "timeout", "timed out")
+
+
+def _classificar_erro(exc: BaseException) -> tuple[str, bool]:
+    """Traduz a exceção em `(motivo, vale_retry)`.
+
+    Existe por causa de um 429 ambíguo: o Gemini usa o MESMO código para "você
+    está chamando rápido demais" (esperar resolve) e para "sua conta está sem
+    crédito" (esperar não resolve nunca). Tratando os dois como transitórios, um
+    saldo zerado custava 22s de backoff e 4 chamadas por avatar para chegar ao
+    mesmo lugar que a primeira já sabia. O que separa os casos é a mensagem.
+    """
+    if isinstance(exc, SemImagem):
+        return MOTIVO_SEM_IMAGEM, False
+    if isinstance(exc, FalhaNoUpload):
+        return MOTIVO_UPLOAD, False
+    if isinstance(exc, asyncio.CancelledError):
+        return MOTIVO_CANCELADO, False
+
+    # `.code` e `.message` vêm do APIError do SDK; o `str(exc)` cobre o resto
+    # (httpx, RuntimeError de teste) sem exigir o tipo concreto.
+    codigo = getattr(exc, "code", None)
+    texto = f"{getattr(exc, 'message', '') or ''} {exc}".lower()
+
+    if codigo == 429 or "resource_exhausted" in texto or "429" in texto:
+        if any(marcador in texto for marcador in _MARCADORES_DE_SALDO):
+            return MOTIVO_SALDO, False
+        return MOTIVO_COTA, True
+    if codigo in (500, 502, 503, 504) or any(
+        marcador in texto for marcador in _MARCADORES_DE_INSTABILIDADE
+    ):
+        return MOTIVO_INDISPONIVEL, True
+    return MOTIVO_DESCONHECIDO, False
 
 
 class _RateLimiter:
@@ -136,7 +193,9 @@ async def _run_gemini(image_bytes: bytes, prompt: str) -> tuple[str, str]:
     O modelo de imagem tem limite de taxa baixo: sob rajada, chamadas voltam
     429 RESOURCE_EXHAUSTED. O `_gemini_limiter` espaça os inícios de chamada
     (inclusive dos retries) para ficar sob a cota; o retry cobre 429s residuais
-    e instabilidade (backoff 3s, 6s, 12s). Import do SDK é lazy (mock em testes).
+    e instabilidade (backoff 3s, 6s, 12s). Quem decide o que merece retry é
+    `_classificar_erro` — um 429 por saldo esgotado sai daqui na primeira
+    tentativa. Import do SDK é lazy (mock em testes).
     """
     from google import genai  # noqa: PLC0415  (import lazy proposital)
     from google.genai import types
@@ -154,18 +213,28 @@ async def _run_gemini(image_bytes: bytes, prompt: str) -> tuple[str, str]:
             response = await client.aio.models.generate_content(
                 model=settings.gemini_image_model, contents=contents
             )
-            return _extract_image(response)
         except Exception as exc:
-            is_transient = any(t in str(exc) for t in _TRANSIENT_TOKENS)
-            if attempt < _GEMINI_MAX_ATTEMPTS and is_transient:
+            motivo, vale_retry = _classificar_erro(exc)
+            if attempt < _GEMINI_MAX_ATTEMPTS and vale_retry:
                 logger.warning(
-                    "Gemini transitório (tent. %s/%s): %s — retry em %.0fs",
-                    attempt, _GEMINI_MAX_ATTEMPTS, type(exc).__name__, delay,
+                    "Gemini %s (tent. %s/%s): %s — retry em %.0fs",
+                    motivo, attempt, _GEMINI_MAX_ATTEMPTS, type(exc).__name__, delay,
                 )
                 await asyncio.sleep(delay)
                 delay *= 2
                 continue
+            if motivo == MOTIVO_SALDO:
+                # Merece um log próprio: é a única falha aqui que ninguém
+                # conserta esperando nem mexendo em código.
+                logger.error(
+                    "Gemini recusou por SALDO ESGOTADO — recarregue os créditos "
+                    "em https://ai.studio/projects. Nenhum retry adianta."
+                )
             raise
+        # Fora do `except`: uma resposta sem imagem é problema do CONTEÚDO, não
+        # da chamada, e não pode ser confundida com erro de rede na hora de
+        # decidir o retry.
+        return _extract_image(response)
 
 
 async def _upload_avatar(job_id: str, avatar_bytes: bytes, mime: str) -> str:
@@ -219,7 +288,12 @@ async def generate_avatar_task(ctx, job_id: str, image_b64: str, class_name: str
         image_out_b64, mime = await _run_gemini(image_bytes, build_prompt(class_name))
         # Sobe o avatar gerado ao Supabase Storage e pega a URL pública permanente.
         avatar_bytes = base64.b64decode(image_out_b64)
-        public_url = await _upload_avatar(job_id, avatar_bytes, mime)
+        try:
+            public_url = await _upload_avatar(job_id, avatar_bytes, mime)
+        except Exception as erro_upload:
+            # Marcado à parte porque a conclusão é oposta à de uma falha de
+            # geração: aqui o Gemini já foi pago e o avatar existe.
+            raise FalhaNoUpload("Storage recusou o avatar") from erro_upload
         payload = {"status": "done", "public_url": public_url, "mime": mime}
     except BaseException as erro:
         # `BaseException` e não `Exception` de propósito. Quando o arq mata o job
@@ -230,8 +304,9 @@ async def generate_avatar_task(ctx, job_id: str, image_b64: str, class_name: str
         # estava morto. Nenhuma forma de morte pode sair daqui sem deixar rastro.
         #
         # NUNCA logamos a foto original nem os bytes — apenas o job_id e o traço.
-        logger.exception("Falha ao gerar avatar para job %s", job_id)
-        payload = {"status": "error", "error": "generation_failed"}
+        motivo, _ = _classificar_erro(erro)
+        logger.exception("Falha ao gerar avatar para job %s (motivo=%s)", job_id, motivo)
+        payload = {"status": "error", "error": motivo}
 
         # Cancelamento não é erro de aplicação: grava o marcador e devolve o
         # controle ao arq, que precisa saber que a tarefa de fato encerrou.

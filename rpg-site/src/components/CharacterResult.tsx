@@ -11,7 +11,11 @@ import {
   type MouseEvent,
 } from "react";
 import type { Dimensions } from "./QuizForm";
-import { useAvatarGeneration, dataUrlToBlob } from "@/lib/useAvatarGeneration";
+import {
+  useAvatarGeneration,
+  dataUrlToBlob,
+  mensagemDeFalha,
+} from "@/lib/useAvatarGeneration";
 import { getSupabaseClient } from "@/lib/supabase";
 import { avisarNovoJogador } from "@/lib/stats-actions";
 import { byName, type ClassInfo } from "@/lib/classes";
@@ -224,7 +228,13 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
 
   // A geração do avatar acontece AQUI (não durante o quiz), porque só agora a
   // classe é conhecida — assim o avatar é gerado no estilo da classe do jogador.
-  const { status: avatarStatus, avatarUrl, jobId, start } = useAvatarGeneration();
+  const {
+    status: avatarStatus,
+    avatarUrl,
+    errorReason: avatarErro,
+    jobId,
+    start,
+  } = useAvatarGeneration();
   useEffect(() => {
     if (photo) start(photo, rpgClass.name);
   }, [start, photo, rpgClass.name]);
@@ -497,7 +507,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                       className="text-[rgba(240,226,189,0.65)] text-[.55rem] tracking-[.12em] uppercase leading-relaxed"
                       style={{ fontFamily: "var(--font-cinzel), serif" }}
                     >
-                      Não foi possível conjurar seu avatar
+                      {mensagemDeFalha(avatarErro)}
                     </span>
                   </div>
                 ) : (
