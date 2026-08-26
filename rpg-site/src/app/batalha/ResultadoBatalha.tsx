@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValueEvent,
@@ -11,6 +11,8 @@ import {
 import { byName } from "@/lib/classes";
 import type { ResultadoBatalha as Resultado, Rodada } from "@/lib/batalha-api";
 import type { Oponente } from "./DesafioScanner";
+import ArenaImpacto, { type Impacto } from "@/components/ui/arena-impacto";
+import TintaViva from "@/components/ui/tinta-viva";
 
 interface Props {
   resultado: Resultado;
@@ -56,6 +58,13 @@ export default function ResultadoBatalha({
      zero, no efeito abaixo. */
   const [etapa, setEtapa] = useState(0);
 
+  /* O impacto é disparado pelo efeito que revela cada rodada, então precisa ser
+     estável entre renders — daí a ref, e não estado. */
+  const impacto = useRef<Impacto | null>(null);
+  const receberArena = useCallback((i: Impacto) => {
+    impacto.current = i;
+  }, []);
+
   useEffect(() => {
     if (etapa > total) return;
     const espera = semMovimento
@@ -65,7 +74,12 @@ export default function ResultadoBatalha({
         : etapa === total
           ? ATRASO_VEREDITO_MS
           : INTERVALO_RODADA_MS;
-    const id = setTimeout(() => setEtapa((e) => e + 1), espera);
+    const id = setTimeout(() => {
+      setEtapa((e) => e + 1);
+      /* Bate quando uma RODADA entra — não no veredito. É ali que os dois
+         valores colidem, e é a colisão que sacode a sala. */
+      if (etapa < total) impacto.current?.bater();
+    }, espera);
     return () => clearTimeout(id);
   }, [etapa, total, semMovimento]);
 
@@ -79,7 +93,7 @@ export default function ResultadoBatalha({
   const classeRival = byName(oponente.classe ?? "");
 
   return (
-    <div className="space-y-6">
+    <ArenaImpacto aoMontar={receberArena} className="space-y-6">
       <div className="paper-card paper-frame arcane-corners p-6 sm:p-8 text-center">
         <span className="ac-bl" />
         <span className="ac-br" />
@@ -150,7 +164,9 @@ export default function ResultadoBatalha({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.15 }}
           >
-            <p className="text-[.85rem] italic leading-relaxed mb-4">{resultado.narrativa}</p>
+            <p className="text-[.85rem] italic leading-relaxed mb-4">
+              <TintaViva texto={resultado.narrativa} atraso={0.18} />
+            </p>
             <p
               className="text-[.7rem] tracking-[.15em] uppercase"
               style={{ fontFamily: "var(--font-cinzel), serif", color: "var(--foil)" }}
@@ -184,7 +200,7 @@ export default function ResultadoBatalha({
           </button>
         </motion.div>
       )}
-    </div>
+    </ArenaImpacto>
   );
 }
 

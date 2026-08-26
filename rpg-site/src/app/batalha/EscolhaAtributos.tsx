@@ -5,6 +5,8 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { byName } from "@/lib/classes";
 import { ATRIBUTOS_CARD, QTD_ATRIBUTOS_POR_BATALHA, type ChaveAtributo } from "@/lib/atributos";
 import { aquecer, ErroDeBatalha, lutar, type ResultadoBatalha } from "@/lib/batalha-api";
+import Magnetic from "@/components/ui/magnetic";
+import BotaoLacre from "@/components/ui/botao-lacre";
 import type { Oponente } from "./DesafioScanner";
 
 interface MeuJogador {
@@ -187,14 +189,13 @@ export default function EscolhaAtributos({ meuId, oponente, onVoltar, onBatalhaC
 
       <div className="space-y-3">
         {completo && (
-          <button
+          <BotaoLacre
             onClick={confirmarEscolha}
             disabled={enviando || carregandoEu}
-            className="press btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase cursor-pointer disabled:opacity-50"
-            style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
+            className="py-4 text-[.75rem] tracking-[.12em] uppercase"
           >
             {enviando ? "Resolvendo o confronto…" : "⚔️ Confirmar escolha"}
-          </button>
+          </BotaoLacre>
         )}
         <button
           onClick={onVoltar}
@@ -209,6 +210,11 @@ export default function EscolhaAtributos({ meuId, oponente, onVoltar, onBatalhaC
   );
 }
 
+/* `strength` baixo de propósito: o atributo se INCLINA para o cursor, não
+   persegue. Acima de ~0.2 a grade inteira parece flutuar e fica difícil
+   acertar o alvo — o efeito passa a atrapalhar o que deveria enfeitar. */
+const ATRACAO = 0.14;
+
 function BotaoAtributo({
   rotulo,
   Icon,
@@ -222,11 +228,11 @@ function BotaoAtributo({
   desabilitado: boolean;
   onClick: () => void;
 }) {
-  return (
+  const conteudo = (
     <button
       onClick={onClick}
       disabled={desabilitado}
-      className={`press py-4 flex flex-col items-center gap-1.5 border transition-all disabled:opacity-35 disabled:cursor-not-allowed ${
+      className={`press w-full py-4 flex flex-col items-center gap-1.5 border transition-all disabled:opacity-35 disabled:cursor-not-allowed ${
         selecionado
           ? "border-[var(--seal)] bg-[rgba(140,35,24,0.1)]"
           : "border-[rgba(96,66,26,0.3)] hover:border-[var(--foil)]"
@@ -240,5 +246,13 @@ function BotaoAtributo({
         {rotulo}
       </span>
     </button>
+  );
+
+  // Já escolhido ou fora de alcance não flerta com o cursor.
+  if (desabilitado || selecionado) return conteudo;
+  return (
+    <Magnetic strength={ATRACAO} className="!block">
+      {conteudo}
+    </Magnetic>
   );
 }
