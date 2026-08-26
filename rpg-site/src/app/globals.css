@@ -675,3 +675,102 @@ h1,h2,h3,h4 {
   width: 0%;
   animation: barra-duelo var(--duelo-carregando, 2400ms) linear forwards;
 }
+
+/* ── ESBOÇO MÁGICO ──────────────────────────────────────────────────
+   Espaços reservados de carregamento. Não são "skeletons" de web moderna
+   (blocos cinzas piscando em uníssono): são traços de tinta assentando no
+   pergaminho enquanto uma vela passa por cima.
+
+   Tudo em CSS de propósito. O esboço aparece ANTES de o conteúdo existir; se
+   a animação dependesse de hidratação, ela só começaria depois do bundle
+   chegar — exatamente quando a espera é longa e o esboço mais importa. */
+
+/* A tinta entrando: o traço é desenhado da esquerda para a direita. */
+@keyframes esboco-escorre {
+  0%   { transform: scaleX(0);   opacity: 0; }
+  18%  { opacity: .9; }
+  100% { transform: scaleX(1);   opacity: 1; }
+}
+
+/* A vela passando: um clarão quente atravessa devagar, na diagonal. */
+@keyframes esboco-vela {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(220%); }
+}
+
+/* A respiração da tinta úmida — período diferente do da vela, para os dois
+   nunca sincronizarem e o loop não ficar evidente. */
+@keyframes esboco-umido {
+  0%, 100% { opacity: .82; }
+  50%      { opacity: 1; }
+}
+
+.esboco {
+  position: relative;
+  overflow: hidden;
+  transform-origin: left center;
+  /* Lavagem de tinta sépia sobre o papel: mistura --ink com --paper2 em
+     opacidade baixa, então o traço parece absorvido pela fibra, não colado
+     por cima dela. */
+  background:
+    linear-gradient(90deg,
+      rgba(60, 42, 24, .16) 0%,
+      rgba(60, 42, 24, .10) 55%,
+      rgba(96, 66, 26, .13) 100%),
+    var(--paper2);
+  /* As pontas se esgarçam — pincel que ficou sem tinta. Sem isto, o traço tem
+     a borda reta que denuncia o retângulo de CSS. */
+  mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  animation:
+    esboco-escorre .85s cubic-bezier(.2, .75, .3, 1) both var(--esboco-atraso, 0s),
+    esboco-umido 3.7s ease-in-out infinite var(--esboco-atraso, 0s);
+}
+
+/* O clarão da vela, por cima do traço. */
+.esboco::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg,
+    transparent 0%,
+    rgba(60, 42, 24, .05) 26%,
+    rgba(246, 233, 196, .62) 50%,
+    rgba(60, 42, 24, .05) 74%,
+    transparent 100%);
+  animation: esboco-vela 2.6s ease-in-out infinite var(--esboco-atraso, 0s);
+}
+
+/* Selo/retrato: mesma lógica, mas redondo e sem o escorrimento lateral —
+   uma mancha de tinta se espalha do centro. */
+@keyframes esboco-mancha {
+  0%   { transform: scale(.72); opacity: 0; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+.esboco-selo {
+  position: relative;
+  overflow: hidden;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 38% 34%,
+      rgba(96, 66, 26, .18) 0%,
+      rgba(60, 42, 24, .13) 58%,
+      rgba(60, 42, 24, .07) 100%),
+    var(--paper2);
+  animation:
+    esboco-mancha .9s cubic-bezier(.2, .75, .3, 1) both var(--esboco-atraso, 0s),
+    esboco-umido 3.7s ease-in-out infinite var(--esboco-atraso, 0s);
+}
+.esboco-selo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg,
+    transparent 0%, rgba(246, 233, 196, .5) 50%, transparent 100%);
+  animation: esboco-vela 2.6s ease-in-out infinite var(--esboco-atraso, 0s);
+}
+
+/* Quem pediu menos movimento vê o esboço parado, já desenhado. */
+@media (prefers-reduced-motion: reduce) {
+  .esboco, .esboco-selo { animation: none; transform: none; opacity: 1; }
+  .esboco::after, .esboco-selo::after { animation: none; opacity: 0; }
+}

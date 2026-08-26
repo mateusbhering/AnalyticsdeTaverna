@@ -1,3 +1,5 @@
+import { LinhaDoQuadro, Traco } from "@/components/ui/esboco";
+
 /**
  * Estado de carregamento do quadro.
  *
@@ -40,21 +42,17 @@ export default function CarregandoRanking() {
               Consultando o quadro de feitos…
             </p>
 
-            {/* Linhas fantasmas pulsando: a forma do quadro antes do conteúdo. */}
-            <div className="mt-8 border-b border-[rgba(96,66,26,0.4)] pb-3">
-              <div className="h-3 w-40 bg-[rgba(96,66,26,0.18)]" />
+            {/* O quadro sendo escrito: os traços entram em cascata, de cima
+                para baixo, como quem preenche o pergaminho linha a linha. */}
+            <div className="mt-8 flex items-end gap-3 border-b border-[rgba(96,66,26,0.4)] pb-3">
+              <Traco largura="3.4rem" altura={10} />
+              <Traco largura="6rem" altura={10} atraso={0.05} />
+              <Traco largura="4.6rem" altura={10} atraso={0.1} className="hidden sm:block" />
+              <Traco largura="3.2rem" altura={10} atraso={0.15} className="ml-auto" />
             </div>
-            <ul className="animate-pulse" aria-hidden>
+            <ul aria-hidden>
               {[1, 2, 3, 4, 5].map((i) => (
-                <li
-                  key={i}
-                  className="grid grid-cols-[3rem_1fr_auto] sm:grid-cols-[4rem_1fr_10rem_5rem] items-center gap-3 border-b border-dashed border-[rgba(96,66,26,0.22)] py-5"
-                >
-                  <div className="h-4 w-6 bg-[rgba(96,66,26,0.16)]" />
-                  <div className="h-4 w-40 bg-[rgba(96,66,26,0.16)]" />
-                  <div className="hidden sm:block h-4 w-28 bg-[rgba(96,66,26,0.12)]" />
-                  <div className="h-4 w-10 justify-self-end bg-[rgba(96,66,26,0.12)]" />
-                </li>
+                <LinhaDoQuadro key={i} posicao={i} />
               ))}
             </ul>
 
