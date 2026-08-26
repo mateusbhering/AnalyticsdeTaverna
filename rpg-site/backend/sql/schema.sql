@@ -57,6 +57,12 @@ alter table public.jogadores add column if not exists criatividade  integer;
 alter table public.jogadores add column if not exists impulsividade integer;
 alter table public.jogadores add column if not exists percepcao     integer;
 
+-- As tags acumuladas no quiz (NERD, ANSIOSO, DOPAMINA...).
+-- Por que guardar? Elas aparecem no card do dono e NÃO são deriváveis do resto:
+-- classe e atributos são calculados a partir delas, mas o caminho não volta.
+-- Sem esta coluna, quem sai do card e volta perde as tags para sempre.
+alter table public.jogadores add column if not exists tags text[];
+
 -- Índices: o ranking ordena por XP o tempo todo; o pareamento filtra por XP.
 create index if not exists jogadores_xp_idx        on public.jogadores (xp desc);
 create index if not exists jogadores_criado_em_idx on public.jogadores (criado_em desc);

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import DesafioScanner from "./DesafioScanner";
+import LinkMeuCard from "./LinkMeuCard";
 
 export const metadata: Metadata = {
   title: "Desafiar Alguém — Analytics de Taverna",
@@ -46,7 +47,8 @@ export default function BatalhaPage() {
           <DesafioScanner />
         </Suspense>
 
-        <div className="text-center mt-8">
+        <div className="text-center mt-8 space-y-3">
+          <LinkMeuCard />
           <Link
             href="/"
             className="text-[rgba(230,188,106,0.5)] hover:text-[var(--gold-light)] text-sm transition-colors"

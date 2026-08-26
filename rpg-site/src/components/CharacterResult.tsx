@@ -19,22 +19,8 @@ import {
 import { getSupabaseClient } from "@/lib/supabase";
 import { avisarNovoJogador } from "@/lib/stats-actions";
 import { byName, type ClassInfo } from "@/lib/classes";
+import { lembrarJogador } from "@/lib/jogador-local";
 
-
-/**
- * Guarda o id deste jogador no aparelho. A página /batalha precisa saber QUEM
- * está desafiando — sem isso não dá para impedir que alguém escaneie o próprio
- * QR nem para registrar a batalha depois. Fica em localStorage (e não em
- * sessionStorage, como o dedup do save) porque a pessoa fecha a aba e volta
- * para desafiar alguém mais tarde no evento.
- */
-function lembrarJogador(id: string) {
-  try {
-    localStorage.setItem("taverna:jogadorId", id);
-  } catch {
-    // Modo privado / storage bloqueado: seguimos sem lembrar.
-  }
-}
 
 /** Nome do arquivo ao baixar o avatar: slug da classe + extensão do mime. */
 function avatarFileName(className: string, mime: string): string {
@@ -299,7 +285,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
     const cached = typeof window !== "undefined" ? sessionStorage.getItem(dedupKey) : null;
     if (cached) {
       setPersonagemId(Number(cached));
-      lembrarJogador(cached);
+      lembrarJogador(cached, uniqueTags);
       savedRef.current = true;
       return;
     }
@@ -311,26 +297,53 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
         ? `${supabaseBase}/storage/v1/object/public/avatars/${jobId}.jpg`
         : null;
 
+    // O que o card sempre soube gravar.
+    const base = {
+      classe: rpgClass.name,
+      forca: attrs.forca,
+      inteligencia: attrs.inteligencia,
+      agilidade: attrs.agilidade,
+      resistencia: attrs.resistencia,
+      carisma: attrs.carisma,
+      sabedoria: attrs.sabedoria,
+      caos: attrs.caos,
+      foto_url: fotoUrl,
+    };
+
     (async () => {
       try {
         const supabase = getSupabaseClient();
-        const { data, error } = await supabase
-          .from("jogadores")
-          .insert([
-            {
-              classe: rpgClass.name,
-              forca: attrs.forca,
-              inteligencia: attrs.inteligencia,
-              agilidade: attrs.agilidade,
-              resistencia: attrs.resistencia,
-              carisma: attrs.carisma,
-              sabedoria: attrs.sabedoria,
-              caos: attrs.caos,
-              foto_url: fotoUrl,
-            },
-          ])
-          .select();
-        if (error) {
+        const salvar = (linha: object) =>
+          supabase.from("jogadores").insert([linha]).select();
+
+        let { data, error } = await salvar({
+          ...base,
+          // As tags NÃO são deriváveis do resto: a classe e os atributos saem
+          // delas, mas o caminho não volta. Sem gravar aqui, quem sai do card e
+          // volta por /personagem?id= perde as tags para sempre.
+          tags: uniqueTags,
+          // As 10 colunas de dimensão já existiam no schema e ficavam NULL.
+          // As chaves de `Dimensions` batem uma a uma com os nomes delas.
+          ...dims,
+        });
+
+        /* `tags` é coluna nova, e o banco é um deploy separado do frontend: se o
+           `sql/schema.sql` ainda não rodou no Supabase, o insert volta 42703
+           (undefined_column) e o jogador NUNCA seria salvo — sem id no aparelho,
+           /batalha diria "você ainda não tem um herói" e o evento inteiro cairia.
+           Nesse caso grava o formato antigo; as tags ficam só no espelho local
+           até a migração rodar. Mesmo tropeço que o README documenta em
+           `batalhas.rodadas`. */
+        if (error?.code === "42703") {
+          console.warn(
+            "Coluna nova ausente em `jogadores` — rode sql/schema.sql no Supabase. " +
+              "Salvando sem tags/dimensões por enquanto.",
+            error.message,
+          );
+          ({ data, error } = await salvar(base));
+        }
+
+        if (error || !data) {
           console.error("Erro ao salvar personagem:", error);
           savedRef.current = false; // permite fallback pro link por params
           return;
@@ -338,7 +351,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
         const id = data[0].id as number;
         setPersonagemId(id);
         if (typeof window !== "undefined") sessionStorage.setItem(dedupKey, String(id));
-        lembrarJogador(String(id));
+        lembrarJogador(String(id), uniqueTags);
 
         // O dashboard da landing é cacheado; sem este aviso o personagem novo
         // só entraria na contagem no próximo ciclo de 5 min. Sem await: é uma

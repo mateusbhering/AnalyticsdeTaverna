@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import QrScanner from "@/components/QrScanner";
 import TelaCarregando from "@/components/TelaCarregando";
 import { getSupabaseClient } from "@/lib/supabase";
+import { useMeuId } from "@/lib/jogador-local";
 import { byName } from "@/lib/classes";
 import EscolhaAtributos from "./EscolhaAtributos";
 import ResultadoBatalha from "./ResultadoBatalha";
@@ -21,22 +22,6 @@ export interface Oponente {
   empates: number | null;
   foto_url: string | null;
 }
-
-/** Id do jogador desta pessoa, gravado ao terminar o quiz (CharacterResult). */
-const CHAVE_MEU_ID = "taverna:jogadorId";
-
-/* O localStorage não existe no servidor. Lendo por useSyncExternalStore, o
-   primeiro render (servidor e hidratação) enxerga `undefined` — "ainda não
-   sabemos" — e o valor real entra no reconcile seguinte, sem mismatch. */
-const semInscricao = () => () => {};
-function lerMeuId(): string | null {
-  try {
-    return localStorage.getItem(CHAVE_MEU_ID);
-  } catch {
-    return null; // modo privado / storage bloqueado
-  }
-}
-const meuIdNoServidor = () => undefined;
 
 /* Quanto a tela do duelo fica no ar antes de revelar o oponente. A consulta ao
    Supabase leva uns 300ms — sem um mínimo, a arte apareceria e sumiria num
@@ -71,11 +56,7 @@ export default function DesafioScanner() {
   const params = useSearchParams();
 
   // `undefined` = ainda não lemos o aparelho; `null` = não tem personagem.
-  const meuId = useSyncExternalStore<string | null | undefined>(
-    semInscricao,
-    lerMeuId,
-    meuIdNoServidor,
-  );
+  const meuId = useMeuId();
 
   const [oponenteId, setOponenteId] = useState<string | null>(params.get("oponenteId"));
   const [oponente, setOponente] = useState<Oponente | null>(null);

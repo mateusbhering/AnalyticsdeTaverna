@@ -551,7 +551,7 @@ O Supabase é usado de **dois lados, com chaves diferentes**:
 
 `sql/schema.sql` é idempotente e cria/estende tudo:
 
-- **`jogadores`** — classe, os 7 atributos, `foto_url`, as 10 dimensões brutas do quiz, placar (`xp`, `vitorias`, `derrotas`, `empates`) e `nome`. Índices em `xp desc`, `criado_em desc` e `classe`.
+- **`jogadores`** — classe, os 7 atributos, `foto_url`, as 10 dimensões brutas do quiz, as `tags` acumuladas, placar (`xp`, `vitorias`, `derrotas`, `empates`) e `nome`. Índices em `xp desc`, `criado_em desc` e `classe`.
 - **`batalhas`** — uma linha por confronto, guardando os **valores** disputados (não só o vencedor), `resultado` (`a`/`b`/`empate`), `vencedor_id`, o XP de cada lado e `rodadas` (jsonb) com o detalhe dos 3 atributos disputados.
 
 > **`rodadas` é coluna nova.** Se o `sql/schema.sql` não tiver sido rodado no
@@ -564,6 +564,16 @@ O Supabase é usado de **dois lados, com chaves diferentes**:
 
 > Por que jsonb e não três trios de colunas: o número de rodadas é regra de jogo,
 > não de banco. Se o formato virar 5 rodadas, nada no schema muda.
+
+> **`jogadores.tags` também é coluna nova.** Sem a migração, o insert do card
+> volta `42703` — `CharacterResult` percebe, avisa no console e regrava no
+> formato antigo, então o jogo não para; as tags só ficam no espelho do
+> aparelho até a migração rodar:
+> ```sql
+> alter table public.jogadores add column if not exists tags text[];
+> ```
+> As 10 colunas de dimensão já existiam mas nunca eram preenchidas — o insert
+> passou a gravá-las.
 
 **RLS é obrigatório** — sem as policies de `insert`/`select` para `anon`, o insert do frontend falha com `new row violates row-level security policy`. Os comandos estão em `sql/schema.sql` e em [`backend/README.md`](rpg-site/backend/README.md#2-tabela-jogadores-usada-pelo-frontend).
 
@@ -597,6 +607,24 @@ O QR Code do card aponta para `/batalha?oponenteId={id}` — quem escanear cai
 direto no duelo contra esse personagem. Ver [Tela do Duelo](#tela-do-duelo-batalha).
 
 **Salvamento:** `CharacterResult` grava o jogador quando o avatar chega a um estado terminal (`done` ou `error`), com dedup por `sessionStorage` para não inserir duas vezes em remontagens.
+
+### Visão do dono vs. visão pública
+
+A mesma rota serve as duas, e o que muda é **quem está olhando**: se o `?id=` da
+URL bate com o `taverna:jogadorId` guardado no aparelho, `PersonagemCard` marca
+`ehDono` e revela as tags e os botões **Jogar Novamente** / **Desafiar Alguém**.
+Qualquer outra pessoa vê o card público de sempre. O gate é cosmético, não de
+segurança — as ações são links públicos e o RLS não dá `update` para `anon`.
+
+É isso que permite **voltar do duelo para o próprio card**: `/batalha` mostra um
+`← Voltar para o meu card` (`LinkMeuCard`, no rodapé da página para cobrir as
+oito fases do scanner) apontando para `/personagem?id={meuId}`.
+
+> **O card do dono é uma leitura, nunca uma remontagem de `CharacterResult`.**
+> Aquele componente é um *pipeline de criação*: ao montar com uma `photo` ele
+> dispara a geração do avatar e um `insert` novo. Revivê-lo para "voltar ao
+> card" queimaria cota da API de avatar e duplicaria a linha em `jogadores`.
+> Tudo que o card desenha já é derivável do `id` — menos as tags, daí a coluna.
 
 ---
 

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import PersonagemCard from "./PersonagemCard";
+import CtaVisitante from "./CtaVisitante";
 import { Selo, Traco } from "@/components/ui/esboco";
 
 export default function PersonagemPage() {
@@ -30,13 +31,9 @@ export default function PersonagemPage() {
         </Suspense>
 
         <div className="text-center mt-8 space-y-4">
-          <a
-            href="/jogar"
-            className="btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase"
-            style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-          >
-            ⚔️ Descobrir minha classe
-          </a>
+          <Suspense fallback={null}>
+            <CtaVisitante />
+          </Suspense>
           <a
             href="/"
             className="block text-[rgba(230,188,106,0.55)] hover:text-[var(--gold-light)] text-[.7rem] tracking-[.15em] uppercase transition-colors"
