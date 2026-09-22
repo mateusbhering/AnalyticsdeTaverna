@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Script de depuração local (usa playwright-core, caminho de Chrome
+    // hardcoded) — não faz parte do app, não precisa passar no lint do CI.
+    "diag-tmp.cjs",
   ]),
 ]);
 

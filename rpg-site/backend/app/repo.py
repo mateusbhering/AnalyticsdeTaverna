@@ -49,6 +49,8 @@ class Repositorio(Protocol):
     async def contar_batalhas(self) -> int: ...
     async def jogadores_para_analytics(self) -> list[dict]: ...
     async def batalhas_para_analytics(self) -> list[dict]: ...
+    async def registrar_evento_funil(self, dados: dict) -> dict: ...
+    async def eventos_funil_para_analytics(self) -> list[dict]: ...
 
 
 class SupabaseRepo:
@@ -262,6 +264,53 @@ class SupabaseRepo:
             )
 
         return (await run_in_threadpool(_exec)).data or []
+
+    # ── funil de conversão ───────────────────────────────────────────
+
+    async def registrar_evento_funil(self, dados: dict) -> dict:
+        """Grava um evento do funil, tolerando um banco sem a tabela ainda.
+
+        Mesmo espírito de `criar_batalha` com `rodadas`: `eventos_funil` é
+        tabela nova, e um projeto que ainda não rodou o `sql/schema.sql` não
+        pode ter o quiz inteiro quebrando por causa de uma métrica. Se a
+        tabela não existir, avisa no log e segue — o funil fica sem dado até
+        a migração rodar, mas ninguém trava no meio do jogo por isso.
+        """
+
+        def _exec():
+            return self.client.table("eventos_funil").insert(dados).execute()
+
+        try:
+            resposta = await run_in_threadpool(_exec)
+        except Exception as erro:  # noqa: BLE001 — log e segue, ver docstring
+            texto = str(erro).lower()
+            if "does not exist" not in texto and "schema cache" not in texto:
+                raise
+            log.warning(
+                "Tabela `eventos_funil` não existe ainda: evento '%s' não foi gravado. "
+                "Rode `sql/schema.sql` no Supabase para habilitar o funil.",
+                dados.get("evento"),
+            )
+            return dados
+
+        return resposta.data[0] if resposta.data else dados
+
+    async def eventos_funil_para_analytics(self) -> list[dict]:
+        def _exec():
+            return (
+                self.client.table("eventos_funil")
+                .select("sessao_id,evento")
+                .limit(LIMITE_ANALYTICS)
+                .execute()
+            )
+
+        try:
+            return (await run_in_threadpool(_exec)).data or []
+        except Exception as erro:  # noqa: BLE001 — tabela ausente = funil vazio
+            texto = str(erro).lower()
+            if "does not exist" not in texto and "schema cache" not in texto:
+                raise
+            return []
 
 
 def _coluna_ausente(erro: Exception, dados: dict) -> str | None:

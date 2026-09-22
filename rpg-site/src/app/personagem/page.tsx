@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import PersonagemCard from "./PersonagemCard";
 import CtaVisitante from "./CtaVisitante";
 import { Selo, Traco } from "@/components/ui/esboco";
@@ -15,7 +16,7 @@ export default function PersonagemPage() {
     >
       <div className="relative w-full max-w-sm">
         <div className="flex justify-center mb-10">
-          <a href="/">
+          <Link href="/">
             <Image
               src="/logo.png"
               alt="Analytics de Taverna"
@@ -23,7 +24,7 @@ export default function PersonagemPage() {
               height={72}
               className="ritual-glow"
             />
-          </a>
+          </Link>
         </div>
 
         <Suspense fallback={<CardSkeleton />}>
@@ -34,13 +35,13 @@ export default function PersonagemPage() {
           <Suspense fallback={null}>
             <CtaVisitante />
           </Suspense>
-          <a
+          <Link
             href="/"
             className="block text-[rgba(230,188,106,0.55)] hover:text-[var(--gold-light)] text-[.7rem] tracking-[.15em] uppercase transition-colors"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             ← Voltar ao início
-          </a>
+          </Link>
         </div>
       </div>
     </div>

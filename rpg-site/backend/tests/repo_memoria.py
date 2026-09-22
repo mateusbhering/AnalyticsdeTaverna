@@ -14,6 +14,7 @@ class RepoMemoria:
     def __init__(self):
         self.jogadores: list[dict] = []
         self.batalhas: list[dict] = []
+        self.eventos_funil: list[dict] = []
         self._proximo_jogador = 1
         self._proxima_batalha = 1
 
@@ -120,3 +121,13 @@ class RepoMemoria:
 
     async def batalhas_para_analytics(self) -> list[dict]:
         return list(self.batalhas)
+
+    # ── funil de conversão ───────────────────────────────────────────
+
+    async def registrar_evento_funil(self, dados: dict) -> dict:
+        registro = {**dados, "criado_em": datetime.now(timezone.utc).isoformat()}
+        self.eventos_funil.append(registro)
+        return registro
+
+    async def eventos_funil_para_analytics(self) -> list[dict]:
+        return list(self.eventos_funil)
