@@ -1,5 +1,6 @@
 import QuizForm from "@/components/QuizForm";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function JogarPage() {
   return (
@@ -13,7 +14,7 @@ export default function JogarPage() {
       <div className="relative max-w-2xl mx-auto px-6 py-16">
         {/* Header */}
         <div className="text-center mb-10">
-          <a href="/" className="inline-flex justify-center mb-6">
+          <Link href="/" className="inline-flex justify-center mb-6">
             <Image
               src="/logo.png"
               alt="Analytics de Taverna"
@@ -21,7 +22,7 @@ export default function JogarPage() {
               height={100}
               className="drop-shadow-[0_0_20px_rgba(255,176,80,0.5)]"
             />
-          </a>
+          </Link>
           <h1
             className="text-4xl text-[var(--parchment)] mb-3"
             style={{ textShadow: "0 0 30px rgba(255,176,80,0.2)" }}
@@ -36,13 +37,13 @@ export default function JogarPage() {
         <QuizForm />
 
         <div className="text-center mt-8">
-          <a
+          <Link
             href="/"
             className="text-[rgba(230,188,106,0.5)] hover:text-[var(--gold-light)] text-sm transition-colors"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             ← Voltar ao início
-          </a>
+          </Link>
         </div>
       </div>
     </div>

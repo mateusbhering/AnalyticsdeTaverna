@@ -1,11 +1,13 @@
 """Dashboard Analytics (entregável 9).
 
-  GET /analytics/resumo         — números de topo (cards do dashboard)
-  GET /analytics/classes        — quantas vezes cada classe foi gerada
-  GET /analytics/atributos      — média de cada atributo e dimensão
-  GET /analytics/batalhas       — atributos mais escolhidos, taxa de empate
-  GET /analytics/taxa-vitoria   — taxa de vitória por classe
-  GET /analytics/insight        — a frase de efeito do PDF, calculada
+  GET  /analytics/resumo         — números de topo (cards do dashboard)
+  GET  /analytics/classes        — quantas vezes cada classe foi gerada
+  GET  /analytics/atributos      — média de cada atributo e dimensão
+  GET  /analytics/batalhas       — atributos mais escolhidos, taxa de empate
+  GET  /analytics/taxa-vitoria   — taxa de vitória por classe
+  GET  /analytics/insight        — a frase de efeito do PDF, calculada
+  POST /analytics/evento         — registra uma etapa do funil de conversão
+  GET  /analytics/funil          — funil foto → quiz → avatar → card → duelo
 
 Por que agregar em Python e não no SQL? O Supabase expõe a tabela via
 PostgREST, que não faz AVG/GROUP BY direto. Para a escala do projeto (alguns
@@ -22,6 +24,7 @@ from fastapi import APIRouter, Depends
 
 from ..domain.personagem import ATRIBUTOS, DIMENSOES
 from ..repo import Repositorio, get_repo
+from ..schemas import EventoFunilRequest
 
 router = APIRouter(prefix="/analytics", tags=["analytics"])
 
@@ -217,3 +220,104 @@ async def insight(repo: Repositorio = Depends(get_repo)):
         "dimensao_mais_fraca": fraca,
         "medias": medias,
     }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Funil de conversão
+#
+# Cobre foto → quiz → avatar com eventos que o frontend dispara; as duas
+# últimas etapas (personagem salvo, duelou) já são deriváveis de `jogadores` e
+# `batalhas` — rastrear de novo duplicaria dado que o banco já tem.
+# ─────────────────────────────────────────────────────────────────────────────
+
+ETAPAS_EVENTO: tuple[str, ...] = ("inicio", "foto_capturada", "quiz_concluido", "avatar_gerado")
+
+ROTULOS_ETAPA = {
+    "inicio": "Abriu o quiz",
+    "foto_capturada": "Tirou a foto",
+    "quiz_concluido": "Terminou o quiz",
+    "avatar_gerado": "Avatar gerado",
+    "personagem_salvo": "Personagem salvo",
+    "duelou": "Duelou ao menos uma vez",
+}
+
+
+@router.post("/evento", status_code=202)
+async def registrar_evento(payload: EventoFunilRequest, repo: Repositorio = Depends(get_repo)):
+    """Registra uma etapa do funil. Chamado pelo frontend em fogo-e-esquece —
+    nunca deve bloquear nem atrapalhar o quiz se falhar."""
+    await repo.registrar_evento_funil(payload.model_dump())
+    return {"status": "registrado"}
+
+
+@router.get("/funil")
+async def funil(repo: Repositorio = Depends(get_repo)):
+    """Funil foto → quiz → avatar → personagem salvo → duelo, por SESSÃO.
+
+    Desde que `jogadores.sessao_funil_id` existe (liga o jogador salvo à
+    sessão que o gerou — ver `sql/schema.sql`), as duas últimas etapas não são
+    mais totais soltos: são a contagem de sessões que, além de terem os
+    eventos anteriores, também geraram um jogador (`personagem_salvo`) e cujo
+    jogador apareceu em algum duelo (`duelou`). É um funil por pessoa de
+    verdade, não só uma contagem por etapa desconectada.
+
+    Jogadores sem `sessao_funil_id` (salvos antes desta coluna existir, ou
+    com o quiz rodando numa versão antiga do frontend) não entram no funil —
+    não têm como ser ligados a uma sessão que nunca existiu. Isso é esperado
+    logo após o deploy: o funil relata só o que a instrumentação viu.
+    """
+    eventos = await repo.eventos_funil_para_analytics()
+    jogadores = await repo.jogadores_para_analytics()
+    batalhas = await repo.batalhas_para_analytics()
+
+    sessoes_por_evento: dict[str, set[str]] = defaultdict(set)
+    for e in eventos:
+        sessao, evento = e.get("sessao_id"), e.get("evento")
+        if sessao and evento:
+            sessoes_por_evento[evento].add(sessao)
+
+    # Sessão → jogador: só entra quem tem a coluna preenchida.
+    jogador_id_por_sessao: dict[str, int] = {
+        j["sessao_funil_id"]: j["id"]
+        for j in jogadores
+        if j.get("sessao_funil_id") and j.get("id") is not None
+    }
+
+    jogadores_com_duelo = {
+        jid
+        for b in batalhas
+        for jid in (b.get("jogador_a_id"), b.get("jogador_b_id"))
+        if jid is not None
+    }
+    sessoes_que_duelaram = {
+        sessao for sessao, jid in jogador_id_por_sessao.items() if jid in jogadores_com_duelo
+    }
+
+    etapas = [
+        {
+            "etapa": etapa,
+            "rotulo": ROTULOS_ETAPA[etapa],
+            "total": len(sessoes_por_evento.get(etapa, set())),
+        }
+        for etapa in ETAPAS_EVENTO
+    ]
+    etapas.append(
+        {
+            "etapa": "personagem_salvo",
+            "rotulo": ROTULOS_ETAPA["personagem_salvo"],
+            "total": len(jogador_id_por_sessao),
+        }
+    )
+    etapas.append(
+        {"etapa": "duelou", "rotulo": ROTULOS_ETAPA["duelou"], "total": len(sessoes_que_duelaram)}
+    )
+
+    topo = etapas[0]["total"]
+    for i, etapa in enumerate(etapas):
+        etapa["percentual_do_topo"] = round(etapa["total"] / topo * 100, 1) if topo else 0.0
+        anterior = etapas[i - 1]["total"] if i > 0 else None
+        etapa["percentual_da_etapa_anterior"] = (
+            round(etapa["total"] / anterior * 100, 1) if anterior else None
+        )
+
+    return {"etapas": etapas, "sem_eventos": not eventos, "sessoes_ligadas": len(jogador_id_por_sessao)}

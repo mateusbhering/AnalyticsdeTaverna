@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WebcamCapture from "./WebcamCapture";
 import CharacterResult from "./CharacterResult";
 import { ALL_QUESTIONS } from "./questions-data";
 import type { Option } from "./questions-data";
 import { useTavernFeedback } from "@/lib/useTavernFeedback";
+import { registrarEventoFunil } from "@/lib/funil-tracking";
 
 export interface Dimensions {
   lideranca: number;
@@ -64,6 +65,11 @@ export default function QuizForm() {
   const [dims, setDims] = useState<Dimensions>({ ...BASE_DIMS });
   const [tags, setTags] = useState<string[]>([]);
 
+  // "Abriu o quiz" — uma vez por sessão de aba, não por render.
+  useEffect(() => {
+    registrarEventoFunil("inicio");
+  }, []);
+
   const restart = () => {
     setStep("photo");
     setPhoto("");
@@ -96,7 +102,14 @@ export default function QuizForm() {
           </p>
         </div>
 
-        <WebcamCapture onCapture={(dataUrl) => setPhoto(dataUrl)} />
+        <WebcamCapture
+          onCapture={(dataUrl) => {
+            // A pessoa pode tirar de novo (retake): a etapa do funil marca a
+            // PRIMEIRA vez que ela chega até aqui, não cada tentativa.
+            if (!photo) registrarEventoFunil("foto_capturada");
+            setPhoto(dataUrl);
+          }}
+        />
 
         {photo && (
           <button
@@ -131,6 +144,7 @@ export default function QuizForm() {
       } else {
         setStep("result");
         playStamp(); // o lacre fecha o personagem
+        registrarEventoFunil("quiz_concluido");
       }
     };
 

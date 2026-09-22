@@ -187,3 +187,30 @@ class ItemRanking(BaseModel):
     total_batalhas: int = 0
     taxa_vitoria: float = 0.0
     foto_url: str | None = None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Funil de conversão (entregável 9 — analytics)
+#
+# Só cobre as etapas ANTES do cadastro em `jogadores`: uma vez que o jogador
+# existe, "personagem salvo" e "duelou ao menos uma vez" já são deriváveis de
+# `jogadores`/`batalhas` (ver `routers/analytics.py::funil`). Rastrear de novo
+# duplicaria dado que o banco já tem.
+# ─────────────────────────────────────────────────────────────────────────────
+
+EventoFunil = Literal["inicio", "foto_capturada", "quiz_concluido", "avatar_gerado", "avatar_falhou"]
+
+
+class EventoFunilRequest(BaseModel):
+    """Um evento do funil, disparado pelo frontend em cada etapa do fluxo.
+
+    `sessao_id` é gerado no navegador (sessionStorage) e não identifica a
+    pessoa — só amarra os eventos de UMA passada pelo quiz, para o funil
+    contar sessões distintas por etapa em vez de linhas soltas. Uma pessoa que
+    tenta duas vezes gera duas sessões, e isso é o comportamento certo: cada
+    tentativa é uma entrada nova no topo do funil.
+    """
+
+    sessao_id: str = Field(min_length=1, max_length=100)
+    evento: EventoFunil
+

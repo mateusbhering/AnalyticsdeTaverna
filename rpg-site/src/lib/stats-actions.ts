@@ -1,7 +1,7 @@
 "use server";
 
 import { updateTag } from "next/cache";
-import { PLAYER_STATS_TAG } from "./cache-tags";
+import { ANALYTICS_EXTRA_TAG, PLAYER_STATS_TAG } from "./cache-tags";
 
 /**
  * Derruba o cache do dashboard depois que um personagem novo entra no banco.
@@ -16,4 +16,7 @@ import { PLAYER_STATS_TAG } from "./cache-tags";
  */
 export async function avisarNovoJogador() {
   updateTag(PLAYER_STATS_TAG);
+  // O insight e a taxa de vitória por classe também leem `jogadores`, então
+  // um cadastro novo os deixa desatualizados junto com o dashboard.
+  updateTag(ANALYTICS_EXTRA_TAG);
 }

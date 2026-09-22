@@ -18,6 +18,7 @@ import {
 } from "@/lib/useAvatarGeneration";
 import { getSupabaseClient } from "@/lib/supabase";
 import { avisarNovoJogador } from "@/lib/stats-actions";
+import { registrarEventoFunil, obterSessaoFunil } from "@/lib/funil-tracking";
 import { byName, type ClassInfo } from "@/lib/classes";
 import { lembrarJogador } from "@/lib/jogador-local";
 
@@ -276,6 +277,21 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   // mismatch; o botão surge no primeiro reconcile no browser.
   const canShare = useSyncExternalStore(noopSubscribe, supportsFileShare, () => false);
 
+  // Etapa do funil — independente do save em Supabase abaixo (que tem seu
+  // próprio dedup e pode reabrir em caso de erro pra tentar de novo). Aqui só
+  // interessa "a pessoa chegou a um resultado, bom ou ruim", uma vez.
+  const funilAvatarRef = useRef(false);
+  useEffect(() => {
+    if (funilAvatarRef.current) return;
+    if (avatarStatus === "done") {
+      funilAvatarRef.current = true;
+      registrarEventoFunil("avatar_gerado");
+    } else if (avatarStatus === "error") {
+      funilAvatarRef.current = true;
+      registrarEventoFunil("avatar_falhou");
+    }
+  }, [avatarStatus]);
+
   useEffect(() => {
     if (avatarStatus !== "done" && avatarStatus !== "error") return;
     if (savedRef.current || !jobId) return;
@@ -284,6 +300,11 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
     const dedupKey = `taverna:player:${jobId}`;
     const cached = typeof window !== "undefined" ? sessionStorage.getItem(dedupKey) : null;
     if (cached) {
+      // Está sincronizando com o próprio sessionStorage (não gera loop: a
+      // guarda `savedRef.current` acima nunca deixa este ramo rodar 2x para
+      // o mesmo `jobId`), não com uma renderização em cascata de verdade —
+      // por isso o disable, e não uma reestrutura maior.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPersonagemId(Number(cached));
       lembrarJogador(cached, uniqueTags);
       savedRef.current = true;
@@ -325,6 +346,10 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
           // As 10 colunas de dimensão já existiam no schema e ficavam NULL.
           // As chaves de `Dimensions` batem uma a uma com os nomes delas.
           ...dims,
+          // Liga este jogador à sessão do funil (lib/funil-tracking.ts) — é
+          // o que deixa `/analytics/funil` casar "quem abriu o quiz" com
+          // "quem virou personagem de fato", em vez de só contar totais.
+          sessao_funil_id: obterSessaoFunil(),
         });
 
         /* `tags` é coluna nova, e o banco é um deploy separado do frontend: se o

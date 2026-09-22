@@ -1,0 +1,62 @@
+name: CI
+
+# Roda em todo push e PR. Dois jobs independentes (backend/frontend) para o
+# GitHub paralelizar e para um quebrado não esconder o outro no resumo do PR.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Um push novo na mesma branch cancela a rodada anterior em andamento — não
+# faz sentido gastar minutos de CI validando um commit que já foi substituído.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (pytest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rpg-site/backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: rpg-site/backend/requirements*.txt
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Rodar testes
+        # Suite inteira roda em memória (fixture `repo` de tests/repo_memoria.py)
+        # — nenhuma variável de ambiente do Supabase/Gemini é necessária aqui.
+        run: pytest -q
+
+  frontend:
+    name: Frontend (tsc + eslint)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rpg-site
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: rpg-site/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Checar tipos
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint

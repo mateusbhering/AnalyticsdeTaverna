@@ -1,4 +1,5 @@
 import { signIn } from "@/auth";
+import Link from "next/link";
 
 export default function LoginPage({
   searchParams,
@@ -58,13 +59,13 @@ export default function LoginPage({
 
         {/* Back link */}
         <div className="text-center mt-6">
-          <a
+          <Link
             href="/"
             className="text-[rgba(230,188,106,0.55)] hover:text-[var(--gold-light)] text-sm transition-colors"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             ← Voltar ao site
-          </a>
+          </Link>
         </div>
       </div>
     </div>

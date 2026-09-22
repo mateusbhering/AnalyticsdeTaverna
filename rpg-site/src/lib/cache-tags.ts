@@ -16,3 +16,14 @@ export const PLAYER_STATS_TAG = "player-stats";
  * antigo lá.
  */
 export const RANKING_TAG = "ranking";
+
+/**
+ * Cache das métricas extras do `/analytics/*` (empates, atributos mais
+ * escolhidos em duelo, taxa de vitória por classe, insight das dimensões).
+ *
+ * Cai nos dois eventos que alimentam esses números: cadastro de jogador novo
+ * (dimensões entram na média do insight) e fim de duelo (vitórias/derrotas/
+ * empates e os atributos escolhidos mudam). Por isso é invalidada tanto em
+ * `stats-actions.ts` quanto em `ranking-actions.ts`.
+ */
+export const ANALYTICS_EXTRA_TAG = "analytics-extra";

@@ -119,6 +119,11 @@ export function SpecialText({
     if (shouldAnimate && !hasStarted) {
       clearStartTimeout();
       if (delay <= 0) {
+        // Está sincronizando com o timer, não com uma renderização em
+        // cascata: a guarda `!hasStarted` acima garante que este ramo só
+        // roda uma vez por "início de animação" (o próprio `startAnimation`
+        // marca `hasStarted = true`).
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         startAnimation();
         return;
       }
@@ -156,6 +161,11 @@ export function SpecialText({
 
   useEffect(() => {
     if (hasStarted) {
+      // Reseta o estado de exibição quando o texto muda ou a animação
+      // reinicia — sincroniza com as props/estado que mudaram, não gera
+      // loop (a guarda `hasStarted` e as deps `[text, hasStarted]` evitam
+      // reentrância).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisplayText(" ".repeat(text.length));
       setCurrentPhase("phase1");
       setAnimationStep(0);

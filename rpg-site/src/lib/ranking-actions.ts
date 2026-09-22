@@ -1,7 +1,7 @@
 "use server";
 
 import { updateTag } from "next/cache";
-import { RANKING_TAG } from "./cache-tags";
+import { ANALYTICS_EXTRA_TAG, RANKING_TAG } from "./cache-tags";
 
 /**
  * Derruba o cache do ranking assim que um duelo termina.
@@ -14,4 +14,7 @@ import { RANKING_TAG } from "./cache-tags";
  */
 export async function avisarBatalhaConcluida() {
   updateTag(RANKING_TAG);
+  // Taxa de empate, atributos mais escolhidos e taxa de vitória por classe
+  // também mudam a cada duelo — mesmo evento, mesma invalidação.
+  updateTag(ANALYTICS_EXTRA_TAG);
 }
