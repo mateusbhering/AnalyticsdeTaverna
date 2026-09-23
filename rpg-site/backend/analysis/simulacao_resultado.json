@@ -1,0 +1,72 @@
+{
+  "n_simulacoes": 300000,
+  "seed": 42,
+  "distribuicao_classes": {
+    "Vidente da Ansiedade": {
+      "contagem": 27466,
+      "percentual": 9.155
+    },
+    "Domador de Pet": {
+      "contagem": 26077,
+      "percentual": 8.692
+    },
+    "Mago do ChatGPT": {
+      "contagem": 25740,
+      "percentual": 8.58
+    },
+    "Ilusionista de Call": {
+      "contagem": 23601,
+      "percentual": 7.867
+    },
+    "Artífice da Gambiarra": {
+      "contagem": 23004,
+      "percentual": 7.668
+    },
+    "Necromante de Planilha": {
+      "contagem": 22461,
+      "percentual": 7.487
+    },
+    "Ladino do Home Office": {
+      "contagem": 22129,
+      "percentual": 7.376
+    },
+    "Invocador de iFood": {
+      "contagem": 19126,
+      "percentual": 6.375
+    },
+    "Bardo do Karaokê": {
+      "contagem": 15975,
+      "percentual": 5.325
+    },
+    "Paladino do Grupo": {
+      "contagem": 15742,
+      "percentual": 5.247
+    },
+    "Ranger da Faxina": {
+      "contagem": 15184,
+      "percentual": 5.061
+    },
+    "Druida de Varanda": {
+      "contagem": 14786,
+      "percentual": 4.929
+    },
+    "Warlock do Boleto": {
+      "contagem": 13937,
+      "percentual": 4.646
+    },
+    "Ninja do Visto por Último": {
+      "contagem": 12465,
+      "percentual": 4.155
+    },
+    "Xamã das Criptomoedas": {
+      "contagem": 11756,
+      "percentual": 3.919
+    },
+    "Berserker do Crossfit": {
+      "contagem": 10551,
+      "percentual": 3.517
+    }
+  },
+  "percentual_por_regra": 73.4,
+  "percentual_por_dimensao_dominante": 26.6
+}
