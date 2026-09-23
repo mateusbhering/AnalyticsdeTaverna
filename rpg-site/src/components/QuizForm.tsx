@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import WebcamCapture from "./WebcamCapture";
 import CharacterResult from "./CharacterResult";
 import { ALL_QUESTIONS } from "./questions-data";
 import type { Option } from "./questions-data";
 import { useTavernFeedback } from "@/lib/useTavernFeedback";
-import { registrarEventoFunil } from "@/lib/funil-tracking";
+import { iniciarSessaoFunil, registrarEventoFunil } from "@/lib/funil-tracking";
 
 export interface Dimensions {
   lideranca: number;
@@ -65,12 +65,20 @@ export default function QuizForm() {
   const [dims, setDims] = useState<Dimensions>({ ...BASE_DIMS });
   const [tags, setTags] = useState<string[]>([]);
 
-  // "Abriu o quiz" — uma vez por sessão de aba, não por render.
+  /* "Abriu o quiz" — cada partida é uma sessão nova do funil, inclusive quem
+     volta pelo "Jogar Novamente" do card (que remonta este componente). O ref
+     segura a montagem dupla do StrictMode, que abriria uma sessão órfã. */
+  const sessaoAbertaRef = useRef(false);
   useEffect(() => {
+    if (sessaoAbertaRef.current) return;
+    sessaoAbertaRef.current = true;
+    iniciarSessaoFunil();
     registrarEventoFunil("inicio");
   }, []);
 
   const restart = () => {
+    iniciarSessaoFunil();
+    registrarEventoFunil("inicio");
     setStep("photo");
     setPhoto("");
     setQuestions(pickRandom());

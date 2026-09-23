@@ -728,11 +728,16 @@ ou quebrar o quiz. `avatar_falhou` também é gravado, mas não é etapa do funi
 `jogadores` e `batalhas`; rastrear de novo duplicaria dado. O que liga uma coisa à
 outra é `jogadores.sessao_funil_id`, gravado pelo `CharacterResult` no insert.
 
-**O `sessao_id` é uma passada pelo quiz, não um aparelho.** Vive em
-`sessionStorage` (`taverna:funilSessaoId`) e não identifica a pessoa. Quem tenta
-duas vezes gera duas sessões — cada tentativa é uma entrada nova no topo. Em modo
+**O `sessao_id` é uma passada pelo quiz, não uma aba nem um aparelho.** O
+`QuizForm` abre uma sessão nova ao montar e a cada "Jogar Novamente"; ela vive em
+`sessionStorage` (`taverna:funilSessaoId`) e não identifica a pessoa. Quem joga
+duas vezes gera duas sessões — cada partida é uma entrada nova no topo. Em modo
 privado, sem storage, cada evento ganha um id próprio: a etapa é contada, só não
 se amarra às outras.
+
+> Até a correção, o id durava a aba inteira: a segunda partida na mesma aba não
+> contava no topo e os dois personagens caíam na mesma sessão, onde o backend só
+> enxerga um.
 
 `GET /analytics/funil` conta **sessões distintas** por etapa (um evento repetido
 por retry ou remontagem não conta duas vezes) e devolve `percentual_do_topo`,

@@ -14,22 +14,39 @@ export type EventoFunil = "inicio" | "foto_capturada" | "quiz_concluido" | "avat
 
 const CHAVE_SESSAO = "taverna:funilSessaoId";
 
+function gerarId(): string {
+  return typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
 /**
- * Um id por PASSADA pelo quiz, não por aparelho — de propósito. Vive em
- * `sessionStorage` (fecha a aba, começa uma sessão nova na próxima) e é
- * gerado uma vez por `QuizForm`, não recriado a cada evento: as 4 etapas de
- * uma mesma pessoa precisam bater na mesma sessão para o funil contar uma
- * entrada só no topo.
+ * Abre uma sessão nova: chamado pelo `QuizForm` ao montar e a cada "Jogar
+ * Novamente". Um id por PASSADA pelo quiz, não por aba nem por aparelho — de
+ * propósito. Reaproveitar o id da aba fazia a segunda partida sumir do topo
+ * do funil (o `inicio` repetido não conta duas vezes) e os dois personagens
+ * caírem na mesma sessão, onde o backend só enxerga um.
+ */
+export function iniciarSessaoFunil(): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(CHAVE_SESSAO, gerarId());
+  } catch {
+    // Storage bloqueado: `obterSessaoFunil` já cai num id avulso por evento.
+  }
+}
+
+/**
+ * Id da passada atual. Vive em `sessionStorage` e não é recriado a cada
+ * evento: as 4 etapas de uma mesma partida precisam bater na mesma sessão
+ * para o funil contar uma entrada só no topo.
  */
 export function obterSessaoFunil(): string {
   if (typeof window === "undefined") return "servidor";
   try {
     const existente = sessionStorage.getItem(CHAVE_SESSAO);
     if (existente) return existente;
-    const novo =
-      typeof crypto !== "undefined" && "randomUUID" in crypto
-        ? crypto.randomUUID()
-        : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const novo = gerarId();
     sessionStorage.setItem(CHAVE_SESSAO, novo);
     return novo;
   } catch {
