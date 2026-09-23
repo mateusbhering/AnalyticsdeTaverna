@@ -44,10 +44,6 @@ const MEDALHAS: Record<number, string> = { 1: "🥇", 2: "🥈", 3: "🥉" };
 /** Lugares vagos — desenham a forma do quadro enquanto ninguém pontuou. */
 const VAGOS = [1, 2, 3, 4, 5];
 
-/* Canecas nas prateleiras laterais, como no quadro pendurado da taverna. */
-const CANECAS_ESQ = ["🍷", "🫖", "☕", "🍶", "🍸"];
-const CANECAS_DIR = ["🍺", "🧃", "🍹", "🥂", "🧉"];
-
 export default async function RankingPage() {
   /* Buscado no servidor, como o dashboard: o navegador recebe as linhas
      prontas e nenhuma credencial. O cache cai quando um duelo termina
@@ -57,9 +53,6 @@ export default async function RankingPage() {
   return (
     <div className="plank-wall min-h-screen relative overflow-hidden px-4 py-14 sm:py-20">
       <div className="relative mx-auto w-full max-w-3xl">
-        <Prateleiras lado="esquerda" canecas={CANECAS_ESQ} />
-        <Prateleiras lado="direita" canecas={CANECAS_DIR} />
-
         {/* Rolete de cima */}
         <div className="scroll-rod mx-2" />
 
@@ -323,30 +316,5 @@ function Florao({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
       <path d="M12 1.6c1.8 2.4 2.7 4.3 2.7 6 0 .9-.3 1.8-.8 2.5.7-.5 1.6-.8 2.5-.8 1.7 0 3.6.9 6 2.7-2.4 1.8-4.3 2.7-6 2.7-.9 0-1.8-.3-2.5-.8.5.7.8 1.6.8 2.5 0 1.7-.9 3.6-2.7 6-1.8-2.4-2.7-4.3-2.7-6 0-.9.3-1.8.8-2.5-.7.5-1.6.8-2.5.8-1.7 0-3.6-.9-6-2.7 2.4-1.8 4.3-2.7 6-2.7.9 0 1.8.3 2.5.8-.5-.7-.8-1.6-.8-2.5 0-1.7.9-3.6 2.7-6Z" />
       <circle cx="12" cy="12" r="2.2" fill="#7c5316" />
     </svg>
-  );
-}
-
-/** Prateleirinhas de canecas que ladeiam o quadro (só em telas largas). */
-function Prateleiras({
-  lado,
-  canecas,
-}: {
-  lado: "esquerda" | "direita";
-  canecas: string[];
-}) {
-  return (
-    <div
-      aria-hidden
-      className={`absolute top-10 bottom-16 hidden xl:flex flex-col justify-between ${
-        lado === "esquerda" ? "-left-32" : "-right-32"
-      }`}
-    >
-      {canecas.map((c, i) => (
-        <div key={i} className="flex flex-col items-center">
-          <span className="text-2xl drop-shadow-[0_3px_6px_rgba(0,0,0,0.55)]">{c}</span>
-          <div className="tavern-shelf mt-1" />
-        </div>
-      ))}
-    </div>
   );
 }

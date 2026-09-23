@@ -498,17 +498,6 @@ h1,h2,h3,h4 {
 .frame-flower.bl { bottom: -4px; left: -4px; }
 .frame-flower.br { bottom: -4px; right: -4px; }
 
-/* Prateleirinha de canecas nas laterais do quadro */
-.tavern-shelf {
-  width: 62px;
-  height: 11px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, #9c6c33 0%, #7a5122 45%, #452810 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 224, 170, 0.35),
-    0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
 /* ── ANIMATIONS ─────────────────────────────────────────────────── */
 @keyframes rise {
   0%   { opacity: 0; transform: translateY(0) scale(1); }
