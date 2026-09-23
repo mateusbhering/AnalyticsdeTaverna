@@ -186,12 +186,9 @@ function Linha({ item }: { item: ItemRanking }) {
                mas não se passa por um nome que alguém escolheu. */
           >
             {nome ?? (
-              <>
-                Aventureiro{" "}
-                <span className="tabular-nums" style={{ fontFamily: "var(--font-cinzel), serif" }}>
-                  #{item.id}
-                </span>
-              </>
+              <span className="tabular-nums" style={{ fontFamily: "var(--font-cinzel), serif" }}>
+                #{item.id}
+              </span>
             )}
           </span>
           {/* Em telas estreitas a coluna Classe some; aqui ela vira legenda. */}
