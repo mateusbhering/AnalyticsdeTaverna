@@ -1,9 +1,10 @@
 "use client";
 
-import { Sparkles, Smartphone } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
 import CountUp from "@/components/ui/count-up";
 import AnimatedBar from "@/components/ui/animated-bar";
+import { ATRIBUTOS_CARD } from "@/lib/atributos";
 import { byName, isClasseConhecida } from "@/lib/classes";
 // Só o tipo: `import type` é apagado na compilação, então o client não puxa
 // o next/cache nem o fetch pro backend que stats.ts faz.
@@ -11,16 +12,6 @@ import type { PlayerStats } from "@/lib/stats";
 
 /** Quantas classes aparecem na lista antes de agrupar o resto em "outras". */
 const TOP_N = 10;
-
-const ATTR_LABELS: [keyof PlayerStats["averages"], string, string][] = [
-  ["forca",        "Força",        "💪"],
-  ["inteligencia", "Inteligência", "🧠"],
-  ["agilidade",    "Agilidade",    "⚡"],
-  ["resistencia",  "Resistência",  "🛡️"],
-  ["carisma",      "Carisma",      "✨"],
-  ["sabedoria",    "Sabedoria",    "👁️"],
-  ["caos",         "Caos",         "🌪️"],
-];
 
 /** Emoji da classe; classes fora do catálogo atual não herdam o ícone errado. */
 function classIcon(nome: string): string {
@@ -37,7 +28,7 @@ export default function DashboardSection({ stats }: { stats: PlayerStats | null 
   // médio — não 100, que deixaria todas as barras quase vazias (as médias reais
   // ficam na casa de 2 a 4 pontos).
   const maiorMedia = stats
-    ? Math.max(...ATTR_LABELS.map(([k]) => stats.averages[k]), 1)
+    ? Math.max(...ATRIBUTOS_CARD.map(({ chave }) => stats.averages[chave]), 1)
     : 1;
 
   return (
@@ -88,8 +79,7 @@ export default function DashboardSection({ stats }: { stats: PlayerStats | null 
                   <CountUp value={stats.total} />
                 </div>
                 <div
-                  className="text-[.65rem] text-[var(--ink-50)] tracking-[.1em]"
-                  style={{ fontFamily: "var(--font-cinzel), serif" }}
+                  className="text-[.75rem] text-[var(--ink-50)] italic"
                 >
                   {stats.total === 1 ? "Personagem forjado" : "Personagens forjados"}
                 </div>
@@ -111,31 +101,12 @@ export default function DashboardSection({ stats }: { stats: PlayerStats | null 
                     <span>{maisComum.name}</span>
                   </div>
                   <div
-                    className="text-[.65rem] text-[var(--ink-50)] tracking-[.1em] mt-1"
-                    style={{ fontFamily: "var(--font-cinzel), serif" }}
+                    className="text-[.75rem] text-[var(--ink-50)] italic mt-1"
                   >
                     Classe mais comum · {maisComum.pct.toFixed(1)}%
                   </div>
                 </div>
               )}
-
-              <div className="paper-card paper-frame p-8 text-center">
-                <Smartphone size={30} strokeWidth={1.4} className="text-[var(--seal)] mx-auto mb-3" />
-                <h3
-                  className="text-[.85rem] text-[var(--ink)] mb-2"
-                  style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-                >
-                  QR Code Digital
-                </h3>
-                <p className="text-[.82rem] leading-relaxed mb-4">
-                  Escaneie e baixe seu card de RPG personalizado. Elimina custos de impressão e promove compartilhamento viral.
-                </p>
-                <div className="w-20 h-20 mx-auto bg-[#f8f0da] border border-[rgba(96,66,26,0.35)] p-1.5 grid grid-cols-5 gap-[2px]">
-                  {[1,1,1,1,1, 1,0,0,0,1, 1,0,1,0,1, 1,0,0,0,1, 1,1,1,1,1].map((v, i) => (
-                    <div key={i} className={v ? "bg-[#3c2a18]" : "bg-[#f8f0da]"} style={{ borderRadius: "1px" }} />
-                  ))}
-                </div>
-              </div>
             </StaggerItem>
 
             {/* Distribuição de classes */}
@@ -211,23 +182,23 @@ export default function DashboardSection({ stats }: { stats: PlayerStats | null 
                   Atributos Médios
                 </h3>
                 <div className="space-y-3">
-                  {ATTR_LABELS.map(([key, label, icon], i) => (
-                    <div key={key}>
+                  {ATRIBUTOS_CARD.map(({ chave, rotulo, Icon }, i) => (
+                    <div key={chave}>
                       <div className="flex items-center justify-between mb-1 gap-2">
                         <div className="flex items-center gap-2 text-[.82rem] text-[var(--ink-70)] min-w-0">
-                          <span className="flex-shrink-0">{icon}</span>
-                          <span className="truncate">{label}</span>
+                          <Icon size={14} strokeWidth={1.6} className="flex-shrink-0" />
+                          <span className="truncate">{rotulo}</span>
                         </div>
                         <span
                           className="text-[var(--foil)] text-[.7rem] flex-shrink-0 tabular-nums"
                           style={{ fontFamily: "var(--font-cinzel), serif" }}
                         >
-                          {stats.averages[key].toFixed(1)}
+                          {stats.averages[chave].toFixed(1)}
                         </span>
                       </div>
                       <div className="h-1.5 bg-[rgba(96,66,26,0.14)] border border-[rgba(96,66,26,0.2)] overflow-hidden">
                         <AnimatedBar
-                          pct={(stats.averages[key] / maiorMedia) * 100}
+                          pct={(stats.averages[chave] / maiorMedia) * 100}
                           delay={i * 0.08}
                           className="opacity-90 bg-gradient-to-r from-[var(--seal)] to-[var(--gold)]"
                         />

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -84,52 +83,11 @@ function FloatIcon({
 }
 
 export default function Hero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
   // Parallax do mouse (normalizado -0.5..0.5, com mola pra suavidade)
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
   const mx = useSpring(rawX, { stiffness: 60, damping: 20 });
   const my = useSpring(rawY, { stiffness: 60, damping: 20 });
-
-  useEffect(() => {
-    // Mobile: pula o canvas de fagulhas (rAF contínuo pesa na CPU/bateria e
-    // rouba frames das animações de entrada).
-    if (window.matchMedia("(max-width: 767px)").matches) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width  = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-
-    const stars = Array.from({ length: 120 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.5,
-      a: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.3 + 0.1,
-    }));
-
-    let frame: number;
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach((s) => {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(230, 188, 106, ${0.15 + Math.sin(s.a) * 0.2})`;
-        ctx.fill();
-        s.a += s.speed * 0.02;
-      });
-      frame = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => cancelAnimationFrame(frame);
-  }, []);
 
   return (
     <section
@@ -147,14 +105,10 @@ export default function Hero() {
       {/* Penumbra nas bordas — vinheta de quarto à luz de vela */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_35%,_rgba(12,6,2,0.55)_100%)]" />
 
-      {/* Poças de luz âmbar animadas (vela + brasa) */}
+      {/* Poça de luz âmbar animada (vela). Um blob só — as fagulhas e os
+          ícones com parallax já carregam o movimento ambiente da cena; um
+          segundo blob de brasa competia com eles sem acrescentar foco novo. */}
       <div className="arcane-blob top-1/4 left-1/4 w-96 h-96 bg-[rgba(255,176,80,0.10)]" />
-      <div
-        className="arcane-blob bottom-1/4 right-1/4 w-80 h-80 bg-[rgba(140,35,24,0.12)]"
-        style={{ animationDelay: "-10s" }}
-      />
-
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60" />
 
       {/* Fagulhas douradas subindo (no mobile, só metade — menos carga de GPU) */}
       {particles.map((p) => (
@@ -235,7 +189,7 @@ export default function Hero() {
             <Magnetic>
               <a
                 href="#jornada"
-                className="press btn-glow btn-seal px-8 py-4 text-[.8rem] tracking-[.12em] uppercase flex items-center gap-2 animate-pulse-wine"
+                className="press btn-glow btn-seal px-8 py-4 text-[.8rem] tracking-[.12em] uppercase flex items-center gap-2"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
               >
                 <Swords size={16} strokeWidth={1.8} /> Iniciar Aventura
