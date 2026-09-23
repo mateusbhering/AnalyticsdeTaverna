@@ -70,17 +70,20 @@ export default function Navbar() {
             </a>
           ))}
           {/* Ação secundária antes da principal: "Iniciar Jornada" fica na
-              última posição, que é a de maior peso na barra. */}
+              última posição, que é a de maior peso na barra. Dashboard e
+              Ranking têm o mesmo tratamento visual dos links de âncora —
+              texto simples, sem caixa — pra sobrar um único botão de
+              verdade na régua: o CTA. */}
           <Link
             href="/dashboard"
-            className="press whitespace-nowrap px-4 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
+            className="press whitespace-nowrap text-[.65rem] text-[rgba(240,226,189,0.6)] hover:text-[var(--gold-light)] transition-colors duration-200 tracking-[.2em] uppercase inline-flex items-center gap-1.5"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             <BarChart3 size={11} strokeWidth={1.8} /> Dashboard
           </Link>
           <Link
             href="/ranking"
-            className="press whitespace-nowrap px-4 py-2 bg-[rgba(82,26,16,0.55)] border border-[rgba(201,151,63,0.4)] text-[rgba(240,226,189,0.75)] text-[.6rem] tracking-[.2em] uppercase hover:border-[var(--gold-light)] transition-all duration-200 inline-flex items-center gap-1.5"
+            className="press whitespace-nowrap text-[.65rem] text-[rgba(240,226,189,0.6)] hover:text-[var(--gold-light)] transition-colors duration-200 tracking-[.2em] uppercase inline-flex items-center gap-1.5"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
           >
             <Trophy size={11} strokeWidth={1.8} /> Ranking
