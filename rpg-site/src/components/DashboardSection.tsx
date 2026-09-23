@@ -6,7 +6,7 @@ import CountUp from "@/components/ui/count-up";
 import AnimatedBar from "@/components/ui/animated-bar";
 import { byName, isClasseConhecida } from "@/lib/classes";
 // Só o tipo: `import type` é apagado na compilação, então o client não puxa
-// o supabase-js nem o next/cache que stats.ts importa.
+// o next/cache nem o fetch pro backend que stats.ts faz.
 import type { PlayerStats } from "@/lib/stats";
 
 /** Quantas classes aparecem na lista antes de agrupar o resto em "outras". */
