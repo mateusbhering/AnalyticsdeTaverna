@@ -1,0 +1,6 @@
+# Dependências só da pasta `analysis/` — script de validação estatística,
+# não roda em produção. Separado de requirements.txt de propósito: scipy é
+# pesado (~30MB) e não tem motivo pra entrar no build do Render, que só serve
+# a API.
+-r requirements.txt
+scipy>=1.11

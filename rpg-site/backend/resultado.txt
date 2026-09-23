@@ -1,0 +1,33 @@
+[fonte: Supabase de produção — 225 jogadores]
+
+Classe                        Observado   Esperado    Obs %    Esp %
+--------------------------------------------------------------------
+Mago do ChatGPT                      27       19.3   12.00%    8.58%
+Necromante de Planilha               24       16.8   10.67%    7.49%
+Ladino do Home Office                24       16.6   10.67%    7.38%
+Artífice da Gambiarra                19       17.3    8.44%    7.67%
+Domador de Pet                       19       19.6    8.44%    8.69%
+Invocador de iFood                   15       14.3    6.67%    6.38%
+Paladino do Grupo                    14       11.8    6.22%    5.25%
+Druida de Varanda                    12       11.1    5.33%    4.93%
+Vidente da Ansiedade                 11       20.6    4.89%    9.16%
+Warlock do Boleto                    11       10.5    4.89%    4.65%
+Ilusionista de Call                  10       17.7    4.44%    7.87%
+Bardo do Karaokê                      9       12.0    4.00%    5.33%
+Berserker do Crossfit                 8        7.9    3.56%    3.52%
+Ranger da Faxina                      8       11.4    3.56%    5.06%
+Ninja do Visto por Último             7        9.3    3.11%    4.16%
+Xamã das Criptomoedas                 7        8.8    3.11%    3.92%
+
+χ² = 20.68, gl = 15, p = 0.1473
+α = 0.05
+
+→ NÃO rejeita H0 (p ≥ α): não há evidência, com esta amostra, de que a distribuição observada difira do modelo nulo.
+  Com poucos jogadores isso costuma ser falta de poder estatístico, não prova de que o quiz não funciona — revalide quando o banco tiver mais dados.
+
+Maiores desvios (observado vs. esperado, resíduo padronizado):
+  Vidente da Ansiedade         menos frequente que o esperado (resíduo=-2.11)
+  Ilusionista de Call          menos frequente que o esperado (resíduo=-1.83)
+  Ladino do Home Office        mais frequente que o esperado (resíduo=+1.82)
+  Mago do ChatGPT              mais frequente que o esperado (resíduo=+1.75)
+  Necromante de Planilha       mais frequente que o esperado (resíduo=+1.74)
