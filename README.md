@@ -17,43 +17,46 @@ O projeto não é só o Next.js: são três serviços com responsabilidades sepa
                      │  landing, quiz, card, duelo, ranking │
                      └───────┬───────────────────────┬──────┘
                              │                       │
-     foto (multipart) e      │                       │  insert / select
-     duelo (POST) saem       │                       │  (chave anon)
-     por /taverna-api;       │                       │
-     o ranking é buscado     │                       │
-     no servidor             ▼                       ▼
+     foto, duelo e eventos   │                       │  insert / select
+     do funil saem por       │                       │  (chave anon)
+     /taverna-api; ranking   │                       │
+     e dashboard são         │                       │
+     buscados no servidor    ▼                       ▼
                  ┌────────────────────┐   ┌───────────────────────────┐
                  │ FastAPI (Render)   │   │ Supabase                  │
                  │ avatar-api         │   │ • tabela `jogadores`      │
                  │ + worker arq       │──►│ • tabela `batalhas`       │
-                 │ + Redis (fila/TTL) │   │ • Storage bucket `avatars`│
+                 │ + Redis (fila/TTL) │   │ • tabela `eventos_funil`  │
+                 │                    │   │ • Storage bucket `avatars`│
                  └─────────┬──────────┘   └───────────────────────────┘
                            │ service_role
                            ▼
                     Google Gemini (imagem)
 ```
 
-O navegador **nunca chama a Render pelo endereço dela**: o duelo sai para
-`/taverna-api/*`, um rewrite do Next para o FastAPI. O ranking nem passa pelo
-navegador — é buscado no servidor, pela URL absoluta. Ver
+O navegador **nunca chama a Render pelo endereço dela**: o duelo e os eventos do
+funil saem para `/taverna-api/*`, um rewrite do Next para o FastAPI. O ranking e
+o dashboard nem passam pelo navegador — são buscados no servidor, pela URL
+absoluta. Ver
 [Proxy de mesma origem](#proxy-de-mesma-origem).
 
 | Peça | Onde roda | Responsabilidade |
 |---|---|---|
 | `rpg-site/` | Vercel | Landing, quiz, card do personagem, duelo, ranking, área admin |
 | `rpg-site/backend/` | Render | Geração de avatar (Gemini), cadastro, batalha, ranking, analytics |
-| Supabase | — | Postgres (`jogadores`, `batalhas`) + Storage dos avatares |
+| Supabase | — | Postgres (`jogadores`, `batalhas`, `eventos_funil`) + Storage dos avatares |
 
 **Ciclo completo, ligado ponta a ponta:** quiz → classificação → `POST /avatar/generate` →
 insert em `jogadores` pela chave anon → card por link único → QR do card →
 `/batalha?oponenteId=…` → escolha de 3 atributos → `POST /batalha` → XP
-distribuído → `/ranking` atualizado no mesmo instante.
+distribuído → `/ranking` e `/dashboard` atualizados no mesmo instante. Em paralelo,
+cada etapa do quiz dispara um evento do [funil de conversão](#funil-de-conversão).
 
-**O que existe na API mas ainda não é consumido pelo front:** `/jogadores`,
-`/personagem/gerar` e as rotas de `/analytics`. O cadastro do jogador continua
-sendo feito pelo frontend direto no Supabase (chave anon), e a classificação
-também — o backend já tem as duas coisas e é a fonte da verdade das regras,
-mas a troca ainda não foi feita.
+**O que existe na API mas ainda não é consumido pelo front:** `/jogadores` e
+`/personagem/gerar`. O cadastro do jogador continua sendo feito pelo frontend
+direto no Supabase (chave anon), e a classificação também — o backend já tem as
+duas coisas e é a fonte da verdade das regras, mas a troca ainda não foi feita.
+As rotas de `/analytics` passaram a ser consumidas pelo `/dashboard`.
 
 ---
 
@@ -73,6 +76,7 @@ mas a troca ainda não foi feita.
 | NextAuth.js | 5.0.0-beta.31 | Autenticação GitHub OAuth (área admin) |
 | qrcode.react | 4.2.0 | QR Code SVG client-side (gera o do card) |
 | jsqr | ^1.4 | Leitura do QR pela câmera (inicia o duelo) |
+| tsx | ^4.23 | (dev) Executa TypeScript no Node — regenera a fixture de perguntas da análise |
 
 ### Backend (`rpg-site/backend/`)
 
@@ -85,6 +89,7 @@ mas a troca ainda não foi feita.
 | google-genai | >=1.0 | Cliente do Gemini (geração de imagem) |
 | supabase | >=2.0 | Client Python (service_role) |
 | pytest + fakeredis | — | Testes sem Redis/Gemini reais |
+| scipy | >=1.11 | Só na [validação estatística](#validação-estatística-das-classes) (`requirements-analysis.txt`), fora do deploy |
 
 ---
 
@@ -95,13 +100,14 @@ AnalyticsdeTaverna/
 ├── README.md
 ├── render.yaml                       # Blueprint da Render (api + worker + redis)
 └── rpg-site/
-    ├── next.config.ts
+    ├── .github/workflows/ci.yml      # CI (pytest + tsc + eslint) — ver Deploy e CI
+    ├── next.config.ts                # Rewrite /taverna-api/* → FastAPI
     ├── package.json
     ├── public/
     │   ├── logo.png
+    │   ├── batalha/carregando.png    # Pixel art da tela de carregamento do duelo
     │   ├── guild/                    # Fotos dos membros
     │   └── textures/                 # dark-wood.png, black-linen.png
-    ├── next.config.ts                # Rewrite /taverna-api/* → FastAPI
     ├── src/
     │   ├── auth.ts                   # NextAuth config + allowlist de admins
     │   ├── proxy.ts                  # Middleware — protege /admin/*
@@ -109,16 +115,18 @@ AnalyticsdeTaverna/
     │   │   ├── layout.tsx            # Root layout (Cinzel, Crimson Pro, metadata)
     │   │   ├── globals.css           # Tokens, utilitárias e keyframes do tema
     │   │   ├── page.tsx              # Landing — compõe as seções
-    │   │   ├── dashboard/page.tsx    # /dashboard — números ao vivo (server-side)
+    │   │   ├── dashboard/page.tsx    # /dashboard — números ao vivo + insights (server-side)
     │   │   ├── jogar/page.tsx        # /jogar — wrapper do <QuizForm>
     │   │   ├── personagem/
     │   │   │   ├── page.tsx          # /personagem — Suspense + skeleton
-    │   │   │   └── PersonagemCard.tsx# Card compartilhado (lê ?id= ou query params)
+    │   │   │   ├── PersonagemCard.tsx# Card compartilhado (lê ?id= ou query params)
+    │   │   │   └── CtaVisitante.tsx  # Convite ao quiz para quem não é o dono
     │   │   ├── batalha/
     │   │   │   ├── page.tsx          # /batalha — moldura + Suspense
     │   │   │   ├── DesafioScanner.tsx# QR + máquina de fases do duelo
     │   │   │   ├── EscolhaAtributos.tsx # Grade dos 7, até 3 marcados
-    │   │   │   └── ResultadoBatalha.tsx # Rodadas reveladas + XP
+    │   │   │   ├── ResultadoBatalha.tsx # Arena de cartas 3D + XP
+    │   │   │   └── LinkMeuCard.tsx   # "← Voltar para o meu card"
     │   │   ├── ranking/
     │   │   │   ├── page.tsx          # /ranking — quadro de feitos (dados reais)
     │   │   │   └── loading.tsx       # Esqueleto na mesma moldura
@@ -130,12 +138,16 @@ AnalyticsdeTaverna/
     │   │   ├── backend-url.ts        # URL absoluta do FastAPI (só servidor)
     │   │   ├── batalha-api.ts        # Cliente do duelo (browser, via /taverna-api)
     │   │   ├── ranking.ts            # Leitura do ranking (server-only, cacheada)
-    │   │   ├── ranking-actions.ts    # Server Action: expira o cache do ranking
-    │   │   ├── stats.ts              # Agregação server-only p/ o dashboard
-    │   │   ├── stats-actions.ts      # Server Action: expira o cache do dashboard
+    │   │   ├── ranking-actions.ts    # Server Action: expira ranking + analytics
+    │   │   ├── stats.ts              # Números do dashboard via /analytics (server-only)
+    │   │   ├── stats-actions.ts      # Server Action: expira dashboard + analytics
+    │   │   ├── analytics.ts          # Duelos, taxa de vitória, insight e funil (server-only)
+    │   │   ├── funil-tracking.ts     # Eventos do funil (browser, fogo-e-esquece)
     │   │   ├── cache-tags.ts         # Tags compartilhadas entre cache e actions
     │   │   ├── supabase.ts           # Client anon, inicializado preguiçosamente
-    │   │   └── useAvatarGeneration.ts# Hook: POST + polling do avatar
+    │   │   ├── jogador-local.ts      # taverna:jogadorId + tags no aparelho
+    │   │   ├── useAvatarGeneration.ts# Hook: POST + polling do avatar
+    │   │   └── useTavernFeedback.ts  # Hook: som sintetizado + vibração
     │   └── components/
     │       ├── questions-data.ts     # Banco de 120 perguntas + tipos
     │       ├── QuizForm.tsx          # Máquina de estados (photo→quiz→result)
@@ -143,14 +155,18 @@ AnalyticsdeTaverna/
     │       ├── WebcamCapture.tsx     # Captura de frame via getUserMedia
     │       ├── QrScanner.tsx         # Leitor de QR pela câmera (jsQR)
     │       ├── TelaCarregando.tsx    # Tela cheia do duelo (pixel art, celular)
-    │       ├── PersonagemCard/Navbar/Hero/… # Seções da landing
+    │       ├── DashboardSection.tsx  # Números ao vivo do /dashboard
+    │       ├── TavernaInsightsSection.tsx # Funil, perfil médio, duelos, classes fortes
+    │       ├── Navbar/Hero/…         # Seções da landing
     │       ├── AdminCalendar.tsx     # Calendário da área admin
-    │       └── ui/                   # reveal, count-up, animated-bar, tilt-card, magnetic
+    │       └── ui/                   # reveal, count-up, animated-bar, tilt-card, magnetic,
+    │                                 # card-personagem, esboco, tinta-viva, special-text…
     └── backend/
         ├── README.md                 # Documentação detalhada do serviço Python
-        ├── requirements.txt
-        ├── sql/schema.sql            # Schema idempotente (jogadores, batalhas, RLS)
-        ├── render.yaml               # (removido — o blueprint vive na raiz do repo)
+        ├── requirements.txt          # Produção (Render)
+        ├── requirements-dev.txt      # + pytest, fakeredis, httpx
+        ├── requirements-analysis.txt # + scipy (só a pasta analysis/)
+        ├── sql/schema.sql            # Schema idempotente (jogadores, batalhas, eventos_funil, RLS)
         ├── app/
         │   ├── main.py               # App FastAPI: lifespan do Redis, CORS, routers
         │   ├── config.py             # Settings via env (pydantic-settings)
@@ -159,8 +175,13 @@ AnalyticsdeTaverna/
         │   ├── domain/               # Regras puras: personagem.py, batalha.py
         │   ├── routers/              # avatar, jogadores, personagem, batalha, ranking, analytics
         │   └── workers/avatar_worker.py  # Job do Gemini + upload no Storage
+        ├── analysis/                 # Validação estatística da calibração (roda à mão)
+        │   ├── simular_calibracao.py # Monte Carlo com o motor de classes real
+        │   ├── validar_classes.py    # Qui-quadrado: produção × aleatório
+        │   └── questions_fixture.json# Banco de perguntas em JSON (cópia do .ts)
         └── tests/                    # pytest (repo em memória, fakeredis, Gemini mockado)
-            └── fixture_classes_ts.json  # Casos gerados pelo motor TypeScript real
+            ├── fixture_classes_ts.json   # Casos gerados pelo motor TypeScript real
+            └── fixture_atributos_ts.json # Idem, para o cálculo de atributos
 ```
 
 ---
@@ -170,7 +191,7 @@ AnalyticsdeTaverna/
 | Rota | Render | Descrição |
 |---|---|---|
 | `/` | Estática | Landing (conceito, atributos, guilda, chamada) |
-| `/dashboard` | Estática (revalida 5min) | Números ao vivo — agregados no servidor |
+| `/dashboard` | Estática (revalida 1min) | Números ao vivo e insights — lidos do `/analytics` no servidor |
 | `/jogar` | Estática | Quiz completo (foto → perguntas → resultado) |
 | `/personagem` | Estática + Suspense | Card do personagem por `?id=` ou por query params |
 | `/batalha` | Estática + Suspense | Leitor de QR, card do oponente e arena do duelo |
@@ -208,8 +229,8 @@ misto. O custo é um salto a mais pela Vercel.
 
 | Quem chama | Base usada | Por quê |
 |---|---|---|
-| Navegador (duelo) | `/taverna-api` | Mesma origem — `src/lib/batalha-api.ts` |
-| Servidor (ranking) | URL absoluta | `fetch` do Node não resolve caminho relativo — `src/lib/backend-url.ts` |
+| Navegador (duelo, funil) | `/taverna-api` | Mesma origem — `src/lib/batalha-api.ts`, `src/lib/funil-tracking.ts` |
+| Servidor (ranking, dashboard) | URL absoluta | `fetch` do Node não resolve caminho relativo — `src/lib/backend-url.ts` |
 
 `BACKEND_URL` fica **sem** `NEXT_PUBLIC_`: o endereço da Render não vai para o
 bundle. Ele é lido de `BACKEND_URL`, `NEXT_PUBLIC_API_URL` ou
@@ -273,6 +294,11 @@ const QUIZ_SIZE = 5;
 ```
 
 Estado local: `step`, `photo` (data URL), `questions` (array de 5), `current`, `dims`, `tags`.
+
+Cada transição também dispara um evento do [funil](#funil-de-conversão)
+(`inicio` ao montar, `foto_capturada` na primeira foto, `quiz_concluido` na última
+resposta) e um som: página virando a cada pergunta, lacre batendo no resultado.
+Ver [Feedback sonoro e tátil](#feedback-sonoro-e-tátil).
 
 ---
 
@@ -500,7 +526,7 @@ o Gemini é pago de novo — por um resultado que já existe.
 | `NEXT_PUBLIC_AVATAR_API_URL` | Vercel | `http://localhost:8000` |
 | `GEMINI_API_KEY` | Render (secreta) | — |
 | `GEMINI_IMAGE_MODEL` | Render | `gemini-3.1-flash-image` |
-| `GEMINI_MAX_RPM` | Render | `8` |
+| `GEMINI_MAX_RPM` | Render | `8` no código; `60` no `render.yaml` |
 
 **Retenção:** a foto original **nunca é persistida** — trafega só como payload do job (`keep_result = 0` no arq) e vive em memória durante a execução. O avatar gerado fica permanente no bucket `avatars`; o Redis guarda por 24h apenas a URL dele. Há testes de invariante para isso em `tests/test_privacy.py`, incluindo um que falha se alguém voltar a gravar bytes de imagem no Redis.
 
@@ -532,7 +558,22 @@ adiantam depois dele, e cada retry consome uma unidade. Confira em
 **AI Studio → Limite de taxa**; deixe o `GEMINI_MAX_RPM` com margem abaixo do
 RPM da sua conta, porque os retries também passam pelo limitador.
 
-Se a geração falhar, o card mostra "Não foi possível conjurar seu avatar" — sem imagem de placeholder.
+**Falha com nome.** O Gemini usa o mesmo `429` para "chamando rápido demais"
+(esperar resolve) e "conta sem crédito" (esperar não resolve nunca). O worker
+separa os dois pela mensagem: saldo esgotado **não** entra em retry — antes
+custava 22s de backoff e 4 chamadas para chegar ao mesmo lugar. O marcador de
+erro no Redis leva só um código, nunca a mensagem crua do Gemini (ela cita
+projeto, cota e billing da conta):
+
+| Motivo | Retry? | O que a pessoa lê |
+|---|---|---|
+| `billing` · `quota_exhausted` | só a cota | "A forja de avatares atingiu o limite por hoje" |
+| `upstream_unavailable` | sim | "A forja está fora de alcance — tente de novo em instantes" |
+| `timeout` | não | "A conjuração demorou demais e foi interrompida" |
+| `no_image` | não | "Não conseguimos retratar esta foto — tente outra" |
+| `upload_failed` · `generation_failed` | não | "Não foi possível conjurar seu avatar" |
+
+Sem imagem de placeholder em nenhum dos casos.
 
 ---
 
@@ -542,7 +583,7 @@ O Supabase é usado de **dois lados, com chaves diferentes**:
 
 | Lado | Chave | Papel |
 |---|---|---|
-| Backend (worker Python, Render) | `service_role` (`sb_secret_…`) | Sobe o avatar no Storage |
+| Backend (API + worker, Render) | `service_role` (`sb_secret_…`) | Sobe o avatar no Storage; lê e grava `jogadores`, `batalhas` e `eventos_funil` (duelo, ranking, analytics) |
 | Frontend (Next, Vercel) | `anon` (`sb_publishable_…`) | Insere e lê `jogadores` |
 
 > ⚠️ Nunca troque as chaves de lado: a `service_role` bypassa o RLS e ficaria exposta no bundle.
@@ -551,8 +592,9 @@ O Supabase é usado de **dois lados, com chaves diferentes**:
 
 `sql/schema.sql` é idempotente e cria/estende tudo:
 
-- **`jogadores`** — classe, os 7 atributos, `foto_url`, as 10 dimensões brutas do quiz, as `tags` acumuladas, placar (`xp`, `vitorias`, `derrotas`, `empates`) e `nome`. Índices em `xp desc`, `criado_em desc` e `classe`.
+- **`jogadores`** — classe, os 7 atributos, `foto_url`, as 10 dimensões brutas do quiz, as `tags` acumuladas, placar (`xp`, `vitorias`, `derrotas`, `empates`), `nome` e `sessao_funil_id` (liga o jogador à sessão do funil que o gerou). Índices em `xp desc`, `criado_em desc`, `classe` e `sessao_funil_id`.
 - **`batalhas`** — uma linha por confronto, guardando os **valores** disputados (não só o vencedor), `resultado` (`a`/`b`/`empate`), `vencedor_id`, o XP de cada lado e `rodadas` (jsonb) com o detalhe dos 3 atributos disputados.
+- **`eventos_funil`** — uma linha por etapa alcançada antes do cadastro: `sessao_id`, `evento` (`inicio`, `foto_capturada`, `quiz_concluido`, `avatar_gerado`, `avatar_falhou`) e `criado_em`. RLS com leitura pública; escrita só pelo backend. Ver [Funil de Conversão](#funil-de-conversão).
 
 > **`rodadas` é coluna nova.** Se o `sql/schema.sql` não tiver sido rodado no
 > Supabase, o insert falha com `column batalhas.rodadas does not exist`. O
@@ -574,6 +616,12 @@ O Supabase é usado de **dois lados, com chaves diferentes**:
 > ```
 > As 10 colunas de dimensão já existiam mas nunca eram preenchidas — o insert
 > passou a gravá-las.
+
+> **`eventos_funil` e `jogadores.sessao_funil_id` também são novos.** Sem a
+> migração, o backend avisa no log e segue: o `POST /analytics/evento` responde
+> `202` sem gravar e o `GET /analytics/funil` volta zerado. O quiz nunca trava por
+> causa de uma métrica. Rodar o `sql/schema.sql` inteiro resolve — ele é
+> idempotente.
 
 **RLS é obrigatório** — sem as policies de `insert`/`select` para `anon`, o insert do frontend falha com `new row violates row-level security policy`. Os comandos estão em `sql/schema.sql` e em [`backend/README.md`](rpg-site/backend/README.md#2-tabela-jogadores-usada-pelo-frontend).
 
@@ -630,17 +678,69 @@ oito fases do scanner) apontando para `/personagem?id={meuId}`.
 
 ## Dashboard ao Vivo
 
-Vive em `/dashboard` (saiu da landing) e lê o Supabase **no servidor**
-(`src/lib/stats.ts`):
+Vive em `/dashboard` (saiu da landing) e **não lê mais o Supabase direto**: todos
+os números vêm das rotas `/analytics/*` do FastAPI, buscadas no servidor. Antes
+`src/lib/stats.ts` reimplementava contra o banco (com paginação manual) a mesma
+agregação que o backend já fazia — duas fontes de verdade para o mesmo número.
 
-- Pagina a tabela de 1000 em 1000 linhas (teto de 200 páginas) e agrega em memória.
-- A agregação pura (`aggregate`) é exportada separada do acesso ao banco para ser testável.
-- Percentuais usam como base as linhas **com classe**; cada média de atributo ignora colunas nulas em vez de contá-las como zero.
-- Cacheado com `unstable_cache` por **5 minutos** (`revalidate: 300`, tag `player-stats`) — sem isso a página viraria dinâmica e bateria no Supabase a cada visita.
-- A atualização de verdade é por evento: ao salvar um personagem novo, `CharacterResult` chama `avisarNovoJogador()` e a tag expira na hora. É o mesmo mecanismo do ranking.
-- Sem credenciais, `getPlayerStats()` devolve `null` e a seção exibe o estado vazio. A landing continua de pé.
+A página tem duas seções, com políticas de falha diferentes:
 
-Importar `stats.ts` de um Client Component mandaria a tabela inteira para o navegador — por isso `DashboardSection` recebe os números prontos por prop e importa só o **tipo**.
+| Seção | Módulo | Rotas | Se uma rota falha |
+|---|---|---|---|
+| Números ao vivo (`DashboardSection`) | `lib/stats.ts` | `/resumo`, `/classes`, `/atributos` | **Tudo ou nada** — misturar as três daria total de um jeito e classes de outro |
+| Insights (`TavernaInsightsSection`) | `lib/analytics.ts` | `/funil`, `/insight`, `/batalhas`, `/taxa-vitoria` | Some só o card daquela rota; os outros aparecem |
+
+**Os quatro cards de insight:**
+
+- **Funil de Conversão** — da abertura do quiz ao primeiro duelo, com percentual sobre o topo e sobre a etapa anterior.
+- **Perfil Comportamental Médio** — a frase calculada sobre as 10 dimensões (a dominante e a mais fraca).
+- **Duelos da Taverna** — taxa de empate e os atributos mais escolhidos para lutar.
+- **Classes Mais Fortes** — taxa de vitória por classe.
+
+**Cache e atualização:**
+
+- `unstable_cache` nos dois módulos: **5 minutos** para os números (`player-stats`), **60s** para os insights (`analytics-extra`). Por isso a página aparece no build como estática revalidando a cada 1min.
+- A atualização de verdade é por evento. Ao salvar um personagem, `CharacterResult` chama `avisarNovoJogador()`; ao fim de um duelo, `DesafioScanner` chama `avisarBatalhaConcluida()`. As duas actions expiram `analytics-extra` junto com a sua tag principal, porque cadastro mexe no insight e duelo mexe em empates, atributos escolhidos e taxa de vitória.
+- O backend ordena classes só por contagem; o front desempata por nome para a ordem não oscilar entre visitas.
+- Sem backend ou sem jogadores, `getPlayerStats()` devolve `null` e a seção exibe o estado vazio. A página continua de pé.
+
+Importar `stats.ts` ou `analytics.ts` de um Client Component mandaria a URL do
+backend para o navegador — por isso as seções recebem os números prontos por prop
+e importam só os **tipos**.
+
+---
+
+## Funil de Conversão
+
+Mede **por pessoa**, não por etapa solta, onde o público abandona o fluxo:
+
+```
+Abriu o quiz → Tirou a foto → Terminou o quiz → Avatar gerado → Personagem salvo → Duelou
+└──────────── eventos_funil (frontend) ────────────┘  └── jogadores / batalhas ──┘
+```
+
+**As quatro primeiras etapas são eventos.** `src/lib/funil-tracking.ts` manda
+`POST /taverna-api/analytics/evento` com `{ sessao_id, evento }` em
+fogo-e-esquece (`keepalive`, erro só no console): uma métrica nunca pode atrasar
+ou quebrar o quiz. `avatar_falhou` também é gravado, mas não é etapa do funil.
+
+**As duas últimas vêm do banco.** "Personagem salvo" e "duelou" já existem em
+`jogadores` e `batalhas`; rastrear de novo duplicaria dado. O que liga uma coisa à
+outra é `jogadores.sessao_funil_id`, gravado pelo `CharacterResult` no insert.
+
+**O `sessao_id` é uma passada pelo quiz, não um aparelho.** Vive em
+`sessionStorage` (`taverna:funilSessaoId`) e não identifica a pessoa. Quem tenta
+duas vezes gera duas sessões — cada tentativa é uma entrada nova no topo. Em modo
+privado, sem storage, cada evento ganha um id próprio: a etapa é contada, só não
+se amarra às outras.
+
+`GET /analytics/funil` conta **sessões distintas** por etapa (um evento repetido
+por retry ou remontagem não conta duas vezes) e devolve `percentual_do_topo`,
+`percentual_da_etapa_anterior`, `sem_eventos` e `sessoes_ligadas`.
+
+> Jogadores salvos antes de `sessao_funil_id` existir não entram no funil — não
+> há sessão a que ligá-los. Logo depois do deploy o funil relata só o que a
+> instrumentação já viu.
 
 ---
 
@@ -659,7 +759,7 @@ QR do card do oponente          ou   /batalha?oponenteId=42 direto
         │  ← aqui um GET /health acorda a Render enquanto a pessoa decide
         │  "⚔️ Confirmar escolha"
         ▼  POST /taverna-api/batalha { ids + atributos }
-  3. RESULTADO — rodadas reveladas uma a uma, XP contando no fim
+  3. RESULTADO — arena de cartas 3D, rodada a rodada, XP contando no fim
         │
         ▼  Server Action expira o cache do ranking
 ```
@@ -674,15 +774,27 @@ o backend recusar. Os ícones e a ordem vivem em `src/lib/atributos.ts`, com as
 mesmas chaves de `ATRIBUTOS_VALIDOS` no Python.
 
 **Encenação** (`ResultadoBatalha`, motion/react): o backend já devolveu tudo
-pronto; a espera na tela é dramaturgia, não latência. As rodadas aparecem uma a
-uma, os dois valores entram de cada borda, o troféu/caveira surge com um spring, e
-o veredito só fecha depois da terceira — revelar o placar antes tiraria a graça
-de ler linha a linha.
+pronto; a espera na tela é dramaturgia, não latência. É uma **arena de cartas em
+3D**, em cinco fases:
 
-Quem pede `prefers-reduced-motion` percorre **as mesmas etapas com espera zero**.
-Ramificar o estado inicial em `useReducedMotion` quebrava a hidratação: o servidor
-não conhece a preferência do aparelho, então o HTML dele e a primeira renderização
-do cliente divergiam.
+| Fase | O que acontece |
+|---|---|
+| Compra | As duas cartas entram de fora da tela, de costas, e pousam girando até mostrar a frente |
+| Rodadas 1–3 | Quem vence a rodada avança para o meio da mesa (mola rígida: a carta salta, não desliza); no impacto a carta atingida pisca em vermelho, a tela treme e salta o **dano** — a diferença entre os dois valores |
+| Desfecho | O selo (🏆 · 💀 · ⚖️) cai do alto com massa de queda e racha o tabuleiro |
+| XP | As barras dos **dois** lados enchem, com contagem de moedas — o duelo move os dois placares |
+
+A altura de cada carta é contada pela **sombra**: quanto mais alto o
+`translateZ`, mais larga e difusa ela fica. Sem ela, `translateZ` sozinho parece
+só um `scale`. O veredito só fecha depois da terceira rodada — revelar o placar
+antes tiraria a graça de ler linha a linha.
+
+Quem pede `prefers-reduced-motion` vê uma **versão chapada** (`Placar`): o
+resultado direto, sem perspectiva, cartas voando ou impacto. Como isso troca a
+**estrutura** da tela, e não só a animação, a preferência entra por
+`useSyncExternalStore` — `useReducedMotion` devolve `null` no servidor e o valor
+real já na primeira renderização do cliente, e as duas árvores divergiriam na
+hidratação.
 
 **Erros com nome:** o `fetch` falha do mesmo jeito para servidor fora do ar, CORS
 e endereço errado, então o console recebe o endereço tentado e as causas
@@ -703,7 +815,7 @@ então repetir sozinho poderia contar o duelo duas vezes.
 
 ## Ranking Global (`/ranking`)
 
-Quadro de feitos no estilo do pergaminho pendurado da taverna: parede de tábuas, roletes de madeira, moldura entalhada com florões, fita dourada com o título e prateleiras de canecas nas laterais (só em telas `xl`). Tudo em CSS — nenhum asset novo.
+Quadro de feitos no estilo do pergaminho pendurado da taverna: parede de tábuas, roletes de madeira, moldura entalhada com florões e fita dourada com o título. Tudo em CSS — nenhum asset novo.
 
 Lê o `GET /ranking?limite=10` do FastAPI **no servidor**, na mesma arquitetura do
 dashboard: Server Component → módulo em `lib` → `unstable_cache` com tag → Server
@@ -712,7 +824,7 @@ Action que invalida.
 | Coluna | Origem |
 |---|---|
 | Posto | `posicao` em numeral romano; medalha só no pódio |
-| Aventureiro | `nome`, ou `Aventureiro #{id}` para quem não digitou |
+| Aventureiro | `nome`, ou só `#{id}` para quem não digitou (o mesmo número do `/personagem?id=` e do QR do card) |
 | Classe | `classe` (com o ícone da `CLASS_LIST`) |
 | Feitos | `xp`, com `V · D · E` embaixo |
 
@@ -723,8 +835,9 @@ lugar só.
 **Atualiza por evento.** Ao fim de um duelo o `DesafioScanner` chama
 `avisarBatalhaConcluida()`, que faz `updateTag(RANKING_TAG)`. Sem isso, quem ganha
 30 XP e clica em "Ver o ranking" segundos depois encontraria o placar de antes — e
-esse é justamente o momento em que a pessoa vai olhar. Os 60s de `revalidate` são
-rede de segurança para o que não passa pelo app.
+esse é justamente o momento em que a pessoa vai olhar. A mesma action expira os
+insights do dashboard. Os 60s de `revalidate` são rede de segurança para o que não
+passa pelo app.
 
 > `updateTag` e não `revalidateTag`: o segundo ainda serviria o número velho para
 > quem chegasse primeiro.
@@ -763,7 +876,9 @@ Documentação interativa em `/docs` quando o serviço está no ar.
 | `POST` | `/batalha` | Resolve o confronto e registra tudo — corpo: dois ids + os 3 atributos |
 | `GET` | `/batalha/{id}` · `/batalha/historico/{id}` | Detalhe e histórico |
 | `GET` | `/ranking` · `/ranking/{jogador_id}` | Top N por XP · posição de um jogador |
-| `GET` | `/analytics/resumo` · `/classes` · `/atributos` · `/batalhas` · `/taxa-vitoria` · `/insight` | Dashboard analytics |
+| `GET` | `/analytics/resumo` · `/classes` · `/atributos` · `/batalhas` · `/taxa-vitoria` · `/insight` | Agregados do `/dashboard` |
+| `POST` | `/analytics/evento` | Registra uma etapa do funil (`202`) — corpo: `sessao_id` + `evento` |
+| `GET` | `/analytics/funil` | Funil por sessão, da abertura do quiz ao primeiro duelo |
 
 ### Camadas
 
@@ -840,21 +955,65 @@ pip install -r requirements-dev.txt
 pytest -q
 ```
 
-**550 testes.** Distribuição:
+**569 testes.** Distribuição:
 
 | Arquivo | Testes | Cobre |
 |---|---|---|
 | `test_sincronia_classes.py` | 437 | Igualdade com o TypeScript: classes, hash FNV-1a e atributos |
 | `test_api_rotas.py` | 34 | Rotas da API com repositório em memória |
 | `test_batalha_motor.py` | 31 | Validação da escolha, confronto, XP, narrativa, pareamento |
+| `test_avatar_worker.py` | 24 | Job do Gemini (mockado), retries, rate limit, classificação de erro |
 | `test_avatar_endpoint.py` | 15 | Validação de upload, polling, limpeza |
-| `test_avatar_worker.py` | 15 | Job do Gemini (mockado), retries, rate limit |
 | `test_repo_coluna_ausente.py` | 8 | Gravação com o banco atrasado no schema |
 | `test_personagem.py` | 7 | Atributos, determinismo, fallback |
+| `test_analytics_funil.py` | 6 | Eventos do funil, sessões distintas, ligação jogador ↔ sessão |
+| `test_analysis_calibracao.py` | 4 | Mecânica da validação estatística (sem precisar de scipy) |
 | `test_privacy.py` | 3 | Invariantes de retenção da foto original |
 
 Nada exige Redis, Supabase ou Gemini reais: o repositório é injetado por
 `dependency_overrides`, o Redis é `fakeredis` e o Gemini é mockado.
+
+---
+
+## Validação Estatística das Classes
+
+Responde a uma pergunta concreta: **a distribuição de classes que sai do quiz em
+produção é diferente do que respostas aleatórias dariam?** Se não for, o quiz não
+estaria medindo nada. Vive em `backend/analysis/`, fora de `app/`: é ferramenta
+de análise para rodar à mão, não código da API.
+
+1. **`simular_calibracao.py`** — Monte Carlo com respostas uniformemente
+   aleatórias, usando o motor de classificação **de verdade**
+   (`app.domain.personagem`), não uma reimplementação. Gera
+   `simulacao_resultado.json`, a distribuição esperada ao acaso.
+2. **`validar_classes.py`** — busca os jogadores reais no Supabase e roda um
+   **teste qui-quadrado de aderência** contra a simulação. p abaixo de α = a
+   distribuição real difere da aleatória.
+
+```bash
+cd rpg-site/backend
+pip install -r requirements-analysis.txt   # traz scipy; não entra no deploy
+python -m analysis.simular_calibracao      # gera simulacao_resultado.json
+python -m analysis.validar_classes         # compara com o Supabase de produção
+python -m analysis.validar_classes --fonte memoria   # testa sem tocar no banco
+```
+
+**Checagem de sanidade:** com `--n 300000 --seed 42`, **73,4%** dos personagens
+simulados saem por regra — a calibração original documenta **~73%**. A
+simulação reproduz a metodologia original.
+
+**Última rodada contra produção** (225 jogadores, `backend/resultado.txt`):
+χ² = 20,68, gl = 15, **p = 0,147** — não rejeita H0 com α = 0,05. Com essa amostra
+isso é mais provavelmente falta de poder estatístico do que prova de que o quiz
+não funciona; revalide quando o banco crescer. Os maiores desvios: Vidente da
+Ansiedade e Ilusionista de Call saem menos que o esperado; Ladino do Home Office,
+Mago do ChatGPT e Necromante de Planilha, mais.
+
+**Limitações:**
+
+- O script avisa quando alguma classe tem contagem esperada abaixo de 5 (regra de Cochran) — leia como indicativo até o banco crescer.
+- O teste diz se a distribuição difere do aleatório, **não** se as 10 dimensões medem o que dizem medir (validade de construto).
+- `questions_fixture.json` é uma cópia em JSON do `questions-data.ts`. Se o banco de perguntas mudar, regenere a fixture **e** a simulação juntas — não há checagem automática. O comando está em [`backend/analysis/README.md`](rpg-site/backend/analysis/README.md).
 
 ---
 
@@ -929,6 +1088,23 @@ Deploy manual do frontend:
 vercel --prod
 ```
 
+### CI (GitHub Actions)
+
+`rpg-site/.github/workflows/ci.yml` define dois jobs independentes, em todo push
+na `main` e em todo PR, com cancelamento da rodada anterior na mesma branch:
+
+| Job | Passos |
+|---|---|
+| Backend (pytest) | Python 3.12 → `pip install -r requirements.txt -r requirements-dev.txt` → `pytest -q` |
+| Frontend (tsc + eslint) | Node 22 → `npm ci` → `npx tsc --noEmit` → `npm run lint` |
+
+Nenhum dos dois precisa de segredo: os testes rodam com o repositório em memória.
+
+> ⚠️ **Hoje o CI não roda.** O GitHub só lê workflows em `.github/workflows/` na
+> **raiz** do repositório, e o arquivo está dentro de `rpg-site/`. Para ativar,
+> mova-o para `.github/workflows/ci.yml` na raiz — os `working-directory` e
+> `cache-dependency-path` já apontam para `rpg-site/…` e continuam valendo.
+
 ---
 
 ## Desenvolvimento Local
@@ -959,7 +1135,7 @@ Requer um Redis local (`docker run -p 6379:6379 redis` ou `brew install redis &&
 cd rpg-site/backend
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env      # preencha GEMINI_API_KEY
+cp .env.example .env      # preencha GEMINI_API_KEY e SUPABASE_SERVICE_ROLE_KEY
 
 uvicorn app.main:app --reload --port 8000   # terminal 1
 arq app.workers.avatar_worker.WorkerSettings # terminal 2
@@ -968,7 +1144,10 @@ arq app.workers.avatar_worker.WorkerSettings # terminal 2
 Sem Redis a API sobe assim mesmo — só as rotas de avatar ficam desativadas (o
 `lifespan` registra um aviso). Cadastro, duelo, ranking e analytics funcionam.
 
-Duelo e ranking **precisam** do Supabase configurado (`SUPABASE_URL` e
+O `/dashboard` também depende do backend: sem ele, as duas seções mostram o
+estado vazio.
+
+Duelo, ranking e analytics **precisam** do Supabase configurado (`SUPABASE_URL` e
 `SUPABASE_SERVICE_ROLE_KEY` no `.env` do backend); sem isso respondem `503` com a
 mensagem explicando o que falta.
 
@@ -1007,7 +1186,7 @@ Tema **"Diário Mágico"**: mesa de mogno na penumbra, luz de vela âmbar; o con
 | Grupo | Utilitárias |
 |---|---|
 | Papel e moldura | `paper-card` · `paper-frame` · `arcane-corners` · `polaroid` · `divider` |
-| Quadro do ranking | `plank-wall` · `scroll-rod` · `wood-frame` · `scroll-sheet` · `tavern-banner` · `banner-tail` · `frame-flower` · `tavern-shelf` |
+| Quadro do ranking | `plank-wall` · `scroll-rod` · `wood-frame` · `scroll-sheet` · `tavern-banner` · `banner-tail` · `frame-flower` |
 | Ação e selo | `btn-seal` · `btn-parchment` · `btn-glow` · `press` · `wax-seal` |
 | Texto e acento | `section-eyebrow` · `gold-grad` · `tag-pill` · `icon-frame` · `stat-bar` / `stat-bar-fill` |
 | Fundo | `bg-dark-wood` · `bg-black-linen` · `bg-grid` · `arcane-blob` · `glass` · `dark-card` |
@@ -1015,14 +1194,26 @@ Tema **"Diário Mágico"**: mesa de mogno na penumbra, luz de vela âmbar; o con
 
 **Animações:** `float`, `shimmer`, `pulse-wine`, `candle-flicker`, `arcane-drift`, `bounce-down`, `qr-sweep`, `barra-duelo` — todas desligadas ou reduzidas sob `prefers-reduced-motion` (via `MotionProvider` e media queries no CSS).
 
-**Convenções:** seções da landing são Server Components; a interatividade fica isolada em `QuizForm`, `CharacterResult`, `PersonagemCard`, `WebcamCapture`, `QrScanner`, `DesafioScanner`, `EscolhaAtributos`, `ResultadoBatalha`, `DashboardSection`, `Navbar`, `AdminCalendar` e nos componentes de `ui/`. No mobile os blobs de blur são desligados (custo de GPU) e a navbar usa fundo sólido — `backdrop-filter` em barra fixa causa glitches em navegadores móveis.
+**Convenções:** seções da landing são Server Components; a interatividade fica isolada em `QuizForm`, `CharacterResult`, `PersonagemCard`, `WebcamCapture`, `QrScanner`, `DesafioScanner`, `EscolhaAtributos`, `ResultadoBatalha`, `DashboardSection`, `TavernaInsightsSection`, `Navbar`, `AdminCalendar` e nos componentes de `ui/`. No mobile os blobs de blur são desligados (custo de GPU) e a navbar usa fundo sólido — `backdrop-filter` em barra fixa causa glitches em navegadores móveis.
 
 **Regra que vale para toda tela nova:** nada que dependa de `prefers-reduced-motion`,
 `localStorage` ou `matchMedia` pode entrar no estado inicial de um componente
 renderizado no servidor — o servidor não conhece nada disso, e o HTML dele
 divergiria da primeira renderização do cliente. O padrão do projeto é começar
 igual nos dois lados e ajustar depois da montagem (`useSyncExternalStore` no
-`DesafioScanner`, espera zerada no `ResultadoBatalha`).
+`DesafioScanner`, na troca para a versão chapada do `ResultadoBatalha` e na
+preferência de silêncio do `useTavernFeedback`).
+
+### Feedback sonoro e tátil
+
+`useTavernFeedback` toca três sons curtos — **página virando** (cada pergunta),
+**lacre batendo** (resultado do quiz e veredito do duelo) e **lâminas se
+cruzando** (impacto de cada rodada) — e vibra junto onde há `navigator.vibrate`
+(o Safari do iOS não tem; a vibração é enfeite).
+
+- **Os sons são sintetizados** via Web Audio (ruído filtrado com envelope). O projeto não tem áudio em `public/`, e um `Audio` apontando para arquivo inexistente fica mudo sem avisar. O hook aceita `fontes` com arquivos de verdade e passa a preferi-los no dia em que existirem.
+- **Nada toca antes do primeiro gesto** (`pointerdown`, `keydown` ou `touchstart`), que todo navegador exige. Os listeners entram na carga do módulo e a liberação é compartilhada entre instâncias: em `/batalha`, quem clica em "Confirmar escolha" não é o componente que toca o som das rodadas — com estado por instância, a tela de resultado nascia muda para sempre.
+- **Silêncio** fica em `localStorage` (`taverna:som-mudo`) e se propaga entre abas. O hook expõe `alternarMudo`, mas ainda não há botão na interface.
 
 ---
 
