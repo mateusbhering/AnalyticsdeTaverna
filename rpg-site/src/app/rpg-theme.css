@@ -1,0 +1,166 @@
+/* Referências: cenário de RPG, HUD de metal escuro e cartografia em pergaminho.
+   Este arquivo altera apresentação; textos e dados permanecem nos componentes. */
+.journey-scene[data-rpg-theme] {
+  --desk: #21140d;
+  --desk2: #342218;
+  --gold: #bc9860;
+  --gold-light: #f0d39c;
+  --copper: #d4a85e;
+  --seal: #644a2e;
+  background: #26180f;
+}
+.journey-scene[data-rpg-theme] .rpg-hero {
+  min-height: max(820px, 100svh);
+  background: linear-gradient(90deg, #1c1009dd 0%, #29180e7a 42%, #39241708 75%), linear-gradient(0deg, #26180f 0%, transparent 40%), url('/scenery/tavern-kingdom.png') center / cover no-repeat !important;
+}
+.rpg-hero-content { width: 100%; max-width: 1320px; text-align: left; padding: 140px 64px 130px; }
+.rpg-hero-content > h1 { font-size: clamp(42px, 5.3vw, 76px); max-width: 650px; line-height: 1.08; text-shadow: 0 3px 20px #000a; }
+.rpg-hero-content > div:last-child { max-width: 580px; }
+.rpg-hero-content p { margin-left: 0; text-shadow: 0 2px 8px #000; }
+.rpg-hero-content p:first-child { font-size: 23px; color: #f4eedee8; }
+.rpg-hero-content p:nth-child(2) { color: #f4eedebd; margin-bottom: 32px; }
+.rpg-emblem { justify-content: flex-start; margin-bottom: 24px; }
+.rpg-emblem img { width: 104px; height: 104px; filter: drop-shadow(0 6px 20px #0008); }
+.rpg-actions { justify-content: flex-start; gap: 20px; }
+.rpg-actions a { min-height: 76px; font-size: 11px; padding: 18px 26px; position: relative; border-width: 1px; }
+.rpg-actions a svg { width: 27px; height: 27px; margin-right: 8px; }
+.journey-scene[data-rpg-theme] .btn-seal {
+  background: linear-gradient(145deg, #d7af64, #b17b30);
+  color: #22180d; border-color: #f5d99b;
+  box-shadow: inset 0 0 0 3px #462e1726, 0 4px 18px #0007;
+}
+.journey-scene[data-rpg-theme] .btn-seal:hover { background: linear-gradient(145deg, #efd08e, #c69a50); }
+.rpg-actions .btn-parchment { background: #362217d9; color: #f5e6c9; border-color: #d4c7a880; box-shadow: inset 0 0 0 4px #e7d3a00a; }
+.rpg-actions .btn-parchment:hover { background: #59402b; }
+.rpg-resources { margin: 38px 0 0; gap: 8px; max-width: 530px; }
+.rpg-resources > div { padding: 13px 8px; border: 1px solid #f0d39c66; background: #28180fd4; box-shadow: inset 0 0 0 3px #fff1, 0 4px 14px #0004; }
+.rpg-resources > div > div:first-child { font-size: 25px; }
+.rpg-resources > div > div:last-child { color: #f5e6c9d9; font-size: 9px; letter-spacing: .12em; }
+.rpg-hero > .animate-float { opacity: .2; }
+.rpg-hero .arcane-blob { display: none; }
+.rpg-navbar { background: #291a11d9; border-bottom: 1px solid #c6b69366; box-shadow: 0 4px 24px #0005; }
+.rpg-navbar.glass, .rpg-navbar.glass nav { background: #291a11f5; }
+.rpg-navbar > div:first-child { padding-top: 17px; padding-bottom: 17px; }
+.rpg-navbar .icon-frame { background: #3b281b; border-color: #cab88a88; }
+.rpg-navbar a { text-shadow: 0 1px 6px #0008; }
+.journey-scene[data-rpg-theme] :is(.bg-dark-wood, .bg-black-linen) {
+  background: radial-gradient(ellipse at 50% 0%, #9b714a25, transparent 65%), #26180f;
+}
+.journey-scene[data-rpg-theme] .section-line-top { background: linear-gradient(90deg, transparent, #c6b69380, transparent); }
+.journey-scene[data-rpg-theme] .dark-card { background: linear-gradient(145deg, #493223d9, #291a11ee); border-color: #c6b69366; }
+.journey-scene[data-rpg-theme] .icon-frame { background: linear-gradient(145deg, #5a412e, #291a11); border-color: #bda979aa; color: #eed9ab; }
+.journey-scene[data-rpg-theme] .paper-card { border-radius: 2px; border: 1px solid #9d7943; box-shadow: inset 0 0 0 4px #f9e7b84d, inset 0 0 36px #8361344d, 0 10px 28px #0006; }
+.journey-atlas { position: relative; isolation: isolate; margin: 0 auto; padding: 58px 48px 70px; color: #4a361e; background: radial-gradient(ellipse, #f9e8bc, #dcc28a 70%, #b2925d); border: 12px solid #463524; box-shadow: inset 0 0 0 2px #6a512d, inset 0 0 0 8px #e8ce96, inset 0 0 0 10px #806336, inset 0 0 70px #79572766; }
+.journey-atlas::before { content: ''; position: absolute; inset: 18px; border: 6px double #97724199; pointer-events: none; }
+.journey-atlas-header { position: relative; z-index: 1; }
+.journey-atlas-header .section-eyebrow { color: #694d24; }
+.journey-atlas-header h2 { color: #423019; }
+.journey-atlas-path { position: relative; z-index: 1; min-height: 350px; align-items: center; gap: 30px; }
+.journey-atlas-path a { text-align: center; align-items: center; gap: 8px; padding: 18px 14px; color: #423019; background: #f8e7bbd9; border: 1px solid #79572699; box-shadow: inset 0 0 0 3px #997b4030, 0 7px 18px #69471825; }
+.journey-atlas-path a:nth-child(even) { align-self: end; margin-bottom: 25px; }
+.journey-atlas-path a:nth-child(odd) { align-self: start; margin-top: 25px; }
+.journey-atlas-path a:hover { border-color: #513718; box-shadow: 0 8px 26px #69471844; }
+.journey-atlas-path span { color: #785826; }
+.journey-atlas-path small { color: #594429; }
+.atlas-landscape { position: absolute; inset: 130px 30px 30px; width: calc(100% - 60px); height: calc(100% - 160px); color: #816333; opacity: .6; pointer-events: none; z-index: 0; }
+.atlas-symbol { width: 52px; height: 52px; color: #594124; stroke-width: 1; margin-bottom: 4px; }
+.journey-hud { font-family: var(--font-cinzel), serif; }
+.journey-toggle, .journey-map { background: linear-gradient(145deg, #4b3425f5, #24160ef5); border-color: #c3b49199; border-radius: 0; box-shadow: inset 0 0 0 4px #fff1, 0 12px 40px #0008; }
+.journey-compass { border-radius: 0; transform: rotate(45deg); width: 33px; height: 33px; margin-right: 4px; background: #302015; border-color: #d2c094; }
+.journey-compass svg { transform: rotate(-45deg); }
+.journey-node { background: #3c281b; border-color: #c3b49166; }
+.is-current .journey-node { background: #af833c; color: #fff2ce; }
+.journey-destinations a { min-height: 63px; flex-direction: column; align-items: center; justify-content: center; gap: 7px; border-color: #c3b49166; }
+.journey-destinations a > svg { width: 23px; height: 23px; color: #e6dac0; }
+.journey-scene[data-rpg-theme] .plank-wall { background: linear-gradient(#2b190eaa, #2b190ee6), url('/scenery/tavern-kingdom.png') center / cover fixed; }
+.journey-scene[data-rpg-theme] > div > div[style*="dark-wood"] { background: linear-gradient(#301d11d9, #301d11f5), url('/scenery/tavern-kingdom.png') center / cover !important; }
+@media (min-width: 1500px) { .rpg-hero-content { max-width: 1460px; } }
+@media (max-width: 1000px) {
+  .rpg-hero-content { padding-inline: 36px; }
+  .journey-atlas { padding-inline: 30px; }
+  .journey-atlas-path { gap: 16px; }
+}
+@media (max-width: 640px) {
+  .journey-scene[data-rpg-theme] .rpg-hero { min-height: 980px; background: linear-gradient(0deg, #26180f 2%, #39241733 75%, #39241711), url('/scenery/tavern-kingdom.png') 69% top / auto 670px no-repeat, #26180f !important; align-items: flex-end; }
+  .rpg-hero-content { padding: 300px 22px 90px; text-align: center; }
+  .rpg-emblem { justify-content: center; margin-bottom: 14px; }
+  .rpg-emblem img { width: 82px; height: 82px; }
+  .rpg-hero-content > h1 { font-size: 40px; margin-bottom: 20px; }
+  .rpg-hero-content p:first-child { font-size: 20px; }
+  .rpg-hero-content p:nth-child(2) { font-size: 17px; margin-bottom: 24px; }
+  .rpg-actions { justify-content: center; gap: 12px; }
+  .rpg-actions a { font-size: 9px; padding: 14px 15px; min-height: 64px; }
+  .rpg-actions a svg { width: 20px; height: 20px; margin-right: 0; }
+  .rpg-resources { gap: 5px; margin-top: 24px; }
+  .rpg-resources > div { padding: 11px 4px; }
+  .rpg-resources > div > div:first-child { font-size: 22px; }
+  .rpg-resources > div > div:last-child { font-size: 8px; letter-spacing: .05em; }
+  .journey-atlas { border-width: 7px; padding: 44px 24px; }
+  .journey-atlas::before { inset: 9px; border-width: 4px; }
+  .journey-atlas-path { min-height: 480px; gap: 18px; }
+  .journey-atlas-path a { padding: 16px 10px; align-self: stretch !important; margin-block: 0 !important; }
+  .atlas-symbol { width: 40px; height: 40px; }
+  .journey-atlas-path strong { font-size: 12px; }
+  .journey-atlas-path small { font-size: 15px; }
+  .journey-atlas-path span { font-size: 9px; }
+  .journey-scene[data-rpg-theme] .plank-wall { background-attachment: scroll; }
+}
+@media (prefers-reduced-motion: reduce) { .journey-atlas-path a:hover { transform: none; } }
+/* No celular, o mapa recolhido ocupa apenas um botão para liberar os CTAs. */
+@media (max-width: 640px) {
+  .journey-hud { width: 54px; }
+  .journey-toggle { min-height: 54px; padding: 10px; justify-content: center; }
+  .journey-toggle > span:nth-child(2) { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .journey-toggle > svg { display: none; }
+  .journey-compass { width: 27px; height: 27px; margin: 0; }
+  .journey-map { position: absolute; right: 0; bottom: 62px; width: min(300px, calc(100vw - 32px)); margin: 0; }
+}
+
+/* Menu de jogo para celular, persistente também no desktop. */
+:root { --game-dock-height: 88px; }
+html { scroll-padding-top: 24px; scroll-padding-bottom: calc(var(--game-dock-height) + env(safe-area-inset-bottom, 0px) + 24px); }
+body { padding-bottom: calc(var(--game-dock-height) + env(safe-area-inset-bottom, 0px)); }
+.game-navigation { position: relative; z-index: 60; font-family: var(--font-cinzel), serif; }
+.game-dock {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 8px max(12px, env(safe-area-inset-left, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-right, 0px));
+  height: calc(var(--game-dock-height) + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(180deg, #493021fa, #21140c 75%);
+  border-top: 1px solid #c6a76a; box-shadow: 0 -8px 32px #160c0880, inset 0 3px 0 #e6bc6a15;
+}
+.game-dock-item { position: relative; min-width: 0; min-height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; color: #d1bea2; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: color .2s, background .2s; font-size: 10px; letter-spacing: .03em; }
+.game-dock-item > svg { width: 25px; height: 25px; stroke-width: 1.5; }
+.game-dock-item:hover, .game-dock-item.is-active { color: #ffe1a4; background: linear-gradient(0deg, #b8863430, transparent); }
+.game-dock-item.is-active::after { content: ''; position: absolute; bottom: 0; width: 32px; height: 2px; background: #efc26d; box-shadow: 0 0 10px #efc26d88; }
+.game-dock-home { color: #f9dfad; }
+.game-home-emblem { display: grid; place-items: center; width: 48px; height: 48px; margin-top: -22px; background: linear-gradient(145deg, #73502d, #312013); border: 1px solid #d8b978; border-radius: 10px 10px 3px 3px; box-shadow: inset 0 0 0 3px #e6bc6a15, 0 4px 12px #0006; }
+.game-home-emblem svg { width: 32px; height: 32px; stroke-width: 1.3; }
+.game-navigation .game-map { position: fixed; left: max(12px, env(safe-area-inset-left, 0px)); right: auto; bottom: calc(var(--game-dock-height) + env(safe-area-inset-bottom, 0px) + 12px); width: min(360px, calc(100vw - 24px)); max-height: calc(100dvh - var(--game-dock-height) - env(safe-area-inset-bottom, 0px) - 44px); margin: 0; overflow-y: auto; overscroll-behavior: contain; }
+.game-map-backdrop { position: fixed; inset: 0 0 calc(var(--game-dock-height) + env(safe-area-inset-bottom, 0px)); background: #160c0870; cursor: default; }
+.game-map .journey-chapters { margin-bottom: 0; }
+.game-map .journey-chapters a { min-height: 48px; }
+.rpg-hero-content { padding-top: 90px; }
+@media (min-width: 768px) { .game-dock { padding-inline: max(24px, calc((100vw - 720px) / 2)); } }
+@media (max-width: 640px) {
+  :root { --game-dock-height: 80px; }
+  .game-dock { padding-inline: 6px; }
+  .game-dock-item { font-size: 9px; letter-spacing: 0; gap: 6px; }
+  .game-dock-item > svg { width: 24px; height: 24px; }
+  .game-home-emblem { width: 44px; height: 44px; margin-top: -18px; }
+  .journey-scene[data-rpg-theme] .rpg-hero { min-height: 100svh; }
+  .rpg-hero-content { padding: clamp(170px, 25svh, 240px) 18px 70px; }
+  .rpg-hero-content > h1 { font-size: clamp(30px, 9.7vw, 40px); }
+  .rpg-hero-content p:first-child { font-size: 19px; line-height: 1.5; }
+  .rpg-hero-content p:nth-child(2) { font-size: 16px; }
+  .rpg-actions { gap: 10px; }
+  .rpg-actions > div { flex: 1; min-width: 0; }
+  .rpg-actions a { justify-content: center; padding-inline: 10px; font-size: 9px; }
+  .journey-scene[data-rpg-theme] main section[id] { padding: 64px 20px; }
+  .journey-scene[data-rpg-theme] h2 { font-size: clamp(26px, 7vw, 36px); line-height: 1.2; overflow-wrap: anywhere; }
+  .journey-scene[data-rpg-theme] :is(.paper-card, .dark-card)[class~="p-10"] { padding: 24px; }
+  .journey-scene[data-rpg-theme] :is(.paper-card, .dark-card)[class~="p-8"] { padding: 22px; }
+  .journey-atlas-path { min-height: 0; }
+  .journey-scene[data-rpg-theme] main section[id] [class~="gap-16"] { gap: 32px; }
+}
+@media (prefers-reduced-motion: reduce) { .game-dock-item { transition: none; } }

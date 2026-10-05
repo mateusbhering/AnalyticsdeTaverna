@@ -1,5 +1,5 @@
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import JourneyAtlas from "@/components/JourneyAtlas";
 import ConceptSection from "@/components/ConceptSection";
 import FlowSection from "@/components/FlowSection";
 import AttributesSection from "@/components/AttributesSection";
@@ -8,16 +8,13 @@ import TechSection from "@/components/TechSection";
 import GuildSection from "@/components/GuildSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
-import ScrollProgress from "@/components/ScrollProgress";
-import MotionProvider from "@/components/MotionProvider";
 
 export default function Home() {
   return (
-    <MotionProvider>
-      <ScrollProgress />
-      <Navbar />
+    <>
       <main>
         <Hero />
+        <JourneyAtlas />
         <ConceptSection />
         <FlowSection />
         <AttributesSection />
@@ -27,6 +24,6 @@ export default function Home() {
         <CTASection />
       </main>
       <Footer />
-    </MotionProvider>
+    </>
   );
 }

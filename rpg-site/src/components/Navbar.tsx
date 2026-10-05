@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatePresence, motion } from "motion/react";
 import { Swords, BarChart3, Trophy } from "lucide-react";
 
 const links = [
@@ -17,6 +18,7 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -24,9 +26,27 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
+  useEffect(() => {
+    const sections = links
+      .map(({ href }) => document.getElementById(href.slice(1)))
+      .filter((section): section is HTMLElement => section !== null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const current = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (current) setActiveSection(current.target.id);
+      },
+      { rootMargin: "-24% 0px -62% 0px", threshold: [0, 0.2, 0.5] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`rpg-navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "glass border-b border-[rgba(201,151,63,0.25)] shadow-[0_4px_40px_rgba(0,0,0,0.5)]"
           : "bg-transparent"
@@ -63,7 +83,7 @@ export default function Navbar() {
             <a
               key={l.href}
               href={l.href}
-              className="text-[.65rem] text-[rgba(240,226,189,0.6)] hover:text-[var(--gold-light)] transition-colors duration-200 tracking-[.2em] uppercase"
+              className={`relative pb-1 text-[.65rem] transition-colors duration-200 tracking-[.2em] uppercase after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:bg-[var(--gold-light)] after:transition-transform ${activeSection === l.href.slice(1) ? "text-[var(--gold-light)] after:scale-x-100" : "text-[rgba(240,226,189,0.6)] after:scale-x-0 hover:text-[var(--gold-light)] hover:after:scale-x-100"}`}
               style={{ fontFamily: "var(--font-cinzel), serif" }}
             >
               {l.label}
@@ -101,6 +121,8 @@ export default function Navbar() {
           className="xl:hidden text-[rgba(240,226,189,0.65)] hover:text-[var(--gold-light)]"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
+          aria-expanded={menuOpen}
+          aria-controls="menu-jornada"
         >
           <div className="w-6 space-y-1.5">
             <span className={`block h-px bg-current transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
@@ -110,14 +132,22 @@ export default function Navbar() {
         </button>
       </div>
 
-      {menuOpen && (
-        <div className="xl:hidden glass border-b border-[rgba(201,151,63,0.25)] px-6 pb-6">
+      <AnimatePresence initial={false}>
+        {menuOpen && (
+        <motion.div
+          id="menu-jornada"
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+          className="xl:hidden glass overflow-hidden border-b border-[rgba(201,151,63,0.25)] px-6 pb-6"
+        >
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setMenuOpen(false)}
-              className="block py-3 text-[rgba(240,226,189,0.6)] hover:text-[var(--gold-light)] border-b border-[rgba(201,151,63,0.12)] transition-colors text-[.65rem] tracking-[.2em] uppercase"
+              className={`block border-b border-[rgba(201,151,63,0.12)] py-3 text-[.65rem] tracking-[.2em] uppercase transition-colors ${activeSection === l.href.slice(1) ? "text-[var(--gold-light)]" : "text-[rgba(240,226,189,0.6)] hover:text-[var(--gold-light)]"}`}
               style={{ fontFamily: "var(--font-cinzel), serif" }}
             >
               {l.label}
@@ -147,8 +177,9 @@ export default function Navbar() {
           >
             Iniciar Jornada
           </a>
-        </div>
-      )}
+        </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

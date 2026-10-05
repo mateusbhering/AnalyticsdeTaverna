@@ -17,7 +17,6 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
-import { SpecialText } from "@/components/ui/special-text";
 import Magnetic from "@/components/ui/magnetic";
 import CountUp from "@/components/ui/count-up";
 
@@ -45,6 +44,48 @@ const particles = Array.from({ length: 25 }, (_, i) => ({
   opacity:  0.1 + (i % 5) * 0.08,
   size:     `${1 + (i % 3)}px`,
 }));
+
+const inscriptionVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.045, delayChildren: 0.18 },
+  },
+};
+
+const letterVariants = {
+  hidden: { opacity: 0, y: 18, rotateX: -72, filter: "blur(5px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    filter: "blur(0px)",
+    transition: { type: "spring" as const, stiffness: 190, damping: 18 },
+  },
+};
+
+function InscribedTitle({ text, className = "" }: { text: string; className?: string }) {
+  return (
+    <motion.span
+      aria-hidden="true"
+      className={`inline-block whitespace-nowrap ${className}`}
+      variants={inscriptionVariants}
+      initial="hidden"
+      animate="visible"
+      style={{ transformPerspective: 700 }}
+    >
+      {[...text].map((letter, index) => (
+        <motion.span
+          key={`${letter}-${index}`}
+          className="inline-block"
+          variants={letterVariants}
+          style={{ transformOrigin: "50% 100%" }}
+        >
+          {letter === " " ? "\u00a0" : letter}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
+}
 
 /** Ícone flutuante com parallax sutil seguindo o mouse. */
 function FloatIcon({
@@ -91,7 +132,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="rpg-hero relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{
         background:
           "radial-gradient(55% 40% at 50% 30%, rgba(255,176,80,.16) 0%, transparent 70%), url('/textures/dark-wood.png'), linear-gradient(180deg, #2b1a0d 0%, #170d06 90%)",
@@ -135,10 +176,10 @@ export default function Hero() {
         <FloatIcon key={i} {...f} mx={mx} my={my} />
       ))}
 
-      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+      <div className="rpg-hero-content relative z-10 text-center px-6 max-w-5xl mx-auto">
         {/* Logo */}
         <motion.div
-          className="flex justify-center mb-6"
+          className="rpg-emblem flex justify-center mb-6"
           initial={{ opacity: 0, y: 24, scale: 0.94 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -155,18 +196,14 @@ export default function Hero() {
 
         {/* Title */}
         <h1
-          className="text-4xl sm:text-6xl md:text-8xl font-black mb-6 leading-none tracking-tight"
-          style={{ textShadow: "0 0 60px rgba(255,176,80,0.25)" }}
+          aria-label="Analytics de Taverna"
+          className="animate-inscription-glow text-4xl sm:text-6xl md:text-8xl font-black mb-6 leading-none tracking-tight"
         >
           <span className="block">
-            <SpecialText className="animate-shimmer whitespace-nowrap" speed={28}>
-              Analytics de
-            </SpecialText>
+            <InscribedTitle text="Analytics de" className="text-[var(--gold-light)]" />
           </span>
           <span className="block mt-2">
-            <SpecialText className="text-[var(--parchment)] whitespace-nowrap" speed={28} delay={0.25}>
-              Taverna
-            </SpecialText>
+            <InscribedTitle text="Taverna" className="text-[var(--parchment)]" />
           </span>
         </h1>
 
@@ -185,7 +222,7 @@ export default function Hero() {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="rpg-actions flex flex-wrap gap-4 justify-center">
             <Magnetic>
               <a
                 href="#jornada"
@@ -207,7 +244,7 @@ export default function Hero() {
           </div>
 
           {/* Stats */}
-          <div className="mt-20 grid grid-cols-4 gap-8 max-w-xl mx-auto">
+          <div className="rpg-resources mt-20 grid grid-cols-4 gap-8 max-w-xl mx-auto">
             {[
               { val: 16,  label: "Classes" },
               { val: 7,   label: "Atributos" },

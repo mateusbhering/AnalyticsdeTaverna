@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Cinzel_Decorative, Cinzel, Crimson_Pro, Geist_Mono } from "next/font/google";
+import MotionProvider from "@/components/MotionProvider";
+import PageTransition from "@/components/PageTransition";
+import ScrollProgress from "@/components/ScrollProgress";
+import JourneyNavigation from "@/components/JourneyNavigation";
 import "./globals.css";
+import "./rpg-theme.css";
 
 const cinzelDecorative = Cinzel_Decorative({
   weight: ["400", "700", "900"],
@@ -45,7 +50,11 @@ export default function RootLayout({
       className={`${cinzelDecorative.variable} ${cinzel.variable} ${crimsonPro.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#0e0e0e] text-[#f4e4bc]">
-        {children}
+        <MotionProvider>
+          <ScrollProgress />
+          <PageTransition>{children}</PageTransition>
+          <JourneyNavigation />
+        </MotionProvider>
       </body>
     </html>
   );

@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 import { BACKEND_URL } from "./src/lib/backend-url";
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
   /**
    * Proxy da API de batalha sob o nosso próprio domínio.
    *
