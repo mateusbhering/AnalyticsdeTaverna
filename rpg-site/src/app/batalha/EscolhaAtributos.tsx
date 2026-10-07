@@ -1,4 +1,6 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
+
 
 import { useEffect, useState } from "react";
 import { getSupabaseClient } from "@/lib/supabase";
@@ -108,7 +110,7 @@ export default function EscolhaAtributos({ meuId, oponente, onVoltar, onBatalhaC
             Você
           </span>
           <div className="wax-seal !w-14 !h-14 mx-auto text-2xl my-2">
-            {carregandoEu ? "…" : minhaClasse.icon}
+            {<IconText text={carregandoEu ? "…" : minhaClasse.icon} />}
           </div>
           <p
             className="text-[.68rem] leading-tight truncate"
@@ -132,7 +134,7 @@ export default function EscolhaAtributos({ meuId, oponente, onVoltar, onBatalhaC
           >
             Rival
           </span>
-          <div className="wax-seal !w-14 !h-14 mx-auto text-2xl my-2">{classeRival.icon}</div>
+          <div className="wax-seal !w-14 !h-14 mx-auto text-2xl my-2">{<IconText text={classeRival.icon} />}</div>
           <p
             className="text-[.68rem] leading-tight truncate"
             style={{ fontFamily: "var(--font-cinzel), serif", color: "var(--seal)" }}
@@ -194,7 +196,7 @@ export default function EscolhaAtributos({ meuId, oponente, onVoltar, onBatalhaC
             disabled={enviando || carregandoEu}
             className="py-4 text-[.75rem] tracking-[.12em] uppercase"
           >
-            {enviando ? "Resolvendo o confronto…" : "⚔️ Confirmar escolha"}
+            {<IconText text={enviando ? "Resolvendo o confronto…" : "⚔️ Confirmar escolha"} />}
           </BotaoLacre>
         )}
         <button

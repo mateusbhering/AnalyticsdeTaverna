@@ -5,7 +5,7 @@ import {
   FlaskConical,
   Trophy,
   type LucideIcon,
-} from "lucide-react";
+} from "@/components/ui/illustrated-icons";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
 import TiltCard from "@/components/ui/tilt-card";
 

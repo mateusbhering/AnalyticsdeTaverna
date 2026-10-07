@@ -7,7 +7,7 @@ import {
   Smartphone,
   BarChart3,
   type LucideIcon,
-} from "lucide-react";
+} from "@/components/ui/illustrated-icons";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
 import Magnetic from "@/components/ui/magnetic";
 

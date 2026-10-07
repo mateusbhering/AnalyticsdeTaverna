@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Check, Map, Castle, Swords, Trophy, BarChart3 } from "lucide-react";
+import { Check, Map, Castle, Swords, Trophy, BarChart3 } from "@/components/ui/illustrated-icons";
 
 const chapters = [
   { id: "conceito", label: "Conceito" },

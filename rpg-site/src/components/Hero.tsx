@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Swords, WandSparkles, ArrowDown } from "lucide-react";
+import { Swords, WandSparkles, ArrowDown } from "@/components/ui/illustrated-icons";
 
 export default function Hero() {
   return (

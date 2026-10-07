@@ -1,4 +1,4 @@
-import { Castle, Signpost, Users, DoorOpen } from "lucide-react";
+import { Castle, Signpost, Users, DoorOpen } from "@/components/ui/illustrated-icons";
 const atlasIcons = [Castle, Signpost, Users, DoorOpen];
 export default function JourneyAtlas() {
   return (

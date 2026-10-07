@@ -1,4 +1,6 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
+
 
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -191,7 +193,7 @@ export default function DesafioScanner() {
   if (ehEuMesmo) {
     return (
       <Painel>
-        <div className="text-4xl mb-4 opacity-70 text-center">🪞</div>
+        <div className="text-4xl mb-4 opacity-70 text-center">{<IconText text={"🪞"} />}</div>
         <h2
           className="text-[1.25rem] text-[var(--seal)] text-center mb-2"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
@@ -206,9 +208,7 @@ export default function DesafioScanner() {
           onClick={escanearOutro}
           className="press btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase cursor-pointer"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-        >
-          📷 Escanear outro
-        </button>
+        >{<IconText text={"\r\n          📷 Escanear outro\r\n        "} />}</button>
       </Painel>
     );
   }
@@ -217,7 +217,7 @@ export default function DesafioScanner() {
   if (meuId === null && !oponente) {
     return (
       <Painel>
-        <div className="text-4xl mb-4 opacity-70 text-center">🕯️</div>
+        <div className="text-4xl mb-4 opacity-70 text-center">{<IconText text={"🕯️"} />}</div>
         <h2
           className="text-[1.3rem] text-[var(--seal)] text-center mb-2"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
@@ -231,9 +231,7 @@ export default function DesafioScanner() {
           href="/jogar"
           className="press btn-seal block w-full py-4 text-center text-[.75rem] tracking-[.12em] uppercase"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-        >
-          ⚔ Descobrir minha classe
-        </a>
+        >{<IconText text={"\r\n          ⚔ Descobrir minha classe\r\n        "} />}</a>
       </Painel>
     );
   }
@@ -323,7 +321,7 @@ function CardOponente({
             Desafio Lançado
           </span>
 
-          <div className="wax-seal !w-16 !h-16 mx-auto text-3xl mb-4">{classe.icon}</div>
+          <div className="wax-seal !w-16 !h-16 mx-auto text-3xl mb-4">{<IconText text={classe.icon} />}</div>
 
           {oponente.nome && (
             <p
@@ -376,9 +374,7 @@ function CardOponente({
           onClick={onEscolherAtributos}
           className="press btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase cursor-pointer"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-        >
-          ⚔ Escolher atributos
-        </button>
+        >{<IconText text={"\r\n          ⚔ Escolher atributos\r\n        "} />}</button>
         <p className="text-center text-[.65rem] italic text-[rgba(230,188,106,0.5)] leading-relaxed px-2">
           Você escolhe 3 atributos e cada um enfrenta o mesmo do oponente. Ele
           não precisa fazer nada — o resultado sai na hora.
@@ -387,9 +383,7 @@ function CardOponente({
           onClick={onEscanearOutro}
           className="press btn-parchment block w-full py-3.5 text-[.72rem] tracking-[.12em] uppercase cursor-pointer"
           style={{ fontFamily: "var(--font-cinzel), serif" }}
-        >
-          📷 Escanear outro oponente
-        </button>
+        >{<IconText text={"\r\n          📷 Escanear outro oponente\r\n        "} />}</button>
         <a
           href={`/personagem?id=${oponente.id}`}
           className="block text-center text-[rgba(230,188,106,0.55)] hover:text-[var(--gold-light)] text-[.7rem] tracking-[.15em] uppercase transition-colors"

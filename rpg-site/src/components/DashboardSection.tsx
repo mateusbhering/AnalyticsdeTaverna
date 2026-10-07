@@ -1,6 +1,8 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
 
-import { Sparkles } from "lucide-react";
+
+import { Sparkles } from "@/components/ui/illustrated-icons";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
 import CountUp from "@/components/ui/count-up";
 import AnimatedBar from "@/components/ui/animated-bar";
@@ -14,8 +16,8 @@ import type { PlayerStats } from "@/lib/stats";
 const TOP_N = 10;
 
 /** Emoji da classe; classes fora do catálogo atual não herdam o ícone errado. */
-function classIcon(nome: string): string {
-  return isClasseConhecida(nome) ? byName(nome).icon : "✦";
+function classIcon(nome: string) {
+  return <IconText text={isClasseConhecida(nome) ? byName(nome).icon : "✦"} />;
 }
 
 export default function DashboardSection({ stats }: { stats: PlayerStats | null }) {
@@ -147,7 +149,7 @@ export default function DashboardSection({ stats }: { stats: PlayerStats | null 
                     <div>
                       <div className="flex items-center justify-between mb-1 gap-2">
                         <div className="flex items-center gap-2 text-[.82rem] text-[var(--ink-70)] min-w-0">
-                          <span className="flex-shrink-0">✦</span>
+                          <span className="flex-shrink-0">{<IconText text={"✦"} />}</span>
                           <span className="truncate">
                             {resto.length === 1 ? "Outra classe" : `Outras ${resto.length} classes`}
                           </span>

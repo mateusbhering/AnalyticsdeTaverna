@@ -1,3 +1,5 @@
+import { ChevronRight } from "@/components/ui/illustrated-icons";
+import { IconText } from "@/components/ui/illustrated-icons";
 import { auth, signOut } from "@/auth";
 import { redirect } from "next/navigation";
 import AdminCalendar from "@/components/AdminCalendar";
@@ -39,9 +41,7 @@ export default async function AdminPage() {
               <h1
                 className="text-2xl text-[var(--parchment)]"
                 style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-              >
-                Painel Admin 🔒
-              </h1>
+              >{<IconText text={"\r\n                Painel Admin 🔒\r\n              "} />}</h1>
               <p className="text-[rgba(240,226,189,0.6)] text-sm italic">
                 Bem-vindo, <span className="text-[var(--gold-light)] font-semibold not-italic">@{(session.user as { login?: string })?.login ?? session.user?.name}</span>
               </p>
@@ -77,7 +77,7 @@ export default async function AdminPage() {
                 rel="noopener noreferrer"
                 className="paper-card paper-frame card-hover flex items-center gap-5 p-6 transition-all duration-200 group"
               >
-                <div className="text-4xl">{link.icon}</div>
+                <div className="text-4xl">{<IconText text={link.icon} />}</div>
                 <div className="flex-1">
                   <div
                     className="text-[var(--ink)] font-bold text-lg"
@@ -87,14 +87,7 @@ export default async function AdminPage() {
                   </div>
                   <div className="text-sm">{link.description}</div>
                 </div>
-                <svg
-                  className="w-5 h-5 text-[var(--foil)] group-hover:text-[var(--seal)] transition-colors"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
+                <ChevronRight size={24} />
               </a>
             ))}
           </div>

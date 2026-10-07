@@ -1,4 +1,6 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
+
 
 import { useSearchParams } from "next/navigation";
 import { useMeuId } from "@/lib/jogador-local";
@@ -18,8 +20,6 @@ export default function CtaVisitante() {
       href="/jogar"
       className="btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase"
       style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-    >
-      ⚔️ Descobrir minha classe
-    </a>
+    >{<IconText text={"\r\n      ⚔️ Descobrir minha classe\r\n    "} />}</a>
   );
 }

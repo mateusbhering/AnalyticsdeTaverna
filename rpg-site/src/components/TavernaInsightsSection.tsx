@@ -1,6 +1,7 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
 
-import { Scroll, Swords, Trophy, TriangleAlert, Route } from "lucide-react";
+import { Scroll, Swords, Trophy, TriangleAlert, Route } from "@/components/ui/illustrated-icons";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
 import AnimatedBar from "@/components/ui/animated-bar";
 import { ATRIBUTOS_CARD } from "@/lib/atributos";
@@ -8,8 +9,8 @@ import { byName, isClasseConhecida } from "@/lib/classes";
 import type { AnalyticsExtra } from "@/lib/analytics";
 
 /** Emoji da classe; classes fora do catálogo atual não herdam o ícone errado. */
-function classIcon(nome: string): string {
-  return isClasseConhecida(nome) ? byName(nome).icon : "✦";
+function classIcon(nome: string) {
+  return <IconText text={isClasseConhecida(nome) ? byName(nome).icon : "✦"} />;
 }
 
 /** Rótulo (substantivo) das 10 dimensões — mesmas chaves de `DIMENSOES` no backend. */

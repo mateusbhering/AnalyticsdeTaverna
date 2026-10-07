@@ -1,4 +1,6 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
+
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import jsQR from "jsqr";
@@ -204,7 +206,7 @@ export default function QrScanner({ onScan }: Props) {
 
         {!lendo && (
           <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-[rgba(240,226,189,0.7)]">
-            <div className="text-6xl">{abrindo ? "🕯️" : "📷"}</div>
+            <div className="text-6xl">{<IconText text={abrindo ? "🕯️" : "📷"} />}</div>
             <p
               className="text-[.6rem] tracking-[.25em] uppercase"
               style={{ fontFamily: "var(--font-cinzel), serif" }}
@@ -251,17 +253,14 @@ export default function QrScanner({ onScan }: Props) {
             disabled={abrindo}
             className="btn-seal press px-8 py-3 text-[.75rem] tracking-[.15em] uppercase cursor-pointer disabled:opacity-60 disabled:cursor-wait"
             style={{ fontFamily: "var(--font-cinzel), serif", borderWidth: "1px" }}
-          >
-            📷 {erro ? "Tentar de novo" : "Abrir Câmera"}
+          >{<IconText text={"\r\n            📷 "} />}{erro ? "Tentar de novo" : "Abrir Câmera"}
           </button>
         ) : (
           <button
             onClick={parar}
             className="press px-6 py-3 bg-transparent border border-[rgba(230,188,106,0.35)] text-[rgba(240,226,189,0.7)] text-[.75rem] tracking-[.15em] uppercase hover:border-[var(--gold-light)] hover:text-[var(--gold-light)] transition-all cursor-pointer"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            ✕ Parar
-          </button>
+          >{<IconText text={"\r\n            ✕ Parar\r\n          "} />}</button>
         )}
       </div>
 

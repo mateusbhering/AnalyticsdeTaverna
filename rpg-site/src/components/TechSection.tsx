@@ -1,4 +1,4 @@
-import { Monitor, Cog, Bot, Ruler, Database, type LucideIcon } from "lucide-react";
+import { Monitor, Cog, Bot, Ruler, Database, type LucideIcon } from "@/components/ui/illustrated-icons";
 import { Reveal } from "@/components/ui/reveal";
 import TiltCard from "@/components/ui/tilt-card";
 import CardCarousel from "@/components/ui/card-carousel";

@@ -1,3 +1,4 @@
+import { IconText } from "@/components/ui/illustrated-icons";
 import Image from "next/image";
 import Link from "next/link";
 import type { ResultadoRanking, ItemRanking } from "@/lib/ranking";
@@ -56,7 +57,7 @@ export default function RankingBoard({ ranking, loading = false }: { ranking: Re
                 </Link>
               </li>)}</ol>
             ) : <div className="ranking-notice">
-              <span className="ranking-notice-seal" aria-hidden="true">✦</span>
+              <span className="ranking-notice-seal" aria-hidden="true">{<IconText text={"✦"} />}</span>
               <h3>{ranking.estado === "erro" ? "A tinta borrou no pergaminho" : "O pergaminho ainda está em branco"}</h3>
               <p>{ranking.estado === "erro" ? "O escriba não conseguiu consultar os feitos agora. Os nomes continuam gravados; tente novamente em instantes." : "Nenhum feito foi registrado ainda. Inicie uma jornada para deixar seu nome na história."}</p>
               <Link className="btn-seal" href={ranking.estado === "erro" ? "/ranking" : "/jogar"}>{ranking.estado === "erro" ? "Tentar ler de novo" : "Iniciar jornada"}</Link>

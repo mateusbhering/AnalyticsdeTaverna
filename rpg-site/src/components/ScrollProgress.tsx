@@ -1,6 +1,6 @@
 "use client";
 
-import { Compass } from "lucide-react";
+import { Compass } from "@/components/ui/illustrated-icons";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 
 /** Barra de progresso de leitura fixa no topo, acompanhando o scroll da página. */

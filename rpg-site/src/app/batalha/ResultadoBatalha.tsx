@@ -1,4 +1,6 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
+
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
@@ -468,7 +470,7 @@ function BattleCard({
           }}
           transition={{ boxShadow: { duration: 0.35 }, filter: { duration: 0.08 } }}
         >
-          <div className="wax-seal !w-11 !h-11 mx-auto text-lg mb-1.5">{classe.icon}</div>
+          <div className="wax-seal !w-11 !h-11 mx-auto text-lg mb-1.5">{<IconText text={classe.icon} />}</div>
           <p
             className="text-[.52rem] leading-tight text-[var(--ink-70)] line-clamp-2"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
@@ -543,7 +545,7 @@ function TrofeuQueCai({ selo }: { selo: string }) {
         animate={{ z: 0, opacity: 1, rotate: 0 }}
         transition={MOLA_QUEDA}
       >
-        {selo}
+        {<IconText text={selo} />}
       </motion.span>
     </motion.div>
   );
@@ -665,7 +667,7 @@ function LinhaRodada({
         <span style={{ color: vencedor === "b" ? "var(--seal)" : "var(--ink-50)" }}>
           {rodada.valor_b}
         </span>
-        <span className="w-4 text-center">{selo}</span>
+        <span className="w-4 text-center">{<IconText text={selo} />}</span>
       </span>
     </motion.li>
   );
@@ -700,7 +702,7 @@ function Placar({
         >
           Resultado do Confronto
         </span>
-        <div className="wax-seal !w-16 !h-16 mx-auto text-3xl my-3">{copy.selo}</div>
+        <div className="wax-seal !w-16 !h-16 mx-auto text-3xl my-3">{<IconText text={copy.selo} />}</div>
         <h2
           className="text-[1.9rem]"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif", color: copy.cor }}
@@ -742,7 +744,7 @@ function Placar({
                   {r.valor_b}
                 </span>
                 <span className="w-4 text-center">
-                  {r.vencedor === "empate" ? "🤝" : r.vencedor === "a" ? "🏆" : "💀"}
+                  {<IconText text={r.vencedor === "empate" ? "🤝" : r.vencedor === "a" ? "🏆" : "💀"} />}
                 </span>
               </span>
             </li>
@@ -768,7 +770,7 @@ function Placar({
 function Retrato({ classe }: { classe: ClassInfo }) {
   return (
     <div className="text-center flex-1 min-w-0">
-      <div className="wax-seal !w-12 !h-12 mx-auto text-xl mb-1">{classe.icon}</div>
+      <div className="wax-seal !w-12 !h-12 mx-auto text-xl mb-1">{<IconText text={classe.icon} />}</div>
       <p className="text-[.62rem] truncate" style={{ fontFamily: "var(--font-cinzel), serif" }}>
         {classe.name}
       </p>
@@ -789,16 +791,12 @@ function Acoes({
         onClick={onBatalharDeNovo}
         className="press btn-seal block w-full py-4 text-[.75rem] tracking-[.12em] uppercase cursor-pointer"
         style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-      >
-        ⚔️ Batalhar de novo
-      </button>
+      >{<IconText text={"\r\n        ⚔️ Batalhar de novo\r\n      "} />}</button>
       <button
         onClick={onEscanearOutro}
         className="press btn-parchment block w-full py-3.5 text-[.72rem] tracking-[.12em] uppercase cursor-pointer"
         style={{ fontFamily: "var(--font-cinzel), serif" }}
-      >
-        📷 Escanear outro oponente
-      </button>
+      >{<IconText text={"\r\n        📷 Escanear outro oponente\r\n      "} />}</button>
     </>
   );
 }

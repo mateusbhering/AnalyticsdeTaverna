@@ -1,4 +1,6 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
+
 
 import { useEffect, useRef, useState } from "react";
 import WebcamCapture from "./WebcamCapture";
@@ -124,9 +126,7 @@ export default function QuizForm() {
             onClick={() => setStep("quiz")}
             className="btn-seal mt-6 w-full py-4 tracking-[.12em] uppercase flex items-center justify-center gap-2 animate-pulse-wine text-[.8rem] cursor-pointer"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-          >
-            ⚔ Continuar para o Quiz →
-          </button>
+          >{<IconText text={"\r\n            ⚔ Continuar para o Quiz →\r\n          "} />}</button>
         )}
       </div>
     );

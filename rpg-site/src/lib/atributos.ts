@@ -1,4 +1,4 @@
-import { BicepsFlexed, Brain, Zap, Shield, Sparkles, Eye, Tornado, type LucideIcon } from "lucide-react";
+import { BicepsFlexed, Brain, Zap, Shield, Sparkles, Eye, Tornado, type LucideIcon } from "@/components/ui/illustrated-icons";
 
 /**
  * Os 7 atributos do card do personagem. Mesmas chaves que o backend usa em

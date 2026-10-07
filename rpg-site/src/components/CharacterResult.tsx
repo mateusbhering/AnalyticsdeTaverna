@@ -1,7 +1,9 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
+
 
 import { QRCodeSVG } from "qrcode.react";
-import { Download, Share2 } from "lucide-react";
+import { Download, Share2 } from "@/components/ui/illustrated-icons";
 import {
   useRef,
   useMemo,
@@ -480,7 +482,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
 
           {/* Brasão da classe — lacre de cera */}
           <div className="wax-seal !w-20 !h-20 mx-auto text-4xl mb-4">
-            {rpgClass.icon}
+            {<IconText text={rpgClass.icon} />}
           </div>
 
           <h2
@@ -540,7 +542,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                   </>
                 ) : avatarStatus === "error" ? (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3 text-center">
-                    <span className="text-2xl opacity-50">🎭</span>
+                    <span className="text-2xl opacity-50">{<IconText text={"🎭"} />}</span>
                     <span
                       className="text-[rgba(240,226,189,0.65)] text-[.55rem] tracking-[.12em] uppercase leading-relaxed"
                       style={{ fontFamily: "var(--font-cinzel), serif" }}
@@ -565,9 +567,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
               <span
                 className="text-[var(--foil)] text-[.55rem] tracking-[.25em] uppercase"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
-              >
-                ✦ Avatar Arcano
-              </span>
+              >{<IconText text={"\r\n                ✦ Avatar Arcano\r\n              "} />}</span>
             )}
           </div>
 
@@ -597,7 +597,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
               <div key={key}>
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
-                    <span>{icon}</span>
+                    <span><IconText text={icon} /></span>
                     <span
                       className="text-[var(--foil)] text-[.7rem] uppercase tracking-[.15em]"
                       style={{ fontFamily: "var(--font-cinzel), serif" }}
@@ -638,7 +638,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                 className="press px-5 py-2 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.5)] text-[var(--ink)] text-[.6rem] tracking-[.15em] uppercase hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all cursor-pointer"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
-                {copied ? "✓ Link copiado" : "🔗 Copiar link"}
+                {<IconText text={copied ? "✓ Link copiado" : "🔗 Copiar link"} />}
               </button>
               <p className="text-[.78rem] italic text-center">
                 Escaneie ou compartilhe o link do seu personagem
@@ -663,16 +663,12 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
           onClick={onRestart}
           className="btn-parchment flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center cursor-pointer"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-        >
-          🔄 Jogar Novamente
-        </button>
+        >{<IconText text={"\r\n          🔄 Jogar Novamente\r\n        "} />}</button>
         <a
           href="/batalha"
           className="btn-seal flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center"
           style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-        >
-          ⚔ Desafiar Alguém
-        </a>
+        >{<IconText text={"\r\n          ⚔ Desafiar Alguém\r\n        "} />}</a>
       </div>
     </div>
   );

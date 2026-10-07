@@ -1,8 +1,10 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
+
 
 import { useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "@/components/ui/illustrated-icons";
 
 const classes = [
   { name: "Mago do ChatGPT", image: "mago-chatgpt", traits: ["Estratégia", "NERD", "TECNOLÓGICO"] },
@@ -24,14 +26,14 @@ export default function ClassCarousel() {
       if (event.key === "ArrowRight" || event.key === "ArrowLeft") { event.preventDefault(); move(event.key === "ArrowRight" ? 1 : -1); }
     }}>
       <div className="class-table">
-        <div className="class-table-runes" aria-hidden="true">✧</div>
+        <div className="class-table-runes" aria-hidden="true">{<IconText text={"✧"} />}</div>
         {classes.map((item, index) => {
           let offset = (index - active + classes.length) % classes.length;
           if (offset > classes.length / 2) offset -= classes.length;
           const nearby = Math.abs(offset) <= 1;
           const position = offset === 0 ? "is-selected" : offset === -1 ? "is-previous" : offset === 1 ? "is-next" : offset < 0 ? "is-off-left" : "is-off-right";
           const content = <>
-            <div className="class-card-number">Analytics de Taverna <span aria-hidden="true">✦</span></div>
+            <div className="class-card-number">Analytics de Taverna <span aria-hidden="true">{<IconText text={"✦"} />}</span></div>
             <div className="class-card-art"><Image className="class-card-scene" src="/classes/tavern-card-scene-v2.png" alt="" width={1024} height={1536} loading="eager" unoptimized /><Image src={`/classes/${item.image}.png`} alt={offset === 0 ? `Miniatura de ${item.name}` : ""} width={384} height={384} sizes="(max-width: 640px) 210px, 240px" loading="eager" unoptimized={item.image === "mago-chatgpt"} /></div>
             <div className="class-card-caption">
               {offset === 0 ? <h4 id="selected-class-name" aria-live="polite" aria-atomic="true">{item.name}</h4> : <span className="class-card-title">{item.name}</span>}

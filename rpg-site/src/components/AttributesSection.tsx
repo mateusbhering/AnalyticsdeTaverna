@@ -1,4 +1,4 @@
-import { VenetianMask } from "lucide-react";
+import { VenetianMask } from "@/components/ui/illustrated-icons";
 import { Reveal } from "@/components/ui/reveal";
 import ClassCarousel from "@/components/ClassCarousel";
 

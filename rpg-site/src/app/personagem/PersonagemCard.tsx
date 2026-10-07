@@ -1,4 +1,6 @@
 "use client";
+import { IconText } from "@/components/ui/illustrated-icons";
+
 import { getSupabaseClient } from "@/lib/supabase";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -133,7 +135,7 @@ export default function PersonagemCard() {
     return (
       <div className="paper-card paper-frame arcane-corners p-12 text-center">
         <span className="ac-bl" /><span className="ac-br" />
-        <div className="text-4xl mb-4 opacity-60">🕯️</div>
+        <div className="text-4xl mb-4 opacity-60">{<IconText text={"🕯️"} />}</div>
         <p className="text-[var(--ink)] text-lg mb-1" style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}>
           Personagem não encontrado
         </p>
@@ -141,9 +143,7 @@ export default function PersonagemCard() {
           Este link não existe mais ou expirou.
         </p>
         <a href="/jogar" className="press btn-seal inline-block px-6 py-3 text-[.7rem] tracking-[.12em] uppercase"
-          style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}>
-          ⚔ Criar o meu
-        </a>
+          style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}>{<IconText text={"\r\n          ⚔ Criar o meu\r\n        "} />}</a>
       </div>
     );
   }
@@ -163,7 +163,7 @@ export default function PersonagemCard() {
           </span>
 
           <div className="wax-seal !w-20 !h-20 mx-auto text-4xl mb-4">
-            {rpgClass.icon}
+            {<IconText text={rpgClass.icon} />}
           </div>
 
           <h1
@@ -222,7 +222,7 @@ export default function PersonagemCard() {
               <div key={key}>
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
-                    <span>{icon}</span>
+                    <span><IconText text={icon} /></span>
                     <span
                       className="text-[var(--foil)] text-[.7rem] uppercase tracking-[.15em]"
                       style={{ fontFamily: "var(--font-cinzel), serif" }}
@@ -270,16 +270,12 @@ export default function PersonagemCard() {
             href="/jogar"
             className="btn-parchment flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-          >
-            🔄 Jogar Novamente
-          </a>
+          >{<IconText text={"\r\n            🔄 Jogar Novamente\r\n          "} />}</a>
           <a
             href="/batalha"
             className="btn-seal flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-          >
-            ⚔ Desafiar Alguém
-          </a>
+          >{<IconText text={"\r\n            ⚔ Desafiar Alguém\r\n          "} />}</a>
         </div>
       )}
     </div>

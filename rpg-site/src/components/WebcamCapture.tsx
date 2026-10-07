@@ -1,4 +1,8 @@
 "use client";
+import { Check } from "@/components/ui/illustrated-icons";
+
+import { IconText } from "@/components/ui/illustrated-icons";
+
 
 import { useRef, useState, useCallback } from "react";
 
@@ -87,7 +91,7 @@ export default function WebcamCapture({ onCapture }: Props) {
           {/* Placeholder */}
           {!streaming && !captured && (
             <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-[rgba(240,226,189,0.75)]">
-              <div className="text-6xl">📷</div>
+              <div className="text-6xl">{<IconText text={"📷"} />}</div>
               <p
                 className="text-[.65rem] tracking-[.2em] uppercase"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
@@ -115,9 +119,7 @@ export default function WebcamCapture({ onCapture }: Props) {
           {/* Success badge — mini lacre de cera */}
           {captured && (
             <div className="absolute top-3 right-3 wax-seal !w-8 !h-8">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-              </svg>
+              <Check size={24} />
             </div>
           )}
         </div>
@@ -140,15 +142,11 @@ export default function WebcamCapture({ onCapture }: Props) {
               onClick={startCamera}
               className="btn-seal press px-6 py-3 text-[.75rem] tracking-[.15em] uppercase cursor-pointer"
               style={{ fontFamily: "var(--font-cinzel), serif", borderWidth: "1px" }}
-            >
-              📷 Abrir Câmera
-            </button>
+            >{<IconText text={"\r\n              📷 Abrir Câmera\r\n            "} />}</button>
             <label
               className="press px-6 py-3 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.45)] text-[var(--ink)] text-[.75rem] tracking-[.15em] uppercase hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all cursor-pointer"
               style={{ fontFamily: "var(--font-cinzel), serif" }}
-            >
-              📁 Escolher Foto
-              <input
+            >{<IconText text={"\r\n              📁 Escolher Foto\r\n              "} />}<input
                 type="file"
                 accept="image/*"
                 className="hidden"
@@ -172,18 +170,14 @@ export default function WebcamCapture({ onCapture }: Props) {
             onClick={takePhoto}
             className="btn-seal press px-8 py-3 text-[.8rem] tracking-[.15em] uppercase animate-pulse-wine cursor-pointer"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-          >
-            ⚡ Tirar Foto
-          </button>
+          >{<IconText text={"\r\n            ⚡ Tirar Foto\r\n          "} />}</button>
         )}
         {captured && (
           <button
             onClick={retake}
             className="press px-6 py-3 bg-transparent border border-[rgba(96,66,26,0.4)] text-[var(--ink-70)] text-[.75rem] tracking-[.15em] uppercase hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all cursor-pointer"
             style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            🔄 Refazer
-          </button>
+          >{<IconText text={"\r\n            🔄 Refazer\r\n          "} />}</button>
         )}
       </div>
     </div>

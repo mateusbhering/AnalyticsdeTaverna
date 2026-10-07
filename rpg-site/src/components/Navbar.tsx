@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { Swords, BarChart3, Trophy } from "lucide-react";
+import { Swords, BarChart3, Trophy } from "@/components/ui/illustrated-icons";
 
 const links = [
   { label: "Conceito", href: "#conceito" },

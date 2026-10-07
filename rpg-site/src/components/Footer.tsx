@@ -1,3 +1,4 @@
+import { IconText } from "@/components/ui/illustrated-icons";
 export default function Footer() {
   return (
     <footer
@@ -6,7 +7,7 @@ export default function Footer() {
     >
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-5">
         <div className="flex items-center gap-2.5">
-          <div className="wax-seal !w-8 !h-8 text-[.8rem]">⚔</div>
+          <div className="wax-seal !w-8 !h-8 text-[.8rem]">{<IconText text={"⚔"} />}</div>
           <span
             className="text-[rgba(240,226,189,0.55)] text-[.75rem] tracking-[.1em]"
             style={{ fontFamily: "var(--font-cinzel), serif" }}

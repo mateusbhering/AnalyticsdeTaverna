@@ -2,7 +2,7 @@
 
 import { Children, useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "@/components/ui/illustrated-icons";
 import { useReducedMotion } from "motion/react";
 
 export default function CardCarousel({ children, label }: { children: ReactNode; label: string }) {
