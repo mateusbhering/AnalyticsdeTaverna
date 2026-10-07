@@ -1,6 +1,7 @@
 import { Camera, Brain, Swords, WalletCards, Feather, type LucideIcon } from "lucide-react";
-import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
+import { Reveal } from "@/components/ui/reveal";
 import TiltCard from "@/components/ui/tilt-card";
+import CardCarousel from "@/components/ui/card-carousel";
 
 const pillars: { Icon: LucideIcon; title: string; desc: string }[] = [
   {
@@ -27,7 +28,7 @@ const pillars: { Icon: LucideIcon; title: string; desc: string }[] = [
 
 export default function ConceptSection() {
   return (
-    <div className="bg-dark-wood">
+    <div className="bg-dark-wood cinematic-story">
       <section id="conceito" className="py-28 px-6 relative max-w-7xl mx-auto">
         <div className="section-line-top" />
 
@@ -44,7 +45,7 @@ export default function ConceptSection() {
         </Reveal>
 
         {/* Página do diário: citação manuscrita com lacre de cera */}
-        <Reveal delay={0.1}>
+        <Reveal delay={0.1} className="cinematic-story-quote">
           <div className="paper-card paper-frame arcane-corners p-12 pb-14 text-center mb-12">
             <span className="ac-bl" /><span className="ac-br" />
             <p className="text-2xl md:text-3xl italic leading-relaxed" style={{ color: "var(--ink)" }}>
@@ -62,9 +63,9 @@ export default function ConceptSection() {
         </Reveal>
 
         {/* Pillars — folhas de pergaminho */}
-        <Stagger className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+        <CardCarousel label="Conceito">
           {pillars.map((p) => (
-            <StaggerItem key={p.title}>
+            <div key={p.title} className="h-full">
               <TiltCard className="h-full">
                 <div className="card-hover paper-card paper-frame p-8 h-full">
                   <div className="icon-frame w-[52px] h-[52px] mb-5">
@@ -79,10 +80,12 @@ export default function ConceptSection() {
                   <p className="text-sm leading-relaxed">{p.desc}</p>
                 </div>
               </TiltCard>
-            </StaggerItem>
+            </div>
           ))}
-        </Stagger>
+        </CardCarousel>
       </section>
     </div>
   );
 }
+
+

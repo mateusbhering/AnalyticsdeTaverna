@@ -1,6 +1,7 @@
 import { Monitor, Cog, Bot, Ruler, Database, type LucideIcon } from "lucide-react";
-import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
+import { Reveal } from "@/components/ui/reveal";
 import TiltCard from "@/components/ui/tilt-card";
+import CardCarousel from "@/components/ui/card-carousel";
 
 const techStack: {
   Icon: LucideIcon;
@@ -64,15 +65,15 @@ export default function TechSection() {
           </div>
         </Reveal>
 
-        <Stagger className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-5">
-          {techStack.slice(0, 3).map((tech) => (
-            <StaggerItem key={tech.name} className="h-full">
+        <CardCarousel label="Tecnologia">
+          {techStack.map((tech) => (
+            <div key={tech.name} className="h-full">
               <TiltCard className="h-full">
                 <div className="card-hover paper-card paper-frame p-8 h-full">
                   <div className="icon-frame w-[52px] h-[52px] mb-5">
                     <tech.Icon size={24} strokeWidth={1.5} />
                   </div>
-                  <div className="flex items-center gap-3 mb-3">
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
                     <h3
                       className="text-[var(--seal)] text-[.9rem]"
                       style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
@@ -97,48 +98,13 @@ export default function TechSection() {
                   </div>
                 </div>
               </TiltCard>
-            </StaggerItem>
+            </div>
           ))}
-        </Stagger>
+        </CardCarousel>
 
-        <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {techStack.slice(3).map((tech) => (
-            <StaggerItem key={tech.name} className="h-full">
-              <TiltCard className="h-full">
-                <div className="card-hover paper-card paper-frame p-8 h-full">
-                  <div className="flex items-start gap-5">
-                    <div className="icon-frame flex-shrink-0 w-[52px] h-[52px]">
-                      <tech.Icon size={24} strokeWidth={1.5} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3
-                          className="text-[var(--seal)] text-[.9rem]"
-                          style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-                        >
-                          {tech.name}
-                        </h3>
-                        <span
-                          className="px-2 py-0.5 border border-[rgba(96,66,26,0.4)] text-[var(--ink-50)] text-[.55rem] tracking-[.15em] uppercase"
-                          style={{ fontFamily: "var(--font-cinzel), serif" }}
-                        >
-                          {tech.tag}
-                        </span>
-                      </div>
-                      <p className="text-[.88rem] leading-relaxed mb-4">{tech.desc}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {tech.items.map((item) => (
-                          <span key={item} className="tag-pill">{item}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </TiltCard>
-            </StaggerItem>
-          ))}
-        </Stagger>
+
       </section>
     </div>
   );
 }
+

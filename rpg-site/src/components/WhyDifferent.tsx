@@ -1,6 +1,7 @@
 import { Dna, Bot, Globe, Gamepad2, type LucideIcon } from "lucide-react";
-import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
+import { Reveal } from "@/components/ui/reveal";
 import TiltCard from "@/components/ui/tilt-card";
+import CardCarousel from "@/components/ui/card-carousel";
 
 const differentials: { Icon: LucideIcon; title: string; desc: string }[] = [
   {
@@ -43,9 +44,9 @@ export default function WhyDifferent() {
           </div>
         </Reveal>
 
-        <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+        <CardCarousel label="Diferenciais">
           {differentials.map((d) => (
-            <StaggerItem key={d.title} className="h-full">
+            <div key={d.title} className="h-full">
               <TiltCard className="h-full">
                 <div className="card-hover paper-card paper-frame relative p-10 overflow-hidden h-full">
                   {/* Marca-d'água em folha de ouro desbotada */}
@@ -64,9 +65,9 @@ export default function WhyDifferent() {
                   <p className="leading-relaxed text-base">{d.desc}</p>
                 </div>
               </TiltCard>
-            </StaggerItem>
+            </div>
           ))}
-        </Stagger>
+        </CardCarousel>
 
         <Reveal delay={0.1}>
           <div className="paper-card paper-frame arcane-corners text-center p-8">
@@ -82,3 +83,4 @@ export default function WhyDifferent() {
     </div>
   );
 }
+

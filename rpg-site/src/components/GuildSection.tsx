@@ -17,8 +17,8 @@ interface Member {
 }
 
 const members: Member[] = [
-  { name: "Julia de Moraes Barbosa",           photo: "/guild/julia-moraes.png",      github: "juliacrws" },
-  { name: "Mariana Ayumi Dantas Kuramitsu",    photo: "/guild/mariana-ayumi.png",     github: "marianakuramitsu" },
+  { name: "Julia de Moraes Barbosa",           photo: "/guild/julia-moraes.png",      github: "juliacrws", linkedin: "https://www.linkedin.com/in/julia-de-moraes-0536b7272" },
+  { name: "Mariana Ayumi Dantas Kuramitsu",    photo: "/guild/mariana-ayumi.png",     github: "marianakuramitsu", linkedin: "https://www.linkedin.com/in/mariana-kuramitsu-b3b8263a7/" },
   { name: "Yasmin Yumi Tsunokawa",             photo: "/guild/yasmin-yumi.png",       github: "Tsunokaway",      linkedin: "https://www.linkedin.com/in/yasmin-yumi-tsunokawa-359569303/" },
   { name: "Lucas Amaral da Silva Barros",      photo: "/guild/lucas-amaral.jpg",      github: "LucasAmaral1306" },
   { name: "Mateus Bhering Beltrão Santos",     photo: "/guild/mateus-bhering.png",    github: "mateusbhering",   linkedin: "https://www.linkedin.com/in/mateus-bhering/" },
@@ -63,8 +63,9 @@ export default function GuildSection() {
 
         {/* Orientador — polaroid de destaque colada no diário */}
         <Reveal delay={0.05}>
-          <div className="mb-12 flex justify-center">
-            <div className="card-hover polaroid group w-[200px] -rotate-2 text-center">
+          <div className="mb-12 guild-guides">
+            <div className="guild-guide guild-guide-mage" aria-hidden="true"><Image src="/classes/guild-presenters-v2.png" alt="" width={1776} height={888} unoptimized loading="eager" className="guild-guide-art" /></div>
+            <div className="card-hover polaroid group guild-advisor w-[200px] -rotate-2 text-center">
               <div className="avatar-lift overflow-hidden border border-[rgba(96,66,26,0.35)] aspect-square">
                 <Image
                   src={advisor.photo}
@@ -87,6 +88,7 @@ export default function GuildSection() {
                 {advisor.name}
               </p>
             </div>
+            <div className="guild-guide guild-guide-paladin" aria-hidden="true"><Image src="/classes/guild-presenters-v2.png" alt="" width={1776} height={888} unoptimized loading="eager" className="guild-guide-art" /></div>
           </div>
         </Reveal>
 
@@ -139,7 +141,7 @@ export default function GuildSection() {
                       rel="noopener noreferrer"
                       title="LinkedIn"
                       aria-label={`LinkedIn de ${member.name}`}
-                      className="inline-flex items-center text-[var(--foil)] hover:text-[var(--seal)] transition-colors"
+                      className="guild-linkedin inline-flex items-center text-[var(--foil)] hover:text-[var(--seal)] transition-colors"
                     >
                       <LinkedinMark className="w-3.5 h-3.5" />
                     </a>

@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
-      <main>
+      <main className="tavern-cinematic">
         <Hero />
         <JourneyAtlas />
         <ConceptSection />
@@ -27,3 +27,4 @@ export default function Home() {
     </>
   );
 }
+

@@ -164,3 +164,273 @@ body { padding-bottom: calc(var(--game-dock-height) + env(safe-area-inset-bottom
   .journey-scene[data-rpg-theme] main section[id] [class~="gap-16"] { gap: 32px; }
 }
 @media (prefers-reduced-motion: reduce) { .game-dock-item { transition: none; } }
+
+/* Landing cinematográfica: regras restritas à página inicial. */
+.journey-scene[data-rpg-theme] .tavern-cinematic .cinematic-hero {
+  position: relative; isolation: isolate; display: flex; align-items: center;
+  min-height: min(900px, max(720px, 92svh)); overflow: hidden;
+  background: var(--desk) !important;
+}
+.tavern-cinematic .cinematic-backdrop { object-fit: cover; object-position: 70% 35%; z-index: -2; }
+.tavern-cinematic .cinematic-shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #21140df5, #21140d99 38%, #21140d00 75%), linear-gradient(0deg, var(--desk) 0%, transparent 28%); }
+.tavern-cinematic .rpg-hero-content { position: relative; max-width: 1320px; padding: 80px 64px 100px; }
+.tavern-cinematic .cinematic-brand { display: flex; align-items: center; gap: 18px; margin-bottom: 32px; }
+.tavern-cinematic .cinematic-brand img { width: 72px; height: 72px; object-fit: contain; }
+.tavern-cinematic .cinematic-brand .section-eyebrow { margin: 0; max-width: 260px; line-height: 1.9; letter-spacing: .23em; }
+.tavern-cinematic .rpg-hero-content > h1 { font-size: clamp(42px, 5.6vw, 78px); font-weight: 400; letter-spacing: .015em; margin-bottom: 26px; }
+.tavern-cinematic .cinematic-intro { max-width: 490px; }
+.tavern-cinematic .cinematic-intro p { font-size: 22px; line-height: 1.55; }
+.tavern-cinematic .cinematic-intro .cinematic-motto { margin-top: 14px; font-size: 17px; color: var(--parchment); opacity: .8; font-style: italic; }
+.tavern-cinematic .rpg-actions { gap: 12px; margin-top: 28px; }
+.tavern-cinematic .rpg-actions a { min-height: 54px; font-family: var(--font-cinzel), serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 16px 22px; }
+.tavern-cinematic .rpg-actions a svg { width: 18px; height: 18px; margin: 0; }
+.tavern-cinematic .rpg-resources { margin-top: 36px; gap: 0; max-width: 450px; border-top: 1px solid #f0d39c40; padding-top: 18px; }
+.tavern-cinematic .rpg-resources > div { background: none; border: 0; border-right: 1px solid #f0d39c30; box-shadow: none; padding: 0 12px; text-align: left; }
+.tavern-cinematic .rpg-resources > div:first-child { padding-left: 0; }
+.tavern-cinematic .rpg-resources > div:last-child { border-right: 0; }
+.tavern-cinematic .rpg-resources > div > div:first-child { font-family: var(--font-cinzel-decorative), serif; font-size: 28px; }
+.tavern-cinematic .rpg-resources > div > div:last-child { font-family: var(--font-cinzel), serif; font-size: 9px; text-transform: uppercase; letter-spacing: .12em; }
+.tavern-cinematic .cinematic-scroll { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; align-items: center; color: var(--gold-light); font-family: var(--font-cinzel), serif; text-transform: uppercase; letter-spacing: .2em; font-size: 9px; }
+.journey-scene[data-rpg-theme] .tavern-cinematic > :is(.bg-dark-wood, .bg-black-linen) { background: radial-gradient(ellipse at 50% 0%, #bc98600f, transparent 65%), var(--desk); }
+.tavern-cinematic section[id] { padding-block: 92px; }
+.tavern-cinematic h2 { font-size: clamp(30px, 3.5vw, 46px); font-weight: 400; }
+.tavern-cinematic .journey-atlas { padding: 38px max(24px, calc((100% - 1192px) / 2)); background: var(--desk2); color: var(--parchment); border: 0; border-block: 1px solid #bc986040; box-shadow: none; }
+.tavern-cinematic .journey-atlas::before, .tavern-cinematic .atlas-landscape { display: none; }
+.tavern-cinematic .journey-atlas-header { text-align: center; }
+.tavern-cinematic .journey-atlas-header .section-eyebrow { color: var(--gold-light); }
+.tavern-cinematic .journey-atlas-header h2 { color: var(--parchment); font-size: 24px; }
+.tavern-cinematic .journey-atlas-path { min-height: 0; gap: 16px; margin-top: 26px; }
+.tavern-cinematic .journey-atlas-path a { align-self: stretch; margin: 0; text-align: left; align-items: flex-start; background: transparent; border: 0; border-left: 1px solid #bc986050; box-shadow: none; padding: 8px 20px; color: var(--parchment); }
+.tavern-cinematic .journey-atlas-path :is(span, small), .tavern-cinematic .atlas-symbol { color: var(--gold-light); }
+.tavern-cinematic .atlas-symbol { width: 30px; height: 30px; }
+.journey-scene[data-rpg-theme] .tavern-cinematic .cinematic-story { position: relative; isolation: isolate; background: var(--desk); }
+.tavern-cinematic .cinematic-story::before { content: ''; position: absolute; inset: 0; z-index: -1; transform: scaleX(-1); background: linear-gradient(0deg, var(--desk), transparent 35%, var(--desk)), linear-gradient(90deg, var(--desk) 20%, transparent 75%), url('/scenery/tavern-adventurer.png') 75% top / cover no-repeat; opacity: .65; }
+.tavern-cinematic #conceito > div:nth-of-type(2) { max-width: 580px; margin-left: auto; }
+.tavern-cinematic #conceito > div:nth-of-type(2) .text-center { text-align: left; margin-bottom: 28px; }
+.tavern-cinematic .cinematic-story-quote { max-width: 580px; margin-left: auto; margin-bottom: 100px; }
+.tavern-cinematic .cinematic-story-quote .paper-card { background: #21140d99; border: 0; border-left: 2px solid var(--gold); box-shadow: none; padding: 28px; text-align: left; }
+.tavern-cinematic .cinematic-story-quote .paper-card p { color: var(--parchment) !important; font-size: 25px; }
+.tavern-cinematic .cinematic-story-quote strong { color: var(--gold-light); }
+.tavern-cinematic .cinematic-story-quote .paper-frame::before, .tavern-cinematic .cinematic-story-quote .ac-bl, .tavern-cinematic .cinematic-story-quote .ac-br, .tavern-cinematic .cinematic-story-quote .arcane-corners::after { display: none; }
+.tavern-cinematic .cinematic-story-quote .wax-seal { width: 40px; height: 40px; }
+.journey-scene[data-rpg-theme] .tavern-cinematic :is(#conceito, #fluxo, #diferenciais, #tecnologia) .paper-card { --ink: var(--parchment); --ink-70: #f0e2bdc9; --foil: var(--gold-light); --seal: var(--gold-light); background: linear-gradient(145deg, #342218e8, #21140df2); color: var(--parchment); border: 1px solid #bc986040; box-shadow: 0 10px 30px #0002; }
+.tavern-cinematic :is(#conceito, #fluxo, #diferenciais, #tecnologia) .paper-frame::before { border-color: #bc98601a; }
+.tavern-cinematic #atributos { background: radial-gradient(ellipse at 10% 50%, #bc986018, transparent 65%); }
+.tavern-cinematic #jornada { background: linear-gradient(90deg, #21140de8, #21140dc9), url('/scenery/tavern-kingdom.png') center / cover !important; padding-block: 110px; }
+.tavern-cinematic a:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 5px; }
+@media (max-width: 900px) {
+  .tavern-cinematic .rpg-hero-content { padding-inline: 32px; }
+  .tavern-cinematic .cinematic-intro { max-width: 430px; }
+  .tavern-cinematic .cinematic-shade { background: linear-gradient(90deg, #21140dee, #21140d88 60%, #21140d22), linear-gradient(0deg, var(--desk), transparent 40%); }
+}
+@media (max-width: 640px) {
+  .journey-scene[data-rpg-theme] .tavern-cinematic .cinematic-hero { min-height: 960px; align-items: flex-end; }
+  .tavern-cinematic .cinematic-backdrop { object-position: 78% top; height: 560px !important; }
+  .tavern-cinematic .cinematic-shade { background: linear-gradient(0deg, var(--desk) 40%, #21140d33 72%, #21140d11); }
+  .tavern-cinematic .rpg-hero-content { padding: 380px 24px 80px; text-align: left; }
+  .tavern-cinematic .cinematic-brand { gap: 12px; margin-bottom: 22px; }
+  .tavern-cinematic .cinematic-brand img { width: 52px; height: 52px; }
+  .tavern-cinematic .cinematic-brand .section-eyebrow { font-size: 9px; }
+  .tavern-cinematic .rpg-hero-content > h1 { font-size: clamp(36px, 10vw, 58px); }
+  .tavern-cinematic .cinematic-intro p { font-size: 20px; }
+  .tavern-cinematic .rpg-actions { justify-content: flex-start; }
+  .tavern-cinematic .rpg-actions a { padding: 14px 12px; font-size: 9px; }
+  .tavern-cinematic .rpg-resources > div { padding-inline: 8px; }
+  .tavern-cinematic .rpg-resources > div > div:last-child { font-size: 8px; letter-spacing: .04em; }
+  .tavern-cinematic .journey-atlas-path a { padding: 12px; }
+  .tavern-cinematic .cinematic-story::before { opacity: .22; }
+  .tavern-cinematic .cinematic-story-quote { margin-bottom: 40px; }
+  .tavern-cinematic .cinematic-story-quote .paper-card { padding: 20px; }
+  .tavern-cinematic .cinematic-story-quote .paper-card p { font-size: 22px; }
+}
+
+
+.tavern-cinematic #tecnologia .paper-card { --ink-50: #f0e2bdab; }
+
+
+/* Um card por posição, com paginação por bolinhas e gesto de deslizar. */
+.tavern-carousel { min-width: 0; width: 100%; max-width: 720px; margin: 0 auto 40px; }
+.tavern-carousel-track { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; padding: 12px 4px 20px; }
+.tavern-carousel-track::-webkit-scrollbar { display: none; }
+.tavern-carousel-slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; }
+.tavern-carousel-slide > div { height: 100%; }
+.tavern-carousel-dots { display: flex; align-items: center; justify-content: center; gap: 2px; }
+.tavern-carousel-dot { display: grid; place-items: center; width: 44px; height: 44px; background: transparent; border: 0; cursor: pointer; }
+.tavern-carousel-dot span { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--gold); background: #bc986030; transition: background .2s, transform .2s, box-shadow .2s; }
+.tavern-carousel-dot:hover span { background: #bc986090; }
+.tavern-carousel-dot[aria-current="true"] span { background: var(--gold-light); border-color: var(--gold-light); transform: scale(1.35); box-shadow: 0 0 12px #f0d39c55; }
+.tavern-carousel :is(button, .tavern-carousel-track):focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+@media (max-width: 640px) { .tavern-carousel-track { gap: 16px; } }
+@media (prefers-reduced-motion: reduce) { .tavern-carousel-dot span { transition: none; } }
+
+.tavern-carousel-stage { position: relative; padding-inline: 48px; }
+.tavern-carousel-arrow { position: absolute; top: calc(50% - 4px); transform: translateY(-50%); display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #bc986080; border-radius: 50%; color: var(--gold-light); background: var(--desk2); cursor: pointer; z-index: 2; }
+.tavern-carousel-prev { left: 0; }
+.tavern-carousel-next { right: 0; }
+.tavern-carousel-arrow:hover { background: #61472c; }
+.tavern-carousel-pause { display: grid; place-items: center; width: 44px; height: 44px; color: var(--gold-light); background: transparent; border: 0; cursor: pointer; }
+@media (max-width: 640px) { .tavern-carousel-stage { padding-inline: 0; } .tavern-carousel-prev { left: -12px; } .tavern-carousel-next { right: -12px; } .tavern-carousel-arrow { background: #342218f5; } .tavern-carousel-slide .paper-card { padding-inline: 36px !important; } }
+
+
+/* Cartas de classe distribuídas sobre uma mesa de RPG. */
+.class-showcase { text-align: center; min-width: 0; }
+.class-table { position: relative; isolation: isolate; height: 480px; overflow: visible; background: transparent; }
+.class-table::before { content: none; }
+.class-table-runes { position: absolute; inset: 0; display: grid; place-items: center; color: #bc986014; font-size: 400px; pointer-events: none; }
+.class-playing-card { position: absolute; width: 260px; top: 36px; left: 50%; padding: 8px; text-align: center; color: var(--ink); border: 2px solid #8a6428; border-radius: 12px; background: radial-gradient(ellipse at top, #f7e8c3, var(--paper2)); box-shadow: inset 0 0 0 2px #f9e7b8, inset 0 0 24px #8a642840, 0 15px 25px #0009; transform-origin: center 90%; transition: transform .65s cubic-bezier(.22, 1, .36, 1), opacity .5s ease, filter .65s ease, border-color .65s ease, box-shadow .65s ease; }
+.class-playing-card.is-selected { z-index: 3; transform: translateX(-50%) rotate(-2deg); border-color: var(--gold-light); box-shadow: inset 0 0 0 2px #f9e7b8, 0 20px 35px #0009, 0 0 22px #e6bc6a25; }
+.class-playing-card.is-previous { z-index: 1; transform: translateX(calc(-50% - 150px)) translateY(48px) rotate(-13deg) scale(.8); filter: brightness(.66); cursor: pointer; }
+.class-playing-card.is-next { z-index: 1; transform: translateX(calc(-50% + 150px)) translateY(48px) rotate(13deg) scale(.8); filter: brightness(.66); cursor: pointer; }
+.class-playing-card:is(.is-previous, .is-next):hover { filter: brightness(.9); }
+.class-card-number { display: flex; justify-content: space-between; padding: 5px 7px 9px; color: var(--foil); font-family: var(--font-cinzel), serif; font-size: 10px; letter-spacing: .13em; text-transform: uppercase; }
+.class-card-art { display: grid; place-items: center; height: 240px; overflow: hidden; border: 1px solid #8a642880; background: radial-gradient(ellipse at 50% 60%, #d8b97850, transparent 70%), linear-gradient(150deg, #644a2e, #29180e); }
+.class-card-art img { width: 240px; height: 240px; object-fit: contain; filter: drop-shadow(0 7px 6px #0005); }
+.class-card-caption { min-height: 110px; padding: 14px 8px 8px; }
+.class-card-caption h4, .class-card-title { display: block; min-height: 44px; color: var(--ink); font-family: var(--font-cinzel), serif; font-size: 15px; font-weight: 700; line-height: 1.4; letter-spacing: .02em; }
+.class-card-traits { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+.class-card-traits span { border-top: 1px solid #8a642840; padding: 3px 4px; font-family: var(--font-cinzel), serif; color: var(--ink-70); font-size: 8px; text-transform: uppercase; letter-spacing: .04em; }
+.class-table-arrow { position: absolute; top: 48%; z-index: 4; width: 44px; height: 44px; display: grid; place-items: center; background: #21140dee; color: var(--gold-light); border: 1px solid #bc986080; border-radius: 50%; cursor: pointer; }
+.class-table-prev { left: 12px; } .class-table-next { right: 12px; }
+.class-table-arrow:hover { background: #61472c; }
+.class-pagination { display: flex; justify-content: center; margin-top: 16px; }
+.class-pagination button { width: 34px; height: 44px; display: grid; place-items: center; background: transparent; border: 0; cursor: pointer; }
+.class-pagination span { width: 7px; height: 7px; border: 1px solid var(--gold); border-radius: 50%; background: #bc986030; }
+.class-pagination [aria-current="true"] span { background: var(--gold-light); transform: scale(1.4); box-shadow: 0 0 10px #f0d39c55; }
+.class-discovery { color: #f0e2bda8; font-size: 14px; margin-top: 8px; font-style: italic; }
+.class-showcase button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
+@media (max-width: 640px) { .class-table { height: 440px; } .class-playing-card { width: 230px; top: 28px; } .class-card-art, .class-card-art img { height: 210px; } .class-card-art img { width: 210px; } .class-playing-card.is-previous { transform: translateX(calc(-50% - 78px)) translateY(40px) rotate(-13deg) scale(.78); } .class-playing-card.is-next { transform: translateX(calc(-50% + 78px)) translateY(40px) rotate(13deg) scale(.78); } .class-table-prev { left: 5px; } .class-table-next { right: 5px; } }
+@media (prefers-reduced-motion: reduce) { .class-playing-card { transition: none; } }
+
+.class-playing-card.is-off-left { z-index: 0; opacity: 0; pointer-events: none; transform: translateX(calc(-50% - 300px)) translateY(75px) rotate(-20deg) scale(.65); filter: brightness(.55); }
+.class-playing-card.is-off-right { z-index: 0; opacity: 0; pointer-events: none; transform: translateX(calc(-50% + 300px)) translateY(75px) rotate(20deg) scale(.65); filter: brightness(.55); }
+
+
+
+
+/* Carta ilustrada de ponta a ponta, com legenda sobre a própria cena. */
+.class-playing-card { height: 390px; padding: 0; overflow: hidden; border: 1px solid #e6bc6a90; border-radius: 10px; background: var(--desk2); color: var(--parchment); box-shadow: 0 15px 25px #0009; }
+.class-playing-card.is-selected { box-shadow: 0 20px 35px #0009, 0 0 22px #e6bc6a25; }
+.class-card-art { position: absolute; inset: 0; height: 100%; border: 0; padding: 34px 0 66px; background: var(--desk2); }
+.class-card-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, #170d06b3, transparent 42%, #170d0626); pointer-events: none; }
+.class-card-art img { position: relative; z-index: 1; width: 250px; height: 280px; filter: drop-shadow(0 7px 5px #0007); }
+.class-card-number { position: absolute; top: 0; left: 0; right: 0; z-index: 3; padding: 12px 12px 18px; color: var(--parchment); font-size: 8px; letter-spacing: .1em; background: linear-gradient(#170d0699, transparent); text-shadow: 0 1px 3px #0008; }
+.class-card-caption { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; padding: 38px 12px 18px; min-height: 126px; background: linear-gradient(transparent, #170d06e8 32%, #170d06f5); }
+.class-card-caption h4, .class-card-title { min-height: 44px; color: var(--parchment); font-size: 16px; text-shadow: 0 2px 4px #0008; border-top: 1px solid #e6bc6a80; padding-top: 10px; }
+.class-card-traits { margin-top: 10px; }
+.class-card-traits span { color: var(--gold-light); border-top: 0; font-size: 8px; }
+@media (max-width: 640px) { .class-playing-card { height: 365px; } .class-card-art { height: 100%; } .class-card-art img { width: 220px; height: 265px; } .class-card-caption { padding-inline: 10px; } .class-card-caption h4, .class-card-title { font-size: 15px; } }
+
+.class-card-art .class-card-scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: none; }
+
+/* Símbolos de atributos livres, com score em arco. */
+.attribute-symbols { min-width: 0; }
+.attribute-symbol-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px 12px; padding-top: 20px; }
+.attribute-symbol { margin: 0; text-align: center; min-width: 0; }
+.attribute-gauge { position: relative; width: min(120px, 100%); aspect-ratio: 1; margin: 0 auto; }
+.attribute-arc { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; stroke-width: 3; stroke-linecap: round; }
+.attribute-arc-track { stroke: #bc986030; }
+.attribute-arc-score { stroke: var(--gold-light); filter: drop-shadow(0 0 3px #e6bc6a40); }
+.attribute-drawn-icon { position: absolute; width: 68%; height: 68%; top: 11%; left: 16%; background-image: url('/classes/attribute-symbols.png?v=1'); background-size: 400% 200%; background-repeat: no-repeat; filter: drop-shadow(0 4px 4px #0004); }
+.attribute-score { position: absolute; bottom: -2px; left: 0; right: 0; font-family: var(--font-cinzel-decorative), serif; color: var(--gold-light); font-size: 25px; line-height: 1.1; }
+.attribute-symbol figcaption h4 { margin-top: 12px; font-family: var(--font-cinzel), serif; font-size: 11px; color: var(--parchment); letter-spacing: .04em; }
+.attribute-symbol figcaption p { color: #f0e2bd99; font-size: 12px; line-height: 1.35; margin-top: 6px; }
+.attribute-pipeline { color: #f0e2bd80; font-family: var(--font-cinzel), serif; font-size: 9px; letter-spacing: .05em; text-align: center; line-height: 1.8; margin-top: 32px; }
+@media (max-width: 640px) { .attribute-symbol-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; } .attribute-symbol:last-child { grid-column: 1 / -1; max-width: 155px; justify-self: center; } .attribute-gauge { width: 128px; } .attribute-symbol figcaption h4 { font-size: 12px; } .attribute-symbol figcaption p { max-width: 150px; margin-inline: auto; } }
+
+.attribute-drawn-icon { clip-path: inset(2%); }
+
+/* Ranking ilustrado: pódio medieval e pergaminho desenrolado. */
+.ranking-realm { min-height: 100svh; padding: 54px 20px 70px; background: linear-gradient(#21140d88, #21140df5 700px), url('/classes/tavern-card-scene-v2.png') center top / 1100px auto no-repeat, var(--desk); }
+.ranking-board { max-width: 760px; margin-inline: auto; }
+.ranking-title-banner { position: relative; z-index: 2; text-align: center; padding: 16px 22px; background: linear-gradient(110deg, #6b1f14, #923e29, #6b1f14); border: 3px solid #3c2a18; border-radius: 7px 11px 5px 8px; box-shadow: inset 0 0 0 2px #e6bc6a40, 0 8px 0 #170d0655; transform: rotate(-1deg); }
+.ranking-title-banner::before, .ranking-title-banner::after { content: ''; position: absolute; width: 26px; top: 15px; bottom: -12px; background: #451309; border: 3px solid #3c2a18; z-index: -1; clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 85%, 30% 50%); }
+.ranking-title-banner::before { left: -21px; } .ranking-title-banner::after { right: -21px; transform: scaleX(-1); }
+.ranking-title-banner > span { font-family: var(--font-cinzel), serif; color: var(--gold-light); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; }
+.ranking-title-banner h1 { font-size: clamp(26px, 5vw, 40px); color: var(--parchment); margin-top: 6px; text-shadow: 2px 3px #3c2a18; }
+.ranking-title-banner p { color: #f0e2bdc9; font-size: 15px; margin-top: 4px; font-style: italic; }
+.ranking-podium { position: relative; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: end; gap: 4px; padding: 42px 20px 28px; min-height: 350px; background: radial-gradient(ellipse at 50% 25%, #e6bc6a55, transparent 65%); }
+.ranking-winner { position: relative; min-width: 0; text-align: center; }
+.ranking-winner-portrait { position: relative; z-index: 2; height: 155px; display: grid; place-items: end center; margin-bottom: -14px; }
+.ranking-winner-portrait img { width: 150px; height: 155px; object-fit: contain; filter: drop-shadow(0 6px 4px #0005); }
+.ranking-winner-portrait .is-vacant { opacity: .22; filter: sepia(1); width: 90px; height: 90px; align-self: center; }
+.ranking-crown { position: absolute; width: 58px; height: 40px; top: -22px; left: calc(50% - 29px); z-index: 3; transform: rotate(-7deg); }
+.ranking-plinth { position: relative; height: 130px; }
+.ranking-plinth > svg { position: absolute; width: 100%; height: 100%; inset: 0; overflow: visible; stroke: #3c2a18; stroke-width: 4; stroke-linejoin: round; }
+.podium-timber { fill: #82502d; }
+.podium-grain { fill: none; stroke: #4a2b19; stroke-width: 2; }
+.podium-iron { fill: #737466; }
+.viking-podium-wood circle { fill: #c4b996; stroke-width: 2; }
+.place-1 .ranking-plinth { height: 172px; }
+.place-3 .ranking-plinth { height: 112px; }
+.ranking-plinth-label { position: absolute; inset: 22% 12% 10% 6%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.ranking-place { font-family: var(--font-cinzel-decorative), serif; font-size: 30px; color: #fff1c5; text-shadow: 2px 2px #3c2a18, -1px -1px #3c2a18; line-height: 1; }
+.ranking-plinth-label strong { max-width: 100%; color: var(--ink); font-size: 16px; line-height: 1.2; margin-top: 8px; overflow-wrap: anywhere; }
+.ranking-plinth-label small { color: #3c2a18bd; font-size: 12px; margin-top: 5px; }
+.ranking-torch { position: absolute; top: 35px; color: #ffe59d; text-shadow: 0 0 20px #ffb050; font-size: 38px; }
+.ranking-torch-left { left: 0; } .ranking-torch-right { right: 0; }
+.ranking-parchment { position: relative; margin-top: 10px; padding: 26px 0; filter: drop-shadow(0 12px 15px #0006); }
+.ranking-parchment-body { position: relative; padding: 28px 34px 38px; color: var(--ink); background: radial-gradient(ellipse at center, #f6e8bd, #e2cb96 78%, #bc9860); clip-path: polygon(1% 0, 98% 1%, 99% 11%, 98.6% 24%, 99.6% 39%, 98.7% 55%, 99.5% 73%, 98.5% 89%, 99% 100%, 2% 99%, .8% 88%, 1.5% 72%, .6% 54%, 1.3% 38%, .4% 24%, 1.2% 10%); }
+.parchment-curl { position: absolute; left: -5px; right: -5px; height: 36px; border: 3px solid #66451f; border-radius: 48% 7% 40% 10% / 22% 40% 26% 50%; background: linear-gradient(#b58c50, #f4e2b0 33%, #dec391 65%, #94703f); z-index: 2; box-shadow: 0 5px 5px #3c2a1840; }
+.parchment-curl::before, .parchment-curl::after { content: ''; position: absolute; top: 0; width: 25px; height: 29px; border: 3px solid #66451f; border-radius: 50%; background: radial-gradient(ellipse, #76522c 15%, #e2cb96 24%, #ac854e 42%, #f0ddb0 50%); }
+.parchment-curl::before { left: -9px; } .parchment-curl::after { right: -9px; }
+.parchment-curl-top { top: 0; transform: rotate(-.6deg); } .parchment-curl-bottom { bottom: 0; transform: rotate(.7deg); }
+.ranking-list-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; border-bottom: 2px solid #8a642840; padding-bottom: 12px; }
+.ranking-list-heading h2 { font-size: 18px; color: var(--ink); } .ranking-list-heading > span { font-family: var(--font-cinzel), serif; color: var(--foil); font-size: 12px; }
+.ranking-adventurers { display: flex; flex-direction: column; gap: 10px; list-style: none; margin: 0; padding: 0; }
+.ranking-adventurer { display: grid; grid-template-columns: 38px 52px minmax(0,1fr) auto; align-items: center; gap: 12px; background: #fff4d37d; border: 2px solid #8a642845; border-radius: 12px 8px 11px 7px; box-shadow: 0 3px #8a64281a; padding: 10px; color: var(--ink); }
+.ranking-adventurer:hover { background: #fff4d3c9; } .ranking-adventurer:focus-visible { outline: 3px solid var(--seal); outline-offset: 2px; }
+.ranking-rank { display: grid; place-items: center; width: 34px; height: 36px; border: 2px solid #66451f; border-radius: 10px 10px 6px 6px; font-family: var(--font-cinzel), serif; font-size: 18px; background: #dec391; }
+.rank-1 { background: #e6bc6a; } .rank-2 { background: #d0d1c5; } .rank-3 { background: #c28c65; }
+.ranking-avatar { height: 52px; border: 2px solid #66451f; border-radius: 9px; overflow: hidden; background: #bc986045; } .ranking-avatar img { width: 100%; height: 100%; object-fit: contain; }
+.ranking-person { min-width: 0; } .ranking-person strong { display: block; overflow-wrap: anywhere; font-size: 18px; line-height: 1.2; } .ranking-person > span { display: block; font-size: 13px; color: #3c2a18b3; margin-top: 3px; }
+.ranking-feats { text-align: right; } .ranking-feats strong { display: block; font-family: var(--font-cinzel), serif; font-size: 15px; } .ranking-feats small { display: block; font-size: 11px; color: #3c2a18a6; margin-top: 3px; }
+.ranking-notice { padding: 28px 10px; text-align: center; } .ranking-notice-seal { display: block; color: var(--seal); font-size: 40px; } .ranking-notice h3 { color: var(--ink); font-size: 23px; } .ranking-notice p { color: var(--ink-70); font-size: 18px; margin: 14px auto 22px; max-width: 470px; } .ranking-notice a { display: inline-block; padding: 12px 22px; font-family: var(--font-cinzel), serif; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+.ranking-return { display: block; margin-top: 28px; text-align: center; font-family: var(--font-cinzel), serif; font-size: 12px; color: var(--gold-light); }
+@media (max-width: 640px) { .ranking-realm { padding: 34px 18px 45px; background-size: 700px auto; } .ranking-podium { padding: 38px 0 22px; min-height: 300px; } .ranking-winner-portrait { height: 112px; } .ranking-winner-portrait img { width: 110px; height: 112px; } .ranking-winner-portrait .is-vacant { width: 70px; height: 70px; } .ranking-plinth { height: 110px; } .place-1 .ranking-plinth { height: 140px; } .place-3 .ranking-plinth { height: 95px; } .ranking-plinth-label strong { font-size: 12px; } .ranking-plinth-label small { font-size: 9px; } .ranking-place { font-size: 25px; } .ranking-parchment-body { padding: 24px 16px 30px; } .ranking-list-heading h2 { font-size: 14px; } .ranking-adventurer { grid-template-columns: 28px 40px minmax(0,1fr) auto; gap: 7px; padding: 8px 5px; } .ranking-avatar { height: 42px; } .ranking-rank { width: 25px; height: 30px; font-size: 14px; } .ranking-person strong { font-size: 15px; } .ranking-person > span { font-size: 11px; } .ranking-feats strong { font-size: 12px; } .ranking-feats small { font-size: 9px; } .ranking-notice h3 { font-size: 20px; } .ranking-notice p { font-size: 16px; } }
+
+.ranking-torch { width: 42px; height: 105px; filter: drop-shadow(0 0 12px #ffc86565); transform: rotate(-8deg); }
+.ranking-torch svg { width: 100%; height: 100%; }
+.ranking-torch-right { transform: rotate(8deg); }
+.journey-scene[data-rpg-theme] .ranking-list-heading h2 { font-size: 18px; }
+@media (max-width: 640px) { .journey-scene[data-rpg-theme] .ranking-list-heading h2 { font-size: 14px; line-height: 1.4; } .ranking-torch { width: 30px; height: 78px; } }
+
+/* Madeira rústica vista de frente, ferragens e escudos nórdicos. */
+.ranking-plinth-label { inset: 17% 8% 13%; }
+.ranking-plinth-label strong { color: #f4e1b3; text-shadow: 0 1px #301b0f; }
+.ranking-plinth-label small { color: #e2c391; }
+.ranking-place { position: relative; display: grid; place-items: center; width: 52px; height: 52px; font-size: 26px; flex-shrink: 0; }
+.podium-shield { position: absolute; inset: 0; width: 100%; height: 100%; fill: #9c7740; stroke: #332a1b; stroke-width: 3; }
+.podium-shield .shield-inner { fill: #a44b32; }
+.place-1 .podium-shield { fill: #e6bc6a; }
+.place-1 .podium-shield .shield-inner { fill: #677044; }
+.place-2 .podium-shield { fill: #c8c7b2; }
+.place-2 .podium-shield .shield-inner { fill: #526667; }
+.ranking-place > span { position: relative; z-index: 1; }
+@media (max-width: 640px) { .ranking-place { width: 36px; height: 36px; font-size: 21px; } .place-1 .ranking-plinth { height: 148px; } .ranking-plinth-label strong { margin-top: 5px; } .ranking-plinth-label small { margin-top: 3px; } }
+
+.ranking-plinth-label { inset: 32% 8% 16%; }
+.ranking-place { position: absolute; top: -40px; left: calc(50% - 26px); }
+@media (max-width: 640px) { .ranking-place { top: -28px; left: calc(50% - 18px); } }
+
+/* Personagens apresentam os membros da guilda. */
+.guild-guides { display: grid; grid-template-columns: minmax(0,220px) 200px minmax(0,220px); gap: 24px; justify-content: center; align-items: end; }
+.guild-guide { width: 100%; aspect-ratio: 1; position: relative; overflow: hidden; pointer-events: none; filter: drop-shadow(0 7px 5px #0005); }
+.guild-guide-mage { background-position: left center; transform: rotate(-3deg); }
+.guild-guide-paladin { background-position: right center; transform: rotate(3deg); }
+.guild-linkedin { min-width: 28px; min-height: 28px; justify-content: center; border: 1px solid #8a64284d; border-radius: 5px; }
+.guild-linkedin:focus-visible { outline: 2px solid var(--seal); outline-offset: 3px; }
+@media (max-width: 640px) { .guild-guides { grid-template-columns: minmax(0,1fr) 140px minmax(0,1fr); gap: 4px; margin-inline: -12px; } .guild-advisor { width: 140px; } .guild-guide { align-self: center; } }
+
+.guild-guide .guild-guide-art { position: absolute; top: 0; left: 0; width: 200%; max-width: none; height: 100%; object-fit: fill; }
+.guild-guide-paladin .guild-guide-art { left: -100%; }
+
+/* Batalha em destaque: luz na ação e contraste localizado no texto. */
+.tavern-cinematic .cinematic-backdrop { object-position: center center; }
+.tavern-cinematic .cinematic-shade { background: linear-gradient(90deg, #21140dd9, #21140d88 30%, #21140d1a 55%, transparent 75%), linear-gradient(0deg, var(--desk) 0%, #21140d44 12%, transparent 30%); }
+@media (max-width: 900px) and (min-width: 641px) { .tavern-cinematic .cinematic-shade { background: linear-gradient(90deg, #21140dee, #21140d66 55%, transparent), linear-gradient(0deg, var(--desk), transparent 30%); } }
+@media (max-width: 640px) { .tavern-cinematic .cinematic-backdrop { object-position: 68% top; } .tavern-cinematic .cinematic-shade { background: linear-gradient(0deg, var(--desk) 40%, #21140d33 65%, transparent 83%); } }
+
+/* Contraste do nome da taverna sobre a ilustração. */
+.tavern-cinematic .rpg-hero-content > #hero-title { font-weight: 700; letter-spacing: .01em; line-height: 1.12; text-shadow: 0 2px 2px #140c07, 0 4px 12px #140c07, 0 0 26px #140c07e6; }
+.tavern-cinematic .cinematic-shade { background: radial-gradient(ellipse at 18% 34%, #140c0799, transparent 52%), linear-gradient(90deg, #21140df0, #21140dba 30%, #21140d33 50%, transparent 70%), linear-gradient(0deg, var(--desk) 0%, #21140d44 12%, transparent 30%); }
+@media (max-width: 640px) { .tavern-cinematic .cinematic-shade { background: linear-gradient(0deg, var(--desk) 42%, #21140dba 52%, #21140d33 66%, transparent 83%); } }
