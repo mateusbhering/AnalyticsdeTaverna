@@ -61,17 +61,60 @@ function baixarBlob(blob: Blob, nome: string) {
 }
 
 /**
- * Tira as sombras externas de um nó clonado, mantendo as `inset`. O WebKit (todo
- * navegador do iPhone) desenha sombra externa com desfoque como um bloco cinza
- * deslocado ao renderizar o clone; as internas saem certas.
+ * Ajustes em cada nó clonado antes de virar imagem:
+ * - Tira as sombras externas, mantendo as `inset`. O WebKit (todo navegador do
+ *   iPhone) desenha sombra externa com desfoque como um bloco cinza deslocado
+ *   ao renderizar o clone; as internas saem certas.
+ * - Devolve a `auto` a altura dos nós marcados por `prepararSemIgnorados`.
  */
-function semSombraExterna(node: Node) {
-  if (!(node instanceof HTMLElement) || !node.style.boxShadow) return;
-  // Vírgulas fora de parênteses separam as sombras (rgba() tem as suas).
-  const internas = node.style.boxShadow
-    .split(/,(?![^(]*\))/)
-    .filter((sombra) => sombra.includes("inset"));
-  node.style.boxShadow = internas.length ? internas.join(",") : "none";
+function ajustarClone(node: Node) {
+  if (!(node instanceof HTMLElement)) return;
+  if (node.style.boxShadow) {
+    // Vírgulas fora de parênteses separam as sombras (rgba() tem as suas).
+    const internas = node.style.boxShadow
+      .split(/,(?![^(]*\))/)
+      .filter((sombra) => sombra.includes("inset"));
+    node.style.boxShadow = internas.length ? internas.join(",") : "none";
+  }
+  if (node.dataset.exportEncolher !== undefined) {
+    node.style.removeProperty("height");
+    node.style.removeProperty("block-size");
+  }
+}
+
+/**
+ * Prepara o card para sair sem os elementos `data-export-ignore`. A lib copia
+ * para o clone a altura computada de cada elemento e renderiza no tamanho do
+ * nó original — sem ajuste, sobra um vão onde eles estavam. Então marca os
+ * ancestrais de cada ignorado (`ajustarClone` os devolve a `auto`) e calcula a
+ * altura final do card. Devolve essa altura e a função que tira as marcas.
+ */
+function prepararSemIgnorados(card: HTMLElement): { altura: number; desfazer: () => void } {
+  const marcados: HTMLElement[] = [];
+  let removida = 0;
+  card.querySelectorAll<HTMLElement>("[data-export-ignore]").forEach((el) => {
+    const pai = el.parentElement;
+    // Dentro de outro ignorado já foi contado; absoluto não ocupa fluxo.
+    if (!pai || pai.closest("[data-export-ignore]")) return;
+    const css = getComputedStyle(el);
+    if (css.position === "absolute" || css.position === "fixed") return;
+    removida += el.getBoundingClientRect().height + parseFloat(css.marginTop) + parseFloat(css.marginBottom);
+    // Numa coluna flex/grid, sair do fluxo leva junto o `gap` até o vizinho.
+    const cssPai = getComputedStyle(pai);
+    const coluna =
+      cssPai.display.includes("grid") ||
+      (cssPai.display.includes("flex") && cssPai.flexDirection.startsWith("column"));
+    if (coluna && pai.children.length > 1) removida += parseFloat(cssPai.rowGap) || 0;
+
+    for (let a: HTMLElement | null = pai; a && a !== card; a = a.parentElement) {
+      a.dataset.exportEncolher = "";
+      marcados.push(a);
+    }
+  });
+  return {
+    altura: card.getBoundingClientRect().height - removida,
+    desfazer: () => marcados.forEach((a) => delete a.dataset.exportEncolher),
+  };
 }
 
 /** Elementos marcados com `data-export-ignore` (botões) ficam fora da imagem do card. */
@@ -473,7 +516,10 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   // no toque, e esperar a renderização (1–2s) perderia o gesto. A chave guarda
   // de qual avatar e link a imagem saiu — quando o save no Supabase troca o
   // link por params pelo link por id, o QR muda e a imagem é refeita.
-  const cardChave = avatarStatus === "done" && avatarUrl && shareUrl ? `${avatarUrl}|${shareUrl}` : null;
+  // Com o avatar em erro o card também é baixável, só sem o retrato (ver o
+  // `data-export-ignore` do bloco do retrato); gerando, ainda não.
+  const cardCompleto = (avatarStatus === "done" && avatarUrl) || avatarStatus === "error";
+  const cardChave = cardCompleto && shareUrl ? `${avatarUrl ?? "sem-avatar"}|${shareUrl}` : null;
   const [cardGerado, setCardGerado] = useState<{ chave: string; blob: Blob } | null>(null);
   useEffect(() => {
     const card = cardRef.current;
@@ -489,16 +535,18 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
 
     // Sem esperar as fontes, a imagem pode sair com a fonte de fallback.
     document.fonts.ready
-      .then(() =>
-        domToBlob(card, {
+      .then(() => {
+        const { altura, desfazer } = prepararSemIgnorados(card);
+        return domToBlob(card, {
           scale: 2,
+          height: altura,
           filter: semControles,
-          onCloneEachNode: semSombraExterna,
+          onCloneEachNode: ajustarClone,
           onCloneNode: (clone) => {
             if (gradiente && clone instanceof HTMLElement) clone.style.backgroundImage = gradiente;
           },
-        }),
-      )
+        }).finally(desfazer);
+      })
       .then((blob) => {
         if (!cancelado) setCardGerado({ chave: cardChave, blob });
       })
@@ -594,8 +642,12 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
           </p>
 
           {/* Retrato: só o avatar gerado pela IA. Enquanto gera, mostra o loading;
-              em caso de erro, uma mensagem — sem foto de placeholder da classe. */}
-          <div className="flex flex-col items-center gap-2 mb-4">
+              em caso de erro, uma mensagem — sem foto de placeholder da classe.
+              Na imagem baixada, um retrato com erro some em vez de ir junto. */}
+          <div
+            data-export-ignore={avatarStatus === "error" ? "" : undefined}
+            className="flex flex-col items-center gap-2 mb-4"
+          >
             <div className="polaroid !p-2">
               <div className="relative w-48 h-48 border border-[rgba(96,66,26,0.4)] overflow-hidden bg-[rgba(23,13,6,0.9)]">
                 {avatarStatus === "done" && avatarUrl ? (
@@ -739,9 +791,9 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                 >
                   {<IconText text={copied ? "✓ Link copiado" : "🔗 Copiar link"} />}
                 </button>
-                {/* Só com o avatar pronto: antes disso a imagem sairia com o
-                    spinner no lugar do retrato. */}
-                {avatarStatus === "done" && (
+                {/* Não enquanto o avatar gera: a imagem sairia com o spinner
+                    no lugar do retrato. */}
+                {cardCompleto && (
                   <button
                     onClick={saveCard}
                     disabled={!cardBlob}
