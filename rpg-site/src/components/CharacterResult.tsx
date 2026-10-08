@@ -3,6 +3,7 @@ import { IconText } from "@/components/ui/illustrated-icons";
 
 
 import { QRCodeSVG } from "qrcode.react";
+import { domToBlob } from "modern-screenshot";
 import { Download, Share2 } from "@/components/ui/illustrated-icons";
 import {
   useRef,
@@ -25,32 +26,79 @@ import { byName, type ClassInfo } from "@/lib/classes";
 import { lembrarJogador } from "@/lib/jogador-local";
 
 
-/** Nome do arquivo ao baixar o avatar: slug da classe + extensão do mime. */
-function avatarFileName(className: string, mime: string): string {
-  const ext = mime === "image/jpeg" ? "jpg" : mime === "image/webp" ? "webp" : "png";
-  const slug = className
+/** Nome da classe sem acento nem espaço, para usar em nome de arquivo. */
+function classSlug(className: string): string {
+  return className
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
-  return `avatar-${slug}.${ext}`;
 }
+
+/** Nome do arquivo ao baixar o avatar: slug da classe + extensão do mime. */
+function avatarFileName(className: string, mime: string): string {
+  const ext = mime === "image/jpeg" ? "jpg" : mime === "image/webp" ? "webp" : "png";
+  return `avatar-${classSlug(className)}.${ext}`;
+}
+
+/**
+ * Download direto em qualquer plataforma. Blob URL em vez de data URL porque
+ * data URLs longos travam ou são bloqueados em vários navegadores móveis; com
+ * Blob URL o arquivo cai em Downloads (desktop) ou Downloads/Arquivos (celular).
+ */
+function baixarBlob(blob: Blob, nome: string) {
+  const objectUrl = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = objectUrl;
+  a.download = nome;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  // Revogar na hora aborta o download em alguns navegadores; espera o início.
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+}
+
+/**
+ * Tira as sombras externas de um nó clonado, mantendo as `inset`. O WebKit (todo
+ * navegador do iPhone) desenha sombra externa com desfoque como um bloco cinza
+ * deslocado ao renderizar o clone; as internas saem certas.
+ */
+function semSombraExterna(node: Node) {
+  if (!(node instanceof HTMLElement) || !node.style.boxShadow) return;
+  // Vírgulas fora de parênteses separam as sombras (rgba() tem as suas).
+  const internas = node.style.boxShadow
+    .split(/,(?![^(]*\))/)
+    .filter((sombra) => sombra.includes("inset"));
+  node.style.boxShadow = internas.length ? internas.join(",") : "none";
+}
+
+/** Elementos marcados com `data-export-ignore` (botões) ficam fora da imagem do card. */
+const semControles = (node: Node) =>
+  !(node instanceof HTMLElement && node.dataset.exportIgnore !== undefined);
 
 /** Estilo comum dos botões sobre o avatar (baixar / compartilhar). */
 const AVATAR_ACTION_CLASS =
   "press w-8 h-8 flex items-center justify-center bg-[rgba(23,13,6,0.78)] border border-[rgba(230,188,106,0.45)] text-[var(--gold-light)] hover:bg-[rgba(23,13,6,0.92)] hover:border-[var(--gold-light)] hover:text-[var(--parchment)] transition-colors";
 
-// O navegador consegue abrir a folha nativa com um arquivo? Na prática isso é
-// "está num celular": desktops não implementam share de arquivos. A resposta
-// não muda durante a sessão, então memorizamos — `useSyncExternalStore` exige
-// um snapshot estável.
+/** Estilo comum dos botões do rodapé do card (copiar link / baixar card). */
+const CARD_ACTION_CLASS =
+  "press px-5 py-2 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.5)] text-[var(--ink)] text-[.6rem] tracking-[.15em] uppercase hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all cursor-pointer";
+
+// Celular com folha nativa que aceita arquivo? O Chrome do macOS também
+// implementa share de arquivos, então só o `canShare` não basta: o toque como
+// ponteiro principal é o que separa o celular — no desktop o certo é baixar.
+// A resposta não muda durante a sessão, então memorizamos —
+// `useSyncExternalStore` exige um snapshot estável.
 let fileShareSupport: boolean | null = null;
 function supportsFileShare(): boolean {
   if (fileShareSupport === null) {
     try {
       const probe = new File([new Uint8Array()], "probe.png", { type: "image/png" });
-      fileShareSupport = navigator.canShare?.({ files: [probe] }) === true;
+      fileShareSupport =
+        matchMedia("(pointer: coarse)").matches &&
+        navigator.canShare?.({ files: [probe] }) === true;
     } catch {
       fileShareSupport = false;
     }
@@ -407,28 +455,78 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   const shareUrl =
     personagemId != null ? `${origin}/personagem?id=${personagemId}` : terminal ? paramLink : null;
 
-  // Baixar: download direto em qualquer plataforma. O data URL vira Blob URL
-  // antes de baixar porque data URLs longos travam ou são bloqueados em vários
-  // navegadores móveis; com Blob URL o arquivo cai em Downloads (desktop) ou
-  // Downloads/Arquivos (celular).
-  // Se a conversão falhar, o clique segue para o href/download do próprio <a>.
+  // Baixar o avatar. Sem os bytes o clique segue para o href/download do
+  // próprio <a> — que entre origens só abre a imagem, mas é melhor que nada.
   const saveAvatar = (e: MouseEvent<HTMLAnchorElement>) => {
-    // Sem os bytes não há download: o `download` de um <a> é ignorado quando o
-    // href aponta para outra origem, e o clique só abriria a imagem.
     if (!avatarBlob) return;
-
-    const objectUrl = URL.createObjectURL(avatarBlob);
-
     e.preventDefault();
-    const a = document.createElement("a");
-    a.href = objectUrl;
-    a.download = avatarFileName(rpgClass.name, avatarBlob.type);
-    a.rel = "noopener";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    // Revogar na hora aborta o download em alguns navegadores; espera o início.
-    setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+    baixarBlob(avatarBlob, avatarFileName(rpgClass.name, avatarBlob.type));
+  };
+
+  // Imagem do card inteiro (avatar, atributos e QR) como PNG, renderizada a
+  // partir do próprio DOM — o visual do card vem todo do CSS, então redesenhar
+  // num canvas à mão duplicaria o layout. Escala 2 para não sair borrado em
+  // telas retina; os botões ficam de fora pelo `data-export-ignore`.
+  //
+  // É gerada ANTES do clique, assim que o card fica completo, pelo mesmo motivo
+  // do blob do avatar: no iPhone o navigator.share precisa ser chamado direto
+  // no toque, e esperar a renderização (1–2s) perderia o gesto. A chave guarda
+  // de qual avatar e link a imagem saiu — quando o save no Supabase troca o
+  // link por params pelo link por id, o QR muda e a imagem é refeita.
+  const cardChave = avatarStatus === "done" && avatarUrl && shareUrl ? `${avatarUrl}|${shareUrl}` : null;
+  const [cardGerado, setCardGerado] = useState<{ chave: string; blob: Blob } | null>(null);
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!cardChave || !card) return;
+    let cancelado = false;
+
+    // O ruído do papel (.paper-card) é um SVG em data URL com um `url(#n)`
+    // dentro, que a lib não consegue reembutir: a declaração inteira cai e o
+    // card sai transparente. Na cópia fica só o gradiente do pergaminho.
+    const fundo = getComputedStyle(card).backgroundImage;
+    const i = fundo.indexOf("radial-gradient(");
+    const gradiente = i >= 0 ? fundo.slice(i) : null;
+
+    // Sem esperar as fontes, a imagem pode sair com a fonte de fallback.
+    document.fonts.ready
+      .then(() =>
+        domToBlob(card, {
+          scale: 2,
+          filter: semControles,
+          onCloneEachNode: semSombraExterna,
+          onCloneNode: (clone) => {
+            if (gradiente && clone instanceof HTMLElement) clone.style.backgroundImage = gradiente;
+          },
+        }),
+      )
+      .then((blob) => {
+        if (!cancelado) setCardGerado({ chave: cardChave, blob });
+      })
+      .catch((e) => console.error("Falha ao gerar a imagem do card:", e));
+    return () => {
+      cancelado = true;
+    };
+  }, [cardChave]);
+
+  const cardBlob = cardGerado?.chave === cardChave ? cardGerado.blob : null;
+  const cardFileName = `card-${classSlug(rpgClass.name)}.png`;
+
+  // No celular abre a folha nativa (de onde dá para salvar na galeria); no
+  // desktop, download. Tudo síncrono até o navigator.share — ver acima.
+  const saveCard = () => {
+    if (!cardBlob) return;
+    const file = new File([cardBlob], cardFileName, { type: cardBlob.type });
+    if (!canShare || !navigator.canShare?.({ files: [file] })) {
+      baixarBlob(cardBlob, cardFileName);
+      return;
+    }
+    navigator.share({ files: [file], title: rpgClass.name }).catch((e: unknown) => {
+      // AbortError = a pessoa fechou a folha. Qualquer outra recusa (o Safari
+      // achar que o gesto expirou, por exemplo) cai no download.
+      if (!(e instanceof DOMException && e.name === "AbortError")) {
+        baixarBlob(cardBlob, cardFileName);
+      }
+    });
   };
 
   // Compartilhar: só aparece onde a folha nativa aceita arquivos (celular). É o
@@ -515,7 +613,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                         blob chega, para nenhum botão ficar inerte na tela.
                         Baixar sempre; compartilhar só no celular (galeria). */}
                     {avatarBlob && (
-                      <div className="absolute bottom-2 right-2 flex items-center gap-1.5">
+                      <div data-export-ignore className="absolute bottom-2 right-2 flex items-center gap-1.5">
                         {canShare && (
                           <button
                             type="button"
@@ -633,13 +731,28 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
               <div className="bg-[#f8f0da] border border-[rgba(96,66,26,0.35)] p-2.5">
                 <QRCodeSVG value={shareUrl} size={120} bgColor="#f8f0da" fgColor="#3c2a18" />
               </div>
-              <button
-                onClick={copyLink}
-                className="press px-5 py-2 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.5)] text-[var(--ink)] text-[.6rem] tracking-[.15em] uppercase hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all cursor-pointer"
-                style={{ fontFamily: "var(--font-cinzel), serif" }}
-              >
-                {<IconText text={copied ? "✓ Link copiado" : "🔗 Copiar link"} />}
-              </button>
+              <div data-export-ignore className="flex flex-wrap justify-center gap-2">
+                <button
+                  onClick={copyLink}
+                  className={CARD_ACTION_CLASS}
+                  style={{ fontFamily: "var(--font-cinzel), serif" }}
+                >
+                  {<IconText text={copied ? "✓ Link copiado" : "🔗 Copiar link"} />}
+                </button>
+                {/* Só com o avatar pronto: antes disso a imagem sairia com o
+                    spinner no lugar do retrato. */}
+                {avatarStatus === "done" && (
+                  <button
+                    onClick={saveCard}
+                    disabled={!cardBlob}
+                    className={`${CARD_ACTION_CLASS} inline-flex items-center gap-1.5 disabled:opacity-60 disabled:cursor-wait`}
+                    style={{ fontFamily: "var(--font-cinzel), serif" }}
+                  >
+                    {canShare ? <Share2 size={13} strokeWidth={1.8} /> : <Download size={13} strokeWidth={1.8} />}
+                    {!cardBlob ? "Preparando…" : canShare ? "Compartilhar card" : "Baixar card"}
+                  </button>
+                )}
+              </div>
               <p className="text-[.78rem] italic text-center">
                 Escaneie ou compartilhe o link do seu personagem
               </p>
