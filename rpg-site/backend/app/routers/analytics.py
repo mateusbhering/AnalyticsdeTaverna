@@ -8,6 +8,7 @@
   GET  /analytics/insight        — a frase de efeito do PDF, calculada
   POST /analytics/evento         — registra uma etapa do funil de conversão
   GET  /analytics/funil          — funil foto → quiz → avatar → card → duelo
+  GET  /analytics/compartilhamento — card compartilhado → visita → quiz, por canal
 
 Por que agregar em Python e não no SQL? O Supabase expõe a tabela via
 PostgREST, que não faz AVG/GROUP BY direto. Para a escala do projeto (alguns
@@ -246,7 +247,7 @@ ROTULOS_ETAPA = {
 async def registrar_evento(payload: EventoFunilRequest, repo: Repositorio = Depends(get_repo)):
     """Registra uma etapa do funil. Chamado pelo frontend em fogo-e-esquece —
     nunca deve bloquear nem atrapalhar o quiz se falhar."""
-    await repo.registrar_evento_funil(payload.model_dump())
+    await repo.registrar_evento_funil(payload.model_dump(exclude_none=True))
     return {"status": "registrado"}
 
 
@@ -321,3 +322,79 @@ async def funil(repo: Repositorio = Depends(get_repo)):
         )
 
     return {"etapas": etapas, "sem_eventos": not eventos, "sessoes_ligadas": len(jogador_id_por_sessao)}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Compartilhamento do card
+#
+# Cada link compartilhado carrega `utm_source=<canal>` e `ref=<jogador>`. Quem
+# chega por ele grava `visita_compartilhada`, e a origem fica guardada no
+# navegador para marcar TODOS os eventos seguintes (`inicio`, `quiz_concluido`…)
+# — é isso que permite medir quantas visitas de cada canal viraram personagem.
+#
+# Limite honesto: cada partida abre uma sessão de funil nova (ver
+# `lib/funil-tracking.ts`), então "visitas" conta sessões de visita e "quiz"
+# conta sessões de quiz atribuídas. Quem joga duas vezes pelo mesmo link conta
+# duas no quiz e uma na visita — por isso a taxa é limitada a 100%.
+# ─────────────────────────────────────────────────────────────────────────────
+
+EVENTOS_DE_ATRIBUICAO = ("inicio", "quiz_concluido", "avatar_gerado")
+
+
+@router.get("/compartilhamento")
+async def compartilhamento(repo: Repositorio = Depends(get_repo)):
+    """Compartilhamentos, visitas e conversão em quiz, por canal."""
+    eventos = await repo.eventos_funil_para_analytics()
+
+    compartilhamentos: Counter[str] = Counter()
+    sessoes: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
+    donos_de_link: Counter[int] = Counter()
+
+    for e in eventos:
+        evento, canal, sessao = e.get("evento"), e.get("origem"), e.get("sessao_id")
+        if not canal:
+            continue
+        if evento == "compartilhou":
+            compartilhamentos[canal] += 1
+        elif evento == "visita_compartilhada" and sessao:
+            sessoes[canal]["visita"].add(sessao)
+            if e.get("ref_jogador_id"):
+                donos_de_link[int(e["ref_jogador_id"])] += 1
+        elif evento in EVENTOS_DE_ATRIBUICAO and sessao:
+            sessoes[canal][evento].add(sessao)
+
+    canais = []
+    for canal in sorted(set(compartilhamentos) | set(sessoes)):
+        s = sessoes.get(canal, {})
+        visitas = len(s.get("visita", set()))
+        concluiram = len(s.get("quiz_concluido", set()))
+        canais.append(
+            {
+                "canal": canal,
+                "compartilhamentos": compartilhamentos.get(canal, 0),
+                "visitas": visitas,
+                "iniciaram_quiz": len(s.get("inicio", set())),
+                "concluiram_quiz": concluiram,
+                "avatares_gerados": len(s.get("avatar_gerado", set())),
+                "taxa_visita_para_quiz": (
+                    min(100.0, round(concluiram / visitas * 100, 1)) if visitas else None
+                ),
+            }
+        )
+    canais.sort(key=lambda c: (-c["visitas"], -c["compartilhamentos"], c["canal"]))
+
+    total_visitas = sum(c["visitas"] for c in canais)
+    total_quiz = sum(c["concluiram_quiz"] for c in canais)
+    return {
+        "total_compartilhamentos": sum(c["compartilhamentos"] for c in canais),
+        "total_visitas": total_visitas,
+        "total_quiz_concluido": total_quiz,
+        "taxa_visita_para_quiz": (
+            min(100.0, round(total_quiz / total_visitas * 100, 1)) if total_visitas else None
+        ),
+        "canais": canais,
+        "cards_mais_visitados": [
+            {"jogador_id": jid, "visitas": n} for jid, n in donos_de_link.most_common(5)
+        ],
+        "sem_eventos": not canais,
+    }

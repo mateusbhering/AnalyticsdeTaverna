@@ -82,11 +82,11 @@ const CardTitulo = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function TavernaInsightsSection({ dados }: { dados: AnalyticsExtra }) {
-  const { batalhas, taxaVitoria, insight, funil } = dados;
+  const { batalhas, taxaVitoria, insight, funil, compartilhamento } = dados;
 
   // Nada veio do backend — API fora do ar ou hibernando. Silêncio, não erro:
   // o dashboard acima já cobre o caso "ainda não há personagens".
-  if (!batalhas && !taxaVitoria && !insight?.frase && !funil) return null;
+  if (!batalhas && !taxaVitoria && !insight?.frase && !funil && !compartilhamento) return null;
 
   const etapasFunil = funil?.etapas.filter((e) => e.total > 0) ?? [];
 
@@ -191,6 +191,51 @@ export default function TavernaInsightsSection({ dados }: { dados: AnalyticsExtr
                 {funil?.sem_eventos
                   ? "Instrumentação nova: ainda não há eventos suficientes para montar o funil."
                   : "Cada etapa segue a mesma sessão — de quem abriu o quiz até quem virou personagem e duelou. Sessões de antes da instrumentação não entram."}
+              </p>
+            </div>
+          </Reveal>
+        )}
+
+        {compartilhamento && !compartilhamento.sem_eventos && (
+          <Reveal>
+            <div className="paper-card paper-frame p-8 mb-6">
+              <CardTitulo>Compartilhamento do Card</CardTitulo>
+              <p className="text-[.82rem] text-[var(--ink-70)] mt-1 mb-4">
+                {compartilhamento.total_compartilhamentos} compartilhamentos geraram{" "}
+                {compartilhamento.total_visitas} visitas
+                {compartilhamento.taxa_visita_para_quiz !== null &&
+                  `; ${compartilhamento.taxa_visita_para_quiz.toFixed(0)}% delas terminaram o quiz`}
+                .
+              </p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-[.82rem] text-[var(--ink-70)]">
+                  <thead>
+                    <tr className="text-left text-[var(--foil)] text-[.7rem]">
+                      <th className="py-1 pr-3 font-semibold">Canal</th>
+                      <th className="py-1 px-2 font-semibold text-right">Compart.</th>
+                      <th className="py-1 px-2 font-semibold text-right">Visitas</th>
+                      <th className="py-1 px-2 font-semibold text-right">Quiz concluído</th>
+                      <th className="py-1 pl-2 font-semibold text-right">Conversão</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {compartilhamento.canais.map((c) => (
+                      <tr key={c.canal} className="border-t border-[rgba(96,66,26,0.18)]">
+                        <td className="py-1.5 pr-3 text-[var(--ink)]">{c.canal}</td>
+                        <td className="py-1.5 px-2 text-right tabular-nums">{c.compartilhamentos}</td>
+                        <td className="py-1.5 px-2 text-right tabular-nums">{c.visitas}</td>
+                        <td className="py-1.5 px-2 text-right tabular-nums">{c.concluiram_quiz}</td>
+                        <td className="py-1.5 pl-2 text-right tabular-nums">
+                          {c.taxa_visita_para_quiz === null ? "—" : `${c.taxa_visita_para_quiz.toFixed(0)}%`}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-[.7rem] text-[var(--ink-50)] italic mt-4 leading-relaxed">
+                Visitas contam quem chegou por um link compartilhado; conversão é o quiz concluído
+                por essas pessoas. Quem joga duas vezes pelo mesmo link conta uma visita e dois quizzes (a taxa é limitada a 100%).
               </p>
             </div>
           </Reveal>

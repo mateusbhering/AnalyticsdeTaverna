@@ -70,6 +70,27 @@ export interface Funil {
   sessoes_ligadas: number;
 }
 
+/** Uma linha de `GET /analytics/compartilhamento`: um canal de compartilhamento. */
+export interface CanalCompartilhamento {
+  canal: string;
+  compartilhamentos: number;
+  visitas: number;
+  iniciaram_quiz: number;
+  concluiram_quiz: number;
+  avatares_gerados: number;
+  taxa_visita_para_quiz: number | null;
+}
+
+/** Espelha `GET /analytics/compartilhamento`. */
+export interface Compartilhamento {
+  total_compartilhamentos: number;
+  total_visitas: number;
+  total_quiz_concluido: number;
+  taxa_visita_para_quiz: number | null;
+  canais: CanalCompartilhamento[];
+  sem_eventos: boolean;
+}
+
 /**
  * Cada peça falha (ou não) de forma independente: o backend pode responder
  * `/batalhas` e cair em `/insight`, por exemplo. Fica `null` a que falhar, e a
@@ -80,6 +101,7 @@ export interface AnalyticsExtra {
   taxaVitoria: TaxaVitoria | null;
   insight: Insight | null;
   funil: Funil | null;
+  compartilhamento: Compartilhamento | null;
 }
 
 async function buscar<T>(caminho: string): Promise<T | null> {
@@ -102,13 +124,14 @@ async function buscar<T>(caminho: string): Promise<T | null> {
 }
 
 async function buscarAnalyticsExtra(): Promise<AnalyticsExtra> {
-  const [batalhas, taxaVitoria, insight, funil] = await Promise.all([
+  const [batalhas, taxaVitoria, insight, funil, compartilhamento] = await Promise.all([
     buscar<MetricasBatalha>("/analytics/batalhas"),
     buscar<TaxaVitoria>("/analytics/taxa-vitoria"),
     buscar<Insight>("/analytics/insight"),
     buscar<Funil>("/analytics/funil"),
+    buscar<Compartilhamento>("/analytics/compartilhamento"),
   ]);
-  return { batalhas, taxaVitoria, insight, funil };
+  return { batalhas, taxaVitoria, insight, funil, compartilhamento };
 }
 
 /**

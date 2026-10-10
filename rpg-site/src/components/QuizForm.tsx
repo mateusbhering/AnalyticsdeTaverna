@@ -5,6 +5,7 @@ import { IconText } from "@/components/ui/illustrated-icons";
 import { useEffect, useRef, useState } from "react";
 import WebcamCapture from "./WebcamCapture";
 import CharacterResult from "./CharacterResult";
+import { NOME_MAX } from "@/lib/nome-jogador";
 import { ALL_QUESTIONS } from "./questions-data";
 import type { Option } from "./questions-data";
 import { useTavernFeedback } from "@/lib/useTavernFeedback";
@@ -66,6 +67,7 @@ export default function QuizForm() {
   const [current, setCurrent] = useState(0);
   const [dims, setDims] = useState<Dimensions>({ ...BASE_DIMS });
   const [tags, setTags] = useState<string[]>([]);
+  const [nome, setNome] = useState("");
 
   /* "Abriu o quiz" — cada partida é uma sessão nova do funil, inclusive quem
      volta pelo "Jogar Novamente" do card (que remonta este componente). O ref
@@ -87,6 +89,7 @@ export default function QuizForm() {
     setCurrent(0);
     setDims({ ...BASE_DIMS });
     setTags([]);
+    // O apelido fica: quem joga de novo costuma querer o mesmo nome no ranking.
   };
 
   // ── STEP 1: Photo ──────────────────────────────────────────────
@@ -120,6 +123,32 @@ export default function QuizForm() {
             setPhoto(dataUrl);
           }}
         />
+
+        {photo && (
+          <div className="mt-6">
+            <label
+              htmlFor="nome-ranking"
+              className="block text-[.7rem] text-[var(--foil)] tracking-[.15em] uppercase mb-1.5"
+              style={{ fontFamily: "var(--font-cinzel), serif" }}
+            >
+              Como quer aparecer no ranking? (opcional)
+            </label>
+            <input
+              id="nome-ranking"
+              type="text"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              maxLength={NOME_MAX}
+              autoComplete="nickname"
+              placeholder="Seu nome ou apelido"
+              className="w-full px-4 py-3 border text-[var(--ink)] bg-[rgba(60,42,24,.05)] border-[rgba(96,66,26,.35)] text-base placeholder:text-[var(--ink-50)]"
+              style={{ fontFamily: "var(--font-crimson-pro), Georgia, serif" }}
+            />
+            <p className="text-[.72rem] italic text-[var(--ink-50)] mt-1">
+              Fica público no ranking. Em branco, você aparece como número.
+            </p>
+          </div>
+        )}
 
         {photo && (
           <button
@@ -232,5 +261,5 @@ export default function QuizForm() {
   }
 
   // ── STEP 3: Result ─────────────────────────────────────────────
-  return <CharacterResult photo={photo} dims={dims} tags={tags} onRestart={restart} />;
+  return <CharacterResult photo={photo} dims={dims} tags={tags} nome={nome} onRestart={restart} />;
 }

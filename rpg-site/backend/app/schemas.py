@@ -198,7 +198,16 @@ class ItemRanking(BaseModel):
 # duplicaria dado que o banco já tem.
 # ─────────────────────────────────────────────────────────────────────────────
 
-EventoFunil = Literal["inicio", "foto_capturada", "quiz_concluido", "avatar_gerado", "avatar_falhou"]
+EventoFunil = Literal[
+    "inicio",
+    "foto_capturada",
+    "quiz_concluido",
+    "avatar_gerado",
+    "avatar_falhou",
+    # Compartilhamento do card (ver `GET /analytics/compartilhamento`).
+    "compartilhou",
+    "visita_compartilhada",
+]
 
 
 class EventoFunilRequest(BaseModel):
@@ -213,4 +222,10 @@ class EventoFunilRequest(BaseModel):
 
     sessao_id: str = Field(min_length=1, max_length=100)
     evento: EventoFunil
+    # Canal. Em `compartilhou` é o canal ESCOLHIDO por quem compartilha
+    # (whatsapp, x, ...); nos demais eventos é a ORIGEM de quem chegou por um
+    # link compartilhado (o `utm_source` do link). Nulo = tráfego direto.
+    origem: str | None = Field(default=None, pattern=r"^[a-z0-9_-]{1,30}$")
+    # Jogador dono do card que originou o link (`ref` do link).
+    ref_jogador_id: int | None = Field(default=None, ge=1)
 
