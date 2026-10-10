@@ -10,7 +10,39 @@ import { API_BASE } from "./batalha-api";
  * (`GET /analytics/funil`), então não duplicamos o dado.
  */
 
-export type EventoFunil = "inicio" | "foto_capturada" | "quiz_concluido" | "avatar_gerado" | "avatar_falhou";
+export type EventoFunil =
+  | "inicio"
+  | "foto_capturada"
+  | "quiz_concluido"
+  | "avatar_gerado"
+  | "avatar_falhou"
+  | "compartilhou"
+  | "visita_compartilhada";
+
+const CHAVE_ORIGEM = "taverna:origem";
+
+/** Guarda de qual canal a pessoa chegou (utm_source) para marcar os eventos seguintes. */
+export function guardarOrigem(origem: string): void {
+  try {
+    sessionStorage.setItem(CHAVE_ORIGEM, origem);
+  } catch {
+    /* storage bloqueado: os eventos seguem sem origem */
+  }
+}
+
+function lerOrigem(): string | null {
+  try {
+    return sessionStorage.getItem(CHAVE_ORIGEM);
+  } catch {
+    return null;
+  }
+}
+
+interface OpcoesEvento {
+  /** Em `compartilhou`, o canal escolhido; nos demais, vem da origem guardada. */
+  origem?: string;
+  refJogadorId?: number | null;
+}
 
 const CHAVE_SESSAO = "taverna:funilSessaoId";
 
@@ -57,11 +89,17 @@ export function obterSessaoFunil(): string {
 }
 
 /** Dispara um evento do funil. Nunca lança — ver docstring do módulo. */
-export function registrarEventoFunil(evento: EventoFunil): void {
+export function registrarEventoFunil(evento: EventoFunil, opcoes: OpcoesEvento = {}): void {
+  const origem = opcoes.origem ?? lerOrigem();
   void fetch(`${API_BASE}/analytics/evento`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ sessao_id: obterSessaoFunil(), evento }),
+    body: JSON.stringify({
+      sessao_id: obterSessaoFunil(),
+      evento,
+      ...(origem ? { origem } : {}),
+      ...(opcoes.refJogadorId != null ? { ref_jogador_id: opcoes.refJogadorId } : {}),
+    }),
     keepalive: true, // sobrevive à navegação/troca de step, se o browser suportar
   }).catch((erro) => {
     console.error(`[funil] falha ao registrar '${evento}'`, erro);

@@ -4,6 +4,7 @@ import MotionProvider from "@/components/MotionProvider";
 import PageTransition from "@/components/PageTransition";
 import ScrollProgress from "@/components/ScrollProgress";
 import JourneyNavigation from "@/components/JourneyNavigation";
+import CapturaOrigem from "@/components/CapturaOrigem";
 import "./globals.css";
 import "./rpg-theme.css";
 
@@ -50,6 +51,7 @@ export default function RootLayout({
       className={`${cinzelDecorative.variable} ${cinzel.variable} ${crimsonPro.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#0e0e0e] text-[#f4e4bc]">
+        <CapturaOrigem />
         <MotionProvider>
           <ScrollProgress />
           <PageTransition>{children}</PageTransition>

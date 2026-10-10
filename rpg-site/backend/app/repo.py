@@ -277,11 +277,33 @@ class SupabaseRepo:
         a migração rodar, mas ninguém trava no meio do jogo por isso.
         """
 
-        def _exec():
-            return self.client.table("eventos_funil").insert(dados).execute()
+        def _exec(linha: dict):
+            return self.client.table("eventos_funil").insert(linha).execute()
 
         try:
-            resposta = await run_in_threadpool(_exec)
+            try:
+                resposta = await run_in_threadpool(_exec, dados)
+            except Exception as erro:  # noqa: BLE001 — decide abaixo se é tolerável
+                texto = str(erro).lower()
+                colunas_novas = [c for c in COLUNAS_EVENTO_OPCIONAIS if c in dados and c in texto]
+                if ("does not exist" in texto or "schema cache" in texto) and colunas_novas:
+                    # Banco sem as colunas de compartilhamento: grava o evento
+                    # sem elas (perde a atribuição, mantém o funil).
+                    log.warning(
+                        "Colunas %s ausentes em `eventos_funil` — rode sql/schema.sql.", colunas_novas
+                    )
+                    sem_colunas = {k: v for k, v in dados.items() if k not in COLUNAS_EVENTO_OPCIONAIS}
+                    resposta = await run_in_threadpool(_exec, sem_colunas)
+                elif "check constraint" in texto:
+                    # CHECK antigo ainda não conhece os eventos de compartilhamento.
+                    log.warning(
+                        "CHECK de `eventos_funil` desatualizado: evento '%s' não gravado. "
+                        "Rode `sql/schema.sql` no Supabase.",
+                        dados.get("evento"),
+                    )
+                    return dados
+                else:
+                    raise
         except Exception as erro:  # noqa: BLE001 — log e segue, ver docstring
             texto = str(erro).lower()
             if "does not exist" not in texto and "schema cache" not in texto:
@@ -296,21 +318,27 @@ class SupabaseRepo:
         return resposta.data[0] if resposta.data else dados
 
     async def eventos_funil_para_analytics(self) -> list[dict]:
-        def _exec():
+        def _exec(colunas: str):
             return (
                 self.client.table("eventos_funil")
-                .select("sessao_id,evento")
+                .select(colunas)
                 .limit(LIMITE_ANALYTICS)
                 .execute()
             )
 
-        try:
-            return (await run_in_threadpool(_exec)).data or []
-        except Exception as erro:  # noqa: BLE001 — tabela ausente = funil vazio
-            texto = str(erro).lower()
-            if "does not exist" not in texto and "schema cache" not in texto:
-                raise
-            return []
+        # Banco sem as colunas de compartilhamento: cai para o select antigo
+        # (o funil segue; só a atribuição por origem fica vazia).
+        for colunas in ("sessao_id,evento,origem,ref_jogador_id", "sessao_id,evento"):
+            try:
+                return (await run_in_threadpool(_exec, colunas)).data or []
+            except Exception as erro:  # noqa: BLE001 — tabela/coluna ausente
+                texto = str(erro).lower()
+                if "does not exist" not in texto and "schema cache" not in texto:
+                    raise
+        return []
+
+
+COLUNAS_EVENTO_OPCIONAIS = ("origem", "ref_jogador_id")
 
 
 def _coluna_ausente(erro: Exception, dados: dict) -> str | None:

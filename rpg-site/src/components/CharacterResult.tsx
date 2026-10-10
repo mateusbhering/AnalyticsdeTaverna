@@ -24,6 +24,9 @@ import { avisarNovoJogador } from "@/lib/stats-actions";
 import { registrarEventoFunil, obterSessaoFunil } from "@/lib/funil-tracking";
 import { byName, type ClassInfo } from "@/lib/classes";
 import { lembrarJogador } from "@/lib/jogador-local";
+import { limparNome } from "@/lib/nome-jogador";
+import { linkComOrigem, registrarCompartilhamento } from "@/lib/compartilhar";
+import CompartilharRedes from "./CompartilharRedes";
 
 
 /** Nome da classe sem acento nem espaço, para usar em nome de arquivo. */
@@ -297,10 +300,12 @@ interface Props {
   photo: string;
   dims: Dimensions;
   tags: string[];
+  /** Apelido opcional para o ranking, como digitado no quiz. */
+  nome?: string;
   onRestart: () => void;
 }
 
-export default function CharacterResult({ photo, dims, tags, onRestart }: Props) {
+export default function CharacterResult({ photo, dims, tags, nome = "", onRestart }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const attrs = useMemo(() => calcAttributes(dims), [dims]);
@@ -422,6 +427,8 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
       sabedoria: attrs.sabedoria,
       caos: attrs.caos,
       foto_url: fotoUrl,
+      // Opcional: sem nome o ranking mostra `#id`. A coluna já existia no schema.
+      nome: limparNome(nome),
     };
 
     (async () => {
@@ -565,9 +572,11 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
     if (!cardBlob) return;
     const file = new File([cardBlob], cardFileName, { type: cardBlob.type });
     if (!canShare || !navigator.canShare?.({ files: [file] })) {
+      registrarCompartilhamento("download", personagemId);
       baixarBlob(cardBlob, cardFileName);
       return;
     }
+    registrarCompartilhamento("nativo", personagemId);
     navigator.share({ files: [file], title: rpgClass.name }).catch((e: unknown) => {
       // AbortError = a pessoa fechou a folha. Qualquer outra recusa (o Safari
       // achar que o gesto expirou, por exemplo) cai no download.
@@ -597,7 +606,8 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
   const copyLink = async () => {
     if (!shareUrl) return;
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(linkComOrigem(shareUrl, "link", personagemId));
+      registrarCompartilhamento("link", personagemId);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -781,7 +791,7 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
           {shareUrl ? (
             <>
               <div className="bg-[#f8f0da] border border-[rgba(96,66,26,0.35)] p-2.5">
-                <QRCodeSVG value={shareUrl} size={120} bgColor="#f8f0da" fgColor="#3c2a18" />
+                <QRCodeSVG value={linkComOrigem(shareUrl, "qr", personagemId)} size={120} bgColor="#f8f0da" fgColor="#3c2a18" />
               </div>
               <div data-export-ignore className="flex flex-wrap justify-center gap-2">
                 <button
@@ -804,6 +814,14 @@ export default function CharacterResult({ photo, dims, tags, onRestart }: Props)
                     {!cardBlob ? "Preparando…" : canShare ? "Compartilhar card" : "Baixar card"}
                   </button>
                 )}
+              </div>
+              <div data-export-ignore>
+                <CompartilharRedes
+                  link={shareUrl}
+                  jogadorId={personagemId}
+                  classe={rpgClass.name}
+                  className={CARD_ACTION_CLASS}
+                />
               </div>
               <p className="text-[.78rem] italic text-center">
                 Escaneie ou compartilhe o link do seu personagem

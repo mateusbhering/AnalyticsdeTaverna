@@ -121,3 +121,28 @@ def test_ignora_erro_sem_relacao():
 def test_ignora_coluna_que_nao_esta_no_payload():
     erro = Exception("column batalhas.rodadas does not exist")
     assert _coluna_ausente(erro, {"jogador_a_id": 1}) is None
+
+
+async def test_evento_de_funil_sem_colunas_de_compartilhamento_grava_sem_elas():
+    """Banco sem `origem`/`ref_jogador_id`: o evento entra, só perde a atribuição."""
+    client = ClientFalso(
+        {"origem", "ref_jogador_id"}, mensagem="column eventos_funil.origem does not exist"
+    )
+    repo = SupabaseRepo(client)
+
+    await repo.registrar_evento_funil(
+        {"sessao_id": "s1", "evento": "inicio", "origem": "x", "ref_jogador_id": 3}
+    )
+
+    assert client.tentativas[-1] == {"sessao_id": "s1", "evento": "inicio"}
+    assert len(client.tentativas) == 2
+
+
+async def test_evento_de_compartilhamento_com_check_antigo_nao_derruba():
+    client = ClientFalso(
+        {"evento"},
+        mensagem='new row violates check constraint "eventos_funil_evento_check"',
+    )
+    repo = SupabaseRepo(client)
+    dados = {"sessao_id": "s1", "evento": "compartilhou", "origem": "x"}
+    assert await repo.registrar_evento_funil(dados) == dados
