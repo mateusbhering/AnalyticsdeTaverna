@@ -120,7 +120,7 @@ export default function Navbar() {
         <button
           className="xl:hidden text-[rgba(240,226,189,0.65)] hover:text-[var(--gold-light)]"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menu"
+          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
           aria-expanded={menuOpen}
           aria-controls="menu-jornada"
         >

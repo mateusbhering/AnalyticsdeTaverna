@@ -659,7 +659,11 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
             className="flex flex-col items-center gap-2 mb-4"
           >
             <div className="polaroid !p-2">
-              <div className="relative w-48 h-48 border border-[rgba(96,66,26,0.4)] overflow-hidden bg-[rgba(23,13,6,0.9)]">
+              <div
+                role="status"
+                aria-live="polite"
+                className="relative w-48 h-48 border border-[rgba(96,66,26,0.4)] overflow-hidden bg-[rgba(23,13,6,0.9)]"
+              >
                 {avatarStatus === "done" && avatarUrl ? (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}

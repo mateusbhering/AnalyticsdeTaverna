@@ -15,11 +15,11 @@
   --paper2:     #e2cb96;
   --paper3:     #d2b47e;
   --ink:        #3c2a18;
-  --ink-70:     rgba(60, 42, 24, 0.78);
-  --ink-50:     rgba(60, 42, 24, 0.58);
+  --ink-70:     rgba(60, 42, 24, 0.82);   /* AA ≥ 5,5:1 sobre paper/paper2 */
+  --ink-50:     rgba(60, 42, 24, 0.80);   /* AA ≥ 4,5:1 até sobre paper3 */
 
   /* metais e cera */
-  --foil:       #8a6428;              /* ouro-folha sobre papel  */
+  --foil:       #5a411a;              /* ouro-folha sobre papel (AA ≥ 4,8:1) */
   --gold:       #c9973f;              /* ouro sobre madeira      */
   --gold-light: #e6bc6a;
   --copper:     #b87333;
