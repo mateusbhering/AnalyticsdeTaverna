@@ -56,6 +56,7 @@ export default function AdminCalendar() {
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={prev}
+          aria-label="Mês anterior"
           className="w-8 h-8 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.35)] text-[var(--ink-70)] hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all flex items-center justify-center cursor-pointer"
         >
           ‹
@@ -71,6 +72,7 @@ export default function AdminCalendar() {
         </div>
         <button
           onClick={next}
+          aria-label="Próximo mês"
           className="w-8 h-8 bg-[rgba(60,42,24,0.06)] border border-[rgba(96,66,26,0.35)] text-[var(--ink-70)] hover:border-[var(--seal)] hover:text-[var(--seal)] transition-all flex items-center justify-center cursor-pointer"
         >
           ›

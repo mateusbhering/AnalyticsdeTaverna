@@ -233,6 +233,7 @@ function BotaoAtributo({
   const conteudo = (
     <button
       onClick={onClick}
+      aria-pressed={selecionado}
       disabled={desabilitado}
       className={`press w-full py-4 flex flex-col items-center gap-1.5 border transition-all disabled:opacity-35 disabled:cursor-not-allowed ${
         selecionado
