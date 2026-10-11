@@ -397,3 +397,33 @@ async def test_analytics_com_banco_vazio_nao_quebra(api):
     for rota in ("/analytics/resumo", "/analytics/classes", "/analytics/atributos",
                  "/analytics/batalhas", "/analytics/taxa-vitoria", "/analytics/insight"):
         assert (await api.get(rota)).status_code == 200
+
+
+async def test_cadastro_grava_tags_sessao_e_nome_limpo(api, repo):
+    resposta = await api.post(
+        "/jogadores",
+        json={
+            "nome": "  Ju‮   Lia  \u0000",
+            "dimensoes": {"criatividade": 12},
+            "tags": ["a", "a", " b ", ""],
+            "sessao_funil_id": "sess-9",
+        },
+    )
+    assert resposta.status_code == 201
+    salvo = repo.jogadores[0]
+    assert salvo["nome"] == "Ju Lia"
+    assert salvo["tags"] == ["a", "b"]
+    assert salvo["sessao_funil_id"] == "sess-9"
+    assert salvo["lideranca"] == 0  # as 10 dimensões vão junto
+
+
+async def test_cadastro_corta_nome_longo_e_nome_vazio_vira_nulo(api, repo):
+    await api.post("/jogadores", json={"nome": "x" * 60, "dimensoes": {"lideranca": 1}})
+    await api.post("/jogadores", json={"nome": "   ", "dimensoes": {"lideranca": 1}})
+    assert len(repo.jogadores[0]["nome"]) == 30
+    assert repo.jogadores[1]["nome"] is None
+
+
+async def test_cadastro_recusa_dimensao_absurda(api):
+    resposta = await api.post("/jogadores", json={"dimensoes": {"lideranca": 99999}})
+    assert resposta.status_code == 422
