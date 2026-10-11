@@ -146,3 +146,19 @@ async def test_evento_de_compartilhamento_com_check_antigo_nao_derruba():
     repo = SupabaseRepo(client)
     dados = {"sessao_id": "s1", "evento": "compartilhou", "origem": "x"}
     assert await repo.registrar_evento_funil(dados) == dados
+
+
+async def test_cadastro_de_jogador_com_banco_atrasado_grava_o_formato_antigo():
+    client = ClientFalso({"tags", "sessao_funil_id"}, mensagem="column jogadores.tags does not exist")
+    repo = SupabaseRepo(client)
+
+    await repo.criar_jogador({"classe": "X", "forca": 1, "tags": ["a"], "sessao_funil_id": "s"})
+
+    assert client.tentativas[-1] == {"classe": "X", "forca": 1}
+
+
+async def test_cadastro_de_jogador_nao_engole_outros_erros():
+    client = ClientFalso({"classe"}, mensagem="connection reset")
+    repo = SupabaseRepo(client)
+    with pytest.raises(ErroPostgrest):
+        await repo.criar_jogador({"classe": "X"})

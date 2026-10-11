@@ -194,7 +194,9 @@ create policy "eventos_funil_select_anon"
 alter table public.jogadores enable row level security;
 alter table public.batalhas  enable row level security;
 
--- jogadores: o frontend ainda insere o personagem direto (fluxo atual do card)
+-- jogadores: o cadastro agora passa por POST /jogadores. Esta policy fica para
+-- bancos que ainda não migraram; depois do deploy, rode sql/pos-migracao-cadastro.sql
+-- para removê-la (o navegador deixa de escrever na tabela).
 drop policy if exists "jogadores_insert_anon" on public.jogadores;
 create policy "jogadores_insert_anon"
   on public.jogadores for insert

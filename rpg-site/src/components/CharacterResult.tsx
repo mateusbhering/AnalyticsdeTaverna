@@ -19,7 +19,7 @@ import {
   dataUrlToBlob,
   mensagemDeFalha,
 } from "@/lib/useAvatarGeneration";
-import { getSupabaseClient } from "@/lib/supabase";
+import { API_BASE } from "@/lib/batalha-api";
 import { avisarNovoJogador } from "@/lib/stats-actions";
 import { registrarEventoFunil, obterSessaoFunil } from "@/lib/funil-tracking";
 import { byName, type ClassInfo } from "@/lib/classes";
@@ -416,64 +416,32 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
         ? `${supabaseBase}/storage/v1/object/public/avatars/${jobId}.jpg`
         : null;
 
-    // O que o card sempre soube gravar.
-    const base = {
-      classe: rpgClass.name,
-      forca: attrs.forca,
-      inteligencia: attrs.inteligencia,
-      agilidade: attrs.agilidade,
-      resistencia: attrs.resistencia,
-      carisma: attrs.carisma,
-      sabedoria: attrs.sabedoria,
-      caos: attrs.caos,
-      foto_url: fotoUrl,
-      // Opcional: sem nome o ranking mostra `#id`. A coluna já existia no schema.
-      nome: limparNome(nome),
-    };
-
     (async () => {
       try {
-        const supabase = getSupabaseClient();
-        const salvar = (linha: object) =>
-          supabase.from("jogadores").insert([linha]).select();
-
-        let { data, error } = await salvar({
-          ...base,
-          // As tags NÃO são deriváveis do resto: a classe e os atributos saem
-          // delas, mas o caminho não volta. Sem gravar aqui, quem sai do card e
-          // volta por /personagem?id= perde as tags para sempre.
-          tags: uniqueTags,
-          // As 10 colunas de dimensão já existiam no schema e ficavam NULL.
-          // As chaves de `Dimensions` batem uma a uma com os nomes delas.
-          ...dims,
-          // Liga este jogador à sessão do funil (lib/funil-tracking.ts) — é
-          // o que deixa `/analytics/funil` casar "quem abriu o quiz" com
-          // "quem virou personagem de fato", em vez de só contar totais.
-          sessao_funil_id: obterSessaoFunil(),
+        // O cadastro passa pelo backend (POST /jogadores): ele recalcula
+        // classe e atributos a partir das dimensões, limpa o nome e grava o
+        // placar zerado — o navegador deixa de escrever direto na tabela.
+        const resposta = await fetch(`${API_BASE}/jogadores`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: limparNome(nome),
+            dimensoes: dims,
+            // Sem as tags a classe pode mudar na volta por /personagem?id=.
+            tags: uniqueTags,
+            foto_url: fotoUrl,
+            // Liga este jogador à sessão do funil (lib/funil-tracking.ts).
+            sessao_funil_id: obterSessaoFunil(),
+          }),
         });
+        const criado = resposta.ok ? ((await resposta.json()) as { id?: number }) : null;
 
-        /* `tags` é coluna nova, e o banco é um deploy separado do frontend: se o
-           `sql/schema.sql` ainda não rodou no Supabase, o insert volta 42703
-           (undefined_column) e o jogador NUNCA seria salvo — sem id no aparelho,
-           /batalha diria "você ainda não tem um herói" e o evento inteiro cairia.
-           Nesse caso grava o formato antigo; as tags ficam só no espelho local
-           até a migração rodar. Mesmo tropeço que o README documenta em
-           `batalhas.rodadas`. */
-        if (error?.code === "42703") {
-          console.warn(
-            "Coluna nova ausente em `jogadores` — rode sql/schema.sql no Supabase. " +
-              "Salvando sem tags/dimensões por enquanto.",
-            error.message,
-          );
-          ({ data, error } = await salvar(base));
-        }
-
-        if (error || !data) {
-          console.error("Erro ao salvar personagem:", error);
+        if (!criado || typeof criado.id !== "number") {
+          console.error("Erro ao salvar personagem:", resposta.status);
           savedRef.current = false; // permite fallback pro link por params
           return;
         }
-        const id = data[0].id as number;
+        const id = criado.id;
         setPersonagemId(id);
         if (typeof window !== "undefined") sessionStorage.setItem(dedupKey, String(id));
         lembrarJogador(String(id), uniqueTags);
@@ -486,7 +454,7 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
           console.error("Falha ao atualizar o dashboard:", e),
         );
       } catch (e) {
-        console.error("Supabase indisponível:", e);
+        console.error("Backend indisponível ao salvar o personagem:", e);
         savedRef.current = false;
       }
     })();
