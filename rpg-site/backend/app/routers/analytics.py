@@ -173,6 +173,15 @@ async def taxa_de_vitoria_por_classe(repo: Repositorio = Depends(get_repo)):
     return {"total_classes": len(resultado), "classes": resultado}
 
 
+@router.get("/raridade-classes")
+async def raridade_das_classes(repo: Repositorio = Depends(get_repo)):
+    """Raridade de cada classe pela distribuição real dos jogadores."""
+    from ..domain.raridade import raridades
+    from ..ludico import classes_conhecidas
+
+    return raridades(classes_conhecidas(), await repo.jogadores_para_analytics())
+
+
 @router.get("/insight")
 async def insight(repo: Repositorio = Depends(get_repo)):
     """O "insight final" previsto no PDF, agora calculado de verdade.

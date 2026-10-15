@@ -52,7 +52,7 @@ export default function RankingBoard({ ranking, loading = false }: { ranking: Re
                 <Link href={`/personagem?id=${item.id}`} className="ranking-adventurer">
                   <span className={`ranking-rank rank-${item.posicao}`}>{item.posicao}</span>
                   <span className="ranking-avatar"><Portrait classe={item.classe} /></span>
-                  <span className="ranking-person"><strong>{name(item)}</strong><span>{item.classe ?? "Classe não informada"}</span></span>
+                  <span className="ranking-person"><strong>{name(item)}</strong><span>{item.classe ?? "Classe não informada"}{item.nivel ? ` · Nv ${item.nivel} ${item.titulo_nivel ?? ""}` : ""}</span></span>
                   <span className="ranking-feats"><strong>{item.xp.toLocaleString("pt-BR")}</strong><small>{item.total_batalhas > 0 ? `${item.vitorias}V · ${item.derrotas}D · ${item.empates}E` : "sem duelos"}</small></span>
                 </Link>
               </li>)}</ol>

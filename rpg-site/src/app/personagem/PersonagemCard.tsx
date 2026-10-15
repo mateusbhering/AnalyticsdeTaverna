@@ -1,4 +1,5 @@
 "use client";
+import PerfilLudico from "@/components/PerfilLudico";
 import { IconText } from "@/components/ui/illustrated-icons";
 
 import { getSupabaseClient } from "@/lib/supabase";
@@ -261,6 +262,8 @@ export default function PersonagemCard() {
           </p>
         </div>
       </div>
+
+      {idParam && <PerfilLudico jogadorId={idParam} ehDono={ehDono} />}
 
       {/* Ações do dono — a única diferença entre esta visão e a pública. Levam
           para uma partida nova e para o desafio; o visitante não vê nenhuma. */}

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 
+from ..domain.progressao import progressao
 from ..repo import Repositorio, get_repo
 from ..schemas import ItemRanking
 
@@ -22,6 +23,7 @@ def _montar_item(posicao: int, jogador: dict) -> dict:
     derrotas = int(jogador.get("derrotas") or 0)
     empates = int(jogador.get("empates") or 0)
     total = vitorias + derrotas + empates
+    nivel = progressao(jogador.get("xp"))
 
     return {
         "posicao": posicao,
@@ -36,6 +38,8 @@ def _montar_item(posicao: int, jogador: dict) -> dict:
         # Arredondado a 1 casa: "66.7%" lê melhor na tela que "66.66666%".
         "taxa_vitoria": round(vitorias / total * 100, 1) if total else 0.0,
         "foto_url": jogador.get("foto_url"),
+        "nivel": nivel["nivel"],
+        "titulo_nivel": nivel["titulo_nivel"],
     }
 
 

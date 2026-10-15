@@ -27,6 +27,8 @@ import { lembrarJogador } from "@/lib/jogador-local";
 import { limparNome } from "@/lib/nome-jogador";
 import { linkComOrigem, registrarCompartilhamento } from "@/lib/compartilhar";
 import CompartilharRedes from "./CompartilharRedes";
+import SeloRaridade from "./SeloRaridade";
+import { buscarRaridades, type Raridade } from "@/lib/ludico";
 
 
 /** Nome da classe sem acento nem espaço, para usar em nome de arquivo. */
@@ -370,6 +372,17 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
   const [personagemId, setPersonagemId] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
 
+  // Raridade da classe, pela distribuição real dos jogadores. Brinde: se o
+  // backend não responder, o card só fica sem o selo.
+  const [raridade, setRaridade] = useState<Raridade | null>(null);
+  useEffect(() => {
+    const ctrl = new AbortController();
+    buscarRaridades(ctrl.signal).then((r) => {
+      if (!ctrl.signal.aborted) setRaridade(r?.[rpgClass.name]?.raridade ?? null);
+    });
+    return () => ctrl.abort();
+  }, [rpgClass.name]);
+
   // Botão de compartilhar só onde a folha nativa existe (celular). No servidor
   // e na primeira renderização do cliente o snapshot é o mesmo — sem hydration
   // mismatch; o botão surge no primeiro reconcile no browser.
@@ -615,6 +628,7 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
           >
             {rpgClass.name}
           </h2>
+          {raridade && <SeloRaridade raridade={raridade} className="mb-3" />}
           <p className="text-[.95rem] italic max-w-xs mx-auto leading-relaxed mb-4">
             {rpgClass.desc}
           </p>

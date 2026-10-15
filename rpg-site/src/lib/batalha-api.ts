@@ -1,3 +1,4 @@
+import type { ExtrasBatalha } from "./ludico";
 import type { ChaveAtributo } from "./atributos";
 import { QTD_ATRIBUTOS_POR_BATALHA } from "./atributos";
 
@@ -62,6 +63,8 @@ export interface ResultadoBatalha {
   /** XP do oponente. */
   xp_b: number;
   narrativa: string;
+  /** Nível, missão e conquistas do desafiante; `null`/ausente se a camada lúdica falhou. */
+  extras?: ExtrasBatalha | null;
 }
 
 /* O backend fica na Render. Quando o serviço está ocioso ele hiberna, e a

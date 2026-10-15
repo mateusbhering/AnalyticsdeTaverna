@@ -15,6 +15,8 @@ class RepoMemoria:
         self.jogadores: list[dict] = []
         self.batalhas: list[dict] = []
         self.eventos_funil: list[dict] = []
+        self.conquistas: list[dict] = []
+        self.missoes: list[dict] = []
         self._proximo_jogador = 1
         self._proxima_batalha = 1
 
@@ -131,3 +133,42 @@ class RepoMemoria:
 
     async def eventos_funil_para_analytics(self) -> list[dict]:
         return list(self.eventos_funil)
+
+    # ── ludificação ──────────────────────────────────────────────────
+
+    async def adicionar_xp(self, jogador_id: int, xp: int) -> dict | None:
+        jogador = await self.obter_jogador(jogador_id)
+        if jogador is None:
+            return None
+        jogador["xp"] = int(jogador.get("xp") or 0) + xp
+        return jogador
+
+    async def conquistas_do_jogador(self, jogador_id: int) -> list[dict]:
+        return [c for c in self.conquistas if c["jogador_id"] == jogador_id]
+
+    async def registrar_conquistas(self, jogador_id: int, codigos: list[str]) -> list[str]:
+        ja_tem = {c["codigo"] for c in await self.conquistas_do_jogador(jogador_id)}
+        novas = [c for c in dict.fromkeys(codigos) if c not in ja_tem]
+        for c in novas:
+            self.conquistas.append(
+                {
+                    "jogador_id": jogador_id,
+                    "codigo": c,
+                    "desbloqueada_em": datetime.now(timezone.utc).isoformat(),
+                }
+            )
+        return novas
+
+    async def missao_concluida(self, jogador_id: int, dia: str) -> dict | None:
+        return next(
+            (m for m in self.missoes if m["jogador_id"] == jogador_id and m["dia"] == dia), None
+        )
+
+    async def registrar_missao(self, jogador_id: int, dia: str, codigo: str, xp: int) -> bool:
+        if await self.missao_concluida(jogador_id, dia):
+            return False
+        self.missoes.append({"jogador_id": jogador_id, "dia": dia, "codigo": codigo, "xp": xp})
+        return True
+
+    async def contar_missoes_concluidas(self, jogador_id: int) -> int:
+        return sum(1 for m in self.missoes if m["jogador_id"] == jogador_id)

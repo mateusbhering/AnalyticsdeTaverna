@@ -833,3 +833,20 @@ body { padding-bottom: 100px; }
   .journey-portal { display: none; }
   .journey-atlas-path a:hover { transform: none; }
 }
+
+/* ── Camada lúdica: raridade do card ─────────────────────────────────────── */
+.raridade-selo {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .2rem .65rem; border: 1px solid;
+  font-family: var(--font-cinzel), serif; font-size: .62rem; letter-spacing: .15em; text-transform: uppercase;
+}
+.raridade-comum    { color: #3c2a18; border-color: rgba(96,66,26,.5); background: rgba(60,42,24,.06); }
+.raridade-rara     { color: #123a58; border-color: #2c6a94; background: rgba(44,106,148,.12); }
+.raridade-epica    { color: #47206a; border-color: #7b43a8; background: rgba(123,67,168,.12); }
+.raridade-lendaria {
+  color: #4e3200; border-color: #b88a1e;
+  background: linear-gradient(110deg, rgba(230,188,106,.4), rgba(255,236,170,.75), rgba(230,188,106,.4));
+  background-size: 200% 100%; animation: raridade-brilho 4s linear infinite;
+}
+@keyframes raridade-brilho { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .raridade-lendaria { animation: none; } }
