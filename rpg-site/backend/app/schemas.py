@@ -28,16 +28,16 @@ AtributoCard = Literal[
 class Dimensoes(BaseModel):
     """As 10 dimensões que o quiz produz. Tudo opcional (default 0)."""
 
-    lideranca: int = 0
-    estrategia: int = 0
-    disciplina: int = 0
-    persistencia: int = 0
-    sociabilidade: int = 0
-    empatia: int = 0
-    adaptabilidade: int = 0
-    criatividade: int = 0
-    impulsividade: int = 0
-    percepcao: int = 0
+    lideranca: int = Field(default=0, ge=0, le=100)
+    estrategia: int = Field(default=0, ge=0, le=100)
+    disciplina: int = Field(default=0, ge=0, le=100)
+    persistencia: int = Field(default=0, ge=0, le=100)
+    sociabilidade: int = Field(default=0, ge=0, le=100)
+    empatia: int = Field(default=0, ge=0, le=100)
+    adaptabilidade: int = Field(default=0, ge=0, le=100)
+    criatividade: int = Field(default=0, ge=0, le=100)
+    impulsividade: int = Field(default=0, ge=0, le=100)
+    percepcao: int = Field(default=0, ge=0, le=100)
 
 
 class GerarPersonagemRequest(BaseModel):
@@ -79,10 +79,12 @@ class CadastroRequest(BaseModel):
 
     nome: str | None = Field(default=None, max_length=60)
     dimensoes: Dimensoes | None = None
-    tags: list[str] = Field(default_factory=list)
+    tags: list[str] = Field(default_factory=list, max_length=60)
     atributos: Atributos | None = None
     classe: str | None = None
-    foto_url: str | None = None
+    foto_url: str | None = Field(default=None, max_length=500)
+    # Sessão do funil que gerou o jogador (liga `eventos_funil` a `jogadores`).
+    sessao_funil_id: str | None = Field(default=None, min_length=1, max_length=100)
 
 
 class JogadorResponse(BaseModel):
