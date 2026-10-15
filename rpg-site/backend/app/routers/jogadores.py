@@ -7,6 +7,8 @@
 
 from __future__ import annotations
 
+import re
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from ..domain.personagem import DIMENSOES, gerar_personagem
@@ -14,6 +16,21 @@ from ..repo import Repositorio, get_repo
 from ..schemas import CadastroRequest, JogadorResponse
 
 router = APIRouter(prefix="/jogadores", tags=["jogadores"])
+
+NOME_MAX = 30  # o mesmo limite do campo do quiz (src/lib/nome-jogador.ts)
+_INVISIVEIS = re.compile(r"[\x00-\x1f\x7f-\x9f\u200b-\u200f\u202a-\u202e\u2066-\u2069]")
+
+
+def limpar_nome(bruto: str | None) -> str | None:
+    """Mesma regra do front, refeita aqui: o servidor não confia no navegador.
+
+    Tira controle/direção invisível, colapsa espaços e corta no limite. Vazio
+    vira `None` (o ranking mostra `#id`).
+    """
+    if not bruto:
+        return None
+    limpo = " ".join(_INVISIVEIS.sub("", bruto).split())[:NOME_MAX].strip()
+    return limpo or None
 
 
 @router.post("", status_code=201, response_model=JogadorResponse)
@@ -23,7 +40,7 @@ async def cadastrar(payload: CadastroRequest, repo: Repositorio = Depends(get_re
     O id é a chave de tudo depois: batalha, ranking e card usam ele.
     """
     dados: dict = {
-        "nome": (payload.nome or "").strip() or None,
+        "nome": limpar_nome(payload.nome),
         "foto_url": payload.foto_url,
         # Placar sempre começa zerado — nunca aceite XP vindo do cliente.
         "xp": 0,
@@ -47,6 +64,14 @@ async def cadastrar(payload: CadastroRequest, repo: Repositorio = Depends(get_re
             status_code=422,
             detail="Envie `dimensoes` (recomendado) ou `atributos` + `classe`.",
         )
+
+    # As tags não são deriváveis do resto (a classe sai delas, mas o caminho
+    # não volta): sem gravar, quem reabre /personagem?id= perde as tags.
+    tags = list(dict.fromkeys(t.strip()[:40] for t in payload.tags if t.strip()))
+    if tags:
+        dados["tags"] = tags
+    if payload.sessao_funil_id:
+        dados["sessao_funil_id"] = payload.sessao_funil_id
 
     return await repo.criar_jogador(dados)
 

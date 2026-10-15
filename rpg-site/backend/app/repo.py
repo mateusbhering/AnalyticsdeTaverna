@@ -28,6 +28,24 @@ log = logging.getLogger(__name__)
 # rodou o `sql/schema.sql` mais recente. Ver `criar_batalha`.
 COLUNAS_OPCIONAIS = ("rodadas",)
 
+# Colunas de `jogadores` que vieram depois da tabela original. Um banco que
+# ainda não rodou o `sql/schema.sql` recusa o insert com "column ... does not
+# exist"; o cadastro então grava o formato antigo em vez de perder o jogador.
+COLUNAS_JOGADOR_OPCIONAIS = (
+    "tags",
+    "sessao_funil_id",
+    "lideranca",
+    "estrategia",
+    "disciplina",
+    "persistencia",
+    "sociabilidade",
+    "empatia",
+    "adaptabilidade",
+    "criatividade",
+    "impulsividade",
+    "percepcao",
+)
+
 # Teto de linhas lidas nas rotas de análise. O dashboard agrega em Python;
 # sem um limite, uma tabela grande derrubaria a memória do plano da Render.
 LIMITE_ANALYTICS = 5000
@@ -62,10 +80,22 @@ class SupabaseRepo:
     # ── jogadores ────────────────────────────────────────────────────
 
     async def criar_jogador(self, dados: dict) -> dict:
-        def _exec():
-            return self.client.table("jogadores").insert(dados).execute()
+        def _exec(linha: dict):
+            return self.client.table("jogadores").insert(linha).execute()
 
-        resposta = await run_in_threadpool(_exec)
+        try:
+            resposta = await run_in_threadpool(_exec, dados)
+        except Exception as erro:  # noqa: BLE001 — só tolera coluna ausente
+            texto = str(erro).lower()
+            ausentes = [c for c in COLUNAS_JOGADOR_OPCIONAIS if c in dados]
+            if ("does not exist" not in texto and "schema cache" not in texto) or not ausentes:
+                raise
+            log.warning(
+                "`jogadores` sem colunas novas — rode sql/schema.sql. Cadastrando sem: %s",
+                ", ".join(ausentes),
+            )
+            sem_novas = {k: v for k, v in dados.items() if k not in COLUNAS_JOGADOR_OPCIONAIS}
+            resposta = await run_in_threadpool(_exec, sem_novas)
         if not resposta.data:
             raise HTTPException(status_code=500, detail="Falha ao cadastrar o jogador.")
         return resposta.data[0]
