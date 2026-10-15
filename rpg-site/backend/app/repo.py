@@ -69,6 +69,12 @@ class Repositorio(Protocol):
     async def batalhas_para_analytics(self) -> list[dict]: ...
     async def registrar_evento_funil(self, dados: dict) -> dict: ...
     async def eventos_funil_para_analytics(self) -> list[dict]: ...
+    async def adicionar_xp(self, jogador_id: int, xp: int) -> dict | None: ...
+    async def conquistas_do_jogador(self, jogador_id: int) -> list[dict]: ...
+    async def registrar_conquistas(self, jogador_id: int, codigos: list[str]) -> list[str]: ...
+    async def missao_concluida(self, jogador_id: int, dia: str) -> dict | None: ...
+    async def registrar_missao(self, jogador_id: int, dia: str, codigo: str, xp: int) -> bool: ...
+    async def contar_missoes_concluidas(self, jogador_id: int) -> int: ...
 
 
 class SupabaseRepo:
@@ -368,7 +374,137 @@ class SupabaseRepo:
         return []
 
 
+    # ── ludificação: XP bônus, conquistas, missões ───────────────────
+
+    async def adicionar_xp(self, jogador_id: int, xp: int) -> dict | None:
+        """Soma XP sem mexer em vitórias/derrotas (bônus de missão)."""
+        jogador = await self.obter_jogador(jogador_id)
+        if jogador is None:
+            return None
+
+        def _update():
+            return (
+                self.client.table("jogadores")
+                .update({"xp": int(jogador.get("xp") or 0) + xp})
+                .eq("id", jogador_id)
+                .execute()
+            )
+
+        resposta = await run_in_threadpool(_update)
+        return resposta.data[0] if resposta.data else None
+
+    async def conquistas_do_jogador(self, jogador_id: int) -> list[dict]:
+        def _exec():
+            return (
+                self.client.table("conquistas")
+                .select("codigo,desbloqueada_em")
+                .eq("jogador_id", jogador_id)
+                .execute()
+            )
+
+        try:
+            return (await run_in_threadpool(_exec)).data or []
+        except Exception as erro:  # noqa: BLE001 — tabela ausente = sem conquistas gravadas
+            if not _tabela_ausente(erro):
+                raise
+            return []
+
+    async def registrar_conquistas(self, jogador_id: int, codigos: list[str]) -> list[str]:
+        """Grava as conquistas que o jogador ainda não tinha; devolve só as NOVAS.
+
+        Sem a tabela (banco que não rodou o schema) devolve `[]`: nada é
+        anunciado como novo, porque não haveria como lembrar que já foi.
+        """
+        ja_tem = {c["codigo"] for c in await self.conquistas_do_jogador(jogador_id)}
+        novas = [c for c in dict.fromkeys(codigos) if c not in ja_tem]
+        if not novas:
+            return []
+
+        def _exec():
+            return (
+                self.client.table("conquistas")
+                .insert([{"jogador_id": jogador_id, "codigo": c} for c in novas])
+                .execute()
+            )
+
+        try:
+            await run_in_threadpool(_exec)
+        except Exception as erro:  # noqa: BLE001
+            if _tabela_ausente(erro):
+                log.warning("Tabela `conquistas` não existe — rode sql/schema.sql.")
+                return []
+            raise
+        return novas
+
+    async def missao_concluida(self, jogador_id: int, dia: str) -> dict | None:
+        def _exec():
+            return (
+                self.client.table("missoes_concluidas")
+                .select("codigo,xp,dia")
+                .eq("jogador_id", jogador_id)
+                .eq("dia", dia)
+                .limit(1)
+                .execute()
+            )
+
+        try:
+            dados = (await run_in_threadpool(_exec)).data or []
+        except Exception as erro:  # noqa: BLE001
+            if not _tabela_ausente(erro):
+                raise
+            return None
+        return dados[0] if dados else None
+
+    async def registrar_missao(self, jogador_id: int, dia: str, codigo: str, xp: int) -> bool:
+        """Marca a missão do dia como cumprida. `False` = já estava (ou sem tabela).
+
+        A unicidade (jogador, dia) fica no banco: duas batalhas simultâneas não
+        pagam o bônus duas vezes — a segunda inserção falha e devolve `False`.
+        """
+
+        def _exec():
+            return (
+                self.client.table("missoes_concluidas")
+                .insert({"jogador_id": jogador_id, "dia": dia, "codigo": codigo, "xp": xp})
+                .execute()
+            )
+
+        try:
+            await run_in_threadpool(_exec)
+        except Exception as erro:  # noqa: BLE001
+            texto = str(erro).lower()
+            if _tabela_ausente(erro):
+                log.warning("Tabela `missoes_concluidas` não existe — rode sql/schema.sql.")
+                return False
+            if "duplicate" in texto or "unique" in texto or "23505" in texto:
+                return False
+            raise
+        return True
+
+    async def contar_missoes_concluidas(self, jogador_id: int) -> int:
+        def _exec():
+            return (
+                self.client.table("missoes_concluidas")
+                .select("dia", count="exact")
+                .eq("jogador_id", jogador_id)
+                .execute()
+            )
+
+        try:
+            resposta = await run_in_threadpool(_exec)
+        except Exception as erro:  # noqa: BLE001
+            if not _tabela_ausente(erro):
+                raise
+            return 0
+        return int(resposta.count or len(resposta.data or []))
+
+
 COLUNAS_EVENTO_OPCIONAIS = ("origem", "ref_jogador_id")
+
+
+def _tabela_ausente(erro: Exception) -> bool:
+    texto = str(erro).lower()
+    return "does not exist" in texto or "schema cache" in texto or "could not find the table" in texto
 
 
 def _coluna_ausente(erro: Exception, dados: dict) -> str | None:

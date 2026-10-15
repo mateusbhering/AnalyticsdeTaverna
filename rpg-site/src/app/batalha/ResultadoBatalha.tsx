@@ -14,6 +14,7 @@ import {
 import { byName, type ClassInfo } from "@/lib/classes";
 import type { ResultadoBatalha as Resultado, Rodada } from "@/lib/batalha-api";
 import type { Oponente } from "./DesafioScanner";
+import BrindesDoDuelo from "@/components/BrindesDoDuelo";
 import TintaViva from "@/components/ui/tinta-viva";
 import { useTavernFeedback } from "@/lib/useTavernFeedback";
 
@@ -315,6 +316,7 @@ export default function ResultadoBatalha({
                 <TintaViva texto={resultado.narrativa} atraso={0.55} />
               </p>
               <BarraXp meu={resultado.xp_a} oponente={resultado.xp_b} euVenci={veredito === "vitoria"} />
+              <BrindesDoDuelo extras={resultado.extras} />
             </motion.div>
           )}
         </AnimatePresence>

@@ -171,6 +171,9 @@ class BatalhaResponse(BaseModel):
     xp_a: int
     xp_b: int
     narrativa: str
+    # Brindes lúdicos do desafiante (nível, conquistas novas, missão). `None`
+    # quando a camada lúdica falha — o duelo em si nunca depende dela.
+    extras: dict | None = None
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -189,6 +192,8 @@ class ItemRanking(BaseModel):
     total_batalhas: int = 0
     taxa_vitoria: float = 0.0
     foto_url: str | None = None
+    nivel: int = 1
+    titulo_nivel: str = "Aprendiz"
 
 
 # ─────────────────────────────────────────────────────────────────────────────

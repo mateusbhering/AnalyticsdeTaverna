@@ -23,6 +23,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 
 from ..domain import batalha as motor
 from ..repo import Repositorio, get_repo
+from .. import ludico
 from ..schemas import BatalhaRequest, BatalhaResponse, OponenteResponse, PareamentoRequest
 
 router = APIRouter(prefix="/batalha", tags=["batalha"])
@@ -86,6 +87,8 @@ async def batalhar(payload: BatalhaRequest, repo: Repositorio = Depends(get_repo
         faltando = payload.jogador_a_id if jogador_a is None else payload.jogador_b_id
         raise HTTPException(status_code=404, detail=f"Jogador {faltando} não encontrado.")
 
+    xp_antes_a = int(jogador_a.get("xp") or 0)  # antes de o placar mudar (nível/brindes)
+
     # 1. Decide o vencedor (regra pura, sem banco).
     try:
         resultado = motor.resolver(jogador_a, jogador_b, payload.atributos)
@@ -130,8 +133,11 @@ async def batalhar(payload: BatalhaRequest, repo: Repositorio = Depends(get_repo
         motor.resultado_para(resultado["resultado"], "b"),
     )
 
+    extras = await ludico.pos_batalha(repo, payload.jogador_a_id, payload.jogador_b_id, xp_antes_a)
+
     return {
         "id": registro.get("id"),
+        "extras": extras,
         "jogador_a_id": payload.jogador_a_id,
         "jogador_b_id": payload.jogador_b_id,
         "desafiante": _lado(jogador_a),

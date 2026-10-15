@@ -27,6 +27,9 @@ export interface ItemRanking {
   total_batalhas: number;
   taxa_vitoria: number;
   foto_url: string | null;
+  /** Derivados do XP no backend; ausentes se o backend for anterior à camada lúdica. */
+  nivel?: number;
+  titulo_nivel?: string;
 }
 
 /**
