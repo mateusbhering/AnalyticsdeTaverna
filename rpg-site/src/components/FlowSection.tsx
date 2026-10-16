@@ -6,8 +6,9 @@ import {
   Trophy,
   type LucideIcon,
 } from "@/components/ui/illustrated-icons";
-import { Reveal, Stagger, StaggerItem } from "@/components/ui/reveal";
-import TiltCard from "@/components/ui/tilt-card";
+import { Reveal } from "@/components/ui/reveal";
+import Image from "next/image";
+
 
 const steps: {
   num: string;
@@ -69,44 +70,26 @@ export default function FlowSection() {
           </div>
         </Reveal>
 
-        <div className="relative">
-          {/* Linha que conecta as páginas, como costura do caderno */}
-          <div className="hidden lg:block absolute top-[60px] left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-[rgba(201,151,63,0.35)] to-transparent pointer-events-none" />
-
-          <Stagger className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
-            {steps.map((step) => (
-              <StaggerItem key={step.num} className="h-full">
-                <TiltCard className="h-full">
-                  <div className="card-hover paper-card paper-frame relative p-7 text-center h-full">
-                    {/* Número fantasma em folha de ouro desbotada */}
-                    <span
-                      className="absolute top-3 right-4 text-[2.5rem] font-black text-[rgba(138,100,40,0.16)] pointer-events-none leading-none"
-                      style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-                    >
-                      {step.num}
-                    </span>
-                    <div className="icon-frame w-14 h-14 mx-auto mb-4">
-                      <step.Icon size={26} strokeWidth={1.5} />
-                    </div>
-                    <h3
-                      className="text-[var(--seal)] text-[.85rem] mb-2"
-                      style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-                    >
-                      {step.title}
-                    </h3>
-                    <p className="text-[.85rem] leading-relaxed mb-3">
-                      {step.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1 justify-center">
-                      {step.tags.map((tag) => (
-                        <span key={tag} className="tag-pill">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </TiltCard>
-              </StaggerItem>
-            ))}
-          </Stagger>
+        <div className="world-journey" aria-label="Mapa da jornada, da atração à apresentação">
+          <Image src="/scenery/rpg-world-journey-v1.png" alt="" fill unoptimized sizes="(max-width: 768px) 100vw, 1200px" className="world-journey-map" />
+          <div className="world-journey-patina" aria-hidden="true" />
+          <div className="world-journey-caption" aria-hidden="true">Carta de navegação · Os cinco marcos da jornada</div>
+          <svg className="world-journey-route" viewBox="0 0 1200 660" preserveAspectRatio="none" aria-hidden="true">
+            <path className="world-route-shadow" d="M120 310C170 310 230 120 360 120S510 320 600 320 730 135 840 135 930 325 1080 325" />
+            <path className="world-route-ink" d="M120 310C170 310 230 120 360 120S510 320 600 320 730 135 840 135 930 325 1080 325" />
+          </svg>
+          <ol className="world-journey-stops">
+            {steps.map((step) => <li key={step.num} className={`world-journey-stop stop-${step.num}`}>
+              <span className="world-journey-pin" aria-hidden="true">{step.num}</span>
+              <div className="world-journey-note">
+                <span className="world-journey-step">Etapa {step.num}</span>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+                <div className="world-journey-tags">{step.tags.map(tag => <span key={tag}>{tag}</span>)}</div>
+              </div>
+            </li>)}
+          </ol>
+          <p className="world-journey-legend">Do primeiro chamado ao seu próprio herói.</p>
         </div>
       </section>
     </div>

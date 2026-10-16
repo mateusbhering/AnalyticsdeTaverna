@@ -445,3 +445,75 @@ body { padding-bottom: calc(var(--game-dock-height) + env(safe-area-inset-bottom
 .game-home-emblem .illustrated-icon { width: 38px !important; height: 38px !important; }
 .tavern-cinematic .rpg-actions a .illustrated-icon { width: 24px !important; height: 24px !important; }
 @media (max-width: 640px) { .game-dock-item > .illustrated-icon { width: 28px !important; height: 28px !important; } }
+
+
+/* Pergaminho claro e ornamentos delicados, com as fotos originais. */
+#guilda .guild-parchment-card { position: relative; isolation: isolate; padding: 38px 27px 62px; background: transparent; border: 0; box-shadow: none; filter: drop-shadow(0 8px 6px #0005); }
+.guild-parchment-frame { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+#guilda .guild-photo { position: relative; border: 1px solid #a17c49; box-shadow: 0 0 0 3px #e7cc98, 0 0 0 4px #c0a16f; }
+#guilda .guild-photo img { filter: none; }
+#guilda .guild-parchment-card > p { color: #4d3520; text-shadow: none; position: relative; }
+#guilda .guild-parchment-card > p:first-of-type { padding: 10px 4px 4px; margin-top: 6px; background: none; border: 0; box-shadow: none; }
+#guilda .guild-parchment-card > p:nth-of-type(2) { color: #775a36; }
+#guilda .guild-parchment-card > span { color: #8f6938; text-shadow: none; }
+#guilda .guild-parchment-card a { color: #6d4d29; }
+#guilda .guild-parchment-card a:hover { color: #8c2318; }
+#guilda .guild-parchment-card > div:last-child { flex-wrap: wrap; row-gap: 3px; }
+#guilda .guild-linkedin { border-color: #b48d564d; background: #cba66a20; }
+#guilda .guild-parchment-card a:focus-visible { outline: 2px solid #8c2318; outline-offset: 3px; }
+@media (max-width: 640px) { #guilda .guild-member-grid { gap: 24px 14px; } #guilda .guild-parchment-card { padding: 27px 16px 46px; } #guilda .guild-parchment-card > p:first-of-type { padding: 7px 1px 3px; font-size: 10px; } #guilda .guild-parchment-card a { font-size: 9px; overflow-wrap: anywhere; } #guilda .guild-parchment-card a .illustrated-icon { width: 20px !important; height: 20px !important; } }
+
+/* Acabamento medieval sóbrio: papel envelhecido, bronze e tinta sépia. */
+#guilda .guild-parchment-card { filter: drop-shadow(0 10px 10px #0006); }
+#guilda .guild-photo { border: 1px solid #655237; box-shadow: 0 0 0 2px #b6a17b, 0 0 0 3px #8c75514d; }
+#guilda .guild-parchment-card > p:first-of-type { color: #352a1e; letter-spacing: .07em; }
+#guilda .guild-parchment-card > p:nth-of-type(2) { color: #66543c; }
+#guilda .guild-parchment-card a { color: #59452c; }
+#guilda .guild-parchment-card .guild-linkedin { background: transparent; border: 1px solid #92794d66; border-radius: 2px; }
+
+/* Fluxo da experiência sobre uma carta de mundo medieval. */
+.world-journey { position: relative; isolation: isolate; min-height: 660px; overflow: hidden; background: #c6b38e; border: 1px solid #9c7d47; border-radius: 3px 9px 4px 7px; box-shadow: 0 18px 45px #0005, inset 0 0 0 6px #54382055; }
+.world-journey-map { object-fit: cover; object-position: center; z-index: -3; }
+.world-journey-patina { position: absolute; inset: 0; z-index: -2; background: linear-gradient(0deg,#3b2b1959,transparent 30%,transparent 75%,#3b2b1933); box-shadow: inset 0 0 65px #3e2b1e80; pointer-events: none; }
+.world-journey-caption { position: absolute; top: 24px; left: 24px; right: 24px; font-family: var(--font-cinzel),serif; font-size: 10px; letter-spacing: .16em; text-align: center; color: #39291b; text-shadow: 0 1px #fff1cd; }
+.world-journey-route { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.world-journey-route path { fill: none; stroke-linecap: round; }
+.world-route-shadow { stroke: #f4dfb8c9; stroke-width: 7; }
+.world-route-ink { stroke: #783f2b; stroke-width: 2.5; stroke-dasharray: 3 9; }
+.world-journey-stops { list-style: none; margin: 0; padding: 0; }
+.world-journey-stop { position: absolute; width: 18%; top: 47%; left: 1%; text-align: center; }
+.world-journey-stop.stop-02 { left: 21%; top: 18%; }
+.world-journey-stop.stop-03 { left: 41%; top: 48.5%; }
+.world-journey-stop.stop-04 { left: 61%; top: 20.5%; }
+.world-journey-stop.stop-05 { left: 81%; top: 49%; }
+.world-journey-pin { display: grid; place-items: center; width: 42px; height: 42px; margin: -21px auto 17px; background: radial-gradient(circle at 30% 25%,#995b43,#613322); color: #f4e4c3; border: 2px solid #c2a36b; border-radius: 50%; box-shadow: 0 3px 8px #251b1666,inset 0 0 0 3px #351c1266; font-family: var(--font-cinzel),serif; font-size: 17px; }
+.world-journey-note { padding: 16px 10px; background: #f1e3c5ed; border: 1px solid #8f724a80; box-shadow: 0 6px 14px #30211633; border-radius: 2px; color: #392b20; }
+.world-journey-step { font-family: var(--font-cinzel),serif; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; color: #795b38; }
+.tavern-cinematic .world-journey-note h3 { color: #5f3527; font-size: 13px; margin: 7px 0 9px; }
+.world-journey-note p { font-size: 14px; line-height: 1.45; color: #443527; }
+.world-journey-tags { display: flex; gap: 4px 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px; padding-top: 9px; border-top: 1px solid #977f5140; }
+.world-journey-tags span { font-family: var(--font-cinzel),serif; font-size: 7px; color: #745536; }
+.world-journey-legend { position: absolute; bottom: 17px; left: 20px; right: 20px; text-align: center; font-style: italic; font-size: 15px; color: #f7ebcf; text-shadow: 0 1px 4px #281b11; }
+@media (max-width: 1000px) { .world-journey { min-height: 780px; } .world-journey-stop { width: 19%; left: .5%; } .world-journey-stop.stop-02 { left: 20.5%; } .world-journey-stop.stop-03 { left: 40.5%; } .world-journey-stop.stop-04 { left: 60.5%; } .world-journey-stop.stop-05 { left: 80.5%; } .world-journey-note { padding: 13px 8px; } }
+@media (max-width: 768px) {
+ .world-journey { min-height: 0; padding: 80px 16px 60px; background: #c6b38e url('/scenery/rpg-world-journey-v1.png') center top / auto 100% no-repeat; }
+ .world-journey-map { display: none; }
+ .world-journey-patina { background: #b9a47522; }
+ .world-journey-caption { top: 24px; font-size: 9px; line-height: 1.7; }
+ .world-journey-route { display: none; }
+ .world-journey-stops { position: relative; display: flex; flex-direction: column; gap: 25px; }
+ .world-journey-stops::before { content: ''; position: absolute; top: 24px; bottom: 24px; left: 21px; border-left: 2px dashed #77412d; }
+ .world-journey .world-journey-stop { position: relative; inset: auto; width: 100%; display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 13px; text-align: left; align-items: start; }
+ .world-journey-pin { width: 40px; height: 40px; margin: 14px 0 0; position: relative; font-size: 16px; }
+ .world-journey-note { padding: 15px 13px; }
+ .tavern-cinematic .world-journey-note h3 { font-size: 15px; }
+ .world-journey-note p { font-size: 15px; }
+ .world-journey-tags { justify-content: flex-start; }
+ .world-journey-tags span { font-size: 8px; }
+ .world-journey-legend { font-size: 13px; }
+}
+
+.world-journey-caption { width: fit-content; margin-inline: auto; padding: 7px 12px; background: #ecdbb9d9; border: 1px solid #8f724a55; }
+.world-journey-step { font-size: 9px; }
+.world-journey-tags span { font-size: 9px; }
+@media (max-width: 768px) { .world-journey { padding-top: 290px; } .world-journey-map { display: block; height: 255px !important; object-fit: cover; object-position: center; } .world-journey-caption { top: 15px; max-width: calc(100% - 34px); left: 0; right: 0; font-size: 8px; } .world-journey-patina { background: linear-gradient(0deg,#c5b18b33,#c5b18b33 calc(100% - 265px),transparent calc(100% - 245px)); } }
