@@ -1,4 +1,3 @@
-import { useId } from "react";
 import { IconText } from "@/components/ui/illustrated-icons";
 import Image from "next/image";
 import { UserRound } from "@/components/ui/illustrated-icons";
@@ -32,24 +31,14 @@ function LinkedinMark({ className }: { className?: string }) {
   return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}><path d="M5.4 7.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM3.7 9h3.4v12H3.7Zm5.6 0h3.3v1.6c.7-1.3 1.8-1.9 3.4-1.9 3.2 0 4.3 2 4.3 5.5V21h-3.5v-6.2c0-1.8-.3-3-1.9-3s-2.1 1.2-2.1 2.9V21H9.3Z" /></svg>;
 }
 
-function GuildParchmentFrame() {
-  const id = useId();
-  return <svg className="guild-parchment-frame" viewBox="0 0 240 360" preserveAspectRatio="none" aria-hidden="true">
-    <defs>
-      <radialGradient id={id + "-paper"} cx="45%" cy="38%" r="75%"><stop offset="0" stopColor="#e2d3b4"/><stop offset=".65" stopColor="#d3bf96"/><stop offset="1" stopColor="#9d7d4a"/></radialGradient>
-      <filter id={id + "-grain"} x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="8"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".13"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter>
-    </defs>
-    <path d="m16 5 205 1 5 10 10 7-2 312-12 8-5 11-199-1-6-9-10-7 1-313 10-7Z" fill="#a78d61" stroke="#745b36" strokeWidth=".6" />
-    <path d="m20 10 196 1 6 11 9 4-2 306-12 6-5 10-190-1-7-10-8-5 1-304 9-7Z" fill="#c6ae83" stroke="#8b7045" strokeWidth=".5" />
-    <path d="M26 16h188q1 13 12 14l-2 298q-12 0-14 13H28q-1-12-14-15l2-295q12-2 10-15Z" fill={"url(#" + id + "-paper)"} filter={"url(#" + id + "-grain)"} stroke="#89714b" strokeWidth=".5" />
-    <g fill="none" stroke="#806745" strokeWidth=".55" opacity=".7">
-      <path d="M30 21h64m52 0h64q0 10 10 13v120m0 49v121q-12 1-14 12h-66m-44 0H32q-1-10-13-14V203m0-49V35q12-2 11-14Z" />
-      <path d="M34 25h54m64 0h54m10 18v101m0 68v104M24 44v100m0 69v102m14 16h50m64 0h48" />
-      <path d="M101 27h12V16h15v14h-11v-9h6v5h-3m-22-4H83m48 0h24M18 162v12h9v-16h-6v12m0 8v13h6v-9h-3m-10-28v-18m0 64v17m205-55v12h-9v-16h6v12m0 8v13h-6v-9h3m10-28v-18m0 64v17" />
-      <path d="M91 328h18m22 0h18m-29-4c-12-6-11-13-9-13 4 0 9 8 9 13 0-5 5-13 9-13 3 0 3 7-9 13Zm0 0v9m-12-12-8-5m32 5 8-5m-34 12-8 3m36-3 8 3" />
-    </g>
-    <g fill="#c9a46e" opacity=".4"><circle cx="35" cy="74" r="1"/><circle cx="207" cy="265" r="1.2"/><circle cx="35" cy="293" r=".8"/><circle cx="204" cy="85" r=".8"/><circle cx="54" cy="334" r=".6"/></g>
-  </svg>;
+function GuildCardBackground({ variant = 0 }: { variant?: number }) {
+  return <div className={`guild-card-backing backing-${variant}`} aria-hidden="true">
+    <div className="guild-leather-art"><Image src="/guild/antique-rpg-card-backs-v1.png" alt="" width={1536} height={2304} unoptimized loading="eager" className="guild-leather-sheet" /></div>
+    <svg className="guild-antique-border" viewBox="0 0 240 360" preserveAspectRatio="none">
+      <g fill="none" stroke="#b49b6a" strokeWidth=".65" opacity=".75"><path d="M9 9h222v342H9Z"/><path d="M16 17h99l5-7 5 7h99v151l7 12-7 12v151h-99l-5 7-5-7H16V192l-7-12 7-12Z"/><path d="M22 23h196v314H22Z" opacity=".45"/></g>
+      <g fill="#a58b5c" stroke="#2a1b12" strokeWidth=".5"><path d="m120 4 6 8-6 8-6-8Zm0 336 6 8-6 8-6-8ZM4 180l8-6 8 6-8 6Zm216 0 8-6 8 6-8 6Z"/></g>
+    </svg>
+  </div>;
 }
 
 export default function GuildSection() {
@@ -75,7 +64,7 @@ export default function GuildSection() {
           <div className="mb-12 guild-guides">
             <div className="guild-guide guild-guide-mage" aria-hidden="true"><Image src="/classes/guild-presenters-v2.png" alt="" width={1776} height={888} unoptimized loading="eager" className="guild-guide-art" /></div>
             <div className="card-hover guild-parchment-card group guild-advisor w-[200px] text-center">
-              <GuildParchmentFrame />
+              <GuildCardBackground />
               <div className="guild-photo overflow-hidden border border-[rgba(96,66,26,0.35)] aspect-square">
                 <Image
                   src={advisor.photo}
@@ -103,13 +92,14 @@ export default function GuildSection() {
         </Reveal>
 
         {/* Fotos originais em cards de pergaminho. */}
-        <Stagger className="guild-member-grid grid grid-cols-2 gap-x-8 gap-y-10 max-w-3xl mx-auto">
-          {members.map((member) => (
+        <div className="guild-member-rail" role="region" aria-label="Membros da guilda em fileira horizontal" tabIndex={0}>
+        <Stagger className="guild-member-grid max-w-6xl mx-auto">
+          {members.map((member, index) => (
             <StaggerItem key={member.name} rotate={0} className="h-full">
               <div
-                className="card-hover guild-parchment-card group h-full text-center"
+                className="card-hover guild-parchment-card guild-member-card group h-full text-center"
               >
-                <GuildParchmentFrame />
+                <GuildCardBackground variant={index} />
                 <div className="guild-photo overflow-hidden border border-[rgba(96,66,26,0.35)] aspect-square">
                   {member.photo ? (
                     <Image
@@ -160,6 +150,8 @@ export default function GuildSection() {
             </StaggerItem>
           ))}
         </Stagger>
+        </div>
+        <p className="guild-rail-hint">Deslize para os lados para conhecer toda a guilda.</p>
 
         {/* Fleur decoration */}
         <div className="mt-16 flex items-center gap-4">

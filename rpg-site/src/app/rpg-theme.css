@@ -517,3 +517,415 @@ body { padding-bottom: calc(var(--game-dock-height) + env(safe-area-inset-bottom
 .world-journey-step { font-size: 9px; }
 .world-journey-tags span { font-size: 9px; }
 @media (max-width: 768px) { .world-journey { padding-top: 290px; } .world-journey-map { display: block; height: 255px !important; object-fit: cover; object-position: center; } .world-journey-caption { top: 15px; max-width: calc(100% - 34px); left: 0; right: 0; font-size: 8px; } .world-journey-patina { background: linear-gradient(0deg,#c5b18b33,#c5b18b33 calc(100% - 265px),transparent calc(100% - 245px)); } }
+
+/* Galeria da guilda com brasões de metal e ramos gravados. */
+#guilda { max-width: 1280px; }
+#guilda .guild-member-grid { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; padding-top: 60px; }
+#guilda .guild-member-card { padding-inline: 21px; }
+.guild-crest { position: absolute; width: 136px; height: 91px; top: -64px; left: calc(50% - 68px); z-index: 2; filter: drop-shadow(0 5px 4px #0005); pointer-events: none; }
+#guilda .guild-member-card > p:first-of-type { min-height: 58px; display: flex; align-items: center; justify-content: center; }
+@media (max-width: 900px) { #guilda .guild-member-grid { grid-template-columns: repeat(2,minmax(0,1fr)); max-width: 720px; gap: 85px 24px; } }
+@media (max-width: 640px) { #guilda .guild-member-grid { gap: 70px 14px; padding-top: 50px; } #guilda .guild-member-card { padding-inline: 16px; } .guild-crest { width: 105px; height: 70px; top: -50px; left: calc(50% - 52.5px); } #guilda .guild-member-card > p:first-of-type { min-height: 47px; } }
+
+
+
+/* Couro antigo e gravuras de RPG esmaecidas, sem adornos externos. */
+#guilda .guild-member-grid { padding-top: 12px; }
+#guilda .guild-parchment-card { padding-top: 28px; padding-bottom: 36px; }
+.guild-card-backing { position: absolute; inset: 0; z-index: -1; background: #49301f; border: 1px solid #8e734c; border-radius: 5px; overflow: hidden; box-shadow: inset 0 0 24px #160d09cc; pointer-events: none; }
+.guild-leather-art { position: absolute; inset: 0; overflow: hidden; opacity: .52; }
+.guild-leather-art .guild-leather-sheet { position: absolute; width: 200%; max-width: none; height: 200%; left: 0; top: 0; }
+.backing-1 .guild-leather-sheet, .backing-3 .guild-leather-sheet { left: -100%; }
+.backing-2 .guild-leather-sheet, .backing-3 .guild-leather-sheet { top: -100%; }
+.guild-card-backing::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg,#20120c55,transparent 48%); box-shadow: inset 0 0 14px #180e0866; }
+.guild-antique-border { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+#guilda .guild-photo { border-color: #af9564; box-shadow: 0 0 0 2px #24160e, 0 0 0 3px #9b81554d; }
+#guilda .guild-parchment-card > p:first-of-type { color: #eadbb9; }
+#guilda .guild-parchment-card > p:nth-of-type(2) { color: #cfb98e; }
+#guilda .guild-parchment-card > span { color: #cfb98e; }
+#guilda .guild-parchment-card a { color: #dbc79d; }
+#guilda .guild-parchment-card a:hover { color: #fff0c8; }
+#guilda .guild-parchment-card .guild-linkedin { border-color: #b49b6a66; }
+@media (max-width: 900px) { #guilda .guild-member-grid { row-gap: 28px; } }
+@media (max-width: 640px) { #guilda .guild-member-grid { padding-top: 8px; row-gap: 22px; } #guilda .guild-parchment-card { padding-top: 23px; padding-bottom: 26px; } }
+
+/* Os quatro membros permanecem na mesma fileira em qualquer tela. */
+.guild-member-rail { overflow-x: auto; overflow-y: hidden; padding: 0 3px 16px; scrollbar-width: thin; scrollbar-color: #987749 #21140d; scroll-snap-type: x proximity; }
+.guild-member-rail:focus-visible { outline: 2px solid #b49b6a; outline-offset: 4px; }
+#guilda .guild-member-grid { display: flex; flex-wrap: nowrap; gap: 24px; max-width: none; padding-top: 12px; }
+#guilda .guild-member-grid > div { flex: 1 0 calc((100% - 72px) / 4); min-width: 0; height: auto; scroll-snap-align: start; }
+#guilda .guild-member-card { height: 100%; }
+.guild-rail-hint { display: none; }
+@media (max-width: 900px) { #guilda .guild-member-grid { gap: 18px; } #guilda .guild-member-grid > div { flex: 0 0 clamp(230px, 72vw, 290px); } .guild-rail-hint { display: block; margin-top: 9px; text-align: center; font-size: 13px; font-style: italic; color: #cbb58a; } }
+
+/* Vila de tarefas: cenário discreto com conversas e trocas em pixel art. */
+#diferenciais { isolation: isolate; }
+.pixel-quest-backdrop { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.pixel-quest-village { object-fit: cover; object-position: center; image-rendering: pixelated; opacity: .24; filter: saturate(.65) sepia(.12); }
+.pixel-quest-vignette { position: absolute; inset: 0; background: linear-gradient(0deg,#21140d 0%,transparent 22%,transparent 80%,#21140d),radial-gradient(ellipse at center,#21140d88,transparent 80%); }
+.pixel-quest-pair { position: absolute; width: 230px; height: 145px; opacity: .38; filter: saturate(.75); image-rendering: pixelated; }
+.pixel-quest-pair.pair-0 { left: 1%; top: 27%; }
+.pixel-quest-pair.pair-1 { right: 0; top: 56%; }
+.pixel-quest-pair.pair-2 { left: 34%; bottom: 4%; }
+.pixel-actor { position: absolute; width: 96px; height: 96px; left: 0; bottom: 10px; overflow: hidden; animation: quest-step 6s steps(3,end) infinite; }
+.pixel-actor.actor-1 { left: auto; right: 0; animation-delay: -3s; }
+.pixel-actor .pixel-actor-sheet { position: absolute; width: 600%; max-width: none; height: 200%; left: calc(var(--actor-column) * -100%); top: 0; image-rendering: pixelated; animation: quest-talk-frame 2.4s steps(1,end) infinite; }
+.actor-1 .pixel-actor-sheet { animation-delay: -1.2s; }
+.pixel-chat { position: absolute; top: 0; padding: 7px 8px; display: flex; gap: 4px; background: #c8b48c; border: 3px solid #4c3827; animation: quest-conversation 8s steps(1,end) infinite; }
+.pixel-chat::after { content: ''; position: absolute; bottom: -9px; left: 7px; border-top: 8px solid #c8b48c; border-right: 8px solid transparent; }
+.pixel-chat i { width: 4px; height: 4px; background: #4c3827; animation: quest-dot 1.5s steps(2,end) infinite; }
+.pixel-chat i:nth-child(2) { animation-delay: -.5s; }.pixel-chat i:nth-child(3) { animation-delay: -1s; }
+.chat-left { left: 35px; }.chat-right { right: 30px; animation-delay: -4s; }
+.pixel-favor { position: absolute; left: 72px; bottom: 30px; width: 28px; height: 28px; animation: quest-exchange 8s steps(12,end) infinite; }
+.pixel-favor svg { width: 100%; height: 100%; image-rendering: pixelated; }
+.pixel-task-done { position: absolute; top: 9px; left: 102px; color: #b5ca84; font-family: monospace; font-size: 21px; animation: quest-done 8s steps(1,end) infinite; }
+.pair-1 { animation-delay: -2s; }.pair-1 :is(.pixel-favor,.pixel-task-done) { animation-delay: -2s; }.pair-2 :is(.pixel-favor,.pixel-task-done) { animation-delay: -5s; }
+.pixel-firefly { position: absolute; width: 3px; height: 3px; background: #e6bc6a; opacity: .25; animation: quest-dot 4s steps(2,end) infinite; }.firefly-one { left: 18%; top: 61%; }.firefly-two { right: 17%; top: 29%; animation-delay: -2s; }
+.pixel-quest-backdrop * { animation-play-state: paused; }.pixel-quest-backdrop.is-running * { animation-play-state: running; }
+.pixel-motion-toggle { position: absolute; right: 24px; bottom: 18px; z-index: 3; color: #c2ad87; font-size: 11px; border-bottom: 1px dotted #9e815c80; padding: 5px; cursor: pointer; }.pixel-motion-toggle:focus-visible { outline: 2px solid #e6bc6a; outline-offset: 4px; }
+@keyframes quest-step { 0%,15%,85%,100% { transform: translate(0,0); } 40%,60% { transform: translate(6px,-2px); } }
+@keyframes quest-talk-frame { 0%,49% { top: 0; } 50%,100% { top: -100%; } }
+@keyframes quest-conversation { 0%,42% { opacity: 1; transform: translateY(0); } 43%,100% { opacity: 0; transform: translateY(3px); } }
+@keyframes quest-dot { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+@keyframes quest-exchange { 0%,25% { opacity: 0; transform: translateX(0); } 30% { opacity: 1; transform: translate(0,-5px); } 65% { opacity: 1; transform: translate(65px,-5px); } 70%,100% { opacity: 0; transform: translateX(65px); } }
+@keyframes quest-done { 0%,70%,100% { opacity: 0; } 72%,92% { opacity: 1; } }
+@media (max-width: 768px) { .pixel-quest-pair { width: 175px; height: 116px; }.pixel-actor { width: 72px; height: 72px; }.pixel-quest-pair.pair-0 { left: -8px; top: 24%; }.pixel-quest-pair.pair-1 { right: -6px; top: 52%; }.pixel-quest-pair.pair-2 { left: 16%; bottom: 3%; }.pixel-chat { top: 0; padding: 5px; }.chat-left { left: 15px; }.chat-right { right: 10px; }.pixel-favor { left: 52px; width: 22px; height: 22px; bottom: 22px; }.pixel-task-done { left: 80px; }.pixel-motion-toggle { right: 18px; bottom: 12px; } }
+@media (prefers-reduced-motion: reduce) { .pixel-quest-backdrop * { animation: none !important; }.chat-right,.pixel-favor,.pixel-task-done { opacity: 0; }.pixel-motion-toggle { display: none; } }
+
+@media (min-width: 769px) { .pixel-quest-pair { width: 170px; height: 120px; } .pixel-actor { width: 72px; height: 72px; } .pixel-quest-pair.pair-2 { height: 100px; bottom: 0; } .pixel-favor { left: 50px; bottom: 25px; width: 23px; height: 23px; } .pixel-task-done { left: 75px; } .chat-left { left: 15px; } .chat-right { right: 10px; } }
+
+.pixel-quest-backdrop.is-paused * { animation-play-state: paused !important; }
+
+/* O cenário ocupa toda a largura, separado da área de leitura no desktop. */
+.journey-scene[data-rpg-theme] .tavern-cinematic > .pixel-quest-realm { position: relative; isolation: isolate; overflow: hidden; background: #21140d; }
+.pixel-quest-realm > #diferenciais { position: relative; z-index: 1; }
+.pixel-quest-realm > .pixel-quest-backdrop { z-index: 0; }
+.pixel-quest-realm .pixel-quest-village { display: block; width: 100%; height: 100%; opacity: .36; object-fit: cover; object-position: center; }
+.pixel-quest-realm .pixel-quest-pair { opacity: .5; }
+.pixel-quest-realm .pixel-quest-vignette { background: linear-gradient(0deg,#21140d,transparent 18%,transparent 82%,#21140d),radial-gradient(ellipse at center,#21140d66,transparent 80%); }
+@media (min-width: 1280px) { .pixel-quest-realm .pair-0 { left: max(30px,calc(50% - 620px)); } .pixel-quest-realm .pair-1 { right: max(30px,calc(50% - 620px)); } }
+@media (max-width: 768px) { .pixel-quest-realm .pixel-quest-village { opacity: .29; object-position: 48% center; } .pixel-quest-realm .pixel-quest-pair { opacity: .42; } }
+
+/* O mesmo cenário animado acompanha os atributos e o carrossel de classes. */
+.pixel-quest-realm > #atributos { position: relative; z-index: 1; background: transparent !important; }
+.pixel-quest-attributes .pixel-quest-village { opacity: .3; }
+.pixel-quest-attributes .pixel-quest-pair { opacity: .38; }
+.pixel-quest-attributes .attribute-symbols { position: relative; padding: 18px; border-radius: 5px; background: radial-gradient(ellipse,#21140dba,#21140d55 75%,transparent); }
+.pixel-quest-attributes :is(.attribute-symbol figcaption,.attribute-score,h3) { text-shadow: 0 2px 5px #160d08; }
+.pixel-quest-attributes .pair-0 { top: 18%; }
+.pixel-quest-attributes .pair-1 { top: 45%; }
+.pixel-quest-attributes .pair-2 { left: 26%; bottom: 1%; }
+@media (max-width: 768px) { .pixel-quest-attributes .pixel-quest-village { opacity: .25; object-position: 44% center; } .pixel-quest-attributes .attribute-symbols { padding: 14px 4px; } .pixel-quest-attributes .pair-0 { top: 16%; } .pixel-quest-attributes .pair-1 { top: 49%; } .pixel-quest-attributes .pair-2 { bottom: 1%; } }
+
+.pixel-quest-attributes .pixel-quest-village { object-position: 50% center; opacity: .34; }
+@media (max-width: 768px) { .pixel-quest-attributes .pixel-quest-village { object-position: 48% center; opacity: .28; } }
+
+/* Um único percurso em pixel art, do conceito ao salão da guilda. */
+.continuous-pixel-world { position: relative; isolation: isolate; overflow: hidden; background: linear-gradient(#0b1013,#101416 22%,#141212 45%,#170f0d 70%,#100b09); }
+.pixel-world-zone { position: relative; isolation: isolate; }
+.pixel-world-scenery { position: absolute; inset: -120px 0; z-index: -1; opacity: .15; pointer-events: none; mask-image: linear-gradient(0deg,transparent,#000 18%,#000 82%,transparent); }
+.pixel-world-scenery svg { width: 100%; height: 100%; display: block; image-rendering: pixelated; filter: saturate(.82); }
+.pixel-world-zone:first-child .pixel-world-scenery { top: 0; }
+.pixel-world-zone:last-child .pixel-world-scenery { bottom: 0; }
+.journey-scene[data-rpg-theme] .tavern-cinematic .continuous-pixel-world :is(.bg-dark-wood,.bg-black-linen,.pixel-quest-realm,.cinematic-story) { background: transparent !important; }
+.continuous-pixel-world .cinematic-story::before { display: none; }
+.continuous-pixel-world .section-line-top { opacity: 0; }
+.continuous-pixel-world .pixel-quest-vignette { display: none; }
+.pixel-world-zone > .pixel-quest-backdrop { z-index: 0; }
+.pixel-world-zone > :not(.pixel-world-scenery):not(.pixel-quest-backdrop):not(.pixel-motion-toggle) { position: relative; z-index: 1; }
+.continuous-pixel-world :is(h2,h3,.section-eyebrow) { text-shadow: 0 2px 6px #160e09; }
+.continuous-pixel-world #conceito > div:nth-of-type(2) { margin-inline: auto; max-width: 800px; }
+.continuous-pixel-world #conceito > div:nth-of-type(2) .text-center { text-align: center; }
+.continuous-pixel-world .cinematic-story-quote { margin-inline: auto; max-width: 800px; }
+.continuous-pixel-world :is(#conceito,#fluxo,#tecnologia,#guilda) { background: transparent; }
+@media (max-width: 768px) { .pixel-world-scenery { inset-block: -80px; opacity: .13; } .continuous-pixel-world .pixel-quest-pair { opacity: .32; } }
+@media (prefers-reduced-motion: reduce) { .pixel-world-scenery { scroll-behavior: auto; } }
+
+/* Carta física: o mapa repousa sobre papel rasgado, sem moldura retangular. */
+.world-journey {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  filter: drop-shadow(0 15px 18px #0008);
+}
+.world-journey::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  z-index: -4;
+  background: url('/scenery/journey-torn-parchment-v1.png') center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+.world-journey-map {
+  opacity: .62;
+  mix-blend-mode: multiply;
+  filter: sepia(.28) saturate(.65);
+  mask-image: linear-gradient(to right,transparent,#000 10%,#000 90%,transparent),linear-gradient(to bottom,transparent,#000 13%,#000 85%,transparent);
+  mask-composite: intersect;
+}
+.world-journey-patina { background: none; box-shadow: none; }
+.world-journey-caption { top: 32px; background: #ebd2a880; border: 0; }
+.world-journey-note { background: #f0dfbcd9; border-color: #8f724a55; box-shadow: 0 4px 12px #55371e25; }
+.continuous-pixel-world .world-journey-note h3 { text-shadow: none; }
+.world-journey-legend { bottom: 28px; color: #533a25; text-shadow: 0 1px #f5e1b780; }
+@media (max-width: 768px) {
+  .world-journey { background: transparent; padding: 295px 22px 70px; }
+  .world-journey::before { inset: -10px -5px; }
+  .world-journey-map { top: 45px !important; left: 4% !important; width: 92% !important; height: 225px !important; opacity: .7; }
+  .world-journey-caption { top: 28px; max-width: calc(100% - 46px); }
+  .world-journey-patina { background: none; }
+  .world-journey .world-journey-stop { grid-template-columns: 36px minmax(0,1fr); gap: 8px; }
+  .world-journey-pin { width: 34px; height: 34px; }
+  .world-journey-stops::before { left: 17px; }
+  .world-journey-note { padding: 13px 10px; }
+}
+@media (max-width: 768px) {
+  .world-journey::before {
+    background: none;
+    border: 1px solid transparent;
+    border-image: url('/scenery/journey-torn-parchment-v1.png') 150 fill / 60px 26px / 0 round;
+  }
+}
+
+/* Etapas do mapa com leitura forte sobre o pergaminho. */
+.world-journey-note {
+  background: #f7e9cafa;
+  border: 1px solid #76502d;
+  border-top: 3px solid #75402b;
+  box-shadow: 0 7px 18px #35211350, inset 0 0 0 3px #fff4db80;
+  padding: 19px 12px;
+}
+.world-journey-step { color: #57351e; font-size: 10px; font-weight: 700; letter-spacing: .1em; }
+.tavern-cinematic .world-journey-note h3 { color: #502517; font-size: 16px; font-weight: 700; margin: 9px 0 12px; }
+.world-journey-note p { color: #2d2118; font-size: 16px; font-weight: 600; line-height: 1.5; }
+.world-journey-tags { border-top-color: #81613c80; padding-top: 11px; }
+.world-journey-tags span { color: #51351e; font-size: 10px; font-weight: 700; }
+.world-journey-pin { border-color: #f2d59a; box-shadow: 0 4px 10px #251b1699, 0 0 0 2px #603820; font-weight: 700; }
+@media (min-width: 769px) { .world-journey { min-height: 760px; } }
+@media (max-width: 1000px) and (min-width: 769px) {
+  .world-journey { min-height: 900px; }
+  .tavern-cinematic .world-journey-note h3 { font-size: 14px; overflow-wrap: anywhere; }
+  .world-journey-note p { font-size: 15px; }
+}
+@media (max-width: 768px) {
+  .world-journey-note { padding: 17px 13px; }
+  .tavern-cinematic .world-journey-note h3 { font-size: 17px; }
+  .world-journey-note p { font-size: 16px; }
+  .world-journey-tags span { font-size: 10px; }
+}
+
+/* Vista explodida da taverna: cada módulo revela uma camada do site. */
+.rpg-assembly { display: grid; grid-template-columns: minmax(0,1.55fr) minmax(310px,1fr); gap: 30px; align-items: center; }
+.rpg-assembly-visual { min-width: 0; }
+.rpg-assembly-caption { text-align: center; font-family: var(--font-cinzel),serif; font-size: 10px; color: #cdb58b; letter-spacing: .14em; margin-bottom: 12px; }
+.rpg-assembly-diagram { position: relative; isolation: isolate; }
+.rpg-assembly-diagram::before { content: ''; position: absolute; inset: 6% 0; z-index: -1; background: radial-gradient(ellipse,#af793b24,transparent 70%); }
+.rpg-assembly-art { display: block; width: 100%; height: auto; filter: drop-shadow(0 18px 20px #0009); }
+.rpg-assembly-pin { position: absolute; transform: translate(-50%,-50%); display: flex; align-items: center; flex-direction: column; gap: 4px; cursor: pointer; border: 0; background: none; color: #f7e9cc; z-index: 1; }
+.rpg-assembly-pin > span:first-child { display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid #b79158; border-radius: 50%; background: #27180ef5; box-shadow: 0 3px 10px #000b; font-family: var(--font-cinzel),serif; font-size: 12px; transition: background .2s,box-shadow .2s,transform .2s; }
+.rpg-assembly-pin-label { background: #1a110cf0; border: 1px solid #9e7a4d70; padding: 3px 7px; white-space: nowrap; font-family: var(--font-cinzel),serif; font-size: 9px; }
+.rpg-assembly-pin.is-active > span:first-child { color: #24140b; background: #e6c27d; box-shadow: 0 0 0 5px #d5a95730,0 0 22px #db9f4460; transform: scale(1.12); }
+.rpg-assembly-selector { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.rpg-assembly-selector button { display: flex; align-items: center; gap: 7px; padding: 9px 10px; border: 1px solid #9f794b60; background: #251a13e6; color: #decaa6; font-family: var(--font-cinzel),serif; font-size: 10px; cursor: pointer; transition: border-color .2s,background .2s; }
+.rpg-assembly-selector button span { color: #bb9659; font-size: 9px; }
+.rpg-assembly-selector button[aria-pressed=true] { background: #503322; border-color: #dbb575; color: #fff0d1; }
+.rpg-assembly button:focus-visible { outline: 2px solid #f3d394; outline-offset: 5px; }
+.rpg-assembly-selector button:hover { border-color: #e0b97a; }
+.rpg-assembly-detail { padding: 30px; background: linear-gradient(145deg,#35241bee,#1d1510f5); border: 1px solid #b68f5966; border-top: 3px solid #b9935c; box-shadow: inset 0 0 0 5px #d2b48008,0 18px 40px #0005; min-height: 485px; }
+.rpg-assembly-detail-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; font-family: var(--font-cinzel),serif; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #d2ac70; margin-bottom: 23px; }
+.tavern-cinematic .rpg-assembly-detail h3 { font-family: var(--font-cinzel),serif; font-size: clamp(21px,2.1vw,28px); line-height: 1.3; color: #f2d69e; margin: 0 0 12px; }
+.rpg-assembly-role { color: #e3c69c; font-size: 18px; line-height: 1.5; font-style: italic; margin-bottom: 20px; }
+.rpg-assembly-description { color: #f0e4cf; font-size: 17px; line-height: 1.65; }
+.rpg-assembly-detail ul { display: flex; flex-wrap: wrap; gap: 7px; padding: 0; margin: 21px 0; list-style: none; }
+.rpg-assembly-detail li { color: #ddc69e; border: 1px solid #ba94553d; padding: 5px 8px; font-family: var(--font-cinzel),serif; font-size: 9px; }
+.rpg-assembly-connection { border-top: 1px solid #bb945b45; padding-top: 16px; }
+.rpg-assembly-connection > span { font-family: var(--font-cinzel),serif; font-size: 10px; letter-spacing: .08em; color: #d3ac70; text-transform: uppercase; }
+.rpg-assembly-connection p { font-size: 16px; line-height: 1.5; color: #d9cbb4; margin-top: 8px; }
+.rpg-assembly-footer { text-align: center; font-style: italic; font-size: 17px; color: #cbb595; margin-top: 35px; }
+@media (max-width: 900px) { .rpg-assembly { grid-template-columns: 1fr; gap: 28px; } .rpg-assembly-visual { width: 100%; max-width: 750px; margin-inline: auto; } .rpg-assembly-detail { min-height: 0; } }
+@media (max-width: 480px) { .rpg-assembly-detail { padding: 23px 20px; } .rpg-assembly-pin > span:first-child { width: 30px; height: 30px; font-size: 10px; } .rpg-assembly-pin-label { display: none; } .rpg-assembly-caption { font-size: 8px; letter-spacing: .09em; } .rpg-assembly-selector { gap: 7px; margin-top: 16px; } .rpg-assembly-selector button { padding: 11px 9px; min-height: 44px; } .rpg-assembly-detail-top { font-size: 9px; } }
+
+.rpg-assembly-piece { position: absolute; border: 0; padding: 0; background: transparent; cursor: pointer; color: #f7e9cc; z-index: 1; -webkit-tap-highlight-color: transparent; }
+.rpg-assembly-piece-art { position: absolute; inset: 0; pointer-events: none; background-image: url('/scenery/tavern-exploded-assembly-v1.png'); background-repeat: no-repeat; opacity: 0; filter: brightness(1.3) saturate(1.15); transition: opacity .2s; }
+.rpg-assembly-piece:hover .rpg-assembly-piece-art,.rpg-assembly-piece:focus-visible .rpg-assembly-piece-art,.rpg-assembly-piece.is-active .rpg-assembly-piece-art { opacity: 1; }
+.rpg-assembly-piece-marker { position: absolute; left: 50%; top: 60%; transform: translate(-50%,-50%); display: flex; align-items: center; flex-direction: column; gap: 4px; pointer-events: none; }
+.rpg-assembly-piece-marker b { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid #b79158; border-radius: 50%; background: #27180ef5; box-shadow: 0 3px 10px #000b; font-family: var(--font-cinzel),serif; font-size: 11px; font-weight: 400; }
+.rpg-assembly-piece-marker > span { background: #1a110cf0; border: 1px solid #9e7a4d70; padding: 3px 6px; white-space: nowrap; font-family: var(--font-cinzel),serif; font-size: 8px; }
+.rpg-assembly-piece.is-active b,.rpg-assembly-piece:focus-visible b { background: #e6c27d; color: #24140b; box-shadow: 0 0 0 4px #d5a95750; }
+.rpg-assembly-piece:focus-visible { background: #dbb57530; }
+@media (max-width:480px) { .rpg-assembly-piece-marker > span { display: none; } .rpg-assembly-piece-marker b { width: 26px; height: 26px; font-size: 9px; } }
+@media (prefers-reduced-motion:reduce) { .rpg-assembly-piece-art { transition: none; } }
+
+/* Faíscas de pixels aparecem uma vez a cada seleção, seguindo o contorno da peça. */
+.rpg-piece-sparkles { position: absolute; z-index: 3; pointer-events: none; }
+.rpg-piece-spark { position: absolute; display: block; width: var(--spark-size); height: var(--spark-size); background: #ffe3a0; box-shadow: 0 0 5px #eabe7280, 0 0 10px #d69c4530; opacity: 0; animation: rpg-piece-shimmer var(--spark-duration) ease-out var(--spark-delay) both; }
+@keyframes rpg-piece-shimmer {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(.5); }
+  18% { opacity: .85; transform: translate(-50%,-70%) scale(1); }
+  45% { opacity: .6; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--spark-x)),calc(-50% + var(--spark-y))) scale(.3); }
+}
+@media (prefers-reduced-motion: reduce) { .rpg-piece-sparkles { display: none; } .rpg-piece-spark { animation: none; } }
+
+/* A mesa troca de arte junto com cada vantagem. */
+.advantage-table-carousel { position: relative; }
+.advantage-table-stage { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(0,1fr); align-items: stretch; background: #20130df2; border: 1px solid #a7834a66; box-shadow: 0 22px 55px #0008; }
+.advantage-table-picture { position: relative; isolation: isolate; aspect-ratio: 1; overflow: hidden; background: #1c100e; }
+.advantage-table-scene { position: absolute; inset: 0; background-image: url('/scenery/advantages-rpg-table-atlas-v1.png'); background-size: 200% 200%; background-repeat: no-repeat; image-rendering: pixelated; opacity: 0; transition: opacity 1s ease-in-out; }
+.advantage-table-scene.is-active { opacity: 1; }
+.advantage-table-picture::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg,#160d0cbd,transparent 24%,transparent 85%,#160d0c88); pointer-events: none; }
+.advantage-table-scene-label { position: absolute; z-index: 2; top: 18px; left: 0; right: 0; text-align: center; font-family: var(--font-cinzel),serif; font-size: 10px; letter-spacing: .2em; color: #f2d8ad; text-shadow: 0 2px 6px #000; }
+.advantage-table-navigation { position: absolute; z-index: 2; bottom: 16px; left: 18px; right: 18px; display: flex; align-items: center; justify-content: space-between; }
+.advantage-table-navigation button { display: grid; place-items: center; width: 44px; height: 44px; background: #28170ee8; border: 1px solid #c49b5d; color: #f5ddb0; cursor: pointer; border-radius: 50%; box-shadow: 0 3px 8px #0008; }
+.advantage-table-navigation > span { color: #fff0d6; font-family: var(--font-cinzel),serif; font-size: 13px; letter-spacing: .12em; text-shadow: 0 2px 4px #000; }
+.advantage-table-navigation i { font-style: normal; opacity: .5; padding-inline: 8px; }
+.advantage-table-description { padding: clamp(25px,3vw,45px); display: flex; flex-direction: column; justify-content: center; border-left: 1px solid #a7834a40; background: linear-gradient(135deg,#392118c9,#21140ff5); }
+.advantage-table-chapter { color: #c7a574; font-family: var(--font-cinzel),serif; font-size: 9px; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 25px; }
+.tavern-cinematic .advantage-table-description h3 { color: #f1d39a; font-family: var(--font-cinzel),serif; font-size: clamp(23px,2.5vw,33px); line-height: 1.25; margin-bottom: 15px; }
+.advantage-table-theme { font-style: italic; color: #d6b78c; font-size: 19px; line-height: 1.45; margin-bottom: 23px; }
+.advantage-table-copy { color: #f2e5cf; font-size: 18px; line-height: 1.7; }
+.advantage-table-story { margin-top: 27px; padding-top: 21px; border-top: 1px solid #bd95554d; }
+.advantage-table-story > span { color: #c7a574; text-transform: uppercase; font-family: var(--font-cinzel),serif; font-size: 9px; letter-spacing: .12em; }
+.advantage-table-story p { color: #cdbca4; font-size: 16px; line-height: 1.55; margin-top: 9px; }
+.advantage-table-controls { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 23px; }
+.advantage-table-choices { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.advantage-table-choices button { display: flex; align-items: center; gap: 9px; border: 1px solid #a7834a55; color: #c9b89d; background: #281b13e6; padding: 12px 13px; font-family: var(--font-cinzel),serif; font-size: 10px; cursor: pointer; }
+.advantage-table-choices button > span { width: 6px; height: 6px; border-radius: 50%; border: 1px solid #a7834a; flex-shrink: 0; }
+.advantage-table-choices button[aria-current=true] { border-color: #d6ad6a; background: #513522; color: #ffebc4; }
+.advantage-table-choices button[aria-current=true] > span { background: #f0ce8b; box-shadow: 0 0 7px #efc97f66; }
+.advantage-table-pause { width: 40px; height: 40px; flex-shrink: 0; display: grid; place-items: center; border: 1px solid #b28a5355; color: #e1c79f; background: #281b13; cursor: pointer; }
+.advantage-table-carousel button:focus-visible { outline: 2px solid #f3d394; outline-offset: 4px; }
+.advantage-table-footer { margin-top: 35px; text-align: center; font-size: 18px; font-style: italic; color: #cdb897; }
+@media (max-width:900px) { .advantage-table-stage { grid-template-columns: 1fr; max-width: 650px; margin-inline: auto; } .advantage-table-description { border-left: 0; border-top: 1px solid #a7834a40; min-height: 400px; } .advantage-table-controls { align-items: flex-start; } }
+@media (max-width:480px) { .advantage-table-description { padding: 26px 22px; min-height: 465px; } .advantage-table-chapter { font-size: 8px; margin-bottom: 18px; } .advantage-table-copy { font-size: 17px; } .advantage-table-theme { font-size: 18px; } .advantage-table-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; } .advantage-table-choices button { padding: 12px 8px; min-height: 44px; font-size: 8px; } .advantage-table-controls { gap: 8px; } }
+@media (prefers-reduced-motion:reduce) { .advantage-table-scene { transition: none; } }
+
+/* Mesa recortada e selo independente, sem a moldura de um card. */
+.advantage-table-stage { background: transparent; border: 0; box-shadow: none; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 25px; align-items: center; }
+.advantage-table-picture { aspect-ratio: auto; overflow: visible; background: transparent; padding-bottom: 75px; }
+.advantage-table-picture::after { display: none; }
+.advantage-table-description { background: transparent; border: 0; padding: 20px 10px 20px 22px; }
+.advantage-table-navigation { bottom: 0; left: 16%; right: 16%; }
+.advantage-table-story { border-top-color: #bd955535; }
+.ritual-table-wrap { position: relative; }
+.ritual-table-surface { position: relative; isolation: isolate; --ritual-color: #ffca68; }
+.ritual-table-cutout { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; image-rendering: pixelated; filter: drop-shadow(0 16px 12px #0008); }
+.ritual-magic-drag { position: absolute; width: 47%; aspect-ratio: 1; padding: 0; border: 0; background: transparent; color: var(--ritual-color); transform: translate(-50%,-50%) scaleY(.72); cursor: grab; touch-action: none; user-select: none; z-index: 1; -webkit-tap-highlight-color: transparent; }
+.ritual-magic-drag.is-dragging { cursor: grabbing; }
+.ritual-sigil { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 3px currentColor) drop-shadow(0 0 11px currentColor); opacity: .9; transition: color 1s,filter .4s; }
+.ritual-sigil-core { transform-origin: center; animation: ritual-breathe 4s ease-in-out infinite; }
+.ritual-sigil-orbit { transform-origin: center; animation: ritual-orbit 24s linear infinite; opacity: .65; }
+.ritual-sigil-pixels { transform-origin: center; animation: ritual-breathe 3s ease-in-out infinite reverse; opacity: .6; }
+.ritual-simulation-1 { --ritual-color: #77e2ff; }
+.ritual-simulation-1 .ritual-sigil-core { animation-duration: 2.8s; }
+.ritual-simulation-1 .ritual-sigil-orbit { animation-duration: 14s; }
+.ritual-simulation-2 { --ritual-color: #f3a9bf; }
+.ritual-simulation-2 .ritual-sigil-orbit { animation-direction: reverse; animation-duration: 18s; stroke-dasharray: 22 70; }
+.ritual-simulation-3 { --ritual-color: #ffad42; }
+.ritual-simulation-3 .ritual-sigil-core { animation-duration: 3.2s; }
+.ritual-simulation-3 .ritual-sigil-orbit { animation-duration: 10s; stroke-dasharray: 14 50; }
+.ritual-table-hint { text-align: center; color: #cbb697; font-size: 13px; line-height: 1.5; padding-top: 12px; }
+.ritual-table-hint button { background: transparent; border: 0; border-bottom: 1px solid #b3946550; color: #dac29a; font-size: 12px; padding: 5px; cursor: pointer; margin-top: 3px; }
+@keyframes ritual-breathe { 0%,100% { opacity: .6; } 50% { opacity: 1; } }
+@keyframes ritual-orbit { to { transform: rotate(360deg); } }
+@media (max-width:900px) { .advantage-table-stage { grid-template-columns: 1fr; max-width: 750px; gap: 15px; } .advantage-table-description { min-height: 0; padding: 22px 8px; } }
+@media (max-width:480px) { .ritual-table-surface { width: calc(100% + 24px); margin-left: -12px; } .ritual-table-hint { font-size: 11px; } .advantage-table-picture { padding-bottom: 68px; } .advantage-table-description { padding: 20px 3px; min-height: 0; } }
+@media (prefers-reduced-motion:reduce) { .ritual-sigil-core,.ritual-sigil-orbit,.ritual-sigil-pixels { animation: none; } .ritual-sigil { transition: none; } }
+.ritual-magic-drag { border-radius: 50%; }
+.ritual-sigil { filter: drop-shadow(0 0 1px currentColor) drop-shadow(0 0 6px currentColor); }
+
+/* Arrastar o selo navega entre categorias; cada tópico tem seu próprio desenho. */
+.ritual-table-surface { touch-action: pan-y; cursor: grab; }
+.ritual-table-surface.is-swiping,.ritual-table-surface.is-swiping .ritual-magic-drag { cursor: grabbing; }
+.ritual-magic-drag { touch-action: pan-y; transition: margin-left .4s ease-out; }
+.ritual-table-surface.is-swiping .ritual-magic-drag { transition: none; }
+.ritual-symbol-variant { opacity: 0; transform: scale(.94); transform-origin: center; transition: opacity .6s ease,transform .6s ease; }
+.ritual-symbol-variant.is-active { opacity: 1; transform: scale(1); }
+@media (prefers-reduced-motion:reduce) { .ritual-magic-drag,.ritual-symbol-variant { transition: none; } }
+
+/* Dois emblemas de cada lado da mesa, com apenas os nomes das vantagens. */
+.advantage-table-composition { display: grid; grid-template-columns: minmax(140px, .65fr) minmax(0,2.3fr) minmax(140px,.65fr); gap: 20px; align-items: center; }
+.advantage-table-center { min-width: 0; }
+.advantage-emblems { display: flex; flex-direction: column; justify-content: space-evenly; gap: 65px; padding: 0; margin: 0; list-style: none; }
+.advantage-emblem { display: flex; flex-direction: column; align-items: center; gap: 13px; text-align: center; color: #bbaa8f; transition: color .6s; }
+.advantage-sigil-icon { display: block; width: 85px; height: 85px; color: var(--emblem-color); opacity: .55; transition: opacity .6s,filter .6s; }
+.advantage-emblem > span { font-family: var(--font-cinzel),serif; font-size: 13px; line-height: 1.6; }
+.emblem-0 { --emblem-color: #ffca68; }.emblem-1 { --emblem-color: #77e2ff; }.emblem-2 { --emblem-color: #f3a9bf; }.emblem-3 { --emblem-color: #ffad42; }
+.advantage-emblem.is-active { color: #f7e4bd; }
+.advantage-emblem.is-active .advantage-sigil-icon { opacity: 1; filter: drop-shadow(0 0 7px var(--emblem-color)); }
+.advantage-table-playback { display: flex; justify-content: center; margin-top: 18px; }
+.advantage-table-playback .advantage-table-pause { border: 0; background: transparent; opacity: .65; }
+@media (max-width: 760px) {
+  .advantage-table-composition { grid-template-columns: 1fr 1fr; gap: 25px 15px; }
+  .advantage-table-center { grid-column: 1 / -1; grid-row: 1; }
+  .advantage-emblems { gap: 28px; align-self: stretch; justify-content: flex-start; }
+  .advantage-sigil-icon { width: 62px; height: 62px; }
+  .advantage-emblem > span { font-size: 11px; }
+  .advantage-emblem { gap: 8px; min-height: 105px; }
+}
+@media (prefers-reduced-motion: reduce) { .advantage-emblem,.advantage-sigil-icon { transition: none; } }
+
+.advantage-emblem-select { display: flex; flex-direction: column; align-items: center; gap: 13px; padding: 8px; border: 0; background: transparent; color: inherit; cursor: pointer; width: 100%; }
+.advantage-emblem-select > span { font-family: var(--font-cinzel),serif; font-size: 13px; line-height: 1.6; }
+.advantage-emblem-select:hover .advantage-sigil-icon { opacity: 1; filter: drop-shadow(0 0 5px var(--emblem-color)); }
+.advantage-emblem-select:focus-visible { outline: 2px solid #e9cc94; outline-offset: 5px; border-radius: 6px; }
+.ritual-potion-smoke { position: absolute; left: 50%; top: 49%; width: 48%; height: 42%; transform: translate(-50%,-50%); z-index: 4; pointer-events: none; color: color-mix(in srgb,var(--ritual-color) 30%,#d4c7bb); }
+.ritual-smoke-puff { position: absolute; height: auto; overflow: visible; opacity: 0; animation: ritual-potion-brew 1.8s ease-out both; }
+@keyframes ritual-potion-brew {
+  0% { opacity: 0; transform: translate(-50%,0) scale(.25); }
+  18% { opacity: .58; }
+  38% { opacity: .48; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--smoke-x)),var(--smoke-y)) scale(1.7); }
+}
+@media(max-width:760px) { .advantage-emblem-select { gap: 8px; } .advantage-emblem-select > span { font-size: 11px; } }
+@media(prefers-reduced-motion:reduce) { .ritual-potion-smoke { display: none; } .ritual-smoke-puff { animation: none; } }
+
+/* Emblemas suspensos e anfitrião atrás da mesa. */
+.advantage-sigil-icon { animation: advantage-emblem-float 5.5s ease-in-out infinite; }
+.emblem-1 .advantage-sigil-icon { animation-delay: -1.4s; }.emblem-2 .advantage-sigil-icon { animation-delay: -2.8s; }.emblem-3 .advantage-sigil-icon { animation-delay: -4.1s; }
+.ritual-sigil { animation: ritual-seal-float 6s ease-in-out infinite; }
+.ritual-host { position: relative; height: 175px; isolation: isolate; }
+.ritual-host-character { position: absolute; left: calc(50% - 108px); bottom: -48px; width: 216px; height: 216px; object-fit: contain; filter: drop-shadow(0 7px 8px #0007); }
+.ritual-host-speech { position: absolute; left: calc(50% + 60px); top: 5px; width: min(225px,40%); background: #f2e1ba; border: 2px solid #6a462d; color: #382415; padding: 15px 17px; border-radius: 18px 18px 18px 3px; box-shadow: 0 5px 15px #0005; font-size: 17px; line-height: 1.4; z-index: 3; }
+.ritual-host-speech::after { content: ''; position: absolute; left: -12px; bottom: 12px; width: 16px; height: 14px; background: #f2e1ba; clip-path: polygon(100% 0,100% 100%,0 100%); }
+.advantage-table-center > .ritual-table-wrap { z-index: 1; }
+@keyframes advantage-emblem-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes ritual-seal-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@media (max-width:760px) { .ritual-host { height: 155px; } .ritual-host-character { left: calc(50% - 136px); width: 185px; height: 185px; bottom: -38px; } .ritual-host-speech { left: calc(50% + 5px); width: calc(50% - 8px); top: 7px; font-size: 14px; padding: 12px; } }
+@media (prefers-reduced-motion:reduce) { .advantage-sigil-icon,.ritual-sigil { animation: none; } }
+
+/* Quatro poses de sprite: repouso, piscada e saudação em quadros discretos. */
+.ritual-host-sprite { background: url('/classes/mago-table-idle-v1.png') 0 0 / 200% 200% no-repeat; animation: ritual-wizard-idle 8s step-end infinite; }
+@keyframes ritual-wizard-idle {
+  0%,30% { background-position: 0 0; }
+  31%,33% { background-position: 100% 0; }
+  34%,53% { background-position: 0 0; }
+  54%,65% { background-position: 0 100%; }
+  66%,77% { background-position: 100% 100%; }
+  78%,100% { background-position: 0 0; }
+}
+.advantage-table-carousel[data-animation-paused=true] .ritual-host-sprite { animation-play-state: paused; }
+@media (prefers-reduced-motion:reduce) { .ritual-host-sprite { animation: none; background-position: 0 0; } }
+
+/* Os moradores explicam a construção em balões, sem card técnico. */
+.rpg-assembly-dialogue { align-self: center; min-height: 470px; display: flex; align-items: center; }
+.rpg-assembly-speaker { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.rpg-assembly-speech { position: relative; background: #f1e2be; color: #39271a; padding: 23px 25px; border: 2px solid #88603a; border-radius: 25px 25px 25px 6px; box-shadow: 0 8px 20px #0004; z-index: 1; }
+.rpg-assembly-speech::after { content: ''; position: absolute; bottom: -20px; left: 38%; width: 28px; height: 23px; background: #f1e2be; clip-path: polygon(0 0,100% 0,0 100%); }
+.rpg-assembly-speaker-place { display: block; font-family: var(--font-cinzel),serif; font-size: 9px; line-height: 1.6; letter-spacing: .06em; color: #785431; text-transform: uppercase; margin-bottom: 8px; }
+.continuous-pixel-world .rpg-assembly-speech h3 { font-family: var(--font-cinzel),serif; font-size: 17px; line-height: 1.4; color: #643320; text-shadow: none; margin: 0 0 12px; }
+.rpg-assembly-speech p { font-size: 19px; line-height: 1.6; color: #39271a; }
+.rpg-assembly-speaker-art { display: block; width: 220px; height: 220px; object-fit: contain; margin-top: 15px; filter: drop-shadow(0 8px 10px #0007); }
+.rpg-assembly-resident { position: absolute; z-index: 2; width: clamp(38px,5.4vw,75px); aspect-ratio: 1; transform: translate(-50%,-50%); background: transparent; border: 0; padding: 0; cursor: pointer; opacity: .8; transition: opacity .2s,filter .2s; }
+.rpg-assembly-resident img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 3px 3px #0009); }
+.rpg-assembly-resident.is-active,.rpg-assembly-resident:hover { opacity: 1; filter: drop-shadow(0 0 5px #e8bd6860); }
+@media(max-width:900px) { .rpg-assembly-dialogue { min-height: 0; } .rpg-assembly-speaker { max-width: 550px; margin-inline: auto; } }
+@media(max-width:480px) { .rpg-assembly-speech { padding: 21px; } .rpg-assembly-speech p { font-size: 18px; } .rpg-assembly-speaker-art { width: 190px; height: 190px; } .rpg-assembly-resident { width: 42px; } }
+@media(prefers-reduced-motion:reduce) { .rpg-assembly-resident { transition: none; } }
+
+/* Personagens estáticos com as imagens originais das classes. */
+.original-class-animation { display: block; width: 100%; height: 100%; object-fit: contain; }
+.rpg-assembly-speaker-art.original-class-animation { width: 250px; height: 250px; }
+@media(max-width:480px) { .rpg-assembly-speaker-art.original-class-animation { width: 225px; height: 225px; } }

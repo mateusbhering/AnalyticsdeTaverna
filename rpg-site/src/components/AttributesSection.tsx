@@ -1,3 +1,4 @@
+import PixelQuestBackdrop from "@/components/PixelQuestBackdrop";
 import { VenetianMask } from "@/components/ui/illustrated-icons";
 import { Reveal } from "@/components/ui/reveal";
 import ClassCarousel from "@/components/ClassCarousel";
@@ -14,7 +15,8 @@ const attributes = [
 
 export default function AttributesSection() {
   return (
-    <div className="bg-dark-wood">
+    <div className="bg-dark-wood pixel-quest-realm pixel-quest-attributes">
+      <PixelQuestBackdrop setting="academy" showScenery={false} />
       <section id="atributos" className="py-28 px-6 relative max-w-7xl mx-auto">
         <div className="section-line-top" />
         <Reveal>
