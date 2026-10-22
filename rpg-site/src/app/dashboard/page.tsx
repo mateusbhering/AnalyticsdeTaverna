@@ -27,8 +27,8 @@ export default async function DashboardPage() {
     // MotionProvider também aqui: fora da landing, nada faria as animações do
     // Reveal/Stagger respeitarem o prefers-reduced-motion do sistema.
     <MotionProvider>
-      <div className="bg-black-linen min-h-screen flex flex-col">
-        <div className="pt-14 flex justify-center">
+      <div className="bg-black-linen min-h-screen flex flex-col dashboard-fixed-page">
+        <div className="pt-14 flex justify-center dashboard-fixed-brand">
           <Link href="/">
             <Image
               src="/logo.png"
@@ -40,10 +40,11 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        <DashboardSection stats={stats} />
-        <TavernaInsightsSection dados={analyticsExtra} />
+        <DashboardSection stats={stats}>
+          <TavernaInsightsSection dados={analyticsExtra} />
+        </DashboardSection>
 
-        <div className="text-center pb-20 mt-auto">
+        <div className="text-center pb-20 mt-auto dashboard-fixed-back">
           <Link
             href="/"
             className="text-[rgba(230,188,106,0.5)] hover:text-[var(--gold-light)] text-sm transition-colors"
@@ -56,3 +57,5 @@ export default async function DashboardPage() {
     </MotionProvider>
   );
 }
+
+

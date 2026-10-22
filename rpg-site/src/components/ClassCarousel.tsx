@@ -8,13 +8,21 @@ import { ChevronLeft, ChevronRight } from "@/components/ui/illustrated-icons";
 
 const classes = [
   { name: "Mago do ChatGPT", image: "mago-chatgpt", traits: ["Estratégia", "NERD", "TECNOLÓGICO"] },
+  { name: "Ninja do Visto por Último", image: "ninja-v2", traits: ["Agilidade", "FURTIVO"] },
   { name: "Artífice da Gambiarra", image: "artifice", traits: ["Criatividade", "GAMBIARRA"] },
+  { name: "Berserker do Crossfit", image: "berserker-v2", traits: ["Força", "ATLETA"] },
   { name: "Ladino do Home Office", image: "ladino", traits: ["Adaptabilidade", "FURTIVO"] },
+  { name: "Warlock do Boleto", image: "warlock-v2", traits: ["Persistência", "CAÓTICO"] },
   { name: "Necromante de Planilha", image: "necromante", traits: ["Disciplina", "PERFECCIONISTA"] },
+  { name: "Ilusionista de Call", image: "ilusionista-v2", traits: ["Criatividade", "SOCIAL"] },
   { name: "Vidente da Ansiedade", image: "vidente", traits: ["Percepção", "OVERTHINKING"] },
+  { name: "Ranger da Faxina", image: "ranger-v2", traits: ["Disciplina", "RESOLUTIVO"] },
   { name: "Invocador de iFood", image: "invocador", traits: ["Impulsividade", "DOPAMINA"] },
+  { name: "Bardo do Karaokê", image: "bardo-v2", traits: ["Carisma", "EXTROVERTIDO"] },
   { name: "Paladino do Grupo", image: "paladino", traits: ["Liderança", "LÍDER"] },
+  { name: "Xamã das Criptomoedas", image: "xama-v2", traits: ["Percepção", "CAÓTICO"] },
   { name: "Druida de Varanda", image: "druida", traits: ["Empatia", "ZEN"] },
+  { name: "Domador de Pet", image: "domador-v2", traits: ["Empatia", "CURADOR"] },
 ];
 
 export default function ClassCarousel() {
@@ -48,10 +56,12 @@ export default function ClassCarousel() {
       <div className="class-pagination" role="group" aria-label="Escolha uma classe">
         {classes.map((item, index) => <button key={item.image} type="button" aria-label={`Ver ${item.name}`} aria-current={index === active ? "true" : undefined} onClick={() => setActive(index)}><span aria-hidden="true" /></button>)}
       </div>
-      <p className="class-discovery">{active + 1} de 8 em destaque · Mais 8 classes para descobrir jogando</p>
+      <p className="class-discovery">{active + 1} de {classes.length} classes do reino</p>
     </div>
   );
 }
+
+
 
 
 

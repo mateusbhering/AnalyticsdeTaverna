@@ -3,6 +3,7 @@ import { IconText } from "@/components/ui/illustrated-icons";
 
 
 import { useEffect, useRef, useState } from "react";
+import QuizQuestionScene from "./QuizQuestionScene";
 import WebcamCapture from "./WebcamCapture";
 import CharacterResult from "./CharacterResult";
 import { NOME_MAX } from "@/lib/nome-jogador";
@@ -165,7 +166,7 @@ export default function QuizForm() {
   if (step === "quiz") {
     const question = questions[current];
     const total = questions.length;
-    const progress = Math.round((current / total) * 100);
+
 
     const handleAnswer = (opt: Option) => {
       setDims((prev) => {
@@ -185,81 +186,8 @@ export default function QuizForm() {
       }
     };
 
-    return (
-      <div className="paper-card paper-frame arcane-corners p-8">
-        <span className="ac-bl" /><span className="ac-br" />
-        <div className="text-center mb-5">
-          <span
-            className="section-eyebrow"
-            style={{ fontSize: ".6rem", letterSpacing: ".25em", color: "var(--seal)", opacity: 0.9 }}
-          >
-            Passo 2 de 2 — Ritual
-          </span>
-          <h2
-            className="text-[1.3rem] text-[var(--ink)]"
-            style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-          >
-            Quiz Comportamental
-          </h2>
-        </div>
-
-        {/* Progress bar */}
-        <div className="mb-6">
-          <div
-            className="flex items-center justify-between mb-1.5 text-[.6rem] text-[var(--foil)] tracking-[.2em] uppercase"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            <span>Páginas do Grimório</span>
-            <span>{current + 1} / {total}</span>
-          </div>
-          <div className="quiz-progress-track">
-            <div className="quiz-progress-fill" style={{ width: `${progress}%` }} />
-          </div>
-        </div>
-
-        {/* Pergunta — escrita direto na página do diário */}
-        <div className="border-t border-[rgba(96,66,26,0.25)] pt-6 mb-5">
-          <h2
-            className="text-[var(--ink)] text-base leading-relaxed mb-5 tracking-[.04em]"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            {question.text}
-          </h2>
-          <div className="space-y-2">
-            {question.options.map((opt, i) => (
-              <button
-                key={i}
-                onClick={() => handleAnswer(opt)}
-                className="w-full text-left px-5 py-3.5 border text-[var(--ink)] transition-all duration-200 flex items-center justify-between group text-sm cursor-pointer"
-                style={{
-                  background: "rgba(60,42,24,.05)",
-                  borderColor: "rgba(96,66,26,.22)",
-                  fontFamily: "var(--font-crimson-pro), Georgia, serif",
-                  fontSize: "1rem",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(140,35,24,.10)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(140,35,24,.45)";
-                  (e.currentTarget as HTMLButtonElement).style.paddingLeft = "28px";
-                  (e.currentTarget as HTMLButtonElement).style.color = "#8c2318";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(60,42,24,.05)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(96,66,26,.22)";
-                  (e.currentTarget as HTMLButtonElement).style.paddingLeft = "20px";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--ink)";
-                }}
-              >
-                <span>{opt.text}</span>
-                <span className="text-[rgba(96,66,26,.4)] group-hover:text-[rgba(140,35,24,.85)] transition-all text-lg">›</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
+    return <QuizQuestionScene question={question} number={current + 1} total={total} onAnswer={handleAnswer} />;
   }
-
   // ── STEP 3: Result ─────────────────────────────────────────────
   return <CharacterResult photo={photo} dims={dims} tags={tags} nome={nome} onRestart={restart} />;
 }

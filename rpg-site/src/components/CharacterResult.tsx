@@ -2,7 +2,7 @@
 import { IconText } from "@/components/ui/illustrated-icons";
 
 
-import { QRCodeSVG } from "qrcode.react";
+import HeroTradingCard from "./HeroTradingCard";
 import { domToBlob } from "modern-screenshot";
 import { Download, Share2 } from "@/components/ui/illustrated-icons";
 import {
@@ -361,8 +361,7 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
 
   const avatarBlob = blobLocal ?? (baixado?.url === avatarUrl ? baixado.blob : null);
 
-  const maxAttr = Math.max(...Object.values(attrs), 1);
-  const barPct = (v: number) => Math.round((v / maxAttr) * 100);
+
 
   const uniqueTags = [...new Set(tags)].slice(0, 5);
 
@@ -598,55 +597,8 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
 
   return (
     <div className="space-y-5">
-      {/* Result card */}
-      <div ref={cardRef} className="paper-card paper-frame arcane-corners p-9">
-        <span className="ac-bl" /><span className="ac-br" />
-
-        {/* Class reveal */}
-        <div className="text-center mb-6">
-          <span
-            className="section-eyebrow"
-            style={{
-              fontSize: ".6rem",
-              letterSpacing: ".35em",
-              marginBottom: "16px",
-              color: "var(--seal)",
-              opacity: 0.9,
-            }}
-          >
-            Manifestação do Ser
-          </span>
-
-          {/* Brasão da classe — lacre de cera */}
-          <div className="wax-seal !w-20 !h-20 mx-auto text-4xl mb-4">
-            {<IconText text={rpgClass.icon} />}
-          </div>
-
-          <h2
-            className="text-[1.7rem] text-[var(--seal)] mb-1"
-            style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-          >
-            {rpgClass.name}
-          </h2>
-          {raridade && <SeloRaridade raridade={raridade} className="mb-3" />}
-          <p className="text-[.95rem] italic max-w-xs mx-auto leading-relaxed mb-4">
-            {rpgClass.desc}
-          </p>
-
-          {/* Retrato: só o avatar gerado pela IA. Enquanto gera, mostra o loading;
-              em caso de erro, uma mensagem — sem foto de placeholder da classe.
-              Na imagem baixada, um retrato com erro some em vez de ir junto. */}
-          <div
-            data-export-ignore={avatarStatus === "error" ? "" : undefined}
-            className="flex flex-col items-center gap-2 mb-4"
-          >
-            <div className="polaroid !p-2">
-              <div
-                role="status"
-                aria-live="polite"
-                className="relative w-48 h-48 border border-[rgba(96,66,26,0.4)] overflow-hidden bg-[rgba(23,13,6,0.9)]"
-              >
-                {avatarStatus === "done" && avatarUrl ? (
+      <HeroTradingCard cardRef={cardRef} name={limparNome(nome) ?? undefined} classTitle={rpgClass.name} description={rpgClass.desc} stats={ATTR_LABELS.map(([key,label,icon])=>({label,icon,value:attrs[key]}))} tags={uniqueTags} rarity={raridade ? <SeloRaridade raridade={raridade} /> : null} qrUrl={shareUrl ? linkComOrigem(shareUrl,"qr",personagemId) : null} portraitError={avatarStatus === "error"} portrait={<>
+{avatarStatus === "done" && avatarUrl ? (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -707,137 +659,17 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
                     </span>
                   </div>
                 )}
-              </div>
-            </div>
-            {avatarStatus === "done" && avatarUrl && (
-              <span
-                className="text-[var(--foil)] text-[.55rem] tracking-[.25em] uppercase"
-                style={{ fontFamily: "var(--font-cinzel), serif" }}
-              >{<IconText text={"\r\n                ✦ Avatar Arcano\r\n              "} />}</span>
-            )}
-          </div>
-
-          {/* Tags */}
-          {uniqueTags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 justify-center">
-              {uniqueTags.map((t) => (
-                <span key={t} className="tag-pill">{t}</span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Divider */}
-        <div className="divider my-5" />
-
-        {/* Attributes */}
-        <div className="mb-5">
-          <div
-            className="text-[.7rem] tracking-[.2em] uppercase text-[var(--foil)] mb-4 text-center"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            Atributos Arcanos
-          </div>
-          <div className="space-y-3">
-            {ATTR_LABELS.map(([key, label, icon]) => (
-              <div key={key}>
-                <div className="flex items-center justify-between mb-1">
-                  <div className="flex items-center gap-2">
-                    <span><IconText text={icon} /></span>
-                    <span
-                      className="text-[var(--foil)] text-[.7rem] uppercase tracking-[.15em]"
-                      style={{ fontFamily: "var(--font-cinzel), serif" }}
-                    >
-                      {label}
-                    </span>
-                  </div>
-                  <span
-                    className="text-[var(--ink)] text-[.85rem]"
-                    style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-                  >
-                    {attrs[key]}
-                  </span>
-                </div>
-                <div className="h-1.5 bg-[rgba(96,66,26,0.15)] border border-[rgba(96,66,26,0.25)] overflow-hidden">
-                  <div className="stat-bar-fill" style={{ width: `${barPct(attrs[key])}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Link único compartilhável */}
-        <div className="pt-5 border-t border-[rgba(96,66,26,0.25)] flex flex-col items-center gap-3">
-          <span
-            className="text-[.55rem] tracking-[.3em] uppercase text-[var(--foil)]"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            Seu Card Digital
-          </span>
-          {shareUrl ? (
-            <>
-              <div className="bg-[#f8f0da] border border-[rgba(96,66,26,0.35)] p-2.5">
-                <QRCodeSVG value={linkComOrigem(shareUrl, "qr", personagemId)} size={120} bgColor="#f8f0da" fgColor="#3c2a18" />
-              </div>
-              <div data-export-ignore className="flex flex-wrap justify-center gap-2">
-                <button
-                  onClick={copyLink}
-                  className={CARD_ACTION_CLASS}
-                  style={{ fontFamily: "var(--font-cinzel), serif" }}
-                >
-                  {<IconText text={copied ? "✓ Link copiado" : "🔗 Copiar link"} />}
-                </button>
-                {/* Não enquanto o avatar gera: a imagem sairia com o spinner
-                    no lugar do retrato. */}
-                {cardCompleto && (
-                  <button
-                    onClick={saveCard}
-                    disabled={!cardBlob}
-                    className={`${CARD_ACTION_CLASS} inline-flex items-center gap-1.5 disabled:opacity-60 disabled:cursor-wait`}
-                    style={{ fontFamily: "var(--font-cinzel), serif" }}
-                  >
-                    {canShare ? <Share2 size={13} strokeWidth={1.8} /> : <Download size={13} strokeWidth={1.8} />}
-                    {!cardBlob ? "Preparando…" : canShare ? "Compartilhar card" : "Baixar card"}
-                  </button>
-                )}
-              </div>
-              <div data-export-ignore>
-                <CompartilharRedes
-                  link={shareUrl}
-                  jogadorId={personagemId}
-                  classe={rpgClass.name}
-                  className={CARD_ACTION_CLASS}
-                />
-              </div>
-              <p className="text-[.78rem] italic text-center">
-                Escaneie ou compartilhe o link do seu personagem
-              </p>
-            </>
-          ) : (
-            <>
-              <div className="w-[120px] h-[120px] flex items-center justify-center bg-[rgba(60,42,24,0.08)] border border-[rgba(96,66,26,0.3)]">
-                <div className="w-7 h-7 border-2 border-[rgba(138,100,40,0.35)] border-t-[var(--foil)] rounded-full animate-spin" />
-              </div>
-              <p className="text-[.78rem] italic text-center">
-                Preparando seu link…
-              </p>
-            </>
-          )}
-        </div>
+      </>} />
+      <div className="hero-result-actions">
+        {shareUrl ? <>
+          <button onClick={copyLink} className={CARD_ACTION_CLASS}><IconText text={copied ? "✓ Link copiado" : "🔗 Copiar link"} /></button>
+          {cardCompleto && <button onClick={saveCard} disabled={!cardBlob} className={`${CARD_ACTION_CLASS} inline-flex items-center gap-1.5 disabled:opacity-60 disabled:cursor-wait`}>{canShare ? <Share2 size={13} /> : <Download size={13} />}{!cardBlob ? "Preparando…" : canShare ? "Compartilhar card" : "Baixar card"}</button>}
+          <CompartilharRedes link={shareUrl} jogadorId={personagemId} classe={rpgClass.name} className={CARD_ACTION_CLASS} />
+        </> : <p>Preparando seu link…</p>}
       </div>
-
-      {/* Action buttons */}
       <div className="flex gap-3 flex-wrap">
-        <button
-          onClick={onRestart}
-          className="btn-parchment flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center cursor-pointer"
-          style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-        >{<IconText text={"\r\n          🔄 Jogar Novamente\r\n        "} />}</button>
-        <a
-          href="/batalha"
-          className="btn-seal flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center"
-          style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-        >{<IconText text={"\r\n          ⚔ Desafiar Alguém\r\n        "} />}</a>
+        <button onClick={onRestart} className="btn-parchment flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center cursor-pointer"><IconText text="🔄 Jogar Novamente" /></button>
+        <a href="/batalha" className="btn-seal flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center"><IconText text="⚔ Desafiar Alguém" /></a>
       </div>
     </div>
   );

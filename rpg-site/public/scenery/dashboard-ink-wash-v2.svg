@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1400" viewBox="0 0 1200 1400" preserveAspectRatio="none">
+ <defs>
+  <filter id="rough" x="-5%" y="-4%" width="110%" height="108%"><feTurbulence type="fractalNoise" baseFrequency=".025 .14" numOctaves="3" seed="23" result="grain"/><feDisplacementMap in="SourceGraphic" in2="grain" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <linearGradient id="ink" x2=".2" y2="1"><stop stop-color="#17201d"/><stop offset=".5" stop-color="#101712"/><stop offset="1" stop-color="#1d2218"/></linearGradient>
+ </defs>
+ <g filter="url(#rough)" fill="url(#ink)">
+  <path d="M50 38 170 23 278 35 390 13 570 28 720 16 902 36 1044 20 1155 44 1174 104 1150 176 1188 255 1160 341 1180 426 1148 518 1182 598 1159 674 1187 761 1150 844 1180 944 1155 1031 1185 1137 1151 1240 1170 1355 1034 1373 880 1356 725 1384 570 1362 411 1381 254 1365 57 1380 29 1310 50 1229 15 1142 45 1055 20 967 54 875 14 786 42 700 20 612 55 523 17 439 49 352 19 267 52 178 28 104Z"/>
+  <path d="m18 157 135-13 8 15-148 25Zm15 237 123-7 4 16-136 15ZM8 653l151-8 5 13-147 19Zm17 358 130-3 3 12-142 15Zm-8 262 128-6 6 15-140 19ZM1052 88l131-10 8 15-148 24Zm-6 389 145-8 1 18-138 15Zm2 347 141-12 5 15-149 22Zm-3 351 140-7 4 17-136 12Z" opacity=".6"/>
+ </g>
+ <g fill="none" stroke="#a59767" opacity=".13" filter="url(#rough)"><path d="m84 44 200-6 126 10m247-22 255 10m-824 1305 280 7m330 12 346-12" stroke-width="4"/><path d="m36 276 5 85m1128 345-7 87m-1134 327 8 107" stroke-width="6"/></g>
+</svg>

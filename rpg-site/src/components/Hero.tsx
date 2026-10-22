@@ -16,7 +16,7 @@ export default function Hero() {
           <p>Uma experiência interativa que transforma <strong className="text-[var(--gold-light)]">dados comportamentais</strong> em <strong className="text-[var(--copper)]">personagens de RPG únicos.</strong></p>
           <p className="cinematic-motto">“Descubra qual é sua classe de RPG com base no seu perfil”</p>
           <div className="rpg-actions flex flex-wrap">
-            <a href="#jornada" className="press btn-seal inline-flex items-center gap-2"><Swords size={18} /> Iniciar Aventura</a>
+            <a href="#jornada" className="press hero-adventure-button inline-flex items-center gap-2"><Swords size={18} /> Iniciar Aventura</a>
             <a href="#conceito" className="press btn-parchment inline-flex items-center gap-2"><WandSparkles size={18} /> Como Funciona</a>
           </div>
           <div className="rpg-resources grid grid-cols-4" aria-label="A experiência em números">
@@ -30,3 +30,4 @@ export default function Hero() {
     </section>
   );
 }
+

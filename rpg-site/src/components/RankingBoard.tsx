@@ -1,13 +1,10 @@
+import { CLASS_ARTWORK } from "@/lib/class-artwork";
 import { IconText } from "@/components/ui/illustrated-icons";
 import Image from "next/image";
 import Link from "next/link";
 import type { ResultadoRanking, ItemRanking } from "@/lib/ranking";
 
-const portraits: Record<string, string> = {
-  "Mago do ChatGPT": "mago-chatgpt", "Artífice da Gambiarra": "artifice", "Ladino do Home Office": "ladino",
-  "Necromante de Planilha": "necromante", "Vidente da Ansiedade": "vidente", "Invocador de iFood": "invocador",
-  "Paladino do Grupo": "paladino", "Druida de Varanda": "druida",
-};
+const portraits = CLASS_ARTWORK;
 const name = (item: ItemRanking) => item.nome?.trim() || `#${item.id}`;
 function Torch() {
   return <svg viewBox="0 0 50 130" aria-hidden="true"><path d="M25 4C5 23 38 23 16 43c-17-4-16-21-10-30-1 17 8 12 19-9Z" fill="#ef9b3d" stroke="#3c2a18" strokeWidth="3" strokeLinejoin="round" /><path d="M23 22c-10 10-11 15-5 20 13 3 16-8 5-20Z" fill="#ffdf79" /><path d="m8 44 28-1-5 16-18 1Z" fill="#84775b" stroke="#3c2a18" strokeWidth="3" /><path d="m18 60 10-1-1 56-7 7Z" fill="#9b673a" stroke="#3c2a18" strokeWidth="3" /><path d="m16 68 15-1m-14 8 13-1" stroke="#3c2a18" strokeWidth="3" /></svg>;
@@ -70,3 +67,4 @@ export default function RankingBoard({ ranking, loading = false }: { ranking: Re
     </main>
   );
 }
+

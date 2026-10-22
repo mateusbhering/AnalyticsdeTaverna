@@ -67,8 +67,7 @@ export default function CTASection() {
             <Magnetic>
               <a
                 href="/jogar"
-                className="press btn-glow btn-seal px-10 py-5 text-[.8rem] tracking-[.12em] uppercase inline-flex items-center gap-2 animate-pulse-wine"
-                style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
+                className="press ornate-play-button inline-flex items-center gap-2"
               >
                 <Swords size={16} strokeWidth={1.8} /> Jogar
               </a>
@@ -89,3 +88,4 @@ export default function CTASection() {
     </section>
   );
 }
+
