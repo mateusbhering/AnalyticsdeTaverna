@@ -13,14 +13,9 @@ export const metadata: Metadata = {
 
 export default function BatalhaPage() {
   return (
-    <div
-      className="min-h-screen relative overflow-hidden flex items-center justify-center px-4 py-14"
-      style={{
-        background:
-          "radial-gradient(60% 40% at 50% 0%, rgba(255,176,80,.13) 0%, transparent 70%), url('/textures/dark-wood.png'), linear-gradient(180deg, #2a180a 0%, #170d06 90%)",
-      }}
-    >
-      <div className="relative w-full max-w-sm">
+    <div className="battle-gate-page min-h-screen relative overflow-hidden flex items-center justify-center px-4 py-14">
+      <div className="battle-gate-art" aria-hidden="true"><Image src="/scenery/battle-gate-cartoon-v1.png" alt="" width={1024} height={1536} unoptimized /></div>
+      <div className="relative w-full max-w-md battle-gate-content">
         <div className="flex justify-center mb-8">
           <Link href="/">
             <Image

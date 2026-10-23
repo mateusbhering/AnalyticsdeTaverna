@@ -5,6 +5,7 @@ import { IconText } from "@/components/ui/illustrated-icons";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import QrScanner from "@/components/QrScanner";
+import OpponentNameSearch from "@/components/OpponentNameSearch";
 import TelaCarregando from "@/components/TelaCarregando";
 import { getSupabaseClient } from "@/lib/supabase";
 import { useMeuId } from "@/lib/jogador-local";
@@ -284,6 +285,7 @@ export default function DesafioScanner() {
       )}
 
       <QrScanner onScan={aoEscanear} />
+      <OpponentNameSearch onSelect={aoEscanear} ownId={meuId} />
     </Painel>
   );
 }

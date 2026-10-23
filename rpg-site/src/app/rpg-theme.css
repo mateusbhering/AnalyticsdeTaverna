@@ -1501,3 +1501,47 @@ body:has(.pixel-class-page) .page-reading-progress { display:none; }
 .hero-parchment-card .hero-trading-back { transform:rotateY(180deg); }
 .hero-parchment-card[data-side=front] .hero-trading-back,.hero-parchment-card[data-side=back] .hero-trading-front { pointer-events:none; }
 @media(prefers-reduced-motion:reduce) { .hero-parchment-card { transition:none; } }
+
+/* Busca opcional de adversário pelo nome público da carta. */
+.opponent-name-search { margin-top:24px; padding-top:22px; border-top:1px solid #a8864d66; }
+.opponent-name-search h2 { font:600 18px var(--font-cinzel),serif; margin:0 0 10px; color:var(--ink); }
+.opponent-name-search > p { font-size:15px; line-height:1.5; margin-bottom:15px; }
+.opponent-name-search label { display:block; margin-bottom:7px; font:11px var(--font-cinzel),serif; }
+.opponent-name-search-controls { display:flex; gap:8px; }
+.opponent-name-search input { min-width:0; flex:1; min-height:46px; padding:10px 12px; border:1px solid #a8854c; border-radius:3px; background:#241a12; color:#f4dfb6; font-size:16px; }
+.opponent-name-search input::placeholder { color:#d8c19b; opacity:.8; }
+.opponent-name-search input:focus-visible,.opponent-name-search button:focus-visible { outline:2px solid #cda361; outline-offset:3px; }
+.opponent-name-search-controls button { min-height:46px; min-width:82px; padding:10px 14px; border:1px solid #a17a3f; border-radius:3px; background:#3a291c; color:#f1d6a2; font:12px var(--font-cinzel),serif; cursor:pointer; }
+.opponent-name-search button:disabled { opacity:.6; cursor:wait; }
+.opponent-name-search [role=status],.opponent-name-search-error { margin-top:12px; font-size:14px; line-height:1.5; }
+.opponent-name-search-results { display:flex; flex-direction:column; gap:10px; list-style:none; padding:0; margin:15px 0 0; }
+.opponent-name-search-results button { display:flex; flex-direction:column; gap:5px; width:100%; padding:13px 15px; border:1px solid #a5844c; border-radius:4px; background:#e8d3a9; color:#38291c; text-align:left; cursor:pointer; }
+.opponent-name-search-results button:hover { background:#f3e0b8; border-color:#6d4c25; }
+.opponent-name-search-results span { font:600 14px var(--font-cinzel),serif; overflow-wrap:anywhere; }.opponent-name-search-results small { font-size:13px; }.opponent-name-search-results em { font-size:12px; color:#78562d; }
+
+/* QR na frente da carta, separado dos atributos e com área clara para leitura. */
+.hero-trading-front-qr { display:flex; align-items:center; justify-content:center; gap:14px; margin:14px 6px 0; padding-top:12px; border-top:2px double #9b774c77; }
+.hero-trading-front-qr svg { display:block; flex-shrink:0; background:#fff8e8; padding:3px; box-sizing:content-box; border:1px solid #9e7d52; }
+.hero-trading-front-qr > span { max-width:112px; color:#624024; font:600 11px/1.6 var(--font-cinzel),serif; text-align:left; }
+.hero-trading-front-qr-pending { margin:12px 10px 0; text-align:center; color:#80613e; font-size:11px; line-height:1.4; }
+.hero-parchment-card .hero-trading-caption .hero-card-star-bottom { top:0; left:-13px; width:48px; height:55px; }
+
+/* Miniatura da classe no topo do verso, preservando a cena de fundo. */
+.hero-trading-back-miniature { width:112px; height:120px; flex-shrink:0; margin:10px auto 14px; }
+.hero-trading-back-miniature img { display:block; width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 4px 6px #0009); }
+@media(max-width:480px) { .hero-trading-back-miniature { width:96px; height:104px; margin-block:8px 12px; } }
+
+/* Entrada ilustrada para a arena, com os controles preservados à direita. */
+.journey-scene[data-rpg-theme] .battle-gate-page { isolation:isolate; justify-content:flex-end; padding-inline:clamp(24px,7vw,120px); background:radial-gradient(ellipse at 28% 58%,#48402b55,transparent 58%),linear-gradient(115deg,#10120e,#231a12); }
+.battle-gate-art { position:fixed; inset:25px 43% calc(var(--game-dock-height) + 8px) 0; z-index:0; display:flex; justify-content:center; align-items:flex-end; pointer-events:none; user-select:none; }
+.battle-gate-art > img { display:block; width:100%; height:100%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 14px 24px #0008); }
+.battle-gate-content { z-index:1; margin-left:auto; }
+.battle-gate-content > h1 { text-shadow:0 2px 6px #000,0 0 18px #000 !important; }
+.battle-gate-content > .text-center a { text-shadow:0 1px 4px #000; }
+@media(max-width:760px) { .journey-scene[data-rpg-theme] .battle-gate-page { justify-content:center; padding-inline:18px; background:radial-gradient(ellipse at center,#3c3624,#11130f 85%); }.battle-gate-art { inset:10px 0 var(--game-dock-height); opacity:.43; }.battle-gate-art > img { object-position:center center; }.battle-gate-content { margin-inline:auto; } }
+@media(prefers-reduced-motion:reduce) { .battle-gate-art { background-attachment:scroll; } }
+
+/* Pergaminho desenhado: moldura em nove partes para manter os rolos proporcionais. */
+.journey-scene[data-rpg-theme] .battle-gate-content .paper-card { border:solid transparent; border-width:66px 48px; border-image-source:url('/scenery/battle-scroll-cartoon-v1.png'); border-image-slice:240 185 fill; border-image-width:66px 48px; border-image-repeat:stretch; padding:15px 14px; border-radius:0; background:transparent; box-shadow:none; filter:drop-shadow(0 8px 12px #0007); }
+.journey-scene[data-rpg-theme] .battle-gate-content .paper-frame::before,.journey-scene[data-rpg-theme] .battle-gate-content .paper-frame::after,.battle-gate-content .paper-card > :is(.ac-bl,.ac-br) { display:none; }
+@media(max-width:480px) { .journey-scene[data-rpg-theme] .battle-gate-content .paper-card { border-width:56px 38px; border-image-width:56px 38px; padding:12px 10px; } }
