@@ -74,6 +74,12 @@ function baixarBlob(blob: Blob, nome: string) {
  */
 function ajustarClone(node: Node) {
   if (!(node instanceof HTMLElement)) return;
+  // O arquivo baixado mostra a frente, independentemente da rotação na tela.
+  if (node.classList.contains("hero-trading-card") || node.classList.contains("hero-trading-front")) {
+    node.style.transform = "none";
+    node.style.transformStyle = "flat";
+    node.style.transition = "none";
+  }
   if (node.style.boxShadow) {
     // Vírgulas fora de parênteses separam as sombras (rgba() tem as suas).
     const internas = node.style.boxShadow
@@ -597,7 +603,7 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
 
   return (
     <div className="space-y-5">
-      <HeroTradingCard cardRef={cardRef} name={limparNome(nome) ?? undefined} classTitle={rpgClass.name} description={rpgClass.desc} stats={ATTR_LABELS.map(([key,label,icon])=>({label,icon,value:attrs[key]}))} tags={uniqueTags} rarity={raridade ? <SeloRaridade raridade={raridade} /> : null} qrUrl={shareUrl ? linkComOrigem(shareUrl,"qr",personagemId) : null} portraitError={avatarStatus === "error"} portrait={<>
+      <HeroTradingCard cardRef={cardRef} name={limparNome(nome) ?? undefined} classTitle={rpgClass.name} description={rpgClass.desc} stats={ATTR_LABELS.map(([key,label,icon])=>({label,icon,value:attrs[key]}))} tags={uniqueTags} rarity={raridade ? <SeloRaridade raridade={raridade} /> : null} qrUrl={personagemId != null ? linkComOrigem(`${origin}/batalha?oponenteId=${personagemId}`,"qr",personagemId) : null} portraitError={avatarStatus === "error"} portrait={<>
 {avatarStatus === "done" && avatarUrl ? (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -667,7 +673,7 @@ export default function CharacterResult({ photo, dims, tags, nome = "", onRestar
           <CompartilharRedes link={shareUrl} jogadorId={personagemId} classe={rpgClass.name} className={CARD_ACTION_CLASS} />
         </> : <p>Preparando seu link…</p>}
       </div>
-      <div className="flex gap-3 flex-wrap">
+      <div className="hero-character-actions flex gap-3 flex-wrap">
         <button onClick={onRestart} className="btn-parchment flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center cursor-pointer"><IconText text="🔄 Jogar Novamente" /></button>
         <a href="/batalha" className="btn-seal flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center"><IconText text="⚔ Desafiar Alguém" /></a>
       </div>

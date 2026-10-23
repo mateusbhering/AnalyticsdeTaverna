@@ -93,7 +93,7 @@ export default function JourneyNavigation() {
         <Link href="/" className={`game-dock-item game-dock-home ${pathname === "/" ? "is-active" : ""}`} aria-current={pathname === "/" ? "page" : undefined} onClick={() => setOpen(false)}>
           <span className="game-home-emblem"><Castle aria-hidden="true" /></span><span>Taverna</span>
         </Link>
-        <Link href="/#jornada" className={`game-dock-item ${pathname === "/jogar" || pathname === "/personagem" || pathname === "/batalha" ? "is-active" : ""}`} onClick={() => setOpen(false)}>
+        <Link href="/jornada" className={`game-dock-item ${pathname === "/jornada" || pathname === "/jogar" || pathname === "/personagem" || pathname === "/batalha" ? "is-active" : ""}`} onClick={() => setOpen(false)}>
           <Swords aria-hidden="true" /><span>Jornada</span>
         </Link>
         <Link href="/dashboard" className={`game-dock-item ${pathname === "/dashboard" ? "is-active" : ""}`} aria-current={pathname === "/dashboard" ? "page" : undefined} onClick={() => setOpen(false)}>

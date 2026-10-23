@@ -1,4 +1,5 @@
 "use client";
+import PhotoCaptureGuide from "@/components/PhotoCaptureGuide";
 import { Check } from "@/components/ui/illustrated-icons";
 
 import { IconText } from "@/components/ui/illustrated-icons";
@@ -9,9 +10,10 @@ import { useRef, useState, useCallback, type ReactNode } from "react";
 interface Props {
   onCapture: (photoDataUrl: string) => void;
   nameField?: ReactNode;
+  nameReady?: boolean;
 }
 
-export default function WebcamCapture({ onCapture, nameField }: Props) {
+export default function WebcamCapture({ onCapture, nameField, nameReady = false }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [streaming, setStreaming] = useState(false);
@@ -69,6 +71,7 @@ export default function WebcamCapture({ onCapture, nameField }: Props) {
 
   return (
     <div className="space-y-4 medieval-photo-capture">
+      <PhotoCaptureGuide stage={captured ? (nameReady ? "ready" : "name") : streaming ? "capture" : error ? "error" : "choose"} />
       {/* A moldura é decorativa; o vídeo e a captura continuam independentes. */}
       <div className="medieval-photo-card">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -141,7 +144,7 @@ export default function WebcamCapture({ onCapture, nameField }: Props) {
       )}
 
       {/* Buttons */}
-      <div className="flex gap-3 justify-center flex-wrap">
+      <div id="photo-controls" className="flex gap-3 justify-center flex-wrap">
         {!streaming && !captured && (
           <>
             <button

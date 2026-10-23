@@ -8,6 +8,12 @@ import { Pause, Play } from "@/components/ui/illustrated-icons";
 import { Reveal } from "@/components/ui/reveal";
 
 const advantages = ["Psicologia Aplicada", "IA Generativa", "Viral por Design", "Gamificação Real"];
+const advantageSpeeches = [
+  "Suas respostas ajudam a descobrir sua classe. Pode ser um grande mago... ou o caos de botas!",
+  "Sua foto vira um herói de RPG. Até a selfie de pijama ganha uma armadura!",
+  "Compartilhe sua carta com os amigos. Quem será o herói do grupo e quem vai fugir do dragão?",
+  "Responda, descubra sua classe e ganhe sua carta. Uma aventura sem sair da cadeira da taverna!"
+];
 
 export default function WhyDifferent() {
   const [{ active, revision }, setSelection] = useState({ active: 0, revision: 0 });
@@ -50,8 +56,14 @@ export default function WhyDifferent() {
             </ul>
             <div className="advantage-table-center">
               <div className="ritual-host">
-                <div role="img" aria-label="Mago do ChatGPT piscando e gesticulando como um personagem de RPG" className="ritual-host-character ritual-host-sprite" />
-                <p className="ritual-host-speech">Arraste o símbolo para o lado e descubra outras vantagens do nosso reino!</p>
+                <div key={revision} role="img" aria-label="Mago do ChatGPT explicando a vantagem selecionada" className={`ritual-host-character ritual-host-sprite${revision > 0 ? " ritual-host-speaking" : ""}`}>
+                  {revision > 0 && <svg viewBox="0 0 100 100" className="ritual-host-mouth" aria-hidden="true">
+                    <path d="M46 50 55 48.5 55 55 51.5 57.5 47 55Z" fill="#fac48c" />
+                    <g className="ritual-mouth-open"><path d="M47.5 52 53.7 50.2Q53.9 59 47.5 52Z" fill="#321c16" stroke="#25150f" strokeWidth=".65" strokeLinejoin="round" /><path d="M50 54.1Q51.3 52.9 53 53L52.5 55.4Q51.1 56.2 50 54.1Z" fill="#ce6c59" /></g>
+                    <path className="ritual-mouth-closed" d="M47.6 52.7Q51 54.4 54 51.5" fill="none" stroke="#2b1910" strokeWidth=".8" strokeLinecap="round" />
+                  </svg>}
+                </div>
+                <p className="ritual-host-speech" aria-live={paused || focused || hovered || reducedMotion ? "polite" : "off"} aria-atomic="true">{advantageSpeeches[active]}</p>
               </div>
               <MagicTable simulation={active} transition={revision} onNavigate={go} onInteractionChange={setInteracting} /></div>
             <ul className="advantage-emblems advantage-emblems-right" aria-label="Vantagens à direita">

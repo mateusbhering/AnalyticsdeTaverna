@@ -116,6 +116,7 @@ export default function QuizForm() {
         </div>
 
         <WebcamCapture
+          nameReady={nome.trim().length > 0}
           nameField={photo && (
           <div className="medieval-photo-name-fields">
             <label
@@ -153,6 +154,7 @@ export default function QuizForm() {
 
         {photo && (
           <button
+            id="photo-continue"
             onClick={() => setStep("quiz")}
             className="btn-seal mt-6 w-full py-4 tracking-[.12em] uppercase flex items-center justify-center gap-2 animate-pulse-wine text-[.8rem] cursor-pointer"
             style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}

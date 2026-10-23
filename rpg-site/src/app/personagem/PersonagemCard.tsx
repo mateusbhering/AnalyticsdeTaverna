@@ -25,6 +25,7 @@ const ATTR_LABELS: [string, string, string][] = [
 interface JogadorRow {
   id: number | string;
   classe: string;
+  nome?: string | null;
   forca: number;
   inteligencia: number;
   agilidade: number;
@@ -40,9 +41,9 @@ const subscribeOrigin = () => () => {};
 const readOrigin = () => window.location.origin;
 const serverOrigin = () => "";
 
-export default function PersonagemCard() {
+export default function PersonagemCard({ playerId }: { playerId?: string } = {}) {
   const params = useSearchParams();
-  const idParam = params.get("id");
+  const idParam = playerId ?? params.get("id");
   const supabaseBase = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 
   // Link único (/personagem?id=): lê o personagem salvo no banco.
@@ -122,7 +123,7 @@ export default function PersonagemCard() {
   const tags = row?.tags?.length ? row.tags : espelho;
 
   const baseUrl = useSyncExternalStore(subscribeOrigin, readOrigin, serverOrigin);
-  const qrUrl = jogadorId ? `${baseUrl}/batalha?oponenteId=${jogadorId}` : baseUrl;
+  const qrUrl = jogadorId ? `${baseUrl}/batalha?oponenteId=${jogadorId}` : null;
 
   // ── Estados de carregamento / não encontrado (só no fluxo por ?id=) ──
   if (loading) {
@@ -156,7 +157,7 @@ export default function PersonagemCard() {
 
   return (
     <div className="space-y-5">
-      <HeroTradingCard classTitle={rpgClass.name} description={rpgClass.desc} stats={ATTR_LABELS.map(([key,label,icon])=>({label,icon,value:attrs[key]}))} tags={ehDono ? tags : []} qrUrl={qrUrl} portrait={<>
+      <HeroTradingCard name={row?.nome ?? params.get("nome") ?? undefined} classTitle={rpgClass.name} description={rpgClass.desc} stats={ATTR_LABELS.map(([key,label,icon])=>({label,icon,value:attrs[key]}))} tags={ehDono ? tags : []} qrUrl={qrUrl} portrait={<>
         {/* eslint-disable-next-line @next/next/no-img-element */}
 <img
             src={portraitSrc}
@@ -181,7 +182,7 @@ export default function PersonagemCard() {
       {/* Ações do dono — a única diferença entre esta visão e a pública. Levam
           para uma partida nova e para o desafio; o visitante não vê nenhuma. */}
       {ehDono && (
-        <div className="flex gap-3 flex-wrap">
+        <div className="hero-character-actions flex gap-3 flex-wrap">
           <a
             href="/jogar"
             className="btn-parchment flex-1 min-w-[140px] py-4 text-[.75rem] tracking-[.12em] uppercase text-center"

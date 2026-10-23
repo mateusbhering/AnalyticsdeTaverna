@@ -18,5 +18,9 @@ export default function QuizQuestionScene({ question, number, total, onAnswer }:
     <div className="quiz-grimoire-answers" role="group" aria-labelledby={id}>
       {question.options.map((option, index) => <button key={`${question.id}-${index}`} type="button" className="quiz-grimoire-answer" onClick={() => onAnswer(option)}><span className="quiz-answer-letter" aria-hidden="true">{String.fromCharCode(65 + index)}</span><span>{option.text}</span></button>)}
     </div>
+    <p className="quiz-question-countdown" role="status" aria-live="polite" aria-atomic="true">
+      <strong>{Math.max(0, total - number + 1)}</strong>
+      <span>{total - number + 1 === 1 ? "pergunta restante" : "perguntas restantes"}</span>
+    </p>
   </div>;
 }
