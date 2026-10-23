@@ -1,4 +1,5 @@
 "use client";
+import ConfrontoPersonagens from "./ConfrontoPersonagens";
 import { IconText } from "@/components/ui/illustrated-icons";
 
 
@@ -9,7 +10,6 @@ import {
   useAnimate,
   useMotionValueEvent,
   useSpring,
-  type Variants,
 } from "motion/react";
 import { byName, type ClassInfo } from "@/lib/classes";
 import type { ResultadoBatalha as Resultado, Rodada } from "@/lib/batalha-api";
@@ -62,18 +62,13 @@ const PRIMEIRA_RODADA = 2;
 
 const DURACAO = {
   compra: 1000,
-  rodada: 1250,
+  rodada: 2200,
   desfecho: 750,
 };
 
 /** Quando, dentro de uma rodada, os corpos se encontram. */
-const MOMENTO_DO_IMPACTO = 400;
-const DURACAO_DO_FLASH = 220;
-
-/* Mola do avanço: rígida e pouco amortecida — a carta salta, não desliza. */
-const MOLA_GOLPE = { type: "spring", stiffness: 520, damping: 16, mass: 1 } as const;
-/* Mola do troféu caindo: massa alta para ter peso de queda. */
-const MOLA_QUEDA = { type: "spring", stiffness: 150, damping: 12, mass: 2.6 } as const;
+const MOMENTO_DO_IMPACTO = 650;
+const DURACAO_DO_FLASH = 600;
 
 const COPY = {
   vitoria: { titulo: "Vitória!", selo: "🏆", cor: "var(--seal)" },
@@ -201,49 +196,16 @@ export default function ResultadoBatalha({
 
   return (
     <div ref={escopo} className="space-y-5">
-      {/* ── A ARENA ──────────────────────────────────────────────────────
-          `perspective` no pai e `preserve-3d` nos filhos: sem os dois, todo
-          translateZ vira nada e o tabuleiro fica chapado. */}
-      <div
-        className="relative"
-        style={{ perspective: "1200px", perspectiveOrigin: "50% 42%" }}
-      >
-        <motion.div
-          className="relative mx-auto h-[15.5rem] w-full"
-          style={{ transformStyle: "preserve-3d" }}
-          initial={{ rotateX: 32, opacity: 0 }}
-          animate={{ rotateX: 17, opacity: 1 }}
-          transition={{ duration: 0.9, ease: [0.2, 0.7, 0.3, 1] }}
-        >
-          <Tabuleiro rachar={fechado} />
-
-          <div className="absolute inset-0 flex items-center justify-center gap-5"
-            style={{ transformStyle: "preserve-3d" }}>
-            <BattleCard
-              classe={minhaClasse}
-              rotulo="Você"
-              lado="a"
-              naMesa={fase >= FASE_CARTAS}
-              atacando={golpe?.vencedor === "a"}
-              sofrendo={impacto !== null && golpe?.vencedor === "b"}
-              vencendo={fechado && resultado.resultado === "a"}
-              dano={impacto !== null && golpe?.vencedor === "b" ? golpe.diferenca : null}
-            />
-            <BattleCard
-              classe={classeRival}
-              rotulo="Oponente"
-              lado="b"
-              naMesa={fase >= FASE_CARTAS}
-              atacando={golpe?.vencedor === "b"}
-              sofrendo={impacto !== null && golpe?.vencedor === "a"}
-              vencendo={fechado && resultado.resultado === "b"}
-              dano={impacto !== null && golpe?.vencedor === "a" ? golpe.diferenca : null}
-            />
-          </div>
-        </motion.div>
-
-        <AnimatePresence>{fechado && <TrofeuQueCai selo={copy.selo} />}</AnimatePresence>
-      </div>
+      <ConfrontoPersonagens
+        classes={[minhaClasse, classeRival]}
+        nomes={[meuJogador.nome || "Você", oponente.nome || "Oponente"]}
+        rodada={golpe}
+        indice={rodadaAtual}
+        impacto={impacto !== null}
+        pronto={fase >= FASE_CARTAS}
+        finalizado={fechado}
+        vencedor={resultado.resultado}
+      />
 
       {/* ── O REGISTRO ───────────────────────────────────────────────── */}
       <div className="paper-card paper-frame arcane-corners p-6 sm:p-8 text-center">
@@ -342,216 +304,6 @@ export default function ResultadoBatalha({
 /* ═══════════════════════════════════════════════════════════════════════
    Subcomponentes
    ═══════════════════════════════════════════════════════════════════════ */
-
-/** O tabuleiro sob as cartas, com a rachadura que o troféu abre ao cair. */
-function Tabuleiro({ rachar }: { rachar: boolean }) {
-  return (
-    <div
-      aria-hidden
-      className="absolute inset-x-2 bottom-2 top-8 rounded-sm"
-      style={{
-        transform: "translateZ(-40px)",
-        background:
-          "radial-gradient(70% 90% at 50% 40%, rgba(88,58,26,.55) 0%, rgba(28,16,7,.85) 100%)",
-        boxShadow: "inset 0 0 60px rgba(0,0,0,.7)",
-        border: "1px solid rgba(138,100,40,.22)",
-      }}
-    >
-      {/* A rachadura: nasce do ponto de queda e se abre. Escala + opacidade
-          apenas, para o navegador compor na GPU em vez de repintar. */}
-      <motion.span
-        className="absolute left-1/2 top-[22%] h-[2px] w-3/4 -translate-x-1/2"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, rgba(255,196,116,.85), rgba(255,120,60,.5), transparent)",
-          filter: "blur(1px)",
-          transformOrigin: "50% 50%",
-        }}
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={rachar ? { scaleX: [0, 1.1, 1], opacity: [0, 1, 0.28] } : {}}
-        transition={{ duration: 0.7, times: [0, 0.3, 1], delay: 0.12 }}
-      />
-    </div>
-  );
-}
-
-/* A carta pousa girando: 180° mostra o verso, 0° mostra a frente. */
-const variantesCarta: Variants = {
-  // Entra de fora da tela, de costas e girada — como carta comprada do baralho.
-  baralho: (lado: "a" | "b") => ({
-    x: lado === "a" ? -220 : 220,
-    y: -60,
-    z: 90,
-    rotateY: 180,
-    rotateZ: lado === "a" ? -18 : 18,
-    opacity: 0,
-  }),
-  mesa: {
-    x: 0,
-    y: 0,
-    z: 0,
-    rotateY: 0,
-    rotateZ: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 120, damping: 14, mass: 1.2 },
-  },
-};
-
-interface CartaProps {
-  classe: ClassInfo;
-  rotulo: string;
-  lado: "a" | "b";
-  naMesa: boolean;
-  atacando: boolean;
-  sofrendo: boolean;
-  vencendo: boolean;
-  dano: number | null;
-}
-
-/**
- * A carta física do lutador.
- *
- * Três estados de altura, e a SOMBRA acompanha cada um: quanto mais alto o
- * `translateZ`, mais larga e difusa ela fica. É a sombra que informa a altura —
- * sem ela, `translateZ` sozinho parece só um `scale`.
- */
-function BattleCard({
-  classe,
-  rotulo,
-  lado,
-  naMesa,
-  atacando,
-  sofrendo,
-  vencendo,
-  dano,
-}: CartaProps) {
-  // Quem ataca avança para o meio da mesa; o eixo depende do lado.
-  const avanco = lado === "a" ? 46 : -46;
-
-  const altura = atacando ? 74 : vencendo ? 34 : 0;
-  const sombra = atacando
-    ? "0 34px 40px rgba(0,0,0,.62)"
-    : vencendo
-      ? "0 20px 26px rgba(0,0,0,.5)"
-      : "0 8px 14px rgba(0,0,0,.55)";
-
-  return (
-    <motion.div
-      className="relative w-[7.2rem]"
-      style={{ transformStyle: "preserve-3d", zIndex: atacando ? 20 : 1 }}
-      custom={lado}
-      variants={variantesCarta}
-      initial="baralho"
-      animate={naMesa ? "mesa" : "baralho"}
-    >
-      <motion.div
-        className="relative"
-        style={{ transformStyle: "preserve-3d" }}
-        animate={{
-          z: altura,
-          x: atacando ? avanco : 0,
-          scale: atacando ? 1.1 : vencendo ? 1.04 : 1,
-        }}
-        transition={MOLA_GOLPE}
-      >
-        <motion.div
-          className="rounded-[3px] border px-2 py-3 text-center"
-          style={{
-            borderColor: vencendo ? "var(--gold)" : "rgba(96,66,26,.5)",
-            background: "linear-gradient(168deg, #f2e3ba 0%, var(--paper2) 60%, var(--paper3) 100%)",
-          }}
-          animate={{
-            boxShadow: vencendo
-              ? `${sombra}, 0 0 26px 4px var(--gold), inset 0 0 18px rgba(230,188,106,.5)`
-              : sombra,
-            /* O golpe recebido: vermelho por 220ms. O filtro é caro, mas dura
-               pouco e é o que o olho lê como "levou dano". */
-            filter: sofrendo
-              ? "brightness(2) sepia(1) hue-rotate(-50deg) saturate(5)"
-              : "none",
-          }}
-          transition={{ boxShadow: { duration: 0.35 }, filter: { duration: 0.08 } }}
-        >
-          <div className="wax-seal !w-11 !h-11 mx-auto text-lg mb-1.5">{<IconText text={classe.icon} />}</div>
-          <p
-            className="text-[.52rem] leading-tight text-[var(--ink-70)] line-clamp-2"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            {classe.name}
-          </p>
-          <p
-            className="mt-1 text-[.42rem] tracking-[.2em] uppercase text-[var(--foil)]"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            {rotulo}
-          </p>
-        </motion.div>
-      </motion.div>
-
-      <AnimatePresence>{dano !== null && <FloatingDamage valor={dano} />}</AnimatePresence>
-    </motion.div>
-  );
-}
-
-/**
- * O número de dano saltando da carta.
- *
- * O valor é a DIFERENÇA entre os dois atributos: quanto o golpe foi maior que a
- * defesa. Um "-1" e um "-14" contam histórias diferentes, e é essa margem que o
- * placar de rodadas esconde.
- */
-function FloatingDamage({ valor }: { valor: number }) {
-  return (
-    <motion.span
-      aria-hidden
-      className="pointer-events-none absolute left-1/2 top-2 -translate-x-1/2 tabular-nums"
-      style={{
-        fontFamily: "var(--font-cinzel-decorative), serif",
-        fontSize: "1.5rem",
-        color: "#e8503a",
-        textShadow: "0 2px 8px rgba(0,0,0,.75), 0 0 14px rgba(232,80,58,.6)",
-        zIndex: 30,
-      }}
-      initial={{ opacity: 0, y: 6, scale: 0.6 }}
-      animate={{ opacity: [0, 1, 1, 0], y: -46, scale: [0.6, 1.25, 1, 0.95] }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.9, times: [0, 0.18, 0.6, 1], ease: "easeOut" }}
-    >
-      −{valor}
-    </motion.span>
-  );
-}
-
-/** O selo do desfecho caindo do alto e batendo na mesa. */
-function TrofeuQueCai({ selo }: { selo: string }) {
-  return (
-    <motion.div
-      aria-hidden
-      /* Acima das cartas, não sobre elas: centralizado no eixo vertical o
-         troféu tapava os dois nomes de classe. Ele pousa na borda de cima do
-         tabuleiro, onde ainda parece ter caído na mesa sem esconder quem
-         lutou. */
-      className="pointer-events-none absolute inset-x-0 top-1 flex justify-center"
-      style={{ perspective: "800px", zIndex: 40 }}
-    >
-      <motion.span
-        className="flex h-16 w-16 items-center justify-center rounded-full text-3xl"
-        style={{
-          background:
-            "radial-gradient(circle at 36% 30%, #b23a26 0%, var(--seal) 44%, #5e150d 100%)",
-          boxShadow: "0 18px 32px rgba(0,0,0,.6), inset 0 2px 6px rgba(255,160,110,.4)",
-        }}
-        /* Cai de 500px de profundidade: começa enorme e distante, chega ao
-           tamanho real. É o eixo Z que dá a sensação de queda, não o Y. */
-        initial={{ z: 500, opacity: 0, rotate: -25 }}
-        animate={{ z: 0, opacity: 1, rotate: 0 }}
-        transition={MOLA_QUEDA}
-      >
-        {<IconText text={selo} />}
-      </motion.span>
-    </motion.div>
-  );
-}
 
 /**
  * Barra de XP com contagem de moedas.

@@ -1,0 +1,22 @@
+.arena { position:relative; overflow:hidden; border:1px solid #b98a48; border-radius:12px; color:#ffe9b8; background:radial-gradient(ellipse at 50% 45%,#49335c99,transparent 68%),linear-gradient(#141321dd,#221810ee),url('/scenery/forest-battle-hero.jpg') center/cover; box-shadow:0 16px 45px #0005,inset 0 0 40px #0008; }
+.cabecalho { position:relative; z-index:2; display:flex; align-items:center; flex-direction:column; gap:6px; padding:18px 12px 0; text-align:center; font-family:var(--font-cinzel),serif; }
+.cabecalho span { font-size:10px; letter-spacing:.15em; color:#dfb96f; }
+.cabecalho strong { font-size:19px; }
+.palco { height:285px; position:relative; isolation:isolate; }
+.circulo { position:absolute; bottom:49px; left:7%; width:86%; height:75px; border:2px solid #e6bc6a66; border-radius:50%; box-shadow:0 0 25px #c4a0ff33,inset 0 0 22px #c4a0ff33; background:repeating-radial-gradient(ellipse,#e6bc6a11 0 2px,transparent 3px 12px); }
+.lutador { position:absolute; width:48%; left:3%; bottom:5px; text-align:center; }
+.rival { left:auto; right:3%; }
+.corpo { position:relative; transform-origin:50% 90%; }
+.personagem { display:block; width:100%; height:190px; object-fit:contain; filter:drop-shadow(0 10px 8px #0009); }
+.identidade { min-height:65px; position:relative; z-index:3; display:flex; align-items:center; flex-direction:column; gap:3px; padding:0 5px; text-shadow:0 2px 5px #000; }
+.identidade strong { font-size:12px; max-width:100%; overflow-wrap:anywhere; }
+.identidade span { font-size:10px; color:#dfcba6; }
+.identidade b { font-size:9px; letter-spacing:.1em; color:#ffda84; }
+.projetil,.impacto { position:absolute; top:32%; z-index:6; font-size:58px; line-height:1; pointer-events:none; text-shadow:0 0 15px currentColor,0 0 30px currentColor; }
+.impacto { transform:translateX(-50%); font-size:70px; }
+.coroa { position:absolute; top:0; z-index:7; margin-left:-20px; color:#ffda84; font-size:40px; text-shadow:0 0 25px #ffb62b; }
+.dano { position:absolute; top:30%; left:40%; z-index:8; color:#ff8a77; font-size:26px; text-shadow:0 2px 8px #000; }
+.narrador { position:relative; z-index:9; margin:0; min-height:66px; display:flex; align-items:center; justify-content:center; padding:12px 18px; text-align:center; font-size:12px; background:#09071099; border-top:1px solid #dfb96f33; }
+@media(max-width:360px) { .personagem { height:160px; } .palco { height:260px; } }
+@media(prefers-reduced-motion:reduce) { .arena *, .arena *::before { animation:none!important; transition:none!important; } }
+.rival .personagem { transform:scaleX(-1); }
