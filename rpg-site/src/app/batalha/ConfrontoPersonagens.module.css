@@ -1,22 +1,49 @@
-.arena { position:relative; overflow:hidden; border:1px solid #b98a48; border-radius:12px; color:#ffe9b8; background:radial-gradient(ellipse at 50% 45%,#49335c99,transparent 68%),linear-gradient(#141321dd,#221810ee),url('/scenery/forest-battle-hero.jpg') center/cover; box-shadow:0 16px 45px #0005,inset 0 0 40px #0008; }
-.cabecalho { position:relative; z-index:2; display:flex; align-items:center; flex-direction:column; gap:6px; padding:18px 12px 0; text-align:center; font-family:var(--font-cinzel),serif; }
-.cabecalho span { font-size:10px; letter-spacing:.15em; color:#dfb96f; }
-.cabecalho strong { font-size:19px; }
-.palco { height:285px; position:relative; isolation:isolate; }
-.circulo { position:absolute; bottom:49px; left:7%; width:86%; height:75px; border:2px solid #e6bc6a66; border-radius:50%; box-shadow:0 0 25px #c4a0ff33,inset 0 0 22px #c4a0ff33; background:repeating-radial-gradient(ellipse,#e6bc6a11 0 2px,transparent 3px 12px); }
-.lutador { position:absolute; width:48%; left:3%; bottom:5px; text-align:center; }
-.rival { left:auto; right:3%; }
-.corpo { position:relative; transform-origin:50% 90%; }
-.personagem { display:block; width:100%; height:190px; object-fit:contain; filter:drop-shadow(0 10px 8px #0009); }
-.identidade { min-height:65px; position:relative; z-index:3; display:flex; align-items:center; flex-direction:column; gap:3px; padding:0 5px; text-shadow:0 2px 5px #000; }
-.identidade strong { font-size:12px; max-width:100%; overflow-wrap:anywhere; }
-.identidade span { font-size:10px; color:#dfcba6; }
-.identidade b { font-size:9px; letter-spacing:.1em; color:#ffda84; }
-.projetil,.impacto { position:absolute; top:32%; z-index:6; font-size:58px; line-height:1; pointer-events:none; text-shadow:0 0 15px currentColor,0 0 30px currentColor; }
-.impacto { transform:translateX(-50%); font-size:70px; }
-.coroa { position:absolute; top:0; z-index:7; margin-left:-20px; color:#ffda84; font-size:40px; text-shadow:0 0 25px #ffb62b; }
-.dano { position:absolute; top:30%; left:40%; z-index:8; color:#ff8a77; font-size:26px; text-shadow:0 2px 8px #000; }
-.narrador { position:relative; z-index:9; margin:0; min-height:66px; display:flex; align-items:center; justify-content:center; padding:12px 18px; text-align:center; font-size:12px; background:#09071099; border-top:1px solid #dfb96f33; }
-@media(max-width:360px) { .personagem { height:160px; } .palco { height:260px; } }
+.arena { position:absolute; inset:0; overflow:hidden; color:#ffedc6; background:#111522; font-family:var(--font-cinzel),Georgia,serif; }
+.cenario { position:absolute; inset:0; background:linear-gradient(180deg,#07122166 0%,#101d2608 48%,#15162444 100%),url('/scenery/castle-battle-pixel-v1.png') center center/cover; image-rendering:pixelated; }
+.vinheta { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 50%,transparent 50%,#080c1c77 100%); box-shadow:inset 0 30px 70px #0008; }
+.hud { position:absolute; z-index:10; inset:0 0 auto; display:flex; justify-content:space-between; gap:24px; padding:max(22px,env(safe-area-inset-top)) max(28px,env(safe-area-inset-right)) 12px; background:linear-gradient(#080d1cf2,transparent); }
+.jogadorHud { display:flex; align-items:center; gap:12px; max-width:42%; min-width:0; }
+.jogadorHud img { width:64px; height:64px; object-fit:contain; border:1px solid #bca47199; border-radius:50%; background:#172032; }
+.jogadorHud div { min-width:0; }
+.jogadorHud small,.jogadorHud span,.jogadorHud strong { display:block; }
+.jogadorHud small { color:#c9b17d; font-size:9px; letter-spacing:.22em; }
+.jogadorHud strong { font-size:clamp(12px,1.7vw,23px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.jogadorHud span { font-family:Georgia,serif; font-size:12px; color:#d1c6b1; }
+.hudRival { flex-direction:row-reverse; text-align:right; }
+.selos { display:flex; gap:6px; margin-top:8px; }
+.hudRival .selos { justify-content:flex-end; }
+.selos i { width:18px; height:4px; border-radius:8px; background:#ffffff24; }
+.selos i[data-ativo=true] { background:#edc375; box-shadow:0 0 8px #edc37566; }
+.cabecalho { position:absolute; top:17%; left:15%; right:15%; z-index:9; display:flex; align-items:center; flex-direction:column; gap:8px; text-align:center; text-shadow:0 3px 18px #000; pointer-events:none; }
+.cabecalho>span { font-size:11px; letter-spacing:.25em; color:#e4c58e; }
+.cabecalho strong { font-family:var(--font-cinzel-decorative),Georgia,serif; font-size:clamp(24px,4.5vw,64px); line-height:1.1; color:#ffe1a0; }
+.comparacao { display:flex; gap:18px; font-size:22px!important; font-variant-numeric:tabular-nums; }
+.comparacao em { color:#ffb484; font-style:normal; }
+.palco { position:absolute; inset:22% 0 16%; isolation:isolate; }
+.chao { position:absolute; left:-20%; right:-20%; height:50%; bottom:-15%; background:radial-gradient(ellipse,#a6a3c044,transparent 65%); }
+.circulo { position:absolute; bottom:1%; left:8%; width:84%; height:23%; border:2px solid #f6dc9777; border-radius:50%; box-shadow:0 0 35px #c4a0ff44,inset 0 0 35px #c4a0ff33; background:repeating-radial-gradient(ellipse,#e6bc6a14 0 2px,transparent 3px 24px); }
+.lutador { position:absolute; width:min(34vw,380px); left:calc(26% - min(17vw,190px)); bottom:3%; text-align:center; }
+.rival { left:auto; right:calc(26% - min(17vw,190px)); }
+.corpo { position:relative; transform-origin:50% 88%; }
+.marionete { width:100%; height:clamp(200px,45vh,470px); }
+.arteOriginal { width:100%; height:100%; transform-origin:50% 90%; }
+.imagemOriginal { display:block; width:100%; height:100%; object-fit:contain; object-position:center bottom; user-select:none; }
+.sombra { position:absolute; bottom:0; left:13%; width:74%; height:6%; border-radius:50%; background:#070b14a8; filter:blur(5px); }
+.projetil,.impacto { position:absolute; top:49%; z-index:6; font-size:clamp(45px,6vw,90px); line-height:1; pointer-events:none; text-shadow:0 0 15px currentColor,0 0 40px currentColor; }
+.rastro { position:absolute; width:100px; height:15px; top:45%; right:20%; background:linear-gradient(90deg,transparent,currentColor); filter:blur(6px); }
+.impacto { margin-left:-40px; font-size:100px; }
+.escudo { position:absolute; inset:10%; border:5px solid #a5dfff; border-radius:50%; box-shadow:0 0 35px #b0eaff,inset 0 0 35px #b0eaff; }
+.coroa { position:absolute; top:0; z-index:7; margin-left:-35px; color:#ffda84; font-size:65px; text-shadow:0 0 25px #ffb62b; }
+.dano { position:absolute; top:15%; left:40%; z-index:8; color:#ffab8a; font-size:40px; text-shadow:0 2px 8px #000; }
+.dano small { display:block; font-size:8px; white-space:nowrap; letter-spacing:.1em; }
+.balao { position:absolute; top:-8%; left:0; width:100%; z-index:8; padding:12px 6px; color:#3c2940; background:#fff0c8; border-radius:25px 25px 25px 4px; border:3px solid #3e2a3b; font-size:clamp(9px,1.2vw,14px); font-weight:bold; }
+.estrelas { position:absolute; left:10%; right:10%; top:20%; color:#ffe092; font-size:30px; }
+.confete { position:absolute; inset:-30% 0 0; z-index:7; pointer-events:none; }
+.confete i { position:absolute; width:8px; height:13px; }
+.rodape { position:absolute; z-index:12; bottom:0; left:0; right:0; min-height:14%; padding:16px 20px max(18px,env(safe-area-inset-bottom)); text-align:center; background:linear-gradient(transparent,#080d1cf5); }
+.rodape p { margin:0 0 12px; font-family:Georgia,serif; font-style:italic; font-size:clamp(16px,2vw,23px); text-shadow:0 2px 8px #000; }
+.rodape button { color:#edcf96; font-size:11px; padding:8px 16px; border:1px solid #cbae6d66; border-radius:3px; background:#0d1527aa; cursor:pointer; }
+.rodape button:hover,.rodape button:focus-visible { background:#3b3044; outline:2px solid #edcf96; outline-offset:3px; }
+@media(max-width:600px) { .hud { gap:10px; padding:18px 14px; } .jogadorHud { max-width:48%; gap:6px; } .jogadorHud img { width:40px; height:40px; } .jogadorHud span { font-size:9px; } .cabecalho { top:20%; left:8%; right:8%; } .cabecalho>span { font-size:9px; } .palco { inset:31% 0 21%; } .lutador { width:43vw; left:2%; } .rival { left:auto; right:2%; } .marionete { height:clamp(180px,34vh,330px); } .rodape { min-height:18%; } .coroa { font-size:45px; top:4%; margin-left:-24px; } .balao { top:-8%; } .projetil { top:40%; } }
+@media(max-height:500px) and (min-width:601px) { .hud { padding:10px 22px; } .jogadorHud img { width:38px; height:38px; } .cabecalho { top:7%; left:32%; right:32%; gap:2px; } .cabecalho strong { font-size:24px; } .cabecalho>span { font-size:8px; } .palco { inset:20% 0 20%; } .marionete { height:54vh; } .rodape { padding:6px 15px; } .rodape p { font-size:14px; margin:0; } .coroa { font-size:36px; top:-6%; } }
 @media(prefers-reduced-motion:reduce) { .arena *, .arena *::before { animation:none!important; transition:none!important; } }
-.rival .personagem { transform:scaleX(-1); }
