@@ -1,0 +1,30 @@
+.entrada { position:absolute; inset:0; overflow:hidden; background:#3d2023; color:#ffeec4; font-family:var(--font-cinzel),Georgia,serif; isolation:isolate; }
+.cenario { position:absolute; inset:-5%; z-index:-2; background:linear-gradient(110deg,#a7432ac9,#2b1b37ef),url('/scenery/castle-battle-pixel-v1.png') center/cover; animation:panorama 5s ease-out both; }
+.fria .cenario { background:linear-gradient(250deg,#23767dc9,#14223aef),url('/scenery/castle-battle-pixel-v1.png') center/cover; }
+.raios { position:absolute; inset:-100%; z-index:-1; pointer-events:none; background:repeating-conic-gradient(from 8deg at 48% 52%,transparent 0deg 11deg,#ffe6aa25 11deg 12deg,transparent 12deg 23deg); animation:velocidade 4s linear infinite; }
+.barraSuperior,.barraInferior { position:absolute; z-index:6; height:7%; left:0; right:0; background:#060a12; }
+.barraSuperior { top:0; }.barraInferior { bottom:0; }
+.apresentacao { position:absolute; inset:12% 7% 14%; display:grid; grid-template-columns:1fr 1fr; gap:5%; align-items:center; }
+.close { width:100%; height:100%; min-height:0; filter:drop-shadow(0 15px 30px #0007); }
+.cartela { text-shadow:0 3px 12px #0008; }
+.cartela>span { color:#ffdc95; font-size:10px; letter-spacing:.22em; }
+.cartela h2 { font-family:var(--font-cinzel-decorative),Georgia,serif; font-size:clamp(34px,7vw,90px); line-height:1.15; margin:16px 0; overflow-wrap:anywhere; }
+.cartela p { font-size:clamp(17px,2.4vw,32px); line-height:1.4; }
+.cartela i { display:block; margin:24px 0; color:#efc88b; font-size:13px; font-style:normal; }
+.cartela small { display:block; max-width:300px; color:#efdfc3; font-family:Georgia,serif; font-size:17px; font-style:italic; line-height:1.5; }
+.apresentacaoRival .close { order:2; }.apresentacaoRival .cartela { text-align:right; }.apresentacaoRival small { margin-left:auto; }
+.versus { position:absolute; inset:7% 0; display:grid; grid-template-columns:1fr 1fr; }
+.painelVersus { position:relative; min-width:0; overflow:hidden; background:linear-gradient(110deg,#b14b3744,#501c2888); border-right:2px solid #ffe0a288; }
+.painelRival { background:linear-gradient(250deg,#278b9444,#14345e88); border:0; }
+.atorVersus { position:absolute; inset:3% 6% 15%; }
+.nomeVersus { position:absolute; left:12px; right:12px; bottom:8%; display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; text-shadow:0 2px 9px #000; }
+.nomeVersus strong { font-size:clamp(19px,3vw,38px); }.nomeVersus span { font-size:clamp(10px,1.4vw,19px); }
+.vs { position:absolute; top:32%; left:calc(50% - 60px); width:120px; z-index:5; text-align:center; font-family:var(--font-cinzel-decorative),Georgia,serif; color:#ffda84; font-size:80px; font-weight:900; font-style:italic; text-shadow:4px 5px 0 #612c29,0 0 35px #ffd277; }
+.chamado { position:absolute; left:10%; right:10%; bottom:1%; text-align:center; font-size:clamp(10px,1.3vw,17px); letter-spacing:.18em; }
+.pular { position:absolute; z-index:8; right:24px; bottom:1.1%; border:0; background:transparent; color:#e8cc94; cursor:pointer; padding:8px; font-size:11px; }
+.pular:hover,.pular:focus-visible { outline:1px solid #e8cc94; outline-offset:2px; }
+.progresso { position:absolute; z-index:7; bottom:7%; left:0; right:0; height:2px; background:#ffffff14; }.progresso span { display:block; width:100%; height:100%; transform-origin:left; background:#f2cc83; }
+@keyframes velocidade { from { transform:scale(1) rotate(-2deg); } to { transform:scale(1.18) rotate(4deg); } }
+@keyframes panorama { from { transform:scale(1.14); } to { transform:scale(1); } }
+@media(max-width:600px) { .apresentacao { inset:12% 7% 14%; grid-template-columns:1fr; grid-template-rows:minmax(0,1.8fr) minmax(0,1fr); gap:10px; }.cartela { text-align:center!important; }.cartela>span { font-size:8px; }.cartela h2 { margin:8px 0; font-size:32px; }.cartela p { font-size:17px; }.cartela i { margin:10px 0; }.cartela small { margin:0 auto; font-size:13px; }.apresentacaoRival .close { order:0; }.close { max-height:44vh; }.versus { inset:12% 0; }.atorVersus { inset:12% 0 24%; }.vs { font-size:49px; top:35%; width:80px; left:calc(50% - 40px); }.nomeVersus { bottom:14%; }.nomeVersus strong { font-size:18px; }.nomeVersus span { font-size:10px; }.chamado { bottom:4%; }.pular { right:12px; bottom:max(1.1%,env(safe-area-inset-bottom)); } }
+@media(prefers-reduced-motion:reduce) { .cenario,.raios { animation:none; } }

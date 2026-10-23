@@ -7,7 +7,11 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { byName } from "@/lib/classes";
 import { ATRIBUTOS_CARD, QTD_ATRIBUTOS_POR_BATALHA, type ChaveAtributo } from "@/lib/atributos";
 import { aquecer, ErroDeBatalha, lutar, type ResultadoBatalha } from "@/lib/batalha-api";
-import Magnetic from "@/components/ui/magnetic";
+import Image from "next/image";
+import { CLASS_ARTWORK } from "@/lib/class-artwork";
+import { deveEspelhar } from "@/lib/battle-rigs";
+import type { ClassInfo } from "@/lib/classes";
+import styles from "./EscolhaAtributos.module.css";
 import BotaoLacre from "@/components/ui/botao-lacre";
 import type { Oponente } from "./DesafioScanner";
 
@@ -66,6 +70,7 @@ export default function EscolhaAtributos({ meuId, oponente, onVoltar, onBatalhaC
   }, []);
 
   function alternar(chave: ChaveAtributo) {
+    if (enviando) return;
     setErro(null);
     setSelecionados((atual) => {
       if (atual.includes(chave)) return atual.filter((c) => c !== chave);
@@ -75,7 +80,7 @@ export default function EscolhaAtributos({ meuId, oponente, onVoltar, onBatalhaC
   }
 
   async function confirmarEscolha() {
-    if (selecionados.length !== QTD_ATRIBUTOS_POR_BATALHA || !meuJogador) return;
+    if (enviando || selecionados.length !== QTD_ATRIBUTOS_POR_BATALHA || !meuJogador) return;
     setEnviando(true);
     setErro(null);
     try {
@@ -97,94 +102,60 @@ export default function EscolhaAtributos({ meuId, oponente, onVoltar, onBatalhaC
   const completo = selecionados.length === QTD_ATRIBUTOS_POR_BATALHA;
 
   return (
-    <div className="paper-card paper-frame arcane-corners p-6 sm:p-8">
+    <div className={`paper-card paper-frame arcane-corners p-6 sm:p-8 ${styles.pergaminho}`}>
       <span className="ac-bl" /><span className="ac-br" />
 
-      {/* Você vs Rival */}
-      <div className="flex items-center justify-center gap-3 mb-6">
-        <div className="text-center flex-1 min-w-0">
-          <span
-            className="text-[.55rem] tracking-[.3em] uppercase text-[var(--foil)]"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            Você
-          </span>
-          <div className="wax-seal !w-14 !h-14 mx-auto text-2xl my-2">
-            {<IconText text={carregandoEu ? "…" : minhaClasse.icon} />}
+      <div className={styles.confronto} aria-label="Personagens do confronto">
+        <div className={styles.voce}>
+          <span className={styles.rotulo}>Seu personagem</span>
+          <h2 className={styles.tituloVoce}>Você</h2>
+          <div className={styles.retratoVoce}>
+            {carregandoEu ? <span className={styles.carregando} role="status">Carregando…</span>
+              : meuJogador?.classe ? <ArtePersonagem classe={minhaClasse} lado="a"/> : <span className={styles.carregando}>Classe não informada</span>}
           </div>
-          <p
-            className="text-[.68rem] leading-tight truncate"
-            style={{ fontFamily: "var(--font-cinzel), serif", color: "var(--seal)" }}
-          >
-            {carregandoEu ? "Carregando…" : minhaClasse.name}
-          </p>
+          {meuJogador?.nome && <strong className={styles.nomeVoce}>{meuJogador.nome}</strong>}
+          <p className={styles.classeVoce}>{carregandoEu ? "Preparando seu card…" : meuJogador?.classe ? minhaClasse.name : "Seu aventureiro"}</p>
         </div>
-
-        <div
-          className="text-xl px-1 shrink-0"
-          style={{ fontFamily: "var(--font-cinzel-decorative), serif", color: "var(--seal)" }}
-        >
-          VS
-        </div>
-
-        <div className="text-center flex-1 min-w-0">
-          <span
-            className="text-[.55rem] tracking-[.3em] uppercase text-[var(--foil)]"
-            style={{ fontFamily: "var(--font-cinzel), serif" }}
-          >
-            Rival
-          </span>
-          <div className="wax-seal !w-14 !h-14 mx-auto text-2xl my-2">{<IconText text={classeRival.icon} />}</div>
-          <p
-            className="text-[.68rem] leading-tight truncate"
-            style={{ fontFamily: "var(--font-cinzel), serif", color: "var(--seal)" }}
-          >
-            {classeRival.name}
-          </p>
+        <span className={styles.vs} aria-label="contra">VS</span>
+        <div className={styles.rival}>
+          <span className={styles.rotulo}>Oponente</span>
+          <h2 className={styles.tituloRival}>Rival</h2>
+          <div className={styles.retratoRival}><ArtePersonagem classe={classeRival} lado="b"/></div>
+          {oponente.nome && <strong className={styles.nomeRival}>{oponente.nome}</strong>}
+          <p className={styles.classeRival}>{classeRival.name}</p>
         </div>
       </div>
 
-      <div className="divider mb-5" />
+      <div className={styles.divisor} aria-hidden="true"><span>✦</span></div>
 
-      {/* Seleção de atributos */}
-      <div className="text-center mb-4">
-        <h2
-          className="text-[1.15rem] text-[var(--seal)] mb-1"
-          style={{ fontFamily: "var(--font-cinzel-decorative), serif" }}
-        >
-          Escolha seus atributos
-        </h2>
-        <p className="text-[.8rem] italic">
-          Você pode escolher no máximo {QTD_ATRIBUTOS_POR_BATALHA} atributos para sua batalha!
-        </p>
+      <div className={styles.cabecalho}>
+        <span className={styles.rotulo}>Prepare seu confronto</span>
+        <h2 className={styles.tituloEscolha}>Escolha seus atributos</h2>
+        <p>Escolha {QTD_ATRIBUTOS_POR_BATALHA} atributos para enfrentar seu rival.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 mb-2">
-        {ATRIBUTOS_CARD.filter((a) => a.chave !== "caos").map((a) => (
+      <div className={styles.grade} role="group" aria-label="Atributos para a batalha">
+        {ATRIBUTOS_CARD.map((a) => (
           <BotaoAtributo
             key={a.chave}
             rotulo={a.rotulo}
             Icon={a.Icon}
             selecionado={selecionados.includes(a.chave)}
-            desabilitado={completo && !selecionados.includes(a.chave)}
+            ordem={selecionados.indexOf(a.chave) + 1}
+            centralizado={a.chave === "caos"}
+            desabilitado={enviando || (completo && !selecionados.includes(a.chave))}
             onClick={() => alternar(a.chave)}
           />
         ))}
       </div>
-      {/* Caos fica sozinho, centralizado, igual ao protótipo. */}
-      <div className="grid grid-cols-2 gap-2 mb-6">
-        <div />
-        <BotaoAtributo
-          rotulo="Caos"
-          Icon={ATRIBUTOS_CARD.find((a) => a.chave === "caos")!.Icon}
-          selecionado={selecionados.includes("caos")}
-          desabilitado={completo && !selecionados.includes("caos")}
-          onClick={() => alternar("caos")}
-        />
-      </div>
+
+      <p className={styles.contagem} role="status" aria-live="polite">
+        <strong>{selecionados.length} / {QTD_ATRIBUTOS_POR_BATALHA}</strong>
+        <span>{completo ? "Pronto para o confronto!" : "atributos escolhidos"}</span>
+      </p>
 
       {erro && (
-        <p className="text-[var(--seal)] text-sm text-center bg-[rgba(140,35,24,0.08)] border border-[rgba(140,35,24,0.35)] px-4 py-3 italic mb-4">
+        <p role="alert" className="text-[var(--seal)] text-sm text-center bg-[rgba(140,35,24,0.08)] border border-[rgba(140,35,24,0.35)] px-4 py-3 italic mb-4">
           {erro}
         </p>
       )}
@@ -212,50 +183,49 @@ export default function EscolhaAtributos({ meuId, oponente, onVoltar, onBatalhaC
   );
 }
 
-/* `strength` baixo de propósito: o atributo se INCLINA para o cursor, não
-   persegue. Acima de ~0.2 a grade inteira parece flutuar e fica difícil
-   acertar o alvo — o efeito passa a atrapalhar o que deveria enfeitar. */
-const ATRACAO = 0.14;
+function ArtePersonagem({ classe, lado }: { classe: ClassInfo; lado: "a" | "b" }) {
+  const arte = CLASS_ARTWORK[classe.name];
+  return <Image
+    src={arte ? `/classes/${arte}.png` : classe.photo}
+    alt={classe.name}
+    width={384}
+    height={384}
+    unoptimized
+    loading="eager"
+    draggable={false}
+    className={styles.artePersonagem}
+    style={{ transform: deveEspelhar(arte, lado) ? "scaleX(-1)" : undefined }}
+  />;
+}
 
-function BotaoAtributo({
-  rotulo,
-  Icon,
-  selecionado,
-  desabilitado,
-  onClick,
-}: {
+function BotaoAtributo({ rotulo, Icon, selecionado, ordem, centralizado, desabilitado, onClick }: {
   rotulo: string;
   Icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>;
   selecionado: boolean;
+  ordem: number;
+  centralizado: boolean;
   desabilitado: boolean;
   onClick: () => void;
 }) {
-  const conteudo = (
-    <button
-      onClick={onClick}
-      aria-pressed={selecionado}
-      disabled={desabilitado}
-      className={`press w-full py-4 flex flex-col items-center gap-1.5 border transition-all disabled:opacity-35 disabled:cursor-not-allowed ${
-        selecionado
-          ? "border-[var(--seal)] bg-[rgba(140,35,24,0.1)]"
-          : "border-[rgba(96,66,26,0.3)] hover:border-[var(--foil)]"
-      }`}
-    >
-      <Icon size={20} strokeWidth={1.6} className={selecionado ? "text-[var(--seal)]" : "text-[var(--foil)]"} />
-      <span
-        className="text-[.62rem] tracking-[.1em] uppercase"
-        style={{ fontFamily: "var(--font-cinzel), serif", color: selecionado ? "var(--seal)" : "var(--ink-70)" }}
-      >
-        {rotulo}
-      </span>
-    </button>
-  );
-
-  // Já escolhido ou fora de alcance não flerta com o cursor.
-  if (desabilitado || selecionado) return conteudo;
-  return (
-    <Magnetic strength={ATRACAO} className="!block">
-      {conteudo}
-    </Magnetic>
-  );
+  return <button
+    type="button"
+    onClick={onClick}
+    aria-label={rotulo}
+    aria-pressed={selecionado}
+    disabled={desabilitado}
+    data-centralizado={centralizado || undefined}
+    className={`${styles.atributo} ${selecionado ? styles.selecionado : ""}`}
+  >
+    <span className={styles.moldura}>
+      <svg className={styles.ornamento} viewBox="0 0 100 100" fill="none" aria-hidden="true">
+        <rect x="8" y="8" width="84" height="84" rx="14" stroke="currentColor" strokeWidth="2.2"/>
+        <rect x="13" y="13" width="74" height="74" rx="11" stroke="currentColor" strokeWidth=".9"/>
+        <path d="M9 31Q2 9 25 8 M69 8Q94 0 92 25 M92 69Q100 94 75 92 M31 92Q6 100 8 75" stroke="currentColor" strokeWidth="2.4"/>
+        <path d="M15 22Q14 12 25 15Q32 19 23 23Q18 24 19 19 M78 15Q88 14 85 25Q81 32 77 23Q76 18 81 19 M85 78Q86 88 75 85Q68 81 77 77Q82 76 81 81 M22 85Q12 86 15 75Q19 68 23 77Q24 82 19 81" stroke="currentColor" strokeWidth="1.4"/>
+      </svg>
+      <Icon size={48} strokeWidth={1.6} className={styles.icone}/>
+      {selecionado && <span className={styles.seloEscolha} aria-hidden="true">{ordem}</span>}
+    </span>
+    <span className={styles.nomeAtributo}>{rotulo}</span>
+  </button>;
 }

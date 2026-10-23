@@ -1,0 +1,9 @@
+.ator { display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 6px 8px #0007); }
+.dor { filter:drop-shadow(0 0 14px #ff7969) brightness(1.2); }
+.vitoria { filter:drop-shadow(0 0 18px #ffd985); }
+.piscar { opacity:0; animation:piscada 3.7s linear infinite; }
+.dor .piscar { opacity:1; animation:none; }
+.carga { opacity:0; transform-box:fill-box; transform-origin:center; animation:carregar 1.05s ease-in-out 2; pointer-events:none; }
+@keyframes piscada { 0%,75%,83%,100% { opacity:0; } 77%,81% { opacity:1; } }
+@keyframes carregar { 0% { opacity:0; scale:.2; } 40%,65% { opacity:.95; scale:1.2; } 100% { opacity:0; scale:.3; } }
+@media(prefers-reduced-motion:reduce) { .piscar,.carga { animation:none; opacity:0; } }

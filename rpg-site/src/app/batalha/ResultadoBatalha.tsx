@@ -12,6 +12,7 @@ import BrindesDoDuelo from "@/components/BrindesDoDuelo";
 import TintaViva from "@/components/ui/tinta-viva";
 import { useTavernFeedback } from "@/lib/useTavernFeedback";
 import ConfrontoPersonagens from "./ConfrontoPersonagens";
+import EntradaBatalha from "./EntradaBatalha";
 import styles from "./ResultadoBatalha.module.css";
 
 interface Props {
@@ -21,7 +22,8 @@ interface Props {
   onBatalharDeNovo: () => void;
   onEscanearOutro: () => void;
 }
-const PRIMEIRA_RODADA = 2;
+const FASE_ARENA = 3;
+const PRIMEIRA_RODADA = 4;
 const DURACAO_RODADA = 3600;
 const MOMENTOS_IMPACTO = [1150, 2200];
 const noop = () => () => {};
@@ -56,7 +58,7 @@ export default function ResultadoBatalha({ resultado, meuJogador, oponente, onBa
 
   useEffect(() => {
     if (!montado || livro) return;
-    const espera = fase === 0 ? 350 : fase === 1 ? 1500 : fase === faseFinal ? 4200 : DURACAO_RODADA;
+    const espera = fase < 2 ? 1800 : fase === 2 ? 1500 : fase === FASE_ARENA ? 1000 : fase === faseFinal ? 4200 : DURACAO_RODADA;
     const timer = window.setTimeout(() => setFase(f => f + 1), espera);
     return () => window.clearTimeout(timer);
   }, [fase, faseFinal, montado, livro, reprise]);
@@ -103,6 +105,7 @@ export default function ResultadoBatalha({ resultado, meuJogador, oponente, onBa
   }, [livro, montado]);
 
   function abrirLivro() { setImpacto(false); setFase(faseFinal + 1); }
+  function entrarNaArena() { setImpacto(false); setFase(FASE_ARENA); }
   function reassistir() { setImpacto(false); setReprise(n => n + 1); setFase(0); }
   function teclado(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === "Escape" && !livro) { event.preventDefault(); abrirLivro(); }
@@ -117,7 +120,13 @@ export default function ResultadoBatalha({ resultado, meuJogador, oponente, onBa
   return createPortal(<div ref={raiz} className={styles.experiencia} role="dialog" aria-modal="true" aria-label={livro ? "Grimório de resultados da batalha" : "Batalha entre os aventureiros"} tabIndex={-1} onKeyDown={teclado}>
     <AnimatePresence mode="wait" initial={false}>
       {!livro ? <motion.div key={`cena-${reprise}`} className={styles.cena} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 1.04 }} transition={{ duration: .4 }}>
-        <ConfrontoPersonagens classes={[...classes]} nomes={nomes} rodada={rodada} indice={rodadaAtual} impacto={impacto} pronto={fase >= 1} finalizado={finalizado} vencedor={resultado.resultado} totalRodadas={resultado.rodadas.length} onAbrirGrimorio={abrirLivro}/>
+        <AnimatePresence mode="wait" initial={false}>
+          {fase < FASE_ARENA ? <motion.div key="entrada" className={styles.cena} exit={{ opacity: 0, scale: 1.1 }} transition={{ duration: .25 }}>
+            <EntradaBatalha fase={fase} classes={[...classes]} nomes={nomes} onEntrar={entrarNaArena}/>
+          </motion.div> : <motion.div key="arena" className={styles.cena} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: .3 }}>
+            <ConfrontoPersonagens classes={[...classes]} nomes={nomes} rodada={rodada} indice={rodadaAtual} impacto={impacto} pronto={fase >= FASE_ARENA} finalizado={finalizado} vencedor={resultado.resultado} totalRodadas={resultado.rodadas.length} onAbrirGrimorio={abrirLivro}/>
+          </motion.div>}
+        </AnimatePresence>
       </motion.div> : <motion.div key="grimorio" className={styles.biblioteca} initial={reduzido ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: .5 }}>
         <div className={styles.legenda}>A TAVERNA GUARDA TODAS AS HISTÓRIAS</div>
         <motion.article className={styles.livro} initial={reduzido ? false : { opacity: 0, y: 80, rotateX: 22, scale: .8 }} animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }} transition={{ duration: reduzido ? 0 : .85, type: "spring", damping: 22 }}>

@@ -65,7 +65,7 @@ export default function ConfrontoPersonagens({ classes, nomes, rodada, indice, i
                 : { y: [0, -7, 0] }}
               transition={{ duration: ganhou ? 1.5 : ataca ? 3.3 : perdeu ? .75 : 2, times: ataca && !magia.distancia ? [0, .15, .35, .49, .67, .85, 1] : undefined, repeat: ganhou || (!ataca && !finalizado) ? Infinity : 0 }}>
               <motion.div className={styles.marionete} animate={recebe ? { x: [0, -direcao * 32, direcao * 8, 0], rotate: [0, -direcao * 16, 4, 0] } : { x: 0, rotate: 0 }} transition={{ duration: .45 }}>
-                <AtorBatalha classe={classe} expressao={expressao} espelhado={!!i}/>
+                <AtorBatalha classe={classe} expressao={expressao} lado={lado}/>
                 {empate && impacto && <motion.div className={styles.escudo} initial={{ scale: .3, opacity: 0 }} animate={{ scale: 1.2, opacity: [0, .9, 0] }} transition={{ duration: .5 }}/>} 
               </motion.div>
             </motion.div>
@@ -76,7 +76,7 @@ export default function ConfrontoPersonagens({ classes, nomes, rodada, indice, i
         </div>;
       })}
       <AnimatePresence>
-        {rodada && !finalizado && atacante !== "empate" && magia.distancia && [0, 1].map(tiro => <motion.div key={`${indice}-${tiro}`} aria-hidden="true" className={styles.projetil} style={{ color: magia.cor }} initial={{ left: atacante === "a" ? "29%" : "71%", opacity: 0, scale: .3 }} animate={{ left: atacante === "a" ? ["29%", "34%", "72%"] : ["71%", "66%", "28%"], opacity: [0, 1, 0], scale: [.3, 1.6, 1], rotate: atacante === "a" ? 160 : -160 }} transition={{ delay: .55 + tiro * 1.05, duration: .6, times: [0, .15, 1] }}><span className={styles.rastro}/>{magia.simbolo}</motion.div>)}
+        {rodada && !finalizado && atacante !== "empate" && magia.distancia && [0, 1].map(tiro => <motion.div key={`${indice}-${tiro}`} aria-hidden="true" className={styles.projetil} style={{ color: magia.cor }} initial={{ left: atacante === "a" ? "33%" : "67%", opacity: 0, scale: .3 }} animate={{ left: atacante === "a" ? ["33%", "38%", "72%"] : ["67%", "62%", "28%"], opacity: [0, 1, 0], scale: [.3, 1.6, 1], rotate: atacante === "a" ? 160 : -160 }} transition={{ delay: .55 + tiro * 1.05, duration: .6, times: [0, .15, 1] }}><span className={styles.rastro}/>{magia.simbolo}</motion.div>)}
         {impacto && <motion.div key={`impacto-${indice}`} aria-hidden="true" className={styles.impacto} style={{ color: atacante === "empate" ? "#ffe4a6" : magia.cor, left: atacante === "a" ? "71%" : atacante === "b" ? "29%" : "50%" }} initial={{ scale: .2, opacity: 1 }} animate={{ scale: 2.6, opacity: 0, rotate: 65 }} exit={{ opacity: 0 }} transition={{ duration: .45 }}>✷</motion.div>}
         {finalizado && vencedor !== "empate" && <motion.div className={styles.coroa} aria-hidden="true" style={{ left: vencedor === "a" ? "26%" : "74%" }} initial={{ y: -70, opacity: 0, scale: 2 }} animate={{ y: [0, -12, 0], opacity: 1, scale: 1 }} transition={{ y: { repeat: Infinity, duration: 1.5 }, default: { duration: .5 } }}>♛</motion.div>}
       </AnimatePresence>
