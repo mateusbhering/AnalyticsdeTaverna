@@ -4,13 +4,14 @@ import { Check } from "@/components/ui/illustrated-icons";
 import { IconText } from "@/components/ui/illustrated-icons";
 
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, type ReactNode } from "react";
 
 interface Props {
   onCapture: (photoDataUrl: string) => void;
+  nameField?: ReactNode;
 }
 
-export default function WebcamCapture({ onCapture }: Props) {
+export default function WebcamCapture({ onCapture, nameField }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [streaming, setStreaming] = useState(false);
@@ -67,10 +68,13 @@ export default function WebcamCapture({ onCapture }: Props) {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Visor da câmera — foto revelada colada na página */}
-      <div className="polaroid relative overflow-visible max-w-sm mx-auto">
-        <div className="relative overflow-hidden bg-[rgba(23,13,6,0.92)] border border-[rgba(96,66,26,0.4)] aspect-square">
+    <div className="space-y-4 medieval-photo-capture">
+      {/* A moldura é decorativa; o vídeo e a captura continuam independentes. */}
+      <div className="medieval-photo-card">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/scenery/medieval-stone-photo-frame-v1.png" alt="Moldura medieval de pedra entalhada e pergaminho" className="medieval-photo-frame" />
+        <span className="medieval-photo-ribbon">Seu herói</span>
+        <div className={`medieval-photo-window${streaming || captured ? " is-filled" : ""}`}>
           {/* Video feed */}
           {!captured && (
             <video
@@ -90,13 +94,12 @@ export default function WebcamCapture({ onCapture }: Props) {
 
           {/* Placeholder */}
           {!streaming && !captured && (
-            <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-[rgba(240,226,189,0.75)]">
-              <div className="text-6xl">{<IconText text={"📷"} />}</div>
+            <div className="medieval-photo-placeholder">
               <p
                 className="text-[.65rem] tracking-[.2em] uppercase"
                 style={{ fontFamily: "var(--font-cinzel), serif" }}
               >
-                Câmera desligada
+                Seu retrato começa aqui
               </p>
             </div>
           )}
@@ -104,7 +107,7 @@ export default function WebcamCapture({ onCapture }: Props) {
           {/* Face guide overlay */}
           {streaming && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-48 h-56 rounded-full border-2 border-dashed border-[rgba(230,188,106,0.55)] shadow-[0_0_0_9999px_rgba(0,0,0,0.3)]" />
+              <div className="medieval-photo-face-guide" />
               <div className="absolute bottom-4 left-0 right-0 text-center">
                 <span
                   className="text-[rgba(240,226,189,0.75)] text-[.6rem] bg-[rgba(0,0,0,0.6)] px-3 py-1 tracking-[.1em] uppercase"
@@ -122,6 +125,9 @@ export default function WebcamCapture({ onCapture }: Props) {
               <Check size={24} />
             </div>
           )}
+        </div>
+        <div className="medieval-photo-nameplate">
+          {nameField || <span>Seu nome será inscrito aqui</span>}
         </div>
       </div>
 

@@ -1,17 +1,19 @@
 import QuizForm from "@/components/QuizForm";
+import PixelClassBackdrop from "@/components/PixelClassBackdrop";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function JogarPage() {
   return (
     <div
-      className="min-h-screen relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden pixel-class-page"
       style={{
         background:
           "radial-gradient(60% 40% at 50% 0%, rgba(255,176,80,.14) 0%, transparent 70%), url('/textures/dark-wood.png'), linear-gradient(180deg, #2a180a 0%, #170d06 90%)",
       }}
     >
-      <div className="relative max-w-2xl mx-auto px-6 py-16">
+      <PixelClassBackdrop />
+      <div className="relative z-[1] max-w-2xl mx-auto px-6 py-16">
         {/* Header */}
         <div className="text-center mb-10">
           <Link href="/" className="inline-flex justify-center mb-6">

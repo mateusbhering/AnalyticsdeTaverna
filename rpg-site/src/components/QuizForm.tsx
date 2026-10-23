@@ -96,8 +96,7 @@ export default function QuizForm() {
   // ── STEP 1: Photo ──────────────────────────────────────────────
   if (step === "photo") {
     return (
-      <div className="paper-card paper-frame arcane-corners p-8">
-        <span className="ac-bl" /><span className="ac-br" />
+      <div className="medieval-photo-step p-4 sm:p-8">
         <div className="text-center mb-6">
           <span
             className="section-eyebrow"
@@ -117,16 +116,8 @@ export default function QuizForm() {
         </div>
 
         <WebcamCapture
-          onCapture={(dataUrl) => {
-            // A pessoa pode tirar de novo (retake): a etapa do funil marca a
-            // PRIMEIRA vez que ela chega até aqui, não cada tentativa.
-            if (!photo) registrarEventoFunil("foto_capturada");
-            setPhoto(dataUrl);
-          }}
-        />
-
-        {photo && (
-          <div className="mt-6">
+          nameField={photo && (
+          <div className="medieval-photo-name-fields">
             <label
               htmlFor="nome-ranking"
               className="block text-[.7rem] text-[var(--foil)] tracking-[.15em] uppercase mb-1.5"
@@ -150,6 +141,15 @@ export default function QuizForm() {
             </p>
           </div>
         )}
+          onCapture={(dataUrl) => {
+            // A pessoa pode tirar de novo (retake): a etapa do funil marca a
+            // PRIMEIRA vez que ela chega até aqui, não cada tentativa.
+            if (!photo) registrarEventoFunil("foto_capturada");
+            setPhoto(dataUrl);
+          }}
+        />
+
+
 
         {photo && (
           <button

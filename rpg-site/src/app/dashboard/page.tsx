@@ -29,13 +29,14 @@ export default async function DashboardPage() {
     <MotionProvider>
       <div className="bg-black-linen min-h-screen flex flex-col dashboard-fixed-page">
         <div className="pt-14 flex justify-center dashboard-fixed-brand">
-          <Link href="/">
+          <Link href="/" aria-label="Analytics de Taverna — voltar ao início">
             <Image
-              src="/logo.png"
-              alt="Analytics de Taverna"
-              width={72}
-              height={72}
-              className="ritual-glow"
+              src="/scenery/dashboard-analysis-ensemble-v1.png"
+              alt="Necromante de Planilha analisando o paladino e o ninja da taverna"
+              width={600}
+              height={200}
+              className="dashboard-analysis-ensemble"
+              unoptimized
             />
           </Link>
         </div>

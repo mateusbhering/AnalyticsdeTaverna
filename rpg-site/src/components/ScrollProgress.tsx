@@ -14,7 +14,7 @@ export default function ScrollProgress() {
   const markerX = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-4" aria-hidden="true">
+    <div className="page-reading-progress pointer-events-none fixed inset-x-0 top-0 z-[60] h-4" aria-hidden="true">
       <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[rgba(201,151,63,0.25)]" />
       <motion.div
         style={{ scaleX }}
